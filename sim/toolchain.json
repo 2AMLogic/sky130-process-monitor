@@ -5,7 +5,7 @@
     "iverilog":  {"cmd": ["iverilog", "-V"],         "regex": "Icarus Verilog version ([0-9.]+)", "expect": "13.0"},
     "yosys":     {"cmd": ["yosys", "-V"],            "regex": "Yosys ([0-9.]+)",           "expect": "0.67"},
     "verilator": {"cmd": ["verilator", "--version"], "regex": "Verilator ([0-9.]+)",       "expect": "5.050"},
-    "cocotb":    {"cmd": ["cocotb-config", "--version"], "regex": "([0-9.]+)",             "expect": "2.1.0"}
+    "cocotb":    {"cmd": ["cocotb-config", "--version"], "regex": "([0-9.]+)",             "expect": "2.0.1"}
   },
   "xschem": {
     "dpkg_package": "xschem",

@@ -5,7 +5,7 @@
 set -u
 HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 exec python3 -I - "$HERE" <<'PY'
-import json, os, re, subprocess, sys
+import json, os, re, shutil, subprocess, sys
 here = sys.argv[1]
 pdk = json.load(open(os.path.join(here, "pdk.json")))
 tc = json.load(open(os.path.join(here, "toolchain.json")))
@@ -33,12 +33,14 @@ for name, t in tc["tools"].items():
         out = subprocess.run(t["cmd"], capture_output=True, text=True, timeout=30)
         text = out.stdout + out.stderr
     except (OSError, subprocess.TimeoutExpired) as e:
-        errs.append(f"{name}: cannot run {t['cmd'][0]}: {e}")
+        errs.append(f"{name}: cannot run {t['cmd'][0]}: {e} (provisioned tools live in ~/.local/bin; put it on PATH)")
         continue
     m = re.search(t["regex"], text)
     got = m.group(1) if m else None
     if got != t["expect"]:
-        errs.append(f"{name}: version {got} != pinned {t['expect']}")
+        where = shutil.which(t["cmd"][0]) or "not on PATH"
+        errs.append(f"{name}: version {got} != pinned {t['expect']} (resolved {where}; "
+                    "the provisioned tools live in ~/.local/bin, which must precede /usr/bin on PATH)")
 
 x = tc["xschem"]
 try:

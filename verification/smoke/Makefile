@@ -21,7 +21,7 @@ cocotb: check-env
 sim-run:
 	rm -f results.xml
 	$(MAKE) -f $(SMOKE_DIR)/cocotb.mk
-	@! grep -q '<failure' results.xml
+	@test -s results.xml && ! grep -q '<failure' results.xml
 
 synth: check-env
 	@mkdir -p $(REPO)/sim/build
@@ -32,10 +32,16 @@ synth: check-env
 
 negative-control: check-env
 	@fail=0; \
-	if SMOKE_BREAK=1 $(MAKE) -f $(MAKEFILE_LIST) sim-run >/dev/null 2>&1; then \
-	  echo "NEG-CONTROL FAIL: broken cocotb expectation passed"; fail=1; \
-	else echo "neg-control ok (failed as required): broken cocotb expectation"; fi; \
-	if LIBERTY=/nonexistent.lib RTL=$(VERILOG_SOURCES) OUT=/dev/null yosys -q -c $(SMOKE_DIR)/synth.tcl >/dev/null 2>&1; then \
-	  echo "NEG-CONTROL FAIL: missing Liberty passed"; fail=1; \
-	else echo "neg-control ok (failed as required): wrong Liberty path"; fi; \
+	out="$$(SMOKE_BREAK=1 $(MAKE) -f $(MAKEFILE_LIST) sim-run 2>&1)"; rc=$$?; \
+	if [ $$rc -eq 0 ]; then echo "NEG-CONTROL FAIL: broken cocotb expectation passed"; fail=1; \
+	elif printf '%s\n' "$$out" | grep -q 'AssertionError'; then \
+	  echo "neg-control ok (failed as required, AssertionError seen): broken cocotb expectation"; \
+	else echo "NEG-CONTROL FAIL: broken cocotb expectation failed for the wrong reason"; \
+	  printf '%s\n' "$$out" | tail -5; fail=1; fi; \
+	out="$$(LIBERTY=/nonexistent.lib RTL=$(VERILOG_SOURCES) OUT=/dev/null yosys -q -c $(SMOKE_DIR)/synth.tcl 2>&1)"; rc=$$?; \
+	if [ $$rc -eq 0 ]; then echo "NEG-CONTROL FAIL: missing Liberty passed"; fail=1; \
+	elif printf '%s\n' "$$out" | grep -q "/nonexistent.lib' not found"; then \
+	  echo "neg-control ok (failed as required, Liberty not found): wrong Liberty path"; \
+	else echo "NEG-CONTROL FAIL: wrong Liberty path failed for the wrong reason"; \
+	  printf '%s\n' "$$out" | tail -5; fail=1; fi; \
 	exit $$fail
