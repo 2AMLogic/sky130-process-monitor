@@ -54,7 +54,7 @@ open sky130 models, especially in subthreshold, directly under test.
   temperature estimate comes from oscillator frequencies. The two are not
   duplicates; the spec says so by name.
 
-## Target specification (DRAFT — engineering to ratify, see issue #1)
+## Target specification (DRAFT — engineering to ratify, see issue #2)
 
 All rows are *targets*, not results. Numbers are placeholders for the spec
 issue to confirm or replace against the sky130 models.

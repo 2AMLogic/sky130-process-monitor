@@ -1,0 +1,9 @@
+{
+  "block": "sky130-process-monitor",
+  "kind": "mixed-signal",
+  "partition_boundary": {
+    "analog": "Ring-oscillator bank (standard-cell and custom-cell variants, including the leakage-starved subthreshold oscillator) and the subthreshold sensing path.",
+    "digital": "Enable/select logic, the counter-based frequency readout against an external reference clock, and the readout interface."
+  },
+  "evidence": {}
+}

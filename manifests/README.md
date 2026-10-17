@@ -1,0 +1,39 @@
+# Block manifest and tier-verdict record
+
+The machine-readable statement of this block's gap to the klayout-tools T1
+checklist: the `klt signoff` input and its committed output.
+
+## Files
+
+- **`sky130-process-monitor.json`** — the block manifest. `kind` is
+  `mixed-signal`; `partition_boundary` states the intended analog/digital
+  split as the top-level README describes it today (the grader reports it and
+  does not grade it; refine it once the spec issue #2 ratifies). `evidence`
+  is empty: no design artifact exists yet, so nothing is cited.
+- **`design-evidence-tiers.md`** — the checklist the grader parses. Vendored
+  **byte-identical** from
+  [`2AMLogic/klayout-tools@31a3e3c`](https://github.com/2AMLogic/klayout-tools/blob/31a3e3c41c08bbd58719e0b99a3b6d19beb9be63/docs/design-evidence-tiers.md)
+  `docs/design-evidence-tiers.md` (the commit the sibling `sky130-opamp` vendors). Upstream is MIT-licensed; this
+  repo's `LICENSE` does not relicense the vendored copy. When upstream moves,
+  re-vendor and regenerate the record in the same PR.
+- **`sky130-process-monitor.signoff.json`** — the **verdict of record**,
+  graded with `klayout-tools==0.7.0`. All-`unmet` / `no_evidence` is the
+  correct result today: all 22 T1 rows read `unmet` / `no_evidence`; the T2-T4 tier rows read `unmet` / `tier_not_supported` (the grader does not grade those tiers). Never hand-edit it.
+
+## Regenerate
+
+```console
+uvx --from "klayout-tools==0.7.0" klt signoff \
+    --manifest manifests/sky130-process-monitor.json \
+    --tiers-doc manifests/design-evidence-tiers.md \
+    --format json > manifests/sky130-process-monitor.signoff.json
+```
+
+Exit `3` (some item `unmet`) and `0` (all met) are both valid runs. Any change
+that affects the verdict — new evidence, a manifest edit, a vendored-doc bump,
+a version-pin bump — regenerates and commits the record in the same PR.
+
+## CI
+
+`.github/workflows/signoff.yml` re-runs this on every push and PR with the
+same pinned version and byte-compares against the committed record.
