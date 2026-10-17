@@ -37,8 +37,7 @@ and corner, compared with the model's own leakage and subthreshold slope
 across temperature at the same bias, to separate "model-limited" (the model
 disagrees with itself or is non-physical, for example non-monotonic or
 discontinuous across bins) from "design-limited" (the oscillator is simply
-insensitive or too noisy). Follow-up: to be filed at `loom:triage` (not yet filed when this record was
-written; see Follow-up issues).
+insensitive or too noisy). Follow-up: issue #10 (`loom:triage`).
 
 ### Q3. `sky130_fd_sc_hd` only, or a second library? — **Resolved**
 
@@ -70,8 +69,7 @@ taken by a pinned reference (`reuse.lock.json`), never a second design.
 ## Follow-up issues
 
 - Q1: #8.
-- Q2: not yet filed (the forge rate-limited issue creation on 2026-10-17);
-  the PR description says whether and where it was filed afterwards.
+- Q2: #10.
 
 ## Tool friction
 
