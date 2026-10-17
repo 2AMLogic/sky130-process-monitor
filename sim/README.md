@@ -13,10 +13,14 @@ bring-up: nothing is a design result.
 
 ## Environment
 
-The pins describe the fleet worker spec (2AMLogic/2am `infra/aws/loom-worker/`): the pinned ngspice 46, Icarus 13.0,
-Yosys 0.67, Verilator 5.050 and cocotb 2.0.1 live in `~/.local/bin`, which must come **before** `/usr/bin` on `PATH`
-(distro packages there are older: e.g. ngspice 42). On a shell without it, `check_env.sh` fails and names the resolved
-binary. Nothing here installs or modifies those tools. The flows were verified from this worktree, not a fresh clone.
+The ngspice 46, Icarus 13.0, Yosys 0.67 and Verilator 5.050 pins are the tools provisioned in `~/.local/bin` on fleet
+workers (2AMLogic/2am `infra/aws/loom-worker/`); `~/.local/bin` must come **before** `/usr/bin` on `PATH` (distro
+packages there are older: e.g. ngspice 42). The cocotb 2.1.0 pin is **not** in that worker spec (it has no cocotb
+entry) and workers can differ: it is the version a reviewing worker reported (`cocotb-config --version`). Where cocotb
+is absent, use a venv inside the worktree (`python3 -m venv .venv && .venv/bin/pip install cocotb==2.1.0`, with
+`.venv/bin` on `PATH`) rather than touching host-wide tools; the worker-spec gap is tracked as a spec change, not a host
+change. On a shell without the pinned tools, `check_env.sh` fails and names the resolved binary. Nothing here installs
+or modifies those tools. The flows were verified from a worktree, not a fresh clone.
 
 ## Entry point
 
