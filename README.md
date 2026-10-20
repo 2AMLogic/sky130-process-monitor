@@ -54,18 +54,23 @@ open sky130 models, especially in subthreshold, directly under test.
   temperature estimate comes from oscillator frequencies. The two are not
   duplicates; the spec says so by name.
 
-## Target specification (DRAFT — engineering to ratify, see issue #2)
+## Target specification (ratified by [decision 0001](spec/decisions/0001-ratify-target-spec.md), issue #2)
 
-All rows are *targets*, not results. Numbers are placeholders for the spec
-issue to confirm or replace against the sky130 models.
+All rows are *targets*, not results: every figure is an unverified target
+until the simulations named in [`spec/target-spec.md`](spec/target-spec.md)
+have been run. That file is the source of truth; this table mirrors it.
 
 | Parameter | Fallback | Target | Stretch |
 |---|---|---|---|
+| Oscillator bank | 3 oscillators (NMOS, PMOS, plain `hd` chain) | 5 oscillators (NMOS, PMOS, wire, subthreshold, plain `hd` chain) | add a second-library chain |
 | Process discrimination | separate the slow and fast global corners | identify each of the five global corners (tt/ff/ss/sf/fs) at known V and T | estimate NMOS and PMOS skew as continuous values |
 | Supply estimate (1.8 V core, 1.62–1.98 V) | ±50 mV | ±20 mV | ±10 mV |
 | Temperature estimate (−40…125 °C, one-point calibration) | ±10 °C | ±5 °C | ±2 °C |
+| Readout (reference clock is an input) | 24-bit counter, ref ±1000 ppm | 24-bit counter, 10 MHz ref ±100 ppm | — |
 | Conversion time | < 10 ms | < 1 ms | < 100 µs |
 | Active power | < 500 µW | < 100 µW | < 20 µW |
+| Idle power | < 10 µW | < 1 µW | < 100 nW |
+| Area | ≤ 0.05 mm² | ≤ 0.02 mm² | ≤ 0.01 mm² |
 | Signoff | DRC + LVS clean | DRC + LVS clean, post-layout re-verified | — |
 
 Maturity ladder: spec ratified → oscillator cells simulated across PVT →
