@@ -7,7 +7,7 @@ Prioritized roadmap from current GitHub label state, maintained by the Guide rol
 
 Judge-approved PRs under a hold (`loom:blocked` or `loom:operator`) — only a human merge decision is missing.
 
-- **#7**: ci: add T1 block manifest, klt signoff record and CI check
+_None._
 
 ## Very Important
 
@@ -32,7 +32,6 @@ _None._
 Issues currently being built (`loom:building`).
 
 - **#3**: Bring up both flows: pinned sky130 + ngspice smoke and a digital cocotb/Yosys skeleton (T1 item 9 groundwork)
-- **#4**: Commit a T1 block manifest and a klt signoff CI job (T1 item 10)
 
 ## PRs Awaiting Review
 
@@ -44,14 +43,13 @@ PRs waiting on Judge (`loom:review-requested`).
 
 PRs that passed review and are queued for Champion auto-merge (`loom:pr`).
 
-- **#7**: ci: add T1 block manifest, klt signoff record and CI check
+_None._
 
 ## Proposed
 
 Issues carrying `loom:curated`.
 
 - **#3**: Bring up both flows: pinned sky130 + ngspice smoke and a digital cocotb/Yosys skeleton (T1 item 9 groundwork) *(curated)*
-- **#4**: Commit a T1 block manifest and a klt signoff CI job (T1 item 10) *(curated)*
 - **#5**: Track the gap to T1 (klayout-tools design-evidence-tiers.md) *(curated)*
 
 ## Proposed (Architect / Hermit)
@@ -68,14 +66,14 @@ _None._
 
 | Bucket | Count |
 |------|-------|
-| Operator merge-risk holds | 1 |
+| Operator merge-risk holds | 0 |
 | Very important | 1 |
 | Important | 1 |
 | Ready (`loom:issue`) | 0 |
-| In Progress (`loom:building`) | 2 |
+| In Progress (`loom:building`) | 1 |
 | PRs awaiting review | 1 |
-| Approved PRs awaiting merge | 1 |
-| Curated | 3 |
+| Approved PRs awaiting merge | 0 |
+| Curated | 2 |
 | Architect / Hermit proposals | 0 |
 | Active epics | 0 |
 <!-- guide:plan-body:end -->
