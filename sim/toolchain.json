@@ -1,0 +1,15 @@
+{
+  "note": "Each entry: command that prints the version, regex (first capture group) over its output, expected value.",
+  "tools": {
+    "ngspice":   {"cmd": ["ngspice", "--version"],   "regex": "ngspice-([0-9.]+)",         "expect": "46"},
+    "iverilog":  {"cmd": ["iverilog", "-V"],         "regex": "Icarus Verilog version ([0-9.]+)", "expect": "13.0"},
+    "yosys":     {"cmd": ["yosys", "-V"],            "regex": "Yosys ([0-9.]+)",           "expect": "0.67"},
+    "verilator": {"cmd": ["verilator", "--version"], "regex": "Verilator ([0-9.]+)",       "expect": "5.050"},
+    "cocotb":    {"cmd": ["cocotb-config", "--version"], "regex": "([0-9.]+)",             "expect": "2.1.0"}
+  },
+  "xschem": {
+    "dpkg_package": "xschem",
+    "expect": "3.4.4-1",
+    "note": "Checked via dpkg only: raw xschem is never invoked (use klt netlist). Not used by the smoke flows."
+  }
+}
