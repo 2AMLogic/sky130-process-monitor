@@ -20,3 +20,16 @@ typical Liberty (`tt_025C_1v80`). Scratch output goes to `sim/build/` (gitignore
 
 A broken cocotb expectation (`SMOKE_BREAK=1`, must show an `AssertionError`) and a wrong Liberty path (Yosys must report it not found) must each fail; the target exits 0
 only if both do. The analog and pin controls are in `sim/negative_controls.sh`.
+
+## Readout
+
+    make -C verification/readout            # check-env, Verilator lint (-Wall), cocotb on Icarus
+    make -C verification/readout negative-control
+
+`verification/readout/test_readout.py` tests `rtl/readout/` (register map: `rtl/README.md`): count correctness over
+several (f_osc, k) pairs within the ±2 CDC tolerance, saturation and overflow, select switching, busy/done
+sequencing, `start` while busy, `CAL` read-back, reset values and reset mid-gate. Saturation preloads the counter
+through a hierarchical deposit because reaching 2^24 organically costs minutes of simulation. The log reports the
+five-oscillator read at 10 MHz, k = 10 as a simulated figure (RTL simulation, Icarus). `negative-control` runs with
+`READOUT_BREAK=1` (every expected count offset) and must fail with an `AssertionError`. cocotb is not provisioned on
+workers: use a venv inside the worktree (`sim/README.md`).
