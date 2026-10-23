@@ -7,7 +7,7 @@ Prioritized roadmap from current GitHub label state, maintained by the Guide rol
 
 Judge-approved PRs under a hold (`loom:blocked` or `loom:operator`) — only a human merge decision is missing.
 
-_None._
+- **#18**: feat(rtl): add saturating gated readout counter and register file with cocotb tests
 
 ## Very Important
 
@@ -32,6 +32,7 @@ _None._
 Issues currently being built (`loom:building`).
 
 - **#3**: Bring up both flows: pinned sky130 + ngspice smoke and a digital cocotb/Yosys skeleton (T1 item 9 groundwork)
+- **#16**: Readout RTL: 24-bit saturating gated counter and register file, with cocotb tests in verification/readout/
 
 ## PRs Awaiting Review
 
@@ -43,7 +44,7 @@ PRs waiting on Judge (`loom:review-requested`).
 
 PRs that passed review and are queued for Champion auto-merge (`loom:pr`).
 
-_None._
+- **#18**: feat(rtl): add saturating gated readout counter and register file with cocotb tests
 
 ## Proposed
 
@@ -51,6 +52,7 @@ Issues carrying `loom:curated`.
 
 - **#3**: Bring up both flows: pinned sky130 + ngspice smoke and a digital cocotb/Yosys skeleton (T1 item 9 groundwork) *(curated)*
 - **#5**: Track the gap to T1 (klayout-tools design-evidence-tiers.md) *(curated)*
+- **#16**: Readout RTL: 24-bit saturating gated counter and register file, with cocotb tests in verification/readout/ *(curated)*
 
 ## Proposed (Architect / Hermit)
 
@@ -66,14 +68,14 @@ _None._
 
 | Bucket | Count |
 |------|-------|
-| Operator merge-risk holds | 0 |
+| Operator merge-risk holds | 1 |
 | Very important | 1 |
 | Important | 1 |
 | Ready (`loom:issue`) | 0 |
-| In Progress (`loom:building`) | 1 |
+| In Progress (`loom:building`) | 2 |
 | PRs awaiting review | 1 |
-| Approved PRs awaiting merge | 0 |
-| Curated | 2 |
+| Approved PRs awaiting merge | 1 |
+| Curated | 3 |
 | Architect / Hermit proposals | 0 |
 | Active epics | 0 |
 <!-- guide:plan-body:end -->
