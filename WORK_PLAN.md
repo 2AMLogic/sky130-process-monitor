@@ -20,6 +20,7 @@ Judge-approved PRs under a hold (`loom:blocked` or `loom:operator`) — only a h
 `loom:important`; taken before unlabelled work.
 
 - **#10**: Subthreshold oscillator: model-limited vs design-limited across temperature (spec Q2)
+- **#17**: Oscillator bank: schematics for the five spec oscillators and a tt frequency bench in sim/osc_bank/
 
 ## Ready
 
@@ -70,7 +71,7 @@ _None._
 |------|-------|
 | Operator merge-risk holds | 1 |
 | Very important | 1 |
-| Important | 1 |
+| Important | 2 |
 | Ready (`loom:issue`) | 0 |
 | In Progress (`loom:building`) | 2 |
 | PRs awaiting review | 1 |
