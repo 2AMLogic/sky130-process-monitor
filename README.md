@@ -8,7 +8,7 @@ read out by a digital counter — designed by AI agents driving
 on the analog side and cocotb + Icarus, Yosys and OpenROAD on the digital
 side.
 
-**Status: just opened, specification phase.** Nothing is designed yet.
+**Status: specification ratified; no design, testbench or recorded result exists yet.**
 
 **Built agent-native.** Every specification, decision record, testbench, and
 line of documentation here is produced by AI agents working from a ratified
@@ -76,7 +76,43 @@ have been run. That file is the source of truth; this table mirrors it.
 Maturity ladder: spec ratified → oscillator cells simulated across PVT →
 readout RTL verified → calibration and solve procedure validated on
 simulated data → layout DRC/LVS-clean → post-layout re-verification →
-shuttle seat → measured silicon. **Current position: pre-spec.**
+shuttle seat → measured silicon. **Current position: spec ratified.**
+
+## Reproduce
+
+Nothing is measured until silicon exists, and no simulated result is recorded
+yet: there are no oscillator surfaces, readout runs, layout reports or
+estimate-accuracy figures to reproduce. Each result class below gets its
+cold-start command here in the same change that records it; until then the
+only reproducible artifact is the tier-verdict record.
+
+| Result class | Reproduce |
+|---|---|
+| Oscillator frequency-versus-PVT surfaces (`sim/osc_bank/`) | no recorded results yet |
+| Sensitivity matrix and conditioning (`sim/sensitivity/`) | no recorded results yet |
+| Solve procedure on simulated data (`sim/solve/`) | no recorded results yet |
+| Readout RTL verification (`verification/readout/`) | no recorded results yet |
+| Layout DRC / LVS (`layout/`) | no recorded results yet |
+| T1 tier verdict of record | command below |
+
+Tier verdict and repo-hygiene attestation (needs only `uv`; the pin is the one
+in [`manifests/README.md`](manifests/README.md)):
+
+```console
+uvx --from "klayout-tools==0.8.0" klt signoff \
+    --manifest manifests/sky130-process-monitor.json \
+    --tiers-doc manifests/design-evidence-tiers.md \
+    --check manifests/sky130-process-monitor.signoff.json
+uvx --from "klayout-tools==0.8.0" klt signoff --attest 10 \
+    --inventory attest/item10.json --check evidence/item10.json
+```
+
+The first re-grades the block manifest and reports whether the committed
+record still reproduces; the second re-runs the item-10 (repo hygiene)
+attestation and diffs it against `evidence/item10.json`. The attestation's
+`klt` check calls `klt` from `PATH`, so run the second from an environment
+where `klt` 0.8.0 is installed (CI installs it with `pip`). CI runs both on
+every push and pull request ([`signoff.yml`](.github/workflows/signoff.yml)).
 
 ## Tool flow
 

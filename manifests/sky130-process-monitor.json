@@ -5,5 +5,10 @@
     "analog": "Ring-oscillator bank (standard-cell and custom-cell variants, including the leakage-starved subthreshold oscillator) and the subthreshold sensing path.",
     "digital": "Enable/select logic, the counter-based frequency readout against an external reference clock, and the readout interface."
   },
-  "evidence": {}
+  "evidence": {
+    "10": {
+      "file": "evidence/item10.json",
+      "content_hash": "sha256:f0ce4143407b0b133ee3b956d2735b31ecb1c75a24a8441e551f57a4b1c3d48b"
+    }
+  }
 }
