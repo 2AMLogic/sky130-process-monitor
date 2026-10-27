@@ -3,6 +3,11 @@
 Chronological record of merged PRs and closed issues, maintained by the Guide
 role. Newest first.
 
+### 2026-10-27
+
+- **PR #34**: feat(hygiene): attest T1 item 10 and add README reproduce section
+- **Issue #28** (closed): T1 item 10 (repo hygiene): hygiene inventory and klt signoff --attest 10 envelope
+
 ### 2026-10-21
 
 - **PR #13**: Bump Repo Skills 0.24.3 -> 0.24.7
