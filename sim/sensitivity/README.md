@@ -14,6 +14,7 @@ quoted**: the margin below is a discrimination statistic, not an accuracy.
 | `gen_requests.py` | writes `requests/*.json` deterministically |
 | `requests/grid_<osc>.json` | 5 corners × 3 V × 3 T = the 45-cell box, one request per oscillator (225 units) |
 | `requests/mc_<osc>.json` | mismatch Monte Carlo: 5 corners × {1.80 V/27 °C, 1.62 V/125 °C, 1.98 V/−40 °C} × 50 samples, `mc_mm_switch=1` via `monte_carlo.mismatch_scale` |
+| `requests/*_osc_hd_5p.json` | osc_hd re-run with a 5 ps max step (grid, nominal MC, off-nominal MC); results in `records/2026-11-05-osc-hd-step-refined.md` |
 | `analyze.py` | frequency extraction, sensitivity matrix, SVD / κ / rank, margin (stdlib only) |
 | `test_analyze.py` | unit tests on synthetic data: `python3 -I sim/sensitivity/test_analyze.py` |
 | `records/` | dated, append-only result records (never edited; a re-run is a new dated file) |
