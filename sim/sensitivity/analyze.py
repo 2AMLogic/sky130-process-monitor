@@ -6,7 +6,7 @@ Pure standard library (no numpy on the fleet workers; a one-sided Jacobi SVD is 
 
     analyze.py extract REPORT.json[.gz]... -o freq_table.json   # klt sim grid reports -> frequency table
     analyze.py extract-mc REPORT.json[.gz]... -o mc_table.json  # klt sim MC reports   -> per-cell samples
-    analyze.py report freq_table.json [mc_table.json]           # matrices, SVD, kappa, margin
+    analyze.py report freq_table.json [mc_table.json] [--without osc_a,osc_b]   # matrices, SVD, kappa, margin
 
 Conventions (stated again in every report):
   * f_osc comes from the rising-edge crossing times of v(out) at VDD/2: the first SKIP_EDGES edges
@@ -133,7 +133,7 @@ def conditioning(a, rank_tol=1e-3):
     """(singular values, condition number, numerical rank at rank_tol * s_max)."""
     sv = svd_values(a)
     rank = sum(1 for s in sv if s > rank_tol * sv[0])
-    kappa = sv[0] / sv[-1] if sv[-1] > 0 else float("inf")
+    kappa = sv[0] / sv[-1] if sv[-1] > 1e-12 * sv[0] else float("inf")   # rank-deficient -> inf
     return sv, kappa, rank
 
 
@@ -221,9 +221,12 @@ def margin(tab, iv, it, sigma_mc, ratio=False):
 
     Feature vector: ln f_i (absolute) or ln f_i - ln f_baseline (ratio-only). Noise per oscillator:
     quantization (at that corner's f) and MC mismatch spread, independent, in quadrature. Returns
-    (margin, (corner_a, corner_b)) or (None, None) if any needed cell is missing.
+    (margin, (corner_a, corner_b)) or (None, None) if any needed cell, or any oscillator's MC sigma, is
+    missing. sigma_mc=None means quantization only.
     """
     v, t = VDD[iv], TEMP[it]
+    if sigma_mc is not None and any(o not in sigma_mc for o in OSCS):
+        return None, None   # an oscillator without MC data is NOT assumed noiseless
     oscs = [o for o in OSCS if (not ratio or o != BASELINE)]
     feat, var_abs = {}, {}
     for p in PROCESS:
@@ -231,7 +234,7 @@ def margin(tab, iv, it, sigma_mc, ratio=False):
         if any(x is None for x in l.values()):
             return None, None
         feat[p] = [l[o] - (l[BASELINE] if ratio else 0.0) for o in oscs]
-        var_abs[p] = {o: sigma_quant(tab[(o, p, v, t)]) ** 2 + sigma_mc.get(o, 0.0) ** 2 for o in OSCS}
+        var_abs[p] = {o: sigma_quant(tab[(o, p, v, t)]) ** 2 + (sigma_mc[o] if sigma_mc else 0.0) ** 2 for o in OSCS}
     best, pair = None, None
     for i, a in enumerate(PROCESS):
         for b in PROCESS[i + 1:]:
@@ -335,8 +338,16 @@ def main(argv):
             f.write("\n")
         return 0
     if len(argv) >= 3 and argv[1] == "report":
-        freq = json.load(open(argv[2]))
-        mc = json.load(open(argv[3])) if len(argv) > 3 else None
+        args = argv[2:]
+        global OSCS
+        if "--without" in args:   # subset analysis, e.g. --without osc_subth
+            i = args.index("--without")
+            drop = args[i + 1].split(",")
+            args = args[:i] + args[i + 2:]
+            OSCS = [o for o in OSCS if o not in drop]
+            print("# SUBSET: oscillators dropped from the analysis: %s" % ", ".join(drop))
+        freq = json.load(open(args[0]))
+        mc = json.load(open(args[1])) if len(args) > 1 else None
         report(freq, mc)
         return 0
     sys.exit(__doc__)

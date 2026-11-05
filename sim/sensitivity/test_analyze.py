@@ -88,8 +88,15 @@ class Tests(unittest.TestCase):
         self.assertEqual(miss, ["osc_subth"])
         self.assertIsNone(absm)
         self.assertIsNone(ratio)  # subth row missing, so the 4x4 ratio form is unavailable too
-        m, pair = A.margin(tab, 1, 1, {})
+        m, pair = A.margin(tab, 1, 1, None)
         self.assertIsNone(m)
+
+    def test_margin_needs_mc_sigma_for_every_oscillator(self):
+        tab = synth(linear(COEF_WELL))
+        m, _ = A.margin(tab, 1, 1, {"osc_hd": 0.01})   # others lack MC data: not assumed noiseless
+        self.assertIsNone(m)
+        m, _ = A.margin(tab, 1, 1, None)               # quantization only is allowed explicitly
+        self.assertIsNotNone(m)
 
     def test_freq_extraction_and_short_run(self):
         times = [1e-9 * k for k in range(1, 30)]  # 1 GHz
