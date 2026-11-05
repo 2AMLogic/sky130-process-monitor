@@ -86,11 +86,71 @@ def mc(osc, tran, cap):
     return r
 
 
+# Off-nominal MC (issue #48): the 1.62 V/125 C and 1.98 V/-40 C cells, 5 corners each. 500 units per
+# oscillator did not fit a session on the fleet (~45 s/unit model load), so n is scoped per oscillator
+# (stated in the record). osc_subth gets one request per cell because the cold cell needs a longer window.
+OFFNOM_VT = [(1.62, 125), (1.98, -40)]
+OFFNOM_N = {"osc_hd": 30, "osc_nmos": 20, "osc_pmos": 30, "osc_wire": 30, "osc_subth": 10}
+OFFNOM_SUBTH = {(1.62, 125): ("10n 500u", 300), (1.98, -40): ("10n 2m", 900)}
+
+
+def mc_offnom(osc, tran, cap, vt_cells=OFFNOM_VT, subth_cell=None):
+    """Same request shape as mc() (same seed, mismatch_scale=1) on the off-nominal (V,T) cells."""
+    tran = MC_TRAN.get(osc, tran)
+    n = OFFNOM_N[osc]
+    timeout = 3000
+    if osc == "osc_subth":
+        tran, timeout = OFFNOM_SUBTH[subth_cell]
+        vt_cells = [subth_cell]
+    r = base(osc, tran, cap)
+    r["options"]["timeout_s"] = timeout
+    r["corners"] = {"units": [
+        {"process": p, "temperature_c": t, "supply_v": {"vdd": v}}
+        for p in PROCESS for (v, t) in vt_cells]}
+    r["monte_carlo"] = {"n": n, "seed": MC_SEED, "vary": "mismatch", "mismatch_scale": 1,
+                        "seed_scope": "point"}
+    return r
+
+
+# Step-refined osc_hd (issue #54): the 20 ps (MC) / 10 ps (grid) tran step biases osc_hd and locks the
+# ff period to the step grid (records/2026-11-05-mc-offnom-partial.md section 1). These requests cap the
+# max step at 5 ps ("tstep tstop tstart tmax"), keep the coarse windows, n and seed, and are written
+# under NEW names (*_5p.json); the coarse requests are never rewritten with these.
+HD_5P_GRID_TRAN = "5p 300n 0 5p"
+HD_5P_MC_TRAN = "5p 100n 0 5p"
+
+
+def hd_5p_requests():
+    """name -> request for the three step-refined osc_hd runs (same corners/units/n/seed as the coarse ones)."""
+    cap = OSCS["osc_hd"][1]
+    g = grid("osc_hd", HD_5P_GRID_TRAN, cap)
+    m = mc("osc_hd", "", cap)
+    m["analysis"]["args"] = HD_5P_MC_TRAN
+    o = mc_offnom("osc_hd", "", cap)
+    o["analysis"]["args"] = HD_5P_MC_TRAN
+    return {"grid_osc_hd_5p.json": g, "mc_osc_hd_5p.json": m, "mc_offnom_osc_hd_5p.json": o}
+
+
 if __name__ == "__main__":
     out = os.path.join(HERE, "requests")
     os.makedirs(out, exist_ok=True)
+    for name, req in hd_5p_requests().items():
+        with open(os.path.join(out, name), "w") as f:
+            json.dump(req, f, indent=2)
+            f.write("\n")
     for osc, (tran, cap) in OSCS.items():
         for kind, fn in (("grid", grid), ("mc", mc)):
             with open(os.path.join(out, "%s_%s.json" % (kind, osc)), "w") as f:
                 json.dump(fn(osc, tran, cap), f, indent=2)
+                f.write("\n")
+        # off-nominal MC requests (issue #48)
+        if osc == "osc_subth":
+            for cell in OFFNOM_VT:
+                name = "mc_offnom_%s_%gV_%dC.json" % (osc, cell[0], cell[1])
+                with open(os.path.join(out, name), "w") as f:
+                    json.dump(mc_offnom(osc, tran, cap, subth_cell=cell), f, indent=2)
+                    f.write("\n")
+        else:
+            with open(os.path.join(out, "mc_offnom_%s.json" % osc), "w") as f:
+                json.dump(mc_offnom(osc, tran, cap), f, indent=2)
                 f.write("\n")
