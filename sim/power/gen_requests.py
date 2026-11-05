@@ -28,6 +28,11 @@ PROCESS = ["tt", "ff", "ss", "sf", "fs"]
 VDD = [1.62, 1.80, 1.98]
 TEMP = [-40, 27, 125]
 EN_RE = re.compile(r"^Ben en 0 .*$", re.M)
+# Oscillators whose first fleet run left a few -40 C cells with `timestep too small` / failed gmin stepping
+# (floating nodes with the ring gated off). A 1e12 ohm shunt on every node gives them a DC path; it adds ~2 pA per
+# node at 1.8 V, negligible against the uA-scale active and nA-scale idle currents it is compared to. Recorded in the
+# power record as a bench option, not a model change.
+RSHUNT = {"osc_nmos", "osc_wire"}
 
 
 def tb_text(osc, idle):
@@ -38,6 +43,8 @@ def tb_text(osc, idle):
         head = "* Power bench (IDLE): %s with the enable tied to vss; supply leakage current. SIMULATION, schematic-level.\n" % osc
     else:
         head = "* Power bench (ACTIVE): %s enabled; mean supply current. SIMULATION, schematic-level.\n" % osc
+    if osc in RSHUNT:
+        body = re.sub(r"^(\.include)", ".options rshunt=1e12\n\\1", body, count=1, flags=re.M)
     return head + body
 
 

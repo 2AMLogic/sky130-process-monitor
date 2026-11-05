@@ -1,0 +1,470 @@
+{
+ "active": {
+  "binding_cell": "osc_wire|ff|1.98|-40",
+  "cells_expected": 225,
+  "cells_graded": 219,
+  "fallback": "FAIL (worst graded cell exceeds)",
+  "stretch": "FAIL (worst graded cell exceeds)",
+  "target": "FAIL (worst graded cell exceeds)",
+  "uW": {
+   "osc_hd|ff|1.62|-40": 175.30344,
+   "osc_hd|ff|1.62|125": 200.85732000000002,
+   "osc_hd|ff|1.62|27": 187.52310000000003,
+   "osc_hd|ff|1.80|-40": 270.17999999999995,
+   "osc_hd|ff|1.80|125": 289.74060000000003,
+   "osc_hd|ff|1.80|27": 279.87840000000006,
+   "osc_hd|ff|1.98|-40": 386.40096000000005,
+   "osc_hd|ff|1.98|125": 396.40788,
+   "osc_hd|ff|1.98|27": 391.8618,
+   "osc_hd|fs|1.62|-40": 131.10611400000002,
+   "osc_hd|fs|1.62|125": 133.0911,
+   "osc_hd|fs|1.62|27": 132.479388,
+   "osc_hd|fs|1.80|-40": 207.6894,
+   "osc_hd|fs|1.80|125": 199.8324,
+   "osc_hd|fs|1.80|27": 204.6582,
+   "osc_hd|fs|1.98|-40": 301.26492,
+   "osc_hd|fs|1.98|125": 281.76786,
+   "osc_hd|fs|1.98|27": 293.08554000000004,
+   "osc_hd|sf|1.62|-40": 100.77728400000001,
+   "osc_hd|sf|1.62|125": 123.67954800000003,
+   "osc_hd|sf|1.62|27": 110.57634,
+   "osc_hd|sf|1.80|-40": 175.49478,
+   "osc_hd|sf|1.80|125": 191.5722,
+   "osc_hd|sf|1.80|27": 182.2824,
+   "osc_hd|sf|1.98|-40": 272.33316,
+   "osc_hd|sf|1.98|125": 276.408,
+   "osc_hd|sf|1.98|27": 273.339,
+   "osc_hd|ss|1.62|-40": 78.620058,
+   "osc_hd|ss|1.62|125": 92.558214,
+   "osc_hd|ss|1.62|27": 85.564998,
+   "osc_hd|ss|1.80|-40": 135.99576,
+   "osc_hd|ss|1.80|125": 143.66124,
+   "osc_hd|ss|1.80|27": 140.1102,
+   "osc_hd|ss|1.98|-40": 209.59092,
+   "osc_hd|ss|1.98|125": 208.0683,
+   "osc_hd|ss|1.98|27": 209.66022,
+   "osc_hd|tt|1.62|-40": 123.90343200000001,
+   "osc_hd|tt|1.62|125": 142.201656,
+   "osc_hd|tt|1.62|27": 132.77876400000002,
+   "osc_hd|tt|1.80|-40": 200.4768,
+   "osc_hd|tt|1.80|125": 212.7708,
+   "osc_hd|tt|1.80|27": 206.58960000000002,
+   "osc_hd|tt|1.98|-40": 297.27522,
+   "osc_hd|tt|1.98|125": 299.18988,
+   "osc_hd|tt|1.98|27": 298.5345,
+   "osc_nmos|ff|1.62|-40": 165.78594,
+   "osc_nmos|ff|1.62|125": 153.14265000000003,
+   "osc_nmos|ff|1.62|27": 154.08840600000002,
+   "osc_nmos|ff|1.80|-40": 248.60699999999997,
+   "osc_nmos|ff|1.80|125": 222.9678,
+   "osc_nmos|ff|1.80|27": 228.88620000000003,
+   "osc_nmos|ff|1.98|-40": 351.47375999999997,
+   "osc_nmos|ff|1.98|125": 309.45024,
+   "osc_nmos|ff|1.98|27": 321.65694,
+   "osc_nmos|fs|1.62|-40": 112.79428200000001,
+   "osc_nmos|fs|1.62|125": 114.86043000000001,
+   "osc_nmos|fs|1.62|27": 102.79548000000001,
+   "osc_nmos|fs|1.80|-40": 179.77860000000004,
+   "osc_nmos|fs|1.80|125": 175.31712000000002,
+   "osc_nmos|fs|1.80|27": 161.74026,
+   "osc_nmos|fs|1.98|-40": 266.74164,
+   "osc_nmos|fs|1.98|125": 254.50722,
+   "osc_nmos|fs|1.98|27": 238.2138,
+   "osc_nmos|sf|1.62|-40": 131.02560000000003,
+   "osc_nmos|sf|1.62|125": 113.481,
+   "osc_nmos|sf|1.62|27": 121.50486000000001,
+   "osc_nmos|sf|1.80|-40": 202.5036,
+   "osc_nmos|sf|1.80|125": 165.79764,
+   "osc_nmos|sf|1.80|27": 182.6388,
+   "osc_nmos|sf|1.98|-40": 290.57489999999996,
+   "osc_nmos|sf|1.98|125": 230.1156,
+   "osc_nmos|sf|1.98|27": 258.27912000000003,
+   "osc_nmos|ss|1.62|-40": 92.83215600000001,
+   "osc_nmos|ss|1.62|125": 75.81891600000002,
+   "osc_nmos|ss|1.62|27": 83.07522,
+   "osc_nmos|ss|1.80|-40": 149.5395,
+   "osc_nmos|ss|1.80|125": 115.26786000000001,
+   "osc_nmos|ss|1.80|27": 130.36697999999998,
+   "osc_nmos|ss|1.98|-40": 222.49259999999998,
+   "osc_nmos|ss|1.98|125": 165.559878,
+   "osc_nmos|ss|1.98|27": 191.343438,
+   "osc_nmos|tt|1.62|-40": 128.013696,
+   "osc_nmos|tt|1.62|125": 109.15268400000002,
+   "osc_nmos|tt|1.62|27": 116.410122,
+   "osc_nmos|tt|1.80|-40": 197.568,
+   "osc_nmos|tt|1.80|125": 161.93735999999998,
+   "osc_nmos|tt|1.80|27": 176.93532,
+   "osc_nmos|tt|1.98|-40": 284.88635999999997,
+   "osc_nmos|tt|1.98|125": 227.89997999999997,
+   "osc_nmos|tt|1.98|27": 253.15289999999996,
+   "osc_pmos|ff|1.62|-40": 48.98572200000001,
+   "osc_pmos|ff|1.62|125": 68.58383400000001,
+   "osc_pmos|ff|1.62|27": 56.535084,
+   "osc_pmos|ff|1.80|-40": 89.06724,
+   "osc_pmos|ff|1.80|125": 110.82888,
+   "osc_pmos|ff|1.80|27": 95.47956,
+   "osc_pmos|ff|1.98|-40": 143.54901,
+   "osc_pmos|ff|1.98|125": 165.612348,
+   "osc_pmos|ff|1.98|27": 149.722452,
+   "osc_pmos|fs|1.62|-40": 44.939286,
+   "osc_pmos|fs|1.62|125": 62.302445999999996,
+   "osc_pmos|fs|1.62|27": 51.381054000000006,
+   "osc_pmos|fs|1.80|-40": 78.17508,
+   "osc_pmos|fs|1.80|125": 96.93288,
+   "osc_pmos|fs|1.80|27": 85.81356,
+   "osc_pmos|fs|1.98|-40": 124.80751799999999,
+   "osc_pmos|fs|1.98|125": 144.238842,
+   "osc_pmos|fs|1.98|27": 130.585356,
+   "osc_pmos|sf|1.62|-40": 28.853496,
+   "osc_pmos|sf|1.62|125": 37.42524,
+   "osc_pmos|sf|1.62|27": 31.749894,
+   "osc_pmos|sf|1.80|-40": 57.5964,
+   "osc_pmos|sf|1.80|125": 63.64206,
+   "osc_pmos|sf|1.80|27": 58.61844,
+   "osc_pmos|sf|1.98|-40": 103.857336,
+   "osc_pmos|sf|1.98|125": 99.977328,
+   "osc_pmos|sf|1.98|27": 98.534502,
+   "osc_pmos|ss|1.62|-40": 25.875126,
+   "osc_pmos|ss|1.62|125": 34.93125,
+   "osc_pmos|ss|1.62|27": 29.184786,
+   "osc_pmos|ss|1.80|-40": 50.86638,
+   "osc_pmos|ss|1.80|125": 58.655519999999996,
+   "osc_pmos|ss|1.80|27": 53.16156,
+   "osc_pmos|ss|1.98|-40": 89.014464,
+   "osc_pmos|ss|1.98|125": 91.95317999999999,
+   "osc_pmos|ss|1.98|27": 87.82587,
+   "osc_pmos|tt|1.62|-40": 36.627228,
+   "osc_pmos|tt|1.62|125": 50.92713000000001,
+   "osc_pmos|tt|1.62|27": 42.109956000000004,
+   "osc_pmos|tt|1.80|-40": 69.31638,
+   "osc_pmos|tt|1.80|125": 83.86254,
+   "osc_pmos|tt|1.80|27": 73.16441999999999,
+   "osc_pmos|tt|1.98|-40": 114.59052000000001,
+   "osc_pmos|tt|1.98|125": 126.09412199999998,
+   "osc_pmos|tt|1.98|27": 117.67734,
+   "osc_subth|ff|1.62|-40": 3.1300668000000003,
+   "osc_subth|ff|1.62|125": 7.8245352,
+   "osc_subth|ff|1.62|27": 2.7315144,
+   "osc_subth|ff|1.80|-40": 5.92317,
+   "osc_subth|ff|1.80|125": 19.945440000000005,
+   "osc_subth|ff|1.80|27": 5.000922,
+   "osc_subth|ff|1.98|-40": 11.6859006,
+   "osc_subth|ff|1.98|125": 36.578717999999995,
+   "osc_subth|ff|1.98|27": 8.7618564,
+   "osc_subth|fs|1.62|-40": 2.3409648,
+   "osc_subth|fs|1.62|125": 12.016463400000001,
+   "osc_subth|fs|1.62|27": 2.9924801999999997,
+   "osc_subth|fs|1.80|-40": 3.6089999999999995,
+   "osc_subth|fs|1.80|125": 16.912386,
+   "osc_subth|fs|1.80|27": 5.597136,
+   "osc_subth|fs|1.98|-40": 4.2987384,
+   "osc_subth|fs|1.98|125": 33.606144,
+   "osc_subth|fs|1.98|27": 7.5837563999999995,
+   "osc_subth|sf|1.62|125": 4.7543436,
+   "osc_subth|sf|1.62|27": 2.0444562,
+   "osc_subth|sf|1.80|125": 6.322608,
+   "osc_subth|sf|1.80|27": 3.475584,
+   "osc_subth|sf|1.98|125": 4.8036978,
+   "osc_subth|sf|1.98|27": 6.193935,
+   "osc_subth|ss|1.62|125": 2.9171988,
+   "osc_subth|ss|1.62|27": 1.7052606000000001,
+   "osc_subth|ss|1.80|125": 3.404862,
+   "osc_subth|ss|1.80|27": 2.8255139999999996,
+   "osc_subth|ss|1.98|-40": 3.209382,
+   "osc_subth|ss|1.98|125": 5.0198346,
+   "osc_subth|ss|1.98|27": 5.1720372,
+   "osc_subth|tt|1.62|-40": 1.7411274000000003,
+   "osc_subth|tt|1.62|125": 2.8278396,
+   "osc_subth|tt|1.62|27": 2.8662498000000003,
+   "osc_subth|tt|1.80|-40": 3.148524,
+   "osc_subth|tt|1.80|125": 7.273242000000001,
+   "osc_subth|tt|1.80|27": 4.856454,
+   "osc_subth|tt|1.98|-40": 6.5860542,
+   "osc_subth|tt|1.98|125": 6.9235452,
+   "osc_subth|tt|1.98|27": 6.427891799999999,
+   "osc_wire|ff|1.62|-40": 837.2500200000001,
+   "osc_wire|ff|1.62|125": 803.7889200000001,
+   "osc_wire|ff|1.62|27": 793.71576,
+   "osc_wire|ff|1.80|-40": 1233.9270000000001,
+   "osc_wire|ff|1.80|125": 1175.5674000000001,
+   "osc_wire|ff|1.80|27": 1163.4047999999998,
+   "osc_wire|ff|1.98|-40": 1740.22398,
+   "osc_wire|ff|1.98|125": 1652.8346999999999,
+   "osc_wire|ff|1.98|27": 1640.6636400000002,
+   "osc_wire|fs|1.62|-40": 747.45666,
+   "osc_wire|fs|1.62|125": 722.8116000000001,
+   "osc_wire|fs|1.62|27": 705.0191400000001,
+   "osc_wire|fs|1.80|-40": 1104.7140000000002,
+   "osc_wire|fs|1.80|125": 1061.5986,
+   "osc_wire|fs|1.80|27": 1033.0146,
+   "osc_wire|fs|1.98|-40": 1554.7554,
+   "osc_wire|fs|1.98|125": 1500.9093,
+   "osc_wire|fs|1.98|27": 1453.5674999999999,
+   "osc_wire|sf|1.62|125": 606.03228,
+   "osc_wire|sf|1.62|27": 598.0570200000001,
+   "osc_wire|sf|1.80|-40": 912.5298,
+   "osc_wire|sf|1.80|125": 878.8734,
+   "osc_wire|sf|1.80|27": 884.4084,
+   "osc_wire|sf|1.98|-40": 1302.90138,
+   "osc_wire|sf|1.98|125": 1224.0063,
+   "osc_wire|sf|1.98|27": 1245.0438,
+   "osc_wire|ss|1.62|-40": 546.35472,
+   "osc_wire|ss|1.62|125": 544.39128,
+   "osc_wire|ss|1.62|27": 543.23784,
+   "osc_wire|ss|1.80|-40": 833.2002,
+   "osc_wire|ss|1.80|125": 788.1282,
+   "osc_wire|ss|1.80|27": 802.0746,
+   "osc_wire|ss|1.98|-40": 1185.76656,
+   "osc_wire|ss|1.98|125": 1095.1776000000002,
+   "osc_wire|ss|1.98|27": 1124.9152199999999,
+   "osc_wire|tt|1.62|-40": 688.75272,
+   "osc_wire|tt|1.62|125": 655.72902,
+   "osc_wire|tt|1.62|27": 661.44114,
+   "osc_wire|tt|1.80|-40": 1026.6336000000001,
+   "osc_wire|tt|1.80|125": 951.9804,
+   "osc_wire|tt|1.80|27": 968.6916,
+   "osc_wire|tt|1.98|-40": 1448.26902,
+   "osc_wire|tt|1.98|125": 1329.28092,
+   "osc_wire|tt|1.98|27": 1358.50968
+  },
+  "worst_uW": 1740.22398
+ },
+ "idle": {
+  "binding_cell": "sf|1.62|27",
+  "cells": {
+   "ff|1.62|-40": {
+    "complete": true,
+    "oscillators_present": 5,
+    "uW": 19.649427321852002
+   },
+   "ff|1.62|125": {
+    "complete": true,
+    "oscillators_present": 5,
+    "uW": 24.136414506
+   },
+   "ff|1.62|27": {
+    "complete": true,
+    "oscillators_present": 5,
+    "uW": 2.0227533516
+   },
+   "ff|1.80|-40": {
+    "complete": true,
+    "oscillators_present": 5,
+    "uW": 16.453821855239998
+   },
+   "ff|1.80|125": {
+    "complete": true,
+    "oscillators_present": 5,
+    "uW": 35.927573040000006
+   },
+   "ff|1.80|27": {
+    "complete": true,
+    "oscillators_present": 5,
+    "uW": 2.7354321252
+   },
+   "ff|1.98|-40": {
+    "complete": true,
+    "oscillators_present": 5,
+    "uW": 2.213075027394
+   },
+   "ff|1.98|125": {
+    "complete": true,
+    "oscillators_present": 5,
+    "uW": 53.0418636
+   },
+   "ff|1.98|27": {
+    "complete": true,
+    "oscillators_present": 5,
+    "uW": 3.69865264626
+   },
+   "fs|1.62|-40": {
+    "complete": true,
+    "oscillators_present": 5,
+    "uW": 1.50515000685
+   },
+   "fs|1.62|125": {
+    "complete": true,
+    "oscillators_present": 5,
+    "uW": 53.126736678
+   },
+   "fs|1.62|27": {
+    "complete": true,
+    "oscillators_present": 5,
+    "uW": 3.223944255978
+   },
+   "fs|1.80|-40": {
+    "complete": true,
+    "oscillators_present": 5,
+    "uW": 1.8897831297
+   },
+   "fs|1.80|125": {
+    "complete": true,
+    "oscillators_present": 5,
+    "uW": 82.102600548
+   },
+   "fs|1.80|27": {
+    "complete": true,
+    "oscillators_present": 5,
+    "uW": 4.7238328629
+   },
+   "fs|1.98|-40": {
+    "complete": true,
+    "oscillators_present": 5,
+    "uW": 2.3464263447900002
+   },
+   "fs|1.98|125": {
+    "complete": true,
+    "oscillators_present": 5,
+    "uW": 125.872397541
+   },
+   "fs|1.98|27": {
+    "complete": true,
+    "oscillators_present": 5,
+    "uW": 7.16917673538
+   },
+   "sf|1.62|-40": {
+    "complete": true,
+    "oscillators_present": 5,
+    "uW": 1.459386476514
+   },
+   "sf|1.62|125": {
+    "complete": true,
+    "oscillators_present": 5,
+    "uW": 1.5962755212000002
+   },
+   "sf|1.62|27": {
+    "complete": true,
+    "oscillators_present": 5,
+    "uW": 490.3361139672
+   },
+   "sf|1.80|-40": {
+    "complete": true,
+    "oscillators_present": 5,
+    "uW": 35.782921289700006
+   },
+   "sf|1.80|125": {
+    "complete": true,
+    "oscillators_present": 5,
+    "uW": 1.9897411859999998
+   },
+   "sf|1.80|27": {
+    "complete": true,
+    "oscillators_present": 5,
+    "uW": 1.8031078602000001
+   },
+   "sf|1.98|-40": {
+    "complete": true,
+    "oscillators_present": 5,
+    "uW": 8.102984918094
+   },
+   "sf|1.98|125": {
+    "complete": true,
+    "oscillators_present": 5,
+    "uW": 2.436587406
+   },
+   "sf|1.98|27": {
+    "complete": true,
+    "oscillators_present": 5,
+    "uW": 2.18205120672
+   },
+   "ss|1.62|-40": {
+    "complete": true,
+    "oscillators_present": 5,
+    "uW": 31.892101421256
+   },
+   "ss|1.62|125": {
+    "complete": true,
+    "oscillators_present": 5,
+    "uW": 1.8121680838800003
+   },
+   "ss|1.62|27": {
+    "complete": true,
+    "oscillators_present": 5,
+    "uW": 1.4596088578020003
+   },
+   "ss|1.80|-40": {
+    "complete": true,
+    "oscillators_present": 5,
+    "uW": 80.80948014894001
+   },
+   "ss|1.80|125": {
+    "complete": true,
+    "oscillators_present": 5,
+    "uW": 2.3342953644000004
+   },
+   "ss|1.80|27": {
+    "complete": true,
+    "oscillators_present": 5,
+    "uW": 1.802227509
+   },
+   "ss|1.98|-40": {
+    "complete": true,
+    "oscillators_present": 5,
+    "uW": 140.10907531024802
+   },
+   "ss|1.98|125": {
+    "complete": true,
+    "oscillators_present": 5,
+    "uW": 3.32973161136
+   },
+   "ss|1.98|27": {
+    "complete": true,
+    "oscillators_present": 5,
+    "uW": 2.1810977151479998
+   },
+   "tt|1.62|-40": {
+    "complete": true,
+    "oscillators_present": 5,
+    "uW": 1.4594356193759999
+   },
+   "tt|1.62|125": {
+    "complete": true,
+    "oscillators_present": 5,
+    "uW": 5.1580278360000005
+   },
+   "tt|1.62|27": {
+    "complete": true,
+    "oscillators_present": 5,
+    "uW": 1.4857258357079999
+   },
+   "tt|1.80|-40": {
+    "complete": true,
+    "oscillators_present": 5,
+    "uW": 1.80190742526
+   },
+   "tt|1.80|125": {
+    "complete": true,
+    "oscillators_present": 5,
+    "uW": 7.195432698
+   },
+   "tt|1.80|27": {
+    "complete": true,
+    "oscillators_present": 5,
+    "uW": 1.8484141631399997
+   },
+   "tt|1.98|-40": {
+    "complete": true,
+    "oscillators_present": 5,
+    "uW": 2.180617249932
+   },
+   "tt|1.98|125": {
+    "complete": true,
+    "oscillators_present": 5,
+    "uW": 9.9109387278
+   },
+   "tt|1.98|27": {
+    "complete": true,
+    "oscillators_present": 5,
+    "uW": 2.2849858132199996
+   }
+  },
+  "cells_expected": 45,
+  "cells_graded": 45,
+  "fallback": "FAIL",
+  "stretch": "FAIL",
+  "target": "FAIL",
+  "worst_uW": 490.3361139672
+ },
+ "kind": "SIMULATED",
+ "scope": "oscillator bank only; counter power NOT covered"
+}

@@ -13,6 +13,10 @@
     "2.analog": {
       "file": "evidence/item2.json",
       "content_hash": "sha256:f217bf53e3525953972d1e421b739caa872fb3d46d9ac01b24785db36faf7647"
+    },
+    "5.analog": {
+      "file": "evidence/item5_analog.json",
+      "content_hash": "sha256:8103130d068c67ede6e552fcfc45f605d4ad8533d8392e4d73ce56218084ae45"
     }
   }
 }
