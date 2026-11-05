@@ -1,0 +1,323 @@
+{
+ "active": {
+  "binding_cell": "osc_hd|ff|1.98|125",
+  "cells_expected": 225,
+  "cells_graded": 74,
+  "fallback": "INCOMPLETE (ungraded cells remain)",
+  "stretch": "FAIL (worst graded cell exceeds)",
+  "target": "FAIL (worst graded cell exceeds)",
+  "uW": {
+   "osc_hd|ff|1.98|-40": 386.40096000000005,
+   "osc_hd|ff|1.98|125": 396.40788,
+   "osc_hd|ff|1.98|27": 391.8618,
+   "osc_hd|sf|1.62|-40": 100.77728400000001,
+   "osc_hd|sf|1.62|125": 123.67954800000003,
+   "osc_hd|sf|1.62|27": 110.57634,
+   "osc_hd|ss|1.62|-40": 78.620058,
+   "osc_hd|ss|1.62|125": 92.558214,
+   "osc_hd|ss|1.62|27": 85.564998,
+   "osc_hd|ss|1.80|-40": 135.99576,
+   "osc_hd|ss|1.80|125": 143.66124,
+   "osc_hd|ss|1.80|27": 140.1102,
+   "osc_hd|ss|1.98|-40": 209.59092,
+   "osc_hd|ss|1.98|125": 208.0683,
+   "osc_hd|ss|1.98|27": 209.66022,
+   "osc_nmos|ff|1.62|-40": 165.78432,
+   "osc_nmos|ff|1.62|125": 153.144108,
+   "osc_nmos|ff|1.62|27": 154.08792,
+   "osc_nmos|ff|1.80|-40": 248.60699999999997,
+   "osc_nmos|ff|1.80|125": 222.96599999999998,
+   "osc_nmos|ff|1.80|27": 228.8844,
+   "osc_nmos|ff|1.98|-40": 351.47375999999997,
+   "osc_nmos|ff|1.98|125": 309.45024,
+   "osc_nmos|ff|1.98|27": 321.65694,
+   "osc_nmos|fs|1.62|-40": 112.793796,
+   "osc_nmos|fs|1.62|125": 114.85994400000001,
+   "osc_nmos|fs|1.62|27": 102.794994,
+   "osc_nmos|fs|1.80|-40": 179.77860000000004,
+   "osc_nmos|fs|1.80|125": 175.31658,
+   "osc_nmos|fs|1.80|27": 161.73972,
+   "osc_nmos|fs|1.98|-40": 266.74164,
+   "osc_nmos|fs|1.98|125": 254.50722,
+   "osc_nmos|fs|1.98|27": 238.2138,
+   "osc_nmos|sf|1.62|-40": 131.025114,
+   "osc_nmos|sf|1.62|125": 113.48051400000001,
+   "osc_nmos|sf|1.62|27": 121.50437400000001,
+   "osc_nmos|sf|1.80|-40": 202.5036,
+   "osc_nmos|sf|1.80|125": 165.79692,
+   "osc_nmos|sf|1.80|27": 182.637,
+   "osc_nmos|sf|1.98|-40": 290.57489999999996,
+   "osc_nmos|sf|1.98|125": 230.1156,
+   "osc_nmos|sf|1.98|27": 258.27912000000003,
+   "osc_nmos|ss|1.62|-40": 92.831832,
+   "osc_nmos|ss|1.62|125": 75.81843000000002,
+   "osc_nmos|ss|1.62|27": 83.074734,
+   "osc_nmos|ss|1.80|-40": 149.53878,
+   "osc_nmos|ss|1.80|125": 115.26732,
+   "osc_nmos|ss|1.80|27": 130.36644,
+   "osc_nmos|ss|1.98|-40": 222.49061999999998,
+   "osc_nmos|ss|1.98|125": 165.55928400000002,
+   "osc_nmos|ss|1.98|27": 191.342844,
+   "osc_nmos|tt|1.62|-40": 128.013372,
+   "osc_nmos|tt|1.62|125": 109.15219800000001,
+   "osc_nmos|tt|1.62|27": 116.409636,
+   "osc_nmos|tt|1.80|125": 161.93663999999998,
+   "osc_nmos|tt|1.80|27": 176.93478000000002,
+   "osc_nmos|tt|1.98|-40": 284.88438,
+   "osc_nmos|tt|1.98|125": 227.89997999999997,
+   "osc_nmos|tt|1.98|27": 253.15289999999996,
+   "osc_pmos|ff|1.62|-40": 48.98572200000001,
+   "osc_pmos|ff|1.62|125": 68.58383400000001,
+   "osc_pmos|ff|1.62|27": 56.535084,
+   "osc_pmos|ff|1.80|-40": 89.06724,
+   "osc_pmos|ff|1.80|125": 110.82888,
+   "osc_pmos|ff|1.80|27": 95.47956,
+   "osc_pmos|tt|1.62|-40": 36.627228,
+   "osc_pmos|tt|1.62|125": 50.92713000000001,
+   "osc_pmos|tt|1.62|27": 42.109956000000004,
+   "osc_pmos|tt|1.80|-40": 69.31638,
+   "osc_pmos|tt|1.80|125": 83.86254,
+   "osc_pmos|tt|1.80|27": 73.16441999999999,
+   "osc_pmos|tt|1.98|-40": 114.59052000000001,
+   "osc_pmos|tt|1.98|125": 126.09412199999998,
+   "osc_pmos|tt|1.98|27": 117.67734
+  },
+  "worst_uW": 396.40788
+ },
+ "idle": {
+  "cells": {
+   "ff|1.62|-40": {
+    "complete": false,
+    "oscillators_present": 2,
+    "uW": 18.1847072628
+   },
+   "ff|1.62|125": {
+    "complete": false,
+    "oscillators_present": 2,
+    "uW": 7.420276188000001
+   },
+   "ff|1.62|27": {
+    "complete": false,
+    "oscillators_present": 2,
+    "uW": 0.18438778764
+   },
+   "ff|1.80|-40": {
+    "complete": false,
+    "oscillators_present": 2,
+    "uW": 58.71988082123999
+   },
+   "ff|1.80|125": {
+    "complete": false,
+    "oscillators_present": 2,
+    "uW": 11.079328320000002
+   },
+   "ff|1.80|27": {
+    "complete": false,
+    "oscillators_present": 2,
+    "uW": 0.29897807400000004
+   },
+   "ff|1.98|-40": {
+    "complete": false,
+    "oscillators_present": 1,
+    "uW": 0.00022590216
+   },
+   "ff|1.98|125": {
+    "complete": false,
+    "oscillators_present": 1,
+    "uW": 0.09108277199999999
+   },
+   "ff|1.98|27": {
+    "complete": false,
+    "oscillators_present": 1,
+    "uW": 0.00057119832
+   },
+   "fs|1.62|-40": {
+    "complete": false,
+    "oscillators_present": 2,
+    "uW": 0.013297072914000002
+   },
+   "fs|1.62|125": {
+    "complete": false,
+    "oscillators_present": 2,
+    "uW": 19.172994678000002
+   },
+   "fs|1.62|27": {
+    "complete": false,
+    "oscillators_present": 2,
+    "uW": 0.7337766801600002
+   },
+   "fs|1.80|-40": {
+    "complete": false,
+    "oscillators_present": 2,
+    "uW": 0.02520368622
+   },
+   "fs|1.80|125": {
+    "complete": false,
+    "oscillators_present": 2,
+    "uW": 29.621690999999995
+   },
+   "fs|1.80|27": {
+    "complete": false,
+    "oscillators_present": 2,
+    "uW": 1.024159428
+   },
+   "fs|1.98|-40": {
+    "complete": false,
+    "oscillators_present": 2,
+    "uW": 0.0467068437
+   },
+   "fs|1.98|125": {
+    "complete": false,
+    "oscillators_present": 2,
+    "uW": 45.26562744
+   },
+   "fs|1.98|27": {
+    "complete": false,
+    "oscillators_present": 2,
+    "uW": 1.6840195218
+   },
+   "sf|1.62|-40": {
+    "complete": false,
+    "oscillators_present": 1,
+    "uW": 9.004024800000001e-05
+   },
+   "sf|1.62|125": {
+    "complete": false,
+    "oscillators_present": 1,
+    "uW": 0.014321512800000002
+   },
+   "sf|1.62|27": {
+    "complete": false,
+    "oscillators_present": 1,
+    "uW": 0.00026758674
+   },
+   "sf|1.80|-40": {
+    "complete": false,
+    "oscillators_present": 2,
+    "uW": 0.00024716034
+   },
+   "sf|1.80|125": {
+    "complete": false,
+    "oscillators_present": 2,
+    "uW": 0.034146630000000004
+   },
+   "sf|1.80|27": {
+    "complete": false,
+    "oscillators_present": 2,
+    "uW": 0.0004998043800000001
+   },
+   "sf|1.98|-40": {
+    "complete": false,
+    "oscillators_present": 2,
+    "uW": 6.8190169754520005
+   },
+   "sf|1.98|125": {
+    "complete": false,
+    "oscillators_present": 2,
+    "uW": 0.046814723999999995
+   },
+   "sf|1.98|27": {
+    "complete": false,
+    "oscillators_present": 2,
+    "uW": 0.00069786288
+   },
+   "ss|1.62|-40": {
+    "complete": false,
+    "oscillators_present": 1,
+    "uW": 8.8792524e-05
+   },
+   "ss|1.62|125": {
+    "complete": false,
+    "oscillators_present": 1,
+    "uW": 0.00017448048
+   },
+   "ss|1.62|27": {
+    "complete": false,
+    "oscillators_present": 1,
+    "uW": 8.9253414e-05
+   },
+   "ss|1.80|-40": {
+    "complete": false,
+    "oscillators_present": 1,
+    "uW": 0.00012026268
+   },
+   "ss|1.80|125": {
+    "complete": false,
+    "oscillators_present": 1,
+    "uW": 0.0002301084
+   },
+   "ss|1.80|27": {
+    "complete": false,
+    "oscillators_present": 1,
+    "uW": 0.00012078000000000002
+   },
+   "ss|1.98|-40": {
+    "complete": false,
+    "oscillators_present": 1,
+    "uW": 0.000177827958
+   },
+   "ss|1.98|125": {
+    "complete": false,
+    "oscillators_present": 1,
+    "uW": 0.00031686336
+   },
+   "ss|1.98|27": {
+    "complete": false,
+    "oscillators_present": 1,
+    "uW": 0.000178421562
+   },
+   "tt|1.62|-40": {
+    "complete": false,
+    "oscillators_present": 2,
+    "uW": 0.000197317134
+   },
+   "tt|1.62|125": {
+    "complete": false,
+    "oscillators_present": 2,
+    "uW": 1.1294221392000003
+   },
+   "tt|1.62|27": {
+    "complete": false,
+    "oscillators_present": 2,
+    "uW": 0.008602220898
+   },
+   "tt|1.80|-40": {
+    "complete": false,
+    "oscillators_present": 1,
+    "uW": 0.00012694374000000002
+   },
+   "tt|1.80|125": {
+    "complete": false,
+    "oscillators_present": 2,
+    "uW": 1.6326696059999999
+   },
+   "tt|1.80|27": {
+    "complete": false,
+    "oscillators_present": 2,
+    "uW": 0.01490277258
+   },
+   "tt|1.98|-40": {
+    "complete": false,
+    "oscillators_present": 2,
+    "uW": 0.000501130476
+   },
+   "tt|1.98|125": {
+    "complete": false,
+    "oscillators_present": 2,
+    "uW": 2.3211784728
+   },
+   "tt|1.98|27": {
+    "complete": false,
+    "oscillators_present": 2,
+    "uW": 0.0250015788
+   }
+  },
+  "cells_expected": 45,
+  "cells_graded": 0,
+  "fallback": "NOT GRADED",
+  "stretch": "NOT GRADED",
+  "target": "NOT GRADED"
+ },
+ "kind": "SIMULATED",
+ "scope": "oscillator bank only; counter power NOT covered"
+}
