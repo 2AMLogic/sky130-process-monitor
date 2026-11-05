@@ -5,6 +5,9 @@ role. Newest first.
 
 ### 2026-11-05
 
+- **PR #47**: docs(sim): add fleet mismatch MC, discrimination margin and Q1 verdict proposal
+- **PR #46**: feat(sim): five-oscillator grid sensitivity matrix and sf/fs mapping, MC pending
+- **Issue #8** (closed): Sensitivity matrix and conditioning across the PVT corner box (spec Q1)
 - **PR #43**: feat(sim): subthreshold oscillator grid, device probe and mismatch MC for spec Q2
 - **PR #41**: feat(layout): generate five-oscillator bank GDS with item-2 evidence
 - **PR #40**: feat(sim): add five-oscillator bank schematics, netlists and tt benches
