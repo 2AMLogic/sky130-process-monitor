@@ -53,3 +53,14 @@ nothing. The PDK/ngspice pins are read via `check_env.sh`, not repeated. The PVT
 and go through `klt sim`. `osc_subth`'s `i_avg_ua` includes ~1 µA of bias divider (see `design/osc_bank/README.md`).
 The controls check that a tied-off enable fails and appends nothing, and that a drifted schematic is reported by
 `klt netlist --check`.
+
+## Rows 1-4 grading and power (issue #29)
+
+    python3 -I sim/solve/solve.py grade freq_table.json mc_table.json --json out.json
+    python3 -I sim/solve/test_solve.py                         # synthetic negative controls
+    python3 -I sim/power/gen_requests.py                       # power testbenches + klt sim requests
+    python3 -I sim/power/analyze_power.py extract|grade ...
+
+`sim/solve/` post-processes #8's surfaces (no re-simulation); records in `sim/solve/records/`. `sim/power/` holds
+the active/idle supply-current benches (oscillator bank only; counter power is NOT covered); records in
+`sim/power/records/`. The 2026-11-05 records are PARTIAL and every row is recorded failing or incomplete.

@@ -1,0 +1,11 @@
+* Power bench (IDLE): osc_pmos with the enable tied to vss; supply leakage current. SIMULATION, schematic-level.
+* Sensitivity-grade testbench body for osc_pmos (circuit body only: klt sim owns .control/.end).
+* SIMULATION: schematic-level netlist design/osc_bank/osc_pmos.spice, no layout, no parasitics.
+* Enable is a behavioural source that follows v(vdd), so it swings rail to rail at every swept
+* supply (an explicit PULSE could not be swept with the supply in a Monte Carlo `units` request).
+* It is off for 1 ns and then ramps to v(vdd) over 100 ps.
+.include "../../../design/osc_bank/osc_pmos.spice"
+Vdd vdd 0 1.8
+Vss vss 0 0
+Ven en 0 0
+Xdut en out vdd vss osc_pmos
