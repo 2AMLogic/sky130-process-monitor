@@ -99,11 +99,11 @@ Tier verdict and repo-hygiene attestation (needs only `uv`; the pin is the one
 in [`manifests/README.md`](manifests/README.md)):
 
 ```console
-uvx --from "klayout-tools==0.8.0" klt signoff \
+uvx --from "klayout-tools==0.9.1" klt signoff \
     --manifest manifests/sky130-process-monitor.json \
     --tiers-doc manifests/design-evidence-tiers.md \
     --check manifests/sky130-process-monitor.signoff.json
-uvx --from "klayout-tools==0.8.0" klt signoff --attest 10 \
+uvx --from "klayout-tools==0.9.1" klt signoff --attest 10 \
     --inventory attest/item10.json --check evidence/item10.json
 ```
 
@@ -111,7 +111,7 @@ The first re-grades the block manifest and reports whether the committed
 record still reproduces; the second re-runs the item-10 (repo hygiene)
 attestation and diffs it against `evidence/item10.json`. The attestation's
 `klt` check calls `klt` from `PATH`, so run the second from an environment
-where `klt` 0.8.0 is installed (CI installs it with `pip`). CI runs both on
+where `klt` 0.9.1 is installed (CI installs it with `pip`). CI runs both on
 every push and pull request ([`signoff.yml`](.github/workflows/signoff.yml)).
 
 ## Tool flow

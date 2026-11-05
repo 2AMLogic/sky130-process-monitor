@@ -23,13 +23,13 @@ checklist: the `klt signoff` input and its committed output.
   repo's `LICENSE` does not relicense the vendored copy. When upstream moves,
   re-vendor and regenerate the record in the same PR.
 - **`sky130-process-monitor.signoff.json`** — the **verdict of record**,
-  graded with `klayout-tools==0.8.0`. Today 2.analog, 10.analog and 10.digital read
-  `met` and the other 19 T1 rows read `unmet` / `no_evidence`; the T2-T4 tier rows read `unmet` / `tier_not_supported` (the grader does not grade those tiers). Never hand-edit it.
+  graded with `klayout-tools==0.9.1`. Today 2.analog, 10.analog and 10.digital read
+  `met` and T1 5.analog reads `unmet` / `check_failed` (the cited `model-run` envelope grades, and fails its targets), and the other 18 T1 rows read `unmet` / `no_evidence`; the T2-T4 tier rows read `unmet` / `tier_not_supported` (the grader does not grade those tiers). Never hand-edit it.
 
 ## Regenerate
 
 ```console
-uvx --from "klayout-tools==0.8.0" klt signoff \
+uvx --from "klayout-tools==0.9.1" klt signoff \
     --manifest manifests/sky130-process-monitor.json \
     --tiers-doc manifests/design-evidence-tiers.md \
     --format json > manifests/sky130-process-monitor.signoff.json
