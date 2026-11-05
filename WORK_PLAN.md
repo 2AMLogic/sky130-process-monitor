@@ -34,6 +34,7 @@ Issues currently being built (`loom:building`).
 - **#16**: Readout RTL: 24-bit saturating gated counter and register file, with cocotb tests in verification/readout/
 - **#29**: T1 item 5 (corner verification, analog): sim/solve estimation benches graded over the 45-cell PVT box as klt sim envelopes for rows 1-4 and 7
 - **#48**: sim: run mismatch MC at the off-nominal (V,T) cells and explain osc_hd ff zero spread
+- **#54**: Follow-on from PR #52: step-refined osc_hd grid/MC (20 ps max-step bias)
 
 ## PRs Awaiting Review
 
@@ -57,6 +58,7 @@ Issues carrying `loom:curated`.
 - **#29**: T1 item 5 (corner verification, analog): sim/solve estimation benches graded over the 45-cell PVT box as klt sim envelopes for rows 1-4 and 7 *(curated)*
 - **#44**: Follow-on from PR #43: subthreshold Q2 bench follow-ups (cold-cell re-run, pfet S(T) reference, leakage floor) *(curated)*
 - **#48**: sim: run mismatch MC at the off-nominal (V,T) cells and explain osc_hd ff zero spread *(curated)*
+- **#54**: Follow-on from PR #52: step-refined osc_hd grid/MC (20 ps max-step bias) *(curated)*
 
 ## Proposed (Architect / Hermit)
 
@@ -76,10 +78,10 @@ _None._
 | Very important | 0 |
 | Important | 1 |
 | Ready (`loom:issue`) | 0 |
-| In Progress (`loom:building`) | 3 |
+| In Progress (`loom:building`) | 4 |
 | PRs awaiting review | 0 |
 | Approved PRs awaiting merge | 1 |
-| Curated | 6 |
+| Curated | 7 |
 | Architect / Hermit proposals | 0 |
 | Active epics | 0 |
 <!-- guide:plan-body:end -->

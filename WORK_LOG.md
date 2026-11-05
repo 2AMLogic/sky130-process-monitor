@@ -5,6 +5,8 @@ role. Newest first.
 
 ### 2026-11-05
 
+- **PR #52**: docs(sim): partial off-nominal MC record and osc_hd ff zero-sigma timestep explanation
+- **PR #51**: feat(sim): grade spec rows 1-4 and add oscillator-bank power benches (partial)
 - **PR #47**: docs(sim): add fleet mismatch MC, discrimination margin and Q1 verdict proposal
 - **PR #46**: feat(sim): five-oscillator grid sensitivity matrix and sf/fs mapping, MC pending
 - **Issue #8** (closed): Sensitivity matrix and conditioning across the PVT corner box (spec Q1)
