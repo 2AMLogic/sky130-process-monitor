@@ -302,6 +302,9 @@ def report(freq, mc=None, out=sys.stdout):
                 P("ratio-only ln f_i - ln f_hd (4x4):\n" + fmt_matrix(ratio, [o for o in OSCS if o != BASELINE]))
                 P("  singular values: %s\n  kappa=%.3g  rank=%d/4" % (" ".join("%.4g" % s for s in sv), k, rk))
                 res[(v, t, "ratio")] = (sv, k, rk)
+    nvt = len(VDD) * len(TEMP)
+    P("\n## formed (V,T) cells: absolute %d of %d, ratio-only %d of %d" % (
+        sum(1 for k in res if k[2] == "abs"), nvt, sum(1 for k in res if k[2] == "ratio"), nvt))
     if mc is not None:
         P("\n## Discrimination margin (min over corner pairs, in sigma of the noise along the pair line)")
         P("noise = counter quantization (2^10 ref cycles @10 MHz) + pooled MC mismatch sigma, quadrature")

@@ -22,7 +22,7 @@ Append-only: a re-run is a new dated file.
   osc_nmos tt/1.8 V/-40 C; osc_subth ss/1.62, ss/1.8, sf/1.62, sf/1.8, sf/1.98 at -40 C; osc_wire sf/1.98 V/-40 C.
 - Per (V,T) cell the report below gives the sensitivity matrices, singular values, kappa and rank, absolute and ratio-only,
   with column scaling V x 0.18, T x 82.5, Pn/Pp = corner extent +-1.
-- Full 5x4 matrices form in 6 of 9 cells: absolute kappa 27.8 to 67.9; ratio-only kappa 19.8 to 67.9 (rank 4/4 in all).
+- Full 5x4 matrices form in 5 of 9 (V,T) cells (count printed by `analyze.py report`, see the "formed (V,T) cells" line below): absolute kappa 27.8 to 67.9; ratio-only kappa 19.8 to 67.9 (rank 4/4 in all).
   The three -40 C cells and V=1.8/27 C cannot be formed because of the missing cells above.
 - The subthreshold oscillator has under 100 counts in the default gate (2^10 @ 10 MHz) in 10 cells: quantization dominates there.
 
@@ -150,6 +150,8 @@ osc_wire      -0.06192    -0.10202    -0.10416    -0.12209
 osc_subth      0.41513     0.33758     0.34582     0.91430
   singular values: 1.131 0.126 0.06749 0.02667
   kappa=42.4  rank=4/4
+
+## formed (V,T) cells: absolute 5 of 9, ratio-only 5 of 9
 
 ## cells with < 100 counts in the default gate (2^10 @ 10 MHz): quantization dominates
   osc_subth tt 1.62 V -40 C: 5.23 counts
