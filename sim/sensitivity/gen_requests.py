@@ -112,9 +112,32 @@ def mc_offnom(osc, tran, cap, vt_cells=OFFNOM_VT, subth_cell=None):
     return r
 
 
+# Step-refined osc_hd (issue #54): the 20 ps (MC) / 10 ps (grid) tran step biases osc_hd and locks the
+# ff period to the step grid (records/2026-11-05-mc-offnom-partial.md section 1). These requests cap the
+# max step at 5 ps ("tstep tstop tstart tmax"), keep the coarse windows, n and seed, and are written
+# under NEW names (*_5p.json); the coarse requests are never rewritten with these.
+HD_5P_GRID_TRAN = "5p 300n 0 5p"
+HD_5P_MC_TRAN = "5p 100n 0 5p"
+
+
+def hd_5p_requests():
+    """name -> request for the three step-refined osc_hd runs (same corners/units/n/seed as the coarse ones)."""
+    cap = OSCS["osc_hd"][1]
+    g = grid("osc_hd", HD_5P_GRID_TRAN, cap)
+    m = mc("osc_hd", "", cap)
+    m["analysis"]["args"] = HD_5P_MC_TRAN
+    o = mc_offnom("osc_hd", "", cap)
+    o["analysis"]["args"] = HD_5P_MC_TRAN
+    return {"grid_osc_hd_5p.json": g, "mc_osc_hd_5p.json": m, "mc_offnom_osc_hd_5p.json": o}
+
+
 if __name__ == "__main__":
     out = os.path.join(HERE, "requests")
     os.makedirs(out, exist_ok=True)
+    for name, req in hd_5p_requests().items():
+        with open(os.path.join(out, name), "w") as f:
+            json.dump(req, f, indent=2)
+            f.write("\n")
     for osc, (tran, cap) in OSCS.items():
         for kind, fn in (("grid", grid), ("mc", mc)):
             with open(os.path.join(out, "%s_%s.json" % (kind, osc)), "w") as f:
