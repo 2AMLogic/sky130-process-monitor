@@ -9,10 +9,13 @@ checklist: the `klt signoff` input and its committed output.
   `mixed-signal`; `partition_boundary` states the intended analog/digital
   split as the top-level README describes it today (the grader reports it and
   does not grade it; refine it once the spec issue #2 ratifies). `evidence`
-  cites only T1 item 10 (repo hygiene): `evidence/item10.json`, the
+  cites T1 item 10 (repo hygiene): `evidence/item10.json`, the
   `klt signoff --attest 10` envelope over `attest/item10.json`, pinned by that
-  inventory's `content_hash`. No design artifact exists yet, so nothing else
-  is cited. The bare key `"10"` covers both the analog and digital partitions.
+  inventory's `content_hash`; and T1 item 2 analog (layout): `evidence/item2.json`,
+  an artifact-anchored generic envelope over `layout/osc_bank.gds`, pinned by the
+  stream's `content_hash` under `2.analog` (written by `layout/gen/attest_item2.py`;
+  `klt signoff --attest` has no item-2 verb). No other design artifact is cited yet.
+  The bare key `"10"` covers both the analog and digital partitions.
 - **`design-evidence-tiers.md`** — the checklist the grader parses. Vendored
   **byte-identical** from
   [`2AMLogic/klayout-tools@31a3e3c`](https://github.com/2AMLogic/klayout-tools/blob/31a3e3c41c08bbd58719e0b99a3b6d19beb9be63/docs/design-evidence-tiers.md)
@@ -20,8 +23,8 @@ checklist: the `klt signoff` input and its committed output.
   repo's `LICENSE` does not relicense the vendored copy. When upstream moves,
   re-vendor and regenerate the record in the same PR.
 - **`sky130-process-monitor.signoff.json`** — the **verdict of record**,
-  graded with `klayout-tools==0.8.0`. Today 10.analog and 10.digital read
-  `met` and the other 20 T1 rows read `unmet` / `no_evidence`; the T2-T4 tier rows read `unmet` / `tier_not_supported` (the grader does not grade those tiers). Never hand-edit it.
+  graded with `klayout-tools==0.8.0`. Today 2.analog, 10.analog and 10.digital read
+  `met` and the other 19 T1 rows read `unmet` / `no_evidence`; the T2-T4 tier rows read `unmet` / `tier_not_supported` (the grader does not grade those tiers). Never hand-edit it.
 
 ## Regenerate
 
