@@ -5,9 +5,11 @@ role. Newest first.
 
 ### 2026-11-05
 
+- **PR #43**: feat(sim): subthreshold oscillator grid, device probe and mismatch MC for spec Q2
 - **PR #41**: feat(layout): generate five-oscillator bank GDS with item-2 evidence
 - **PR #40**: feat(sim): add five-oscillator bank schematics, netlists and tt benches
 - **PR #6**: feat: add pinned analog and digital toolchain smoke flows
+- **Issue #10** (closed): Subthreshold oscillator: model-limited vs design-limited across temperature (spec Q2)
 - **Issue #23** (closed): T1 item 2 (layout, analog): drawn GDS for the four custom oscillators and the hd baseline chain
 - **Issue #17** (closed): Oscillator bank: schematics for the five spec oscillators and a tt frequency bench in sim/osc_bank/
 - **Issue #3** (closed): Bring up both flows: pinned sky130 + ngspice smoke and a digital cocotb/Yosys skeleton (T1 item 9 groundwork)
