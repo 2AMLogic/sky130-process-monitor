@@ -38,3 +38,18 @@ model file and ngspice version). It proves the models and cell views load; it ma
 Wrong model path, edited PDK pin, edited tool pin and absent PDK must each fail **with the expected diagnostic**
 (the script greps for it), after a baseline `check_env.sh` pass, so a broken environment is not read as a control
 passing. Exit 0 means all did; exit 2 means the environment itself is broken. A failed run appends no record.
+
+## Oscillator bank
+
+    sim/osc_bank/run.sh [osc_name ...]      # default: all five
+    sim/osc_bank/negative_controls.sh
+
+One `ngspice -b` per oscillator (`bench_<osc>.spice`, netlists from `design/osc_bank/`), `tt` / 1.8 V / 27 °C,
+single-unit and local by design. After skipping the start-up edges each bench measures `f_osc_hz` and the mean
+supply current `i_avg_ua` over a whole number of cycles. If **every** ring oscillates, one record per oscillator is
+appended to `measurements/osc_bank_records.jsonl` (append-only, labelled SIMULATED, with corner, testbench, netlist,
+open_pdks, model file and ngspice version); if any ring does not, `run.sh` exits non-zero, names it, and appends
+nothing. The PDK/ngspice pins are read via `check_env.sh`, not repeated. The PVT surfaces and Monte Carlo are #8
+and go through `klt sim`. `osc_subth`'s `i_avg_ua` includes ~1 µA of bias divider (see `design/osc_bank/README.md`).
+The controls check that a tied-off enable fails and appends nothing, and that a drifted schematic is reported by
+`klt netlist --check`.

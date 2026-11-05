@@ -1,0 +1,11 @@
+# Project-local xschem config for `klt netlist --rcfile`: the stock xschem device
+# library plus the sky130A symbol libraries from the PDK root pinned by sim/pdk.json
+# (same override env as sim/check_env.sh).
+if {[info exists env(PDK_ROOT_SKY130A)]} {
+  set pdk_root $env(PDK_ROOT_SKY130A)
+} else {
+  set pdk_root $env(HOME)/.volare/sky130A
+}
+set XSCHEM_LIBRARY_PATH {}
+append XSCHEM_LIBRARY_PATH :${XSCHEM_SHAREDIR}/xschem_library
+append XSCHEM_LIBRARY_PATH :$pdk_root/libs.tech/xschem
