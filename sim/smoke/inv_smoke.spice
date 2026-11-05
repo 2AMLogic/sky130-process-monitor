@@ -1,0 +1,20 @@
+* SMOKE TESTBENCH - toolchain bring-up only, not a design.
+* sky130_fd_sc_hd__inv_1, tt, 1.8 V, 27 C, 10 fF load. Single corner.
+* @MODEL_LIB@ and @CELL_SPICE@ are substituted by run.sh.
+.lib "@MODEL_LIB@" tt
+.include "@CELL_SPICE@"
+.temp 27
+.option temp=27
+
+Vdd vpwr 0 1.8
+Vin a 0 PULSE(0 1.8 1n 50p 50p 2n 4n)
+X1 a 0 0 vpwr vpwr y sky130_fd_sc_hd__inv_1
+Cl y 0 10f
+
+.tran 5p 8n
+.control
+run
+meas tran tpd_hl trig v(a) val=0.9 rise=1 targ v(y) val=0.9 fall=1
+meas tran tpd_lh trig v(a) val=0.9 fall=1 targ v(y) val=0.9 rise=1
+.endc
+.end
