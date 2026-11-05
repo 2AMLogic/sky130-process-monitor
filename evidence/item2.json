@@ -1,0 +1,25 @@
+{
+  "schema_version": 1,
+  "kind": "generic",
+  "status": "pass",
+  "t1_item": 2,
+  "summary": "T1 item 2 (Layout, analog): layout/osc_bank.gds regenerated from layout/gen/gen_osc_bank.py byte-identically; net-connectivity sanity check passes. Simulated/derived planning geometry, not DRC- or LVS-checked.",
+  "source": "layout/osc_bank.gds",
+  "provenance": {
+    "klt_version": "0.8.0",
+    "klayout_version": "0.30.10",
+    "pdk": null,
+    "deck": null,
+    "input": {
+      "path": {
+        "path": "layout/osc_bank.gds",
+        "scope": "repo"
+      },
+      "content_hash": "sha256:f217bf53e3525953972d1e421b739caa872fb3d46d9ac01b24785db36faf7647"
+    },
+    "regeneration": {
+      "generator": "python3 layout/gen/gen_osc_bank.py -o <scratch>/osc_bank.gds",
+      "regenerated_hash": "sha256:f217bf53e3525953972d1e421b739caa872fb3d46d9ac01b24785db36faf7647"
+    }
+  }
+}

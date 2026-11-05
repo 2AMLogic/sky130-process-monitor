@@ -1,0 +1,4 @@
+{
+  "sky130_fd_sc_hd_gds_sha256": "4a768b5b034669f43d45170e1b171fb05b1dbe31671b19e7add34b98a7f842c8",
+  "note": "open_pdks c6d73a35 sky130A; cells used: nand2_1, inv_1, tapvpwrvgnd_1"
+}
