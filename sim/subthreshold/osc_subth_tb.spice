@@ -1,0 +1,9 @@
+* SUBTHRESHOLD OSCILLATOR CORNER BENCH (circuit body for `klt sim`; no .control/.end).
+* SIMULATION ONLY. Corner (.lib section), supply and temperature are applied by klt sim.
+* Same DUT, enable drive and frequency extraction as sim/osc_bank/bench_osc_subth.spice
+* (f = 8 cycles after skipping the first 3 rising edges; see the request's .meas cards).
+.include "../../design/osc_bank/osc_subth.spice"
+Vdd vdd 0 1.8
+Vss vss 0 0
+Ven en 0 PULSE(0 1.8 1n 100p 100p 1 2)
+Xdut en out vdd vss osc_subth
