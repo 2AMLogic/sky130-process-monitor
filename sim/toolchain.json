@@ -1,7 +1,7 @@
 {
   "note": "Each entry: command that prints the version, regex (first capture group) over its output, expected value.",
   "tools": {
-    "ngspice":   {"cmd": ["ngspice", "--version"],   "regex": "ngspice-([0-9.]+)",         "expect": "46"},
+    "ngspice":   {"cmd": ["ngspice", "--version"],   "regex": "ngspice-([0-9.]+)",         "min": "46"},
     "iverilog":  {"cmd": ["iverilog", "-V"],         "regex": "Icarus Verilog version ([0-9.]+)", "expect": "13.0"},
     "yosys":     {"cmd": ["yosys", "-V"],            "regex": "Yosys ([0-9.]+)",           "expect": "0.67"},
     "verilator": {"cmd": ["verilator", "--version"], "regex": "Verilator ([0-9.]+)",       "expect": "5.050"},

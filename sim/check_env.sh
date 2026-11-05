@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 # Refuse to proceed unless the PDK revision and tool versions match the pins
-# in sim/pdk.json and sim/toolchain.json. Prints the resolved PDK root on
+# in sim/pdk.json and sim/toolchain.json (exact "expect" pins; ngspice uses a
+# ">= min" floor and prints the measured version). Prints the resolved PDK root on
 # stdout's last line (PDK_ROOT=...) so callers can reuse it.
 set -u
 HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -37,10 +38,19 @@ for name, t in tc["tools"].items():
         continue
     m = re.search(t["regex"], text)
     got = m.group(1) if m else None
-    if got != t["expect"]:
-        where = shutil.which(t["cmd"][0]) or "not on PATH"
-        errs.append(f"{name}: version {got} != pinned {t['expect']} (resolved {where}; "
-                    "the provisioned tools live in ~/.local/bin, which must precede /usr/bin on PATH)")
+    where = shutil.which(t["cmd"][0]) or "not on PATH"
+    hint = "the provisioned tools live in ~/.local/bin, which must precede /usr/bin on PATH"
+    if "min" in t:
+        # Floor (operator ruling 2026-10-29): any version >= min passes; the
+        # measured version is always printed so it can be recorded.
+        def vt(v):
+            return tuple(int(x) for x in v.split(".") if x.isdigit())
+        if got is None or vt(got) < vt(t["min"]):
+            errs.append(f"{name}: version {got} < floor {t['min']} (resolved {where}; {hint})")
+        else:
+            print(f"check_env: {name} {got} (floor >= {t['min']})")
+    elif got != t["expect"]:
+        errs.append(f"{name}: version {got} != pinned {t['expect']} (resolved {where}; {hint})")
 
 x = tc["xschem"]
 try:

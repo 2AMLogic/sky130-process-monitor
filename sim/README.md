@@ -7,15 +7,15 @@ bring-up: nothing is a design result.
 
 - `pdk.json` — sky130A open_pdks revision, model library / cell SPICE / Liberty paths inside the PDK. The PDK
   root defaults to `~/.volare/sky130A`; override with `PDK_ROOT_SKY130A`.
-- `toolchain.json` — ngspice, Icarus, Yosys, Verilator, cocotb versions, and the xschem package version
+- `toolchain.json` — ngspice (a `>=` floor), Icarus, Yosys, Verilator, cocotb (exact) versions, and the xschem package version
   (checked via `dpkg-query` only; raw `xschem` is never run, use `klt netlist`).
-- `check_env.sh` — exits non-zero on any mismatch or missing path. Both smoke flows call it first.
+- `check_env.sh` — exits non-zero on any mismatch, version below the ngspice floor, or missing path; it prints the measured ngspice version. Both smoke flows call it first.
 
 ## Environment
 
-The ngspice 46, Icarus 13.0, Yosys 0.67 and Verilator 5.050 pins are the tools provisioned in `~/.local/bin` on fleet
+ngspice is a **floor** (`>= 46`, not an exact pin: the fleet tracks the current upstream release, operator ruling 2026-10-29, 2AMLogic/2am#6391); the measured version is printed by `check_env.sh` and recorded in each result. The Icarus 13.0, Yosys 0.67 and Verilator 5.050 pins stay exact. These are the tools provisioned in `~/.local/bin` on fleet
 workers (2AMLogic/2am `infra/aws/loom-worker/`); `~/.local/bin` must come **before** `/usr/bin` on `PATH` (distro
-packages there are older: e.g. ngspice 42). The cocotb 2.1.0 pin is **not** in that worker spec (it has no cocotb
+packages there are older: e.g. ngspice 42, below the floor). The cocotb 2.1.0 pin is **not** in that worker spec (it has no cocotb
 entry) and workers can differ: it is the version a reviewing worker reported (`cocotb-config --version`). Where cocotb
 is absent, use a venv inside the worktree (`python3 -m venv .venv && .venv/bin/pip install cocotb==2.1.0`, with
 `.venv/bin` on `PATH`) rather than touching host-wide tools; the worker-spec gap is tracked as a spec change, not a host

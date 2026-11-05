@@ -38,8 +38,8 @@ T="$(mktemp -d)"; trap 'rm -rf "$T"' EXIT
 cp "$SIM/check_env.sh" "$SIM/toolchain.json" "$T/"
 sed 's/"open_pdks": "[0-9a-f]*"/"open_pdks": "0000000000000000000000000000000000000000"/' "$SIM/pdk.json" > "$T/pdk.json"
 expect_fail "edited PDK pin" 'open_pdks revision [0-9a-f]+ != pinned 0{40}' "$T/check_env.sh"
-sed 's/"expect": "46"/"expect": "1"/' "$SIM/toolchain.json" > "$T/toolchain.json"
+sed 's/"min": "46"/"min": "9999"/' "$SIM/toolchain.json" > "$T/toolchain.json"
 cp "$SIM/pdk.json" "$T/pdk.json"
-expect_fail "edited tool pin" 'ngspice: version 46 != pinned 1 ' "$T/check_env.sh"
+expect_fail "edited tool floor" 'ngspice: version [0-9.]+ < floor 9999 ' "$T/check_env.sh"
 expect_fail "pinned PDK absent" 'PDK root not found: /nonexistent' env PDK_ROOT_SKY130A=/nonexistent "$SIM/check_env.sh"
 exit $rc
