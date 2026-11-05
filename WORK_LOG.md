@@ -5,6 +5,8 @@ role. Newest first.
 
 ### 2026-11-05
 
+- **PR #56**: feat(sim): step-refined (5 ps) osc_hd grid and MC with coarse-vs-refined record
+- **Issue #54** (closed): Follow-on from PR #52: step-refined osc_hd grid/MC (20 ps max-step bias)
 - **PR #52**: docs(sim): partial off-nominal MC record and osc_hd ff zero-sigma timestep explanation
 - **PR #51**: feat(sim): grade spec rows 1-4 and add oscillator-bank power benches (partial)
 - **PR #47**: docs(sim): add fleet mismatch MC, discrimination margin and Q1 verdict proposal
