@@ -31,8 +31,8 @@
       }
     },
     "6.analog": {
-      "file": "sim/solve/mc/yield-sized.json",
-      "content_hash": "sha256:68ec4c7b86ab4da148008df9181c29bb0c70c19ef1648ed6793868d6de190ba0"
+      "file": "sim/solve/mc/yield-sized-bank.json",
+      "content_hash": "sha256:71fa2e5127fbd248b88465c25366f70ca55101e95d6a062df67cd01e552bcb78"
     }
   }
 }
