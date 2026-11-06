@@ -63,4 +63,4 @@ The controls check that a tied-off enable fails and appends nothing, and that a 
 
 `sim/solve/` post-processes #8's surfaces (no re-simulation); records in `sim/solve/records/`. `sim/power/` holds
 the active/idle supply-current benches (oscillator bank only; counter power is NOT covered); records in
-`sim/power/records/`. The 2026-11-05 records are PARTIAL and every row is recorded failing or incomplete.
+`sim/power/records/`. Power coverage: idle 45/45, active 219/225 cells (`records/2026-11-05-power-complete.md`; the earlier `-partial` record is kept). Every row is recorded failing. `sim/solve/make_envelope.py` builds `evidence/item5_analog.json`, the `model-run` citation for `5.analog` (`klt signoff` grades it `check_failed`, not `no_evidence`).

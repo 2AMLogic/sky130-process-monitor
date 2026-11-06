@@ -1,0 +1,97 @@
+{
+ "inputs": {
+  "sim/power/records/2026-11-05-power-grade-complete.json": "sha256:5b25245b903374714e9d5c2c3d9ddf318d15102592a6130c74cd1f181b14b1cd",
+  "sim/solve/records/2026-11-05-rows1-4.json": "sha256:5a2b9cebc25ec4e36b8f90e9b67b86d9ab04d1770f0e811e8216526d42d732b9"
+ },
+ "kind": "model-run",
+ "measurements": [
+  {
+   "limits": {
+    "max": 0
+   },
+   "name": "row1_non_oscillating_cells",
+   "note": "spec row 1 target: oscillates at all 45 cells",
+   "status": "fail",
+   "unit": "cells",
+   "worst_case": {
+    "corner_id": "7 of 225 oscillator cells (see record)",
+    "margin": -7,
+    "value": 7
+   }
+  },
+  {
+   "limits": {
+    "max": 0
+   },
+   "name": "row2_unidentified_vt_cells",
+   "note": "spec row 2 target: five-corner identification; fallback (slow/fast) passes",
+   "status": "fail",
+   "unit": "cells",
+   "worst_case": {
+    "corner_id": "1.98 V / 27 C",
+    "margin": -1,
+    "value": 1
+   }
+  },
+  {
+   "limits": {
+    "max": 0.02
+   },
+   "name": "row3_p99_abs_dv",
+   "note": "spec row 3 target +-20 mV; fallback +-50 mV also fails",
+   "status": "fail",
+   "unit": "V",
+   "worst_case": {
+    "corner_id": "-40 C tt 1.62 V",
+    "margin": -0.04200000000000005,
+    "value": 0.062000000000000055
+   }
+  },
+  {
+   "limits": {
+    "max": 5.0
+   },
+   "name": "row4_p99_abs_dt",
+   "note": "spec row 4 target +-5 C; only 29 of 45 cells graded",
+   "status": "fail",
+   "unit": "C",
+   "worst_case": {
+    "corner_id": "ff 1.62 V 27 C",
+    "margin": -14.0,
+    "value": 19.0
+   }
+  },
+  {
+   "limits": {
+    "max": 100.0
+   },
+   "name": "row7_active_power_osc_only",
+   "note": "oscillator only; COUNTER POWER NOT COVERED; 219 of 225 cells graded",
+   "status": "fail",
+   "unit": "uW",
+   "worst_case": {
+    "corner_id": "osc_wire|ff|1.98|-40",
+    "margin": -1640.22398,
+    "value": 1740.22398
+   }
+  },
+  {
+   "limits": {
+    "max": 1.0
+   },
+   "name": "row7_idle_power_osc_bank",
+   "note": "oscillator bank only; counter power NOT covered; the binding figure is a suspect osc_nmos DC point (see record); the verdict holds without it (osc_subth ungated bias alone is 1.8 uW at tt/1.80 V/27 C)",
+   "status": "fail",
+   "unit": "uW",
+   "worst_case": {
+    "corner_id": "sf|1.62|27",
+    "margin": -489.3361139672,
+    "value": 490.3361139672
+   }
+  }
+ ],
+ "method": "post-processing of #8 frequency surfaces (rows 1-4) plus klt sim power benches (row 7); SIMULATED, schematic-level, ngspice-46, sky130A",
+ "schema_version": 1,
+ "status": "fail",
+ "t1_item": 5
+}
