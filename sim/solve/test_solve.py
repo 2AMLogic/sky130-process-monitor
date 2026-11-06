@@ -68,5 +68,41 @@ class T(unittest.TestCase):
         self.assertEqual(S.grade_vs(None, "row4_T")["target"], "NOT GRADED")
 
 
+class TY(unittest.TestCase):
+    """yield_samples.py: synthetic MC at the binding cells; no simulator."""
+
+    @staticmethod
+    def fake_mc(sig, seed=3):
+        import random
+        rng = random.Random(seed)
+        tab = synth()
+        smp = {}
+        for (o, p, v, t), f in tab.items():
+            smp["%s|%s|%.2f|%d" % (o, p, v, t)] = [f * math.exp(rng.gauss(0, sig)) for _ in range(20)]
+        return tab, {"samples": smp}
+
+    def test_low_noise_in_limits_and_defect_control_degrades(self):
+        import yield_samples as Y
+        tab, mc = self.fake_mc(1e-4)
+        doc = Y.build(tab, mc, mc, 1, defect=0.5)
+        by = {m["name"]: m for m in doc["measurements"]}
+        self.assertEqual(len(by["row3_dV"]["samples"]), 20)
+        self.assertTrue(all(abs(x) < 0.02 for x in by["row3_dV"]["samples"]))
+        self.assertTrue(all(abs(x) < 5 for x in by["row4_dT"]["samples"]))
+        self.assertTrue(all(x > 0 for x in by["row2_margin_tt"]["samples"]))
+        # the seeded defect moves the row 3 estimate out of its limit
+        self.assertTrue(any(abs(x) > 0.02 for x in by["row3_dV"]["negative_control"]["samples"]))
+
+    def test_high_noise_fails_limits_and_missing_draw_is_null_not_imputed(self):
+        import yield_samples as Y
+        tab, mc = self.fake_mc(0.3)
+        doc = Y.build(tab, mc, mc, 1)
+        by = {m["name"]: m for m in doc["measurements"]}
+        self.assertTrue(any(abs(x) > 0.02 for x in by["row3_dV"]["samples"]))
+        mc["samples"]["osc_hd|tt|1.62|-40"][2] = None
+        r3, _ = Y.row3_samples(tab, mc, 1)
+        self.assertIsNone(r3[2])
+
+
 if __name__ == "__main__":
     unittest.main()

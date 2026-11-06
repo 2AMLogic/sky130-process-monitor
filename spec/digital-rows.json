@@ -1,0 +1,19 @@
+{
+  "document": "digital-partition rows of spec/target-spec.md (sections 5 and 6), as a machine-readable subset for klt signoff item 6",
+  "source": "spec/target-spec.md sections 5 (Readout) and 6 (Conversion time); no bound is edited here",
+  "status": "ratified",
+  "rows": [
+    {
+      "id": "5.readout",
+      "title": "Readout",
+      "target": "24-bit saturating counter, one oscillator selected at a time; programmable gate of 2^k reference-clock cycles, default 2^10; reference clock is an input to the block (target 10 MHz, tolerance +-100 ppm; fallback +-1000 ppm); outputs raw counts plus a status flag",
+      "testbench": "verification/readout/ (cocotb + Icarus): gate/count correctness, saturation, select"
+    },
+    {
+      "id": "6.conversion_time",
+      "title": "Conversion time",
+      "target": "full read of all oscillators < 1 ms (fallback < 10 ms, stretch < 100 us), at the target reference clock frequency",
+      "testbench": "verification/readout/ (cycle count) combined with sim/osc_bank/ (counts per gate)"
+    }
+  ]
+}
