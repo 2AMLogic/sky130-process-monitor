@@ -38,5 +38,5 @@ Per-cell sigma available for all five oscillators only at 1.62 V/125 C (osc_subt
 The margin at this cell rises (about +21 %) because every oscillator's off-nominal hot sigma is below its nominal pool except osc_pmos (1.13x). osc_subth dominates the noise; its hot sigma has n=10. The osc_hd ff artefact exclusion (PR #52 finding) changes the margin in the fourth digit only. **1.98 V/-40 C: not computed (osc_subth missing). The other seven (V,T) grid cells have no off-nominal MC and are unchanged.** The margin is a discrimination figure from the existing tool, not an estimate accuracy.
 
 ## 4. Run notes and tool friction
-- Both `--batch-set` and single-request polling kept polling a shard in terminal `interrupted` state (spot reclaim) until killed; it never reports or resubmits itself. To be filed generically at `2AMLogic/klayout-tools` (tool gap: wait loop on a terminal-interrupted job).
+- Both `--batch-set` and single-request polling kept polling a shard in terminal `interrupted` state (spot reclaim) until killed; it never reports or resubmits itself. Filed generically as 2AMLogic/klayout-tools#5025.
 - Remainder: osc_subth 1.98 V/-40 C (10 samples/corner), then the cold-cell margin.
