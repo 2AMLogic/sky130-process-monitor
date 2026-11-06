@@ -32,7 +32,7 @@
     },
     "6.analog": {
       "file": "sim/solve/mc/yield-binding-cells.json",
-      "content_hash": "sha256:45e4f21316dbfda61430576454235f7cd48798865e5f0c67500d7b5b0a821de9"
+      "content_hash": "sha256:010002ae3f9c86372f2c89a9bc77d58b9aa014c18dfe590cb1dc4462bf913f2f"
     }
   }
 }

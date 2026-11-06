@@ -20,6 +20,7 @@ import gen_requests as G  # noqa: E402
 # (process, vdd, temp_c, row)
 CELLS = [(p, 1.98, 27) for p in G.PROCESS] + [("tt", 1.62, -40), ("ff", 1.62, 27)]
 N = {"osc_hd": 30, "osc_nmos": 30, "osc_pmos": 30, "osc_wire": 30, "osc_subth": 10}
+SPLIT_PER_CELL = ("osc_nmos", "osc_wire")
 SUBTH_TRAN = {"warm": ("10n 500u", 300), "cold": ("10n 4m", 1800)}
 
 
@@ -37,6 +38,10 @@ def request(osc, cells, tran=None, timeout=None):
 def all_requests():
     out = {}
     for osc in G.OSCS:
+        if osc in SPLIT_PER_CELL:  # the 7-unit jobs failed on the fleet (#31 record); one request per cell
+            for c in CELLS:
+                out["mc_bind_%s_%s_%gV_%gC.json" % (osc, c[0], c[1], c[2])] = request(osc, [c])
+            continue
         if osc != "osc_subth":
             out["mc_bind_%s.json" % osc] = request(osc, CELLS)
             continue
