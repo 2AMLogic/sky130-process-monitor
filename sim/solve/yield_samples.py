@@ -3,7 +3,7 @@
 SIMULATED, schematic-level, no silicon. Post-processing only: the draws are the mismatch-MC samples
 `klt sim` produced at the binding cells (sim/solve/gen_binding_mc.py); nothing is simulated here.
 
-    yield_samples.py build freq.json mc_nominal.json mc_bind.json -o samples.json [--seed S] [--defect D]
+    yield_samples.py build freq.json mc_nominal.json mc_bind.json -o samples.json [--seed S] [--defect D] [--defect-osc OSC]
 
   freq.json        analyze.py extract of the #8 grid reports (the nominal surfaces / model data)
   mc_nominal.json  analyze.py extract-mc of the #8 nominal-cell MC reports (calibration read for row 4)
@@ -43,6 +43,7 @@ LIMITS = {"row3": {"min": -0.020, "max": 0.020, "target_yield": 0.99},
           "row2": {"min": 0.0, "exclusive_min": True, "target_yield": 0.99}}
 CELLS = {"row2": (1.98, 27), "row3": ("tt", 1.62, -40), "row4": ("ff", 1.62, 27)}
 DEFECT = 0.05
+DEFECT_OSC = "osc_hd"   # oscillator carrying the seeded negative-control defect (--defect-osc)
 
 
 def cell_samples(mc, osc, p, v, t):
@@ -73,7 +74,7 @@ def draws(tab, mc, oscs, p, v, t, rng, defect=0.0):
         rd = {}
         for o in oscs:
             f = sam[o][k]
-            rd[o] = math.log(f) + rng.gauss(0, A.sigma_quant(f)) + (defect if o == "osc_hd" else 0.0)
+            rd[o] = math.log(f) + rng.gauss(0, A.sigma_quant(f)) + (defect if o == DEFECT_OSC else 0.0)
         out.append(rd)
     return out, sg, n
 
@@ -169,19 +170,19 @@ def build(tab, mc_nom, mc_bind, seed, defect=DEFECT):
         for p in A.PROCESS:
             ms.append({"name": "row2_margin_%s" % p, "spec_row": "2", "unit": "whitened d^2 margin",
                        "samples": r2[p], "limits": LIMITS["row2"],
-                       "negative_control": {"samples": r2b[p], "description": "seeded defect: +%g on ln f of osc_hd" % defect}})
+                       "negative_control": {"samples": r2b[p], "description": "seeded defect: +%g on ln f of %s" % (defect, DEFECT_OSC)}})
     r3, o3 = row3_samples(tab, mc_bind, seed)
     r3b, _ = row3_samples(tab, mc_bind, seed, defect)
     meta["row3"] = {"cell": "tt @ 1.62 V / -40 C", "oscillators": o3}
     if r3:
         ms.append({"name": "row3_dV", "spec_row": "3", "unit": "V", "samples": r3, "limits": LIMITS["row3"],
-                   "negative_control": {"samples": r3b, "description": "seeded defect: +%g on ln f of osc_hd" % defect}})
+                   "negative_control": {"samples": r3b, "description": "seeded defect: +%g on ln f of %s" % (defect, DEFECT_OSC)}})
     r4, o4 = row4_samples(tab, mc_bind, mc_nom, seed)
     r4b, _ = row4_samples(tab, mc_bind, mc_nom, seed, defect)
     meta["row4"] = {"cell": "ff @ 1.62 V / 27 C (cal at 1.80 V / 27 C)", "oscillators": o4}
     if r4:
         ms.append({"name": "row4_dT", "spec_row": "4", "unit": "C", "samples": r4, "limits": LIMITS["row4"],
-                   "negative_control": {"samples": r4b, "description": "seeded defect: +%g on ln f of osc_hd" % defect}})
+                   "negative_control": {"samples": r4b, "description": "seeded defect: +%g on ln f of %s" % (defect, DEFECT_OSC)}})
     return {"kind": "SIMULATED", "measurements": ms,
             "provenance": {"seed": seed, "rng": "ngspice-46 mismatch MC via klt sim (fleet); python random for reading noise",
                            "corner_matrix": ["tt", "ff", "ss", "sf", "fs"]},
@@ -199,7 +200,9 @@ def main(argv):
             del a[i:i + 2]
             return type(default)(v) if default is not None else v
         return default
+    global DEFECT_OSC
     out, seed, defect = opt("-o", None), opt("--seed", 20261105), opt("--defect", DEFECT)
+    DEFECT_OSC = opt("--defect-osc", DEFECT_OSC)
     tab = A.table(json.load(open(a[1]))["rows"])
     doc = build(tab, json.load(open(a[2])), json.load(open(a[3])), seed, defect)
     if out:
