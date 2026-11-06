@@ -10,6 +10,7 @@
   "t1_item_count": 22,
   "build_t1_item_count": 22,
   "t1_met_count": 3,
+  "t1_not_applicable_count": 1,
   "source_doc": "manifests/design-evidence-tiers.md",
   "source_doc_content_hash": "sha256:c7a1e7e10627fae396007e0ff951734f37d95028b8f49f2e21e802e9f552f318",
   "build": {
@@ -189,7 +190,7 @@
       "text": "any accuracy, offset, or matching spec row is statistical; a corner matrix (or STA corner sweep) cannot validate it. This applies to whichever spec rows are actually statistical, regardless of block kind \u2014 most digital spec rows (functional correctness, Fmax, timing closure) are not, and a block whose spec has no statistical row must say so explicitly rather than omit the item. Where it does apply, MC runs need a recorded seed, sample count, a deterministic negative control, and results combined with (not instead of) process corners (#344). A `klt yield` JSON report \u2014 a yield estimate with its confidence interval, sample-size verdict, and Cpk/sigma-to-spec against the row's own limits \u2014 is the machine-checkable evidence for this item (`klt signoff`'s tier-verdict mode grades it the same way it grades the deterministic items above).",
       "notes": [],
       "status": "unmet",
-      "reason": "no_evidence",
+      "reason": "check_failed",
       "graded_by_build": true,
       "citation": null
     },
@@ -201,10 +202,34 @@
       "partition_boundary": "Enable/select logic, the counter-based frequency readout against an external reference clock, and the readout interface.",
       "text": "any accuracy, offset, or matching spec row is statistical; a corner matrix (or STA corner sweep) cannot validate it. This applies to whichever spec rows are actually statistical, regardless of block kind \u2014 most digital spec rows (functional correctness, Fmax, timing closure) are not, and a block whose spec has no statistical row must say so explicitly rather than omit the item. Where it does apply, MC runs need a recorded seed, sample count, a deterministic negative control, and results combined with (not instead of) process corners (#344). A `klt yield` JSON report \u2014 a yield estimate with its confidence interval, sample-size verdict, and Cpk/sigma-to-spec against the row's own limits \u2014 is the machine-checkable evidence for this item (`klt signoff`'s tier-verdict mode grades it the same way it grades the deterministic items above).",
       "notes": [],
-      "status": "unmet",
-      "reason": "no_evidence",
+      "status": "not_applicable",
+      "reason": null,
       "graded_by_build": true,
-      "citation": null
+      "citation": null,
+      "not_applicable": {
+        "spec": {
+          "file": "spec/digital-rows.json",
+          "content_hash": "sha256:07ad2c7a8269474d4081800d53baa94650c79d46272e484d36d58123c6ddf66f",
+          "status": "ratified",
+          "row_count": 2
+        },
+        "statement": {
+          "file": "verification/readout/not-statistical.json",
+          "content_hash": "sha256:f2eabab6e79ca3cebf5ee244593dd101cc273dd7cd8d2e0118eec88a3c787c3d",
+          "rows": [
+            {
+              "id": "5.readout",
+              "class": "deterministic-functional",
+              "reason": "Counter behaviour is a deterministic synchronous function of the gate length, the select input and the oscillator edge stream: gate/count correctness, saturation and select are pass/fail checks on a cycle-accurate model with no random process input. The reference clock is an input to the block with a stated tolerance requirement; the block neither generates nor varies it."
+            },
+            {
+              "id": "6.conversion_time",
+              "class": "deterministic-cycle-count",
+              "reason": "Conversion time is the number of reference-clock cycles of a fixed sequence (oscillators read one after another, each for 2^k cycles plus a fixed overhead) divided by the reference frequency: an exact arithmetic result of the design, with no spread to estimate. The oscillator-frequency dependence enters only through counts per gate, which the analog partition's rows cover."
+            }
+          ]
+        }
+      }
     },
     {
       "tier": "T1",

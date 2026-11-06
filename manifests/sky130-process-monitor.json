@@ -17,6 +17,22 @@
     "5.analog": {
       "file": "evidence/item5_analog.json",
       "content_hash": "sha256:8103130d068c67ede6e552fcfc45f605d4ad8533d8392e4d73ce56218084ae45"
+    },
+    "6.digital": {
+      "not_applicable": {
+        "spec": {
+          "file": "spec/digital-rows.json",
+          "content_hash": "sha256:07ad2c7a8269474d4081800d53baa94650c79d46272e484d36d58123c6ddf66f"
+        },
+        "statement": {
+          "file": "verification/readout/not-statistical.json",
+          "content_hash": "sha256:f2eabab6e79ca3cebf5ee244593dd101cc273dd7cd8d2e0118eec88a3c787c3d"
+        }
+      }
+    },
+    "6.analog": {
+      "file": "sim/solve/mc/yield-binding-cells.json",
+      "content_hash": "sha256:45e4f21316dbfda61430576454235f7cd48798865e5f0c67500d7b5b0a821de9"
     }
   }
 }

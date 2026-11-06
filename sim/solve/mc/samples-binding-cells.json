@@ -1,0 +1,340 @@
+{
+ "kind": "SIMULATED",
+ "measurements": [
+  {
+   "name": "row2_margin_tt",
+   "spec_row": "2",
+   "unit": "whitened d^2 margin",
+   "samples": [
+    118.640821,
+    123.662983,
+    113.030318,
+    110.302488,
+    109.726449,
+    124.817852,
+    120.832349,
+    59.370432,
+    123.68908,
+    89.64947
+   ],
+   "limits": {
+    "min": 0.0,
+    "exclusive_min": true,
+    "target_yield": 0.99
+   },
+   "negative_control": {
+    "samples": [
+     6.271793,
+     13.097661,
+     1.238935,
+     9.756126,
+     -2.817837,
+     30.698046,
+     14.378258,
+     23.005482,
+     12.755997,
+     -34.581596
+    ],
+    "description": "seeded defect: +0.05 on ln f of osc_hd"
+   }
+  },
+  {
+   "name": "row2_margin_ff",
+   "spec_row": "2",
+   "unit": "whitened d^2 margin",
+   "samples": [
+    -160.702269,
+    -181.397451,
+    -140.14535,
+    -147.435029,
+    -185.501952,
+    -203.716003,
+    -209.126517,
+    -182.843466,
+    -191.709331,
+    -174.432254
+   ],
+   "limits": {
+    "min": 0.0,
+    "exclusive_min": true,
+    "target_yield": 0.99
+   },
+   "negative_control": {
+    "samples": [
+     -26.182512,
+     -38.014737,
+     -23.991638,
+     -33.474394,
+     -40.211627,
+     -58.353745,
+     -63.976211,
+     -37.318647,
+     -46.354711,
+     -29.268284
+    ],
+    "description": "seeded defect: +0.05 on ln f of osc_hd"
+   }
+  },
+  {
+   "name": "row2_margin_ss",
+   "spec_row": "2",
+   "unit": "whitened d^2 margin",
+   "samples": [
+    12.982974,
+    51.400182,
+    22.175999,
+    58.307348,
+    49.345025,
+    57.427977,
+    52.060493,
+    55.403988,
+    33.448007,
+    44.057824
+   ],
+   "limits": {
+    "min": 0.0,
+    "exclusive_min": true,
+    "target_yield": 0.99
+   },
+   "negative_control": {
+    "samples": [
+     -27.051237,
+     9.703835,
+     -18.231797,
+     17.592907,
+     8.473066,
+     16.152902,
+     10.872247,
+     15.986212,
+     -8.679306,
+     3.385725
+    ],
+    "description": "seeded defect: +0.05 on ln f of osc_hd"
+   }
+  },
+  {
+   "name": "row2_margin_sf",
+   "spec_row": "2",
+   "unit": "whitened d^2 margin",
+   "samples": [
+    44.462151,
+    17.470762,
+    41.169219,
+    35.862368,
+    59.145624,
+    20.473752,
+    21.606291,
+    22.879594,
+    35.673793,
+    33.539816
+   ],
+   "limits": {
+    "min": 0.0,
+    "exclusive_min": true,
+    "target_yield": 0.99
+   },
+   "negative_control": {
+    "samples": [
+     76.036842,
+     48.113918,
+     71.499721,
+     72.204377,
+     90.677477,
+     52.31926,
+     50.41685,
+     54.061816,
+     68.021249,
+     63.847232
+    ],
+    "description": "seeded defect: +0.05 on ln f of osc_hd"
+   }
+  },
+  {
+   "name": "row2_margin_fs",
+   "spec_row": "2",
+   "unit": "whitened d^2 margin",
+   "samples": [
+    -64.991451,
+    -77.272197,
+    -83.941976,
+    -79.65629,
+    -87.186916,
+    -74.256437,
+    -77.563743,
+    -85.160978,
+    -96.586683,
+    -75.463232
+   ],
+   "limits": {
+    "min": 0.0,
+    "exclusive_min": true,
+    "target_yield": 0.99
+   },
+   "negative_control": {
+    "samples": [
+     -8.458297,
+     4.289532,
+     6.213608,
+     1.769779,
+     10.088534,
+     2.478981,
+     -0.218284,
+     9.376874,
+     12.290319,
+     3.117063
+    ],
+    "description": "seeded defect: +0.05 on ln f of osc_hd"
+   }
+  },
+  {
+   "name": "row3_dV",
+   "spec_row": "3",
+   "unit": "V",
+   "samples": [
+    -0.054,
+    -0.002,
+    -0.058,
+    -0.058,
+    0.0,
+    -0.056,
+    -0.06,
+    0.0,
+    0.002,
+    -0.002,
+    0.004,
+    -0.058,
+    -0.056,
+    -0.004,
+    -0.06,
+    0.0,
+    -0.056,
+    -0.058,
+    0.0,
+    -0.004,
+    -0.058,
+    -0.002,
+    0.0,
+    -0.002,
+    -0.002,
+    -0.058,
+    0.0,
+    -0.056,
+    0.004,
+    0.006
+   ],
+   "limits": {
+    "min": -0.02,
+    "max": 0.02,
+    "target_yield": 0.99
+   },
+   "negative_control": {
+    "samples": [
+     -0.042,
+     -0.048,
+     -0.046,
+     -0.046,
+     -0.048,
+     -0.046,
+     0.006,
+     -0.048,
+     -0.044,
+     -0.048,
+     -0.04,
+     -0.046,
+     -0.046,
+     0.004,
+     -0.048,
+     -0.048,
+     -0.044,
+     -0.046,
+     -0.048,
+     0.004,
+     -0.046,
+     0.006,
+     -0.046,
+     0.006,
+     -0.048,
+     -0.046,
+     -0.046,
+     -0.044,
+     -0.042,
+     -0.038
+    ],
+    "description": "seeded defect: +0.05 on ln f of osc_hd"
+   }
+  },
+  {
+   "name": "row4_dT",
+   "spec_row": "4",
+   "unit": "C",
+   "samples": [
+    60.5,
+    59.5,
+    57.0,
+    58.5,
+    55.5,
+    64.0,
+    60.5,
+    58.0,
+    55.5,
+    58.5
+   ],
+   "limits": {
+    "min": -5.0,
+    "max": 5.0,
+    "target_yield": 0.99
+   },
+   "negative_control": {
+    "samples": [
+     60.5,
+     59.5,
+     57.0,
+     58.5,
+     55.5,
+     64.0,
+     60.5,
+     58.0,
+     55.5,
+     58.5
+    ],
+    "description": "seeded defect: +0.05 on ln f of osc_hd"
+   }
+  }
+ ],
+ "provenance": {
+  "seed": 20261105,
+  "rng": "ngspice-46 mismatch MC via klt sim (fleet); python random for reading noise",
+  "corner_matrix": [
+   "tt",
+   "ff",
+   "ss",
+   "sf",
+   "fs"
+  ]
+ },
+ "cells": {
+  "row2": {
+   "cell": "all 5 corners @ 1.98 V / 27 C",
+   "oscillators": [
+    "osc_hd",
+    "osc_pmos",
+    "osc_subth"
+   ]
+  },
+  "row3": {
+   "cell": "tt @ 1.62 V / -40 C",
+   "oscillators": [
+    "osc_hd",
+    "osc_pmos"
+   ]
+  },
+  "row4": {
+   "cell": "ff @ 1.62 V / 27 C (cal at 1.80 V / 27 C)",
+   "oscillators": [
+    "osc_hd",
+    "osc_pmos",
+    "osc_subth"
+   ]
+  }
+ }
+}
