@@ -5,6 +5,9 @@ role. Newest first.
 
 ### 2026-11-06
 
+- **PR #69**: docs(sim): fill osc_wire sf cold cell with relaxed solver options and record the 1.98 V/-40 C margin
+- **PR #68**: feat(sim): chunked sized-MC request generator and first osc_subth n=50 chunk
+- **Issue #48** (closed): sim: run mismatch MC at the off-nominal (V,T) cells and explain osc_hd ff zero spread
 - **PR #66**: feat(sim): complete nmos/wire binding-cell MC and rerun klt yield on the full bank
 - **PR #65**: docs(sim): cold-cell sf osc_subth grid and MC on the fleet; osc_wire sf still missing
 - **PR #64**: refactor(sim): derive power-bench box and windows from the sensitivity generator
