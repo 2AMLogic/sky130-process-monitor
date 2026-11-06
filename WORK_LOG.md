@@ -5,6 +5,13 @@ role. Newest first.
 
 ### 2026-11-06
 
+- **PR #66**: feat(sim): complete nmos/wire binding-cell MC and rerun klt yield on the full bank
+- **PR #65**: docs(sim): cold-cell sf osc_subth grid and MC on the fleet; osc_wire sf still missing
+- **PR #64**: refactor(sim): derive power-bench box and windows from the sensitivity generator
+- **Issue #59** (closed): Dedupe sim/power/gen_requests.py: PVT box and windows hand-copied from the sensitivity generator
+- **PR #63**: docs(sim): cold-cell osc_subth off-nominal MC record (Part of #48)
+- **PR #62**: docs(sim): record off-nominal MC for osc_nmos and osc_wire and hot-cell margin
+- **PR #61**: feat: yield samples and klt yield evidence for rows 2-4 binding cells; digital not-applicable statement
 - **PR #58**: feat(sim): complete row 7 power coverage and cite 5.analog as a failing model-run
 - **Issue #29** (closed): T1 item 5 (corner verification, analog): sim/solve estimation benches graded over the 45-cell PVT box as klt sim envelopes for rows 1-4 and 7
 
