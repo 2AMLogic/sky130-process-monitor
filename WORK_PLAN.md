@@ -19,6 +19,7 @@ _None._
 
 `loom:important`; taken before unlabelled work.
 
+- **#16**: Readout RTL: 24-bit saturating gated counter and register file, with cocotb tests in verification/readout/
 - **#22**: T1 item 1 (design sources): synthesized readout netlist plus item-1 attestation covering both partitions
 
 ## Ready
@@ -32,6 +33,7 @@ _None._
 Issues currently being built (`loom:building`).
 
 - **#16**: Readout RTL: 24-bit saturating gated counter and register file, with cocotb tests in verification/readout/
+- **#31**: T1 item 6 (Monte Carlo): klt yield evidence for the matching-dependent rows 2-4, and a not-applicable statement for the digital partition
 - **#48**: sim: run mismatch MC at the off-nominal (V,T) cells and explain osc_hd ff zero spread
 
 ## PRs Awaiting Review
@@ -53,6 +55,7 @@ Issues carrying `loom:curated`.
 - **#5**: Track the gap to T1 (klayout-tools design-evidence-tiers.md) *(curated)*
 - **#16**: Readout RTL: 24-bit saturating gated counter and register file, with cocotb tests in verification/readout/ *(curated)*
 - **#27**: T1 item 9 (testbenches shipped): testbench inventories and klt signoff --attest 9 for both partitions *(curated)*
+- **#31**: T1 item 6 (Monte Carlo): klt yield evidence for the matching-dependent rows 2-4, and a not-applicable statement for the digital partition *(curated)*
 - **#44**: Follow-on from PR #43: subthreshold Q2 bench follow-ups (cold-cell re-run, pfet S(T) reference, leakage floor) *(curated)*
 - **#48**: sim: run mismatch MC at the off-nominal (V,T) cells and explain osc_hd ff zero spread *(curated)*
 
@@ -72,12 +75,12 @@ _None._
 |------|-------|
 | Operator merge-risk holds | 1 |
 | Very important | 0 |
-| Important | 1 |
+| Important | 2 |
 | Ready (`loom:issue`) | 0 |
-| In Progress (`loom:building`) | 2 |
+| In Progress (`loom:building`) | 3 |
 | PRs awaiting review | 0 |
 | Approved PRs awaiting merge | 1 |
-| Curated | 5 |
+| Curated | 6 |
 | Architect / Hermit proposals | 0 |
 | Active epics | 0 |
 <!-- guide:plan-body:end -->
