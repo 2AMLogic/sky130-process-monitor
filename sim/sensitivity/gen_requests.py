@@ -131,10 +131,36 @@ def hd_5p_requests():
     return {"grid_osc_hd_5p.json": g, "mc_osc_hd_5p.json": m, "mc_offnom_osc_hd_5p.json": o}
 
 
+# Cold-cell completion (issue #48): the 1.98 V/-40 C sf grid cells for osc_subth / osc_wire were missing from
+# the 2026-11-05 grid (sf osc_subth shows <2.5 kHz, i.e. fewer than 5 cycles in 2 ms; osc_wire hit
+# `timestep too small`), and the sf osc_subth MC samples were all lost to the 2 ms window. These are new
+# requests under new names; the existing requests are never rewritten with these.
+COLD = (1.98, -40)
+COLD_SF_SUBTH_TRAN = "10n 10m"
+COLD_SF_WIRE_TRAN = "50p 2.5u 0 20p"  # tmax capped at 20 ps (the 2.5u grid request used the default step)
+
+
+def cold_sf_requests():
+    """name -> request for the sf cold-cell grid points (osc_subth, osc_wire) and the osc_subth sf cold MC."""
+    v, t = COLD
+    unit = [{"process": "sf", "temperature_c": t, "supply_v": {"vdd": v}}]
+    g_sub = base("osc_subth", COLD_SF_SUBTH_TRAN, OSCS["osc_subth"][1])
+    g_sub["options"]["timeout_s"] = 3480  # fleet whole-job ceiling is 3600 s
+    g_sub["corners"] = {"units": unit}
+    g_wire = base("osc_wire", COLD_SF_WIRE_TRAN, OSCS["osc_wire"][1])
+    g_wire["corners"] = {"units": unit}
+    m_sub = mc_offnom("osc_subth", "", OSCS["osc_subth"][1], subth_cell=COLD)
+    m_sub["analysis"]["args"] = COLD_SF_SUBTH_TRAN
+    m_sub["options"]["timeout_s"] = 3480  # fleet whole-job ceiling is 3600 s
+    m_sub["corners"] = {"units": unit}
+    return {"grid_osc_subth_sf_cold.json": g_sub, "grid_osc_wire_sf_cold.json": g_wire,
+            "mc_offnom_osc_subth_sf_1.98V_-40C.json": m_sub}
+
+
 if __name__ == "__main__":
     out = os.path.join(HERE, "requests")
     os.makedirs(out, exist_ok=True)
-    for name, req in hd_5p_requests().items():
+    for name, req in list(hd_5p_requests().items()) + list(cold_sf_requests().items()):
         with open(os.path.join(out, name), "w") as f:
             json.dump(req, f, indent=2)
             f.write("\n")
