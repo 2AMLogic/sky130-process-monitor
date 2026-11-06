@@ -65,7 +65,7 @@
         "command": null,
         "kind": "generic",
         "check_status": "pass",
-        "content_hash": "sha256:f217bf53e3525953972d1e421b739caa872fb3d46d9ac01b24785db36faf7647",
+        "content_hash": "sha256:e232410292afbd32db39286b1d7862c9f577ebeeaff489fa9ba2ff1656c37d9e",
         "input_verified": true,
         "exit_status": 0,
         "artifact_binding": {
@@ -74,13 +74,13 @@
             "path": "layout/osc_bank.gds",
             "scope": "repo"
           },
-          "content_hash": "sha256:f217bf53e3525953972d1e421b739caa872fb3d46d9ac01b24785db36faf7647",
+          "content_hash": "sha256:e232410292afbd32db39286b1d7862c9f577ebeeaff489fa9ba2ff1656c37d9e",
           "input_verified": true,
           "summary": "T1 item 2 (Layout, analog): layout/osc_bank.gds regenerated from layout/gen/gen_osc_bank.py byte-identically; net-connectivity sanity check passes. Simulated/derived planning geometry, not DRC- or LVS-checked.",
           "source": "layout/osc_bank.gds",
           "regeneration": {
             "generator": "python3 layout/gen/gen_osc_bank.py -o <scratch>/osc_bank.gds",
-            "regenerated_hash": "sha256:f217bf53e3525953972d1e421b739caa872fb3d46d9ac01b24785db36faf7647",
+            "regenerated_hash": "sha256:e232410292afbd32db39286b1d7862c9f577ebeeaff489fa9ba2ff1656c37d9e",
             "executed_by_klt": false
           }
         }

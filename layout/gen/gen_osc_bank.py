@@ -46,8 +46,8 @@ STG_GAP = 400
 YN0 = 600          # nfet diff bottom
 GAP = 1900         # reference nfet top -> pfet bottom
 Y_BUS, Y_PADB, Y_OUT, Y_IN = 300, 400, 800, 1400   # gap levels above the reference nfet top
-SERP_N, SERP_PITCH = 8, 280
-SERP_ROW = 3000
+SERP_N, SERP_PITCH = 12, 300      # runs per serpentine; centre pitch (met1 space 160 nm vs 140 nm rule)
+SERP_GAP = 700                    # clear gap between one serpentine's last run and the next row's feed
 
 
 class Ctx:
@@ -262,22 +262,33 @@ def build_custom(ctx, name, sts, wire=False, vbp=False):
         ctx.m2_v(cell, pbx, pby, yret)
         return cell, xmax, yret
 
-    # osc_wire: one met1 serpentine (W 140 nm, centreline 1000 um) per stage output
+    # osc_wire: one met1 serpentine (W 140 nm, centreline 1000 um) per stage output.
+    # The band sits under the stage column (not beside it). Each serpentine's two ends are
+    # brought out on met2 to a feed column xL at the band's left edge, left of every stage x,
+    # so a feed never crosses a serpentine run. Rows run top to bottom in stage order.
     seg = (1_000_000 - (SERP_N - 1) * SERP_PITCH) // SERP_N
-    xS = xmax + 4000
     xout = xmax + 1500
     links = []
     for i, g in enumerate(geo):
         a = (g["xd"], YREF + Y_OUT)
         b = geo[i + 1]["pads"]["in"] if i + 1 < len(geo) else (xout, None)
         links.append((a, b))
+    xmin = min(min(a[0], b[0]) for a, b in links)
+    xL = min(xmin, 0) - 600
+    xS = xL + 600
+    # stage x must increase with the row index, else an m2 feed would cross another row's
+    xs_a = [a[0] for a, b in links]
+    xs_b = [b[0] for a, b in links]
+    assert xs_a == sorted(xs_a) and xs_b == sorted(xs_b) and all(p < q for p, q in zip(xs_a, xs_b))
+    ROW = (SERP_N - 1) * SERP_PITCH + SERP_GAP
     for j, (a, b) in enumerate(links):
-        yc0 = -2000 - j * SERP_ROW
+        yc0 = -2000 - j * ROW
         ctx.mcon_pad(cell, a[0], a[1])
         ctx.via_pad(cell, a[0], a[1])
         ctx.m2_v(cell, a[0], a[1], yc0)
-        ctx.via_pad(cell, a[0], yc0)
-        ctx.m1_h(cell, yc0, a[0], xS)
+        ctx.m2_h(cell, yc0, xL, a[0])
+        ctx.via_pad(cell, xL, yc0)
+        ctx.m1_h(cell, yc0, xL, xS)
         for s in range(SERP_N):
             yy = yc0 - s * SERP_PITCH
             ctx.rect(cell, "met1", xS, yy - 70, xS + seg, yy + 70)
@@ -285,10 +296,13 @@ def build_custom(ctx, name, sts, wire=False, vbp=False):
                 xj = xS + seg if s % 2 == 0 else xS
                 ctx.rect(cell, "met1", xj - 70, yy - SERP_PITCH - 70, xj + 70, yy + 70)
         ybe = yc0 - (SERP_N - 1) * SERP_PITCH
-        ctx.m1_h(cell, ybe, b[0], xS)
-        ctx.via_pad(cell, b[0], ybe)
+        # odd run count ends on the right edge; even (SERP_N) ends back on the left edge
+        assert SERP_N % 2 == 0
+        ctx.m1_h(cell, ybe, xL, xS)
+        ctx.via_pad(cell, xL, ybe)
+        ctx.m2_h(cell, ybe, xL, b[0])
         if b[1] is None:
-            ctx.label(cell, b[0], ybe, "out")
+            ctx.label(cell, xL, ybe, "out")
             ctx.m2_v(cell, b[0], ybe, yret)
             ctx.m2_h(cell, yret, pbx, b[0])
             ctx.m2_v(cell, pbx, pby, yret)
@@ -296,7 +310,7 @@ def build_custom(ctx, name, sts, wire=False, vbp=False):
             ctx.m2_v(cell, b[0], ybe, b[1])
             ctx.mcon_pad(cell, b[0], b[1])
             ctx.via_pad(cell, b[0], b[1])
-    return cell, xS + seg, yret
+    return cell, max(xmax, xS + seg), yret
 
 
 # ------------------------------- osc_hd (PDK cells) --------------------------------

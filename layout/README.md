@@ -39,17 +39,28 @@ Footprint = bounding box of the cell (includes port stubs and, for `osc_wire`, t
 | `osc_hd` | 45.5 × 3.2 | 145 |
 | `osc_nmos` | 84.8 × 8.8 | 742 |
 | `osc_pmos` | 84.8 × 11.3 | 961 |
-| `osc_wire` | 202.3 × 114.8 | 23 212 |
+| `osc_wire` | 83.9 × 146.1 | 12 257 |
 | `osc_subth` | 53.1 × 6.6 | 350 |
-| **Sum of footprints** | | **25 410 µm² = 0.0254 mm²** |
+| **Sum of footprints** | | **14 457 µm² = 0.0145 mm²** |
 
 Against spec §8 (≤ 0.02 mm² for the **whole** block, fallback ≤ 0.05 mm²): the oscillators alone,
-as laid out here, are 127 % of the target budget and 51 % of the fallback, before any readout
-(#24). **This issue does not pass/fail §8**; it records the oscillator share. The driver is
-`osc_wire`: 31 serpentines of 1000 µm × 0.14 µm at a 0.28 µm pitch cannot occupy less than
-about 31 × 280 µm² ≈ 0.0087 mm² of met1 even if packed perfectly, and this generator's loose
-packing (3 µm row pitch, one stage-aligned column) uses 0.0232 mm². Whether the 1000 µm wire
-length is affordable is a spec question for a decision record, not something this issue changes.
+as laid out here, are 72 % of the target budget and 29 % of the fallback, before any readout
+(#24). **This issue does not pass/fail §8**; it records the oscillator share. `osc_wire` was
+23 212 µm² before the repack (202.3 × 114.8 µm); it is now 12 257 µm², 47 % smaller. All figures
+are derived from the committed stream (`klt stats --top <cell> layout/osc_bank.gds`, summed by
+hand); none is measured, and none is DRC- or LVS-checked.
+
+**What limits `osc_wire` now.** The met1 floor is 31 × 1000 µm × 0.28 µm pitch ≈ 8 680 µm²
+(0.0087 mm²); the cell is 1.41× that, 3 580 µm² over. Rough split (derived by arithmetic from the
+generator constants and the 83.9 µm width, not separately measured): the 0.70 µm clear gap between
+serpentine rows costs ≈ 1 800 µm²; the stage column plus the 2 µm lead-in above the band costs
+≈ 1 900 µm² (the band sits below the stage devices, so their height adds to the box instead of
+overlapping it); the 0.30 µm run pitch, chosen to leave 0.16 µm of met1 space against the
+0.14 µm rule, costs ≈ 600 µm² against a 0.28 µm pitch. Feed stubs are a narrow met1/met2 column at the
+band's left edge and add little. Each serpentine's two ends go out on met2 to that column, so no
+feed crosses a run. Closing the gap would mean pitch exactly at the rule, a tighter row gap, or
+interleaving serpentines; each gives up margin that DRC (#25) should judge first. The 1000 µm
+wire length is unchanged.
 
 The five-corner/PVT behaviour of this layout is untested: no parasitics are extracted (#32), so
 the #17 frequencies do not apply to this layout.
