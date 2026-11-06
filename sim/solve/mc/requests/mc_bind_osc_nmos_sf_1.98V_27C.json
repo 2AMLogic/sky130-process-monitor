@@ -35,52 +35,10 @@
   "corners": {
     "units": [
       {
-        "process": "tt",
-        "temperature_c": 27,
-        "supply_v": {
-          "vdd": 1.98
-        }
-      },
-      {
-        "process": "ff",
-        "temperature_c": 27,
-        "supply_v": {
-          "vdd": 1.98
-        }
-      },
-      {
-        "process": "ss",
-        "temperature_c": 27,
-        "supply_v": {
-          "vdd": 1.98
-        }
-      },
-      {
         "process": "sf",
         "temperature_c": 27,
         "supply_v": {
           "vdd": 1.98
-        }
-      },
-      {
-        "process": "fs",
-        "temperature_c": 27,
-        "supply_v": {
-          "vdd": 1.98
-        }
-      },
-      {
-        "process": "tt",
-        "temperature_c": -40,
-        "supply_v": {
-          "vdd": 1.62
-        }
-      },
-      {
-        "process": "ff",
-        "temperature_c": 27,
-        "supply_v": {
-          "vdd": 1.62
         }
       }
     ]
