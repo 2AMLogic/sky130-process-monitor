@@ -52,6 +52,44 @@ def all_requests():
     return out
 
 
+# --- sized campaign (issue #31, rev. 2026-11-06): n >= 183 (rows 2, 4) per binding cell, chunked ---------
+# One request per (oscillator, cell, chunk) so an errored draw or a failed job loses one chunk only. Each
+# chunk has its own seed (SIZED_SEED + 1000 * chunk) so chunks are independent draws and pool by concatenation
+# (analyze.extract_mc appends per cell key). Requests live in sim/solve/mc/requests-sized/.
+SIZED_SEED = 20261106
+SIZED_CHUNK = 50
+SIZED_CHUNKS = 4   # 4 x 50 = 200 >= 183 (rows 2, 4 sample-size verdict at as-of 1f3e1a7)
+
+
+def sized_request(osc, cell, chunk, n=SIZED_CHUNK):
+    cold = cell[2] < 0
+    tran = timeout = None
+    if osc == "osc_subth":
+        tran, timeout = SUBTH_TRAN["cold" if cold else "warm"]
+    r = request(osc, [cell], tran, timeout)
+    r["monte_carlo"]["n"] = n
+    r["monte_carlo"]["seed"] = SIZED_SEED + 1000 * chunk
+    return r
+
+
+def sized_requests(oscs=None, chunks=SIZED_CHUNKS, cells=None, n=SIZED_CHUNK):
+    out = {}
+    for osc in oscs or list(G.OSCS):
+        for c in cells or CELLS:
+            for k in range(chunks):
+                out["mc_sized_%s_%s_%gV_%gC_c%d.json" % (osc, c[0], c[1], c[2], k)] = sized_request(osc, c, k, n)
+    return out
+
+
+if __name__ == "__main__" and "--sized" in sys.argv:
+    d = os.path.join(HERE, "mc", "requests-sized")
+    os.makedirs(d, exist_ok=True)
+    for name, req in sized_requests().items():
+        with open(os.path.join(d, name), "w") as f:
+            json.dump(req, f, indent=2)
+            f.write("\n")
+    sys.exit(0)
+
 if __name__ == "__main__":
     d = os.path.join(HERE, "mc", "requests")
     os.makedirs(d, exist_ok=True)

@@ -1,0 +1,53 @@
+{
+  "netlist": "../../../sensitivity/osc/tb_osc_nmos.spice",
+  "engine": "ngspice",
+  "models": {
+    "pdk": "sky130A",
+    "lib": "libs.tech/ngspice/sky130.lib.spice"
+  },
+  "analysis": {
+    "kind": "tran",
+    "args": "40p 250n"
+  },
+  "measurements": [
+    {
+      "name": "t_rise",
+      "unit": "s",
+      "crossings": {
+        "signal": "v(out)",
+        "level": {
+          "frac_of": "vdd",
+          "fraction": 0.5
+        },
+        "edge": "rise",
+        "max": 400
+      }
+    }
+  ],
+  "options": {
+    "timeout_s": 3000,
+    "retry_on_convergence_error": true
+  },
+  "batch": {
+    "job_ceiling_check": "warn"
+  },
+  "backend": "batch",
+  "corners": {
+    "units": [
+      {
+        "process": "tt",
+        "temperature_c": -40,
+        "supply_v": {
+          "vdd": 1.62
+        }
+      }
+    ]
+  },
+  "monte_carlo": {
+    "n": 50,
+    "seed": 20261106,
+    "vary": "mismatch",
+    "mismatch_scale": 1,
+    "seed_scope": "point"
+  }
+}
