@@ -10,23 +10,38 @@ Per oscillator, over the 45-cell box (5 corners x 3 V x 3 T):
 The testbench bodies are derived from the committed sensitivity benches (same oscillator netlists,
 same enable convention) so no second copy of the circuit exists. Multi-unit => batch fleet via `klt sim`.
 """
+import importlib.util
 import json
 import os
 import re
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 SENS = os.path.join(HERE, "..", "sensitivity")
-# (tstop in ns, tran step string) copied from sim/sensitivity/gen_requests.py windows
-WINDOWS = {
-    "osc_hd": (300, "10p"),
-    "osc_nmos": (800, "20p"),
-    "osc_pmos": (2500, "50p"),
-    "osc_wire": (2500, "50p"),
-    "osc_subth": (2000000, "20n"),
-}
-PROCESS = ["tt", "ff", "ss", "sf", "fs"]
-VDD = [1.62, 1.80, 1.98]
-TEMP = [-40, 27, 125]
+
+
+def _load_sensitivity():
+    """The corner box and windows are defined once, in the sensitivity generator. `python3 -I` drops the
+    script directory from sys.path, so load it by path."""
+    spec = importlib.util.spec_from_file_location("sens_gen_requests", os.path.join(SENS, "gen_requests.py"))
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    return mod
+
+
+_SENS_GEN = _load_sensitivity()
+PROCESS, VDD, TEMP = _SENS_GEN.PROCESS, _SENS_GEN.VDD, _SENS_GEN.TEMP
+_UNIT_NS = {"p": 1e-3, "n": 1.0, "u": 1e3, "m": 1e6}
+
+
+def _ns(tok):
+    return int(round(float(tok[:-1]) * _UNIT_NS[tok[-1]]))
+
+
+# osc -> (tstop in ns, tran step string), parsed from the sensitivity "tstep tstop" window strings
+WINDOWS = {}
+for _osc, (_tran, _cap) in _SENS_GEN.OSCS.items():
+    _step, _tstop = _tran.split()
+    WINDOWS[_osc] = (_ns(_tstop), _step)
 EN_RE = re.compile(r"^Ben en 0 .*$", re.M)
 # Oscillators whose first fleet run left a few -40 C cells with `timestep too small` / failed gmin stepping
 # (floating nodes with the ring gated off). A 1e12 ohm shunt on every node gives them a DC path; it adds ~2 pA per
@@ -50,13 +65,14 @@ def tb_text(osc, idle):
 
 def request(osc, idle):
     tstop_ns, step = WINDOWS[osc]
+    b = _SENS_GEN.base(osc, "%s %dn" % (step, tstop_ns), 0)
     r = {
         "netlist": "../tb/%s_%s.spice" % ("idle" if idle else "active", osc),
-        "engine": "ngspice",
-        "models": {"pdk": "sky130A", "lib": "libs.tech/ngspice/sky130.lib.spice"},
-        "options": {"timeout_s": 3000, "retry_on_convergence_error": True},
-        "batch": {"job_ceiling_check": "warn"},
-        "backend": "batch",
+        "engine": b["engine"],
+        "models": b["models"],
+        "options": b["options"],
+        "batch": b["batch"],
+        "backend": b["backend"],
         "corners": {"process": PROCESS, "supply_v": {"vdd": VDD}, "temperature_c": TEMP},
     }
     if idle:
