@@ -3,6 +3,11 @@
 Chronological record of merged PRs and closed issues, maintained by the Guide
 role. Newest first.
 
+### 2026-11-06
+
+- **PR #58**: feat(sim): complete row 7 power coverage and cite 5.analog as a failing model-run
+- **Issue #29** (closed): T1 item 5 (corner verification, analog): sim/solve estimation benches graded over the 45-cell PVT box as klt sim envelopes for rows 1-4 and 7
+
 ### 2026-11-05
 
 - **PR #56**: feat(sim): step-refined (5 ps) osc_hd grid and MC with coarse-vs-refined record

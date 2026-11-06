@@ -32,9 +32,7 @@ _None._
 Issues currently being built (`loom:building`).
 
 - **#16**: Readout RTL: 24-bit saturating gated counter and register file, with cocotb tests in verification/readout/
-- **#29**: T1 item 5 (corner verification, analog): sim/solve estimation benches graded over the 45-cell PVT box as klt sim envelopes for rows 1-4 and 7
 - **#48**: sim: run mismatch MC at the off-nominal (V,T) cells and explain osc_hd ff zero spread
-- **#54**: Follow-on from PR #52: step-refined osc_hd grid/MC (20 ps max-step bias)
 
 ## PRs Awaiting Review
 
@@ -55,10 +53,8 @@ Issues carrying `loom:curated`.
 - **#5**: Track the gap to T1 (klayout-tools design-evidence-tiers.md) *(curated)*
 - **#16**: Readout RTL: 24-bit saturating gated counter and register file, with cocotb tests in verification/readout/ *(curated)*
 - **#27**: T1 item 9 (testbenches shipped): testbench inventories and klt signoff --attest 9 for both partitions *(curated)*
-- **#29**: T1 item 5 (corner verification, analog): sim/solve estimation benches graded over the 45-cell PVT box as klt sim envelopes for rows 1-4 and 7 *(curated)*
 - **#44**: Follow-on from PR #43: subthreshold Q2 bench follow-ups (cold-cell re-run, pfet S(T) reference, leakage floor) *(curated)*
 - **#48**: sim: run mismatch MC at the off-nominal (V,T) cells and explain osc_hd ff zero spread *(curated)*
-- **#54**: Follow-on from PR #52: step-refined osc_hd grid/MC (20 ps max-step bias) *(curated)*
 
 ## Proposed (Architect / Hermit)
 
@@ -78,10 +74,10 @@ _None._
 | Very important | 0 |
 | Important | 1 |
 | Ready (`loom:issue`) | 0 |
-| In Progress (`loom:building`) | 4 |
+| In Progress (`loom:building`) | 2 |
 | PRs awaiting review | 0 |
 | Approved PRs awaiting merge | 1 |
-| Curated | 7 |
+| Curated | 5 |
 | Architect / Hermit proposals | 0 |
 | Active epics | 0 |
 <!-- guide:plan-body:end -->
