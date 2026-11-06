@@ -4,7 +4,8 @@
     python3 -I sim/sensitivity/gen_requests.py
 
 Per oscillator: requests/grid_<osc>.json  (5 corners x 3 V x 3 T = the 45-cell box, spec "PVT corner box")
-                requests/mc_<osc>.json    (mismatch Monte Carlo, 15 cells x N samples)
+                requests/mc_<osc>.json    (mismatch Monte Carlo, nominal 1.80 V/27 C cell, 5 corners x N samples;
+                                           off-nominal cells are requests/mc_offnom_*.json)
 Frequency is read from the rising-edge crossing times of v(out) at mid-rail (`crossings`), so
 the start-up skip and cycle count are chosen in analyze.py, not frozen into a .meas card.
 Submit with: klt sim --batch-set sim/sensitivity/requests/grid_*.json -o <dir> --report-out ...
@@ -65,21 +66,20 @@ def grid(osc, tran, cap):
 
 
 # osc_subth costs 50-420 s per unit (kHz-scale period), so its MC is scoped to fit a session
-# (host rule: scope the run, land it, file the remainder): one (V,T) cell, 20 samples, own window.
-SUBTH_MC = {"tran": "10n 500u", "vt": [(1.80, 27)], "n": 20, "timeout_s": 300}
+# (host rule: scope the run, land it, file the remainder): 20 samples and its own window/timeout.
+# The (V,T) cell is MC_VT for every oscillator.
+MC_OVERRIDE = {"osc_subth": {"tran": "10n 500u", "n": 20, "timeout_s": 300}}
 
 
 def mc(osc, tran, cap):
-    vt, n = MC_VT, MC_N
-    tran = MC_TRAN.get(osc, tran)
-    if osc == "osc_subth":
-        tran, vt, n = SUBTH_MC["tran"], SUBTH_MC["vt"], SUBTH_MC["n"]
+    ov = MC_OVERRIDE.get(osc, {})
+    tran = ov.get("tran", MC_TRAN.get(osc, tran))
+    n = ov.get("n", MC_N)
     r = base(osc, tran, cap)
-    if osc == "osc_subth":
-        r["options"]["timeout_s"] = SUBTH_MC["timeout_s"]
+    r["options"]["timeout_s"] = ov.get("timeout_s", r["options"]["timeout_s"])
     r["corners"] = {"units": [
         {"process": p, "temperature_c": t, "supply_v": {"vdd": v}}
-        for p in PROCESS for (v, t) in vt]}
+        for p in PROCESS for (v, t) in MC_VT]}
     # mismatch_scale=1 writes `.param mc_mm_switch=1` after the .lib (nominal sigma), per the spec.
     r["monte_carlo"] = {"n": n, "seed": MC_SEED, "vary": "mismatch", "mismatch_scale": 1,
                         "seed_scope": "point"}
