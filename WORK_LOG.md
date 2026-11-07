@@ -5,6 +5,10 @@ role. Newest first.
 
 ### 2026-11-06
 
+- **PR #77**: feat(layout): repack osc_wire serpentines under the stage column
+- **Issue #75** (closed): Pack the osc_wire serpentines toward the met1 area floor and record what limits them
+- **PR #76**: docs(sim): correct sensitivity MC coverage claim, collapse osc_subth override
+- **Issue #53** (closed): Fix sensitivity README MC coverage claim and collapse duplicated osc_subth override in gen_requests.py
 - **PR #73**: feat(sim): pool four-oscillator sized MC at row-2/4 cells and rerun klt yield at n=210
 - **PR #72**: feat(sim): pool sized osc_subth binding-cell MC and rerun klt yield with a registering negative control
 - **PR #69**: docs(sim): fill osc_wire sf cold cell with relaxed solver options and record the 1.98 V/-40 C margin
