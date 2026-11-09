@@ -58,7 +58,7 @@ Issues carrying `loom:curated`.
 ## Proposed (Architect / Hermit)
 
 
-_None._
+- **#71**: Stop committing 139 unrun, regenerable sized-MC request files (sim/solve/mc/requests-sized) *(hermit)*
 
 ## Epics
 
@@ -77,6 +77,6 @@ _None._
 | PRs awaiting review | 0 |
 | Approved PRs awaiting merge | 1 |
 | Curated | 4 |
-| Architect / Hermit proposals | 0 |
+| Architect / Hermit proposals | 1 |
 | Active epics | 0 |
 <!-- guide:plan-body:end -->
