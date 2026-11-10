@@ -1,0 +1,16 @@
+{
+  "schema": "klt.sta.request/1",
+  "def": "../layout/readout/out/readout.def",
+  "pdk": {
+    "cell_library": "sky130_fd_sc_hd",
+    "corners": [
+      "ss_100C_1v60",
+      "tt_025C_1v80",
+      "ff_n40C_1v95"
+    ]
+  },
+  "constraints": {
+    "clock_port": "clk_ref",
+    "clock_period_ns": 100.0
+  }
+}

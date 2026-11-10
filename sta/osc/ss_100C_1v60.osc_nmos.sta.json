@@ -1,0 +1,60 @@
+{
+  "schema": "klt.sta.request/1",
+  "def": "../../layout/readout/out/readout.def",
+  "pdk": {
+    "cell_library": "sky130_fd_sc_hd",
+    "corners": [
+      "ss_100C_1v60"
+    ]
+  },
+  "constraints": {
+    "clocks": [
+      {
+        "port": "clk_ref",
+        "period_ns": 100.0
+      },
+      {
+        "port": "osc[0]",
+        "period_ns": 9.0753
+      },
+      {
+        "port": "osc[1]",
+        "period_ns": 9.0753
+      },
+      {
+        "port": "osc[2]",
+        "period_ns": 9.0753
+      },
+      {
+        "port": "osc[3]",
+        "period_ns": 9.0753
+      },
+      {
+        "port": "osc[4]",
+        "period_ns": 9.0753
+      }
+    ],
+    "clock_groups": [
+      [
+        "clk_ref"
+      ],
+      [
+        "osc[0]"
+      ],
+      [
+        "osc[1]"
+      ],
+      [
+        "osc[2]"
+      ],
+      [
+        "osc[3]"
+      ],
+      [
+        "osc[4]"
+      ]
+    ],
+    "input_delay_ns": 10.0,
+    "output_delay_ns": 10.0
+  }
+}

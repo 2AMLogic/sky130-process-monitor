@@ -1,0 +1,95 @@
+{
+  "schema_version": 2,
+  "engine": "icarus",
+  "hdl_toplevel": "readout",
+  "testbench": "test_readout",
+  "status": "pass",
+  "test_count": 9,
+  "passed_count": 9,
+  "failed_count": 0,
+  "skipped_count": 0,
+  "tests": [
+    {
+      "name": "reset_values",
+      "status": "passed",
+      "sim_time_ns": 1701.0,
+      "real_time_s": 0.001
+    },
+    {
+      "name": "count_correctness",
+      "status": "passed",
+      "sim_time_ns": 344701.0,
+      "real_time_s": 1.674
+    },
+    {
+      "name": "select_switching",
+      "status": "passed",
+      "sim_time_ns": 262201.0,
+      "real_time_s": 1.114
+    },
+    {
+      "name": "busy_done_sequencing",
+      "status": "passed",
+      "sim_time_ns": 15401.0,
+      "real_time_s": 0.019
+    },
+    {
+      "name": "cal_readback",
+      "status": "passed",
+      "sim_time_ns": 2201.0,
+      "real_time_s": 0.001
+    },
+    {
+      "name": "reset_mid_gate",
+      "status": "passed",
+      "sim_time_ns": 10401.0,
+      "real_time_s": 0.007
+    },
+    {
+      "name": "saturation_overflow",
+      "status": "passed",
+      "sim_time_ns": 110501.0,
+      "real_time_s": 0.21
+    },
+    {
+      "name": "full_read_cycle_count",
+      "status": "passed",
+      "sim_time_ns": 515101.0,
+      "real_time_s": 2.121
+    },
+    {
+      "name": "k0_phase_sweep",
+      "status": "passed",
+      "sim_time_ns": 879201.0,
+      "real_time_s": 0.334
+    }
+  ],
+  "coverage": null,
+  "trace": null,
+  "environment": {
+    "engine": "icarus",
+    "engine_version": "13.0",
+    "tools": [],
+    "cocotb_version": "2.1.0",
+    "results_xml": {
+      "path": null,
+      "scope": "external",
+      "sha256": "sha256:914956df37e72d0d4c8b3e4089673036cd3dbfefd132aa4a3bd30f9840b447e9"
+    },
+    "test_log": {
+      "path": null,
+      "scope": "external",
+      "sha256": "sha256:d2caceb161d7f8f17e8de71260aff0d7abf050194a6af3ce62a684709b328d94"
+    },
+    "build_log": {
+      "path": null,
+      "scope": "external",
+      "sha256": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "random_seed": 1,
+    "source_defines": {},
+    "env": {},
+    "initial_state": null,
+    "sdf": null
+  }
+}

@@ -34,6 +34,14 @@
       "file": "evidence/item5_analog.json",
       "content_hash": "sha256:8103130d068c67ede6e552fcfc45f605d4ad8533d8392e4d73ce56218084ae45"
     },
+    "5.digital": [
+      {
+        "file": "sta/readout.sta.report.json"
+      },
+      {
+        "file": "verification/readout/functional-verification.report.json"
+      }
+    ],
     "6.analog": {
       "file": "sim/solve/mc/yield-sized-bank.json",
       "content_hash": "sha256:71fa2e5127fbd248b88465c25366f70ca55101e95d6a062df67cd01e552bcb78"

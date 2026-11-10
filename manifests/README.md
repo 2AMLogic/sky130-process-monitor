@@ -81,3 +81,11 @@ any change.
 - `3.analog`: `drc/osc_bank.report.json`; `3.digital`: `drc/readout.report.json` (hash = the report's `provenance.input.content_hash`,
   i.e. the GDS). Re-run `klt drc` (commands in `drc/README.md`) after any GDS change, then re-attest item 2 and regenerate the signoff record.
   The coverage disclosure and the native-deck disagreement on the analog stream are in `drc/README.md`.
+
+## Item 5 (digital)
+
+`5.digital` cites two envelopes (list form): `sta/readout.sta.report.json` (`klt sta`, three liberty corners,
+reference clock only) and `verification/readout/functional-verification.report.json` (`klt
+functional-verification`, 9/9). Read `sta/README.md` for what the `constrained` verdict does not cover
+(oscillator-clocked counter untimed; 125 C / 1.62 V / 1.98 V not in the liberty set). Regenerate both with
+`uvx --from "klayout-tools==0.9.1" [--with cocotb==2.1.0] klt ...`, then the record.
