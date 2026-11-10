@@ -31,14 +31,13 @@ _None._
 
 Issues currently being built (`loom:building`).
 
-- **#25**: T1 item 3 (DRC clean): klt drc reports for the oscillator bank and readout layouts with coverage disclosed
-- **#30**: T1 item 5 (corner verification, digital): multi-corner klt sta plus klt functional-verification for the readout
+_None._
 
 ## PRs Awaiting Review
 
 PRs waiting on Judge (`loom:review-requested`).
 
-- **#87**: feat(drc): commit klt drc reports and fix analog generator DRC violations
+_None._
 
 ## Approved (Awaiting Merge)
 
@@ -51,16 +50,14 @@ _None._
 Issues carrying `loom:curated`.
 
 - **#5**: Track the gap to T1 (klayout-tools design-evidence-tiers.md) *(curated)*
-- **#25**: T1 item 3 (DRC clean): klt drc reports for the oscillator bank and readout layouts with coverage disclosed *(curated)*
 - **#26**: T1 item 4 (LVS clean): klt lvs for the oscillator bank (vs schematics) and the readout (vs gate-level netlist) *(curated)*
 - **#27**: T1 item 9 (testbenches shipped): testbench inventories and klt signoff --attest 9 for both partitions *(curated)*
-- **#30**: T1 item 5 (corner verification, digital): multi-corner klt sta plus klt functional-verification for the readout *(curated)*
+- **#32**: T1 item 7 (post-layout verification): klt pex re-run of the oscillator benches and SDF-annotated readout re-run *(curated)*
 - **#44**: Follow-on from PR #43: subthreshold Q2 bench follow-ups (cold-cell re-run, pfet S(T) reference, leakage floor) *(curated)*
 
 ## Proposed (Architect / Hermit)
 
-
-- **#71**: Stop committing 139 unrun, regenerable sized-MC request files (sim/solve/mc/requests-sized) *(hermit)*
+_None._
 
 ## Epics
 
@@ -74,10 +71,10 @@ _None._
 | Very important | 0 |
 | Important | 0 |
 | Ready (`loom:issue`) | 0 |
-| In Progress (`loom:building`) | 2 |
-| PRs awaiting review | 1 |
+| In Progress (`loom:building`) | 0 |
+| PRs awaiting review | 0 |
 | Approved PRs awaiting merge | 0 |
-| Curated | 6 |
-| Architect / Hermit proposals | 1 |
+| Curated | 5 |
+| Architect / Hermit proposals | 0 |
 | Active epics | 0 |
 <!-- guide:plan-body:end -->
