@@ -1,0 +1,14 @@
+{
+  "schema": "klt.lvs.request/1",
+  "portable_paths": true,
+  "layout": {
+    "netlist": "osc_wire.layout.spice",
+    "top": "osc_wire"
+  },
+  "reference": {
+    "netlist": "osc_wire.ref.spice",
+    "top": "osc_wire",
+    "form": "subckt-call",
+    "deck": "sky130"
+  }
+}

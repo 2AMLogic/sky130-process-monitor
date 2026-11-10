@@ -6,10 +6,6 @@
     "digital": "Enable/select logic, the counter-based frequency readout against an external reference clock, and the readout interface."
   },
   "evidence": {
-    "10": {
-      "file": "evidence/item10.json",
-      "content_hash": "sha256:f0ce4143407b0b133ee3b956d2735b31ecb1c75a24a8441e551f57a4b1c3d48b"
-    },
     "1.analog": {
       "file": "evidence/item1_analog.json",
       "content_hash": "sha256:58e626333bf4bd669c29bb901ec77aced16b255383f6c8f64ffa3d1a7f5a8a10"
@@ -18,17 +14,29 @@
       "file": "evidence/item1_digital.json",
       "content_hash": "sha256:bdc998632ab11a80db8cecd0aaf17dcfe08b7e7a4e69c828730946b71cefc120"
     },
+    "10": {
+      "file": "evidence/item10.json",
+      "content_hash": "sha256:f0ce4143407b0b133ee3b956d2735b31ecb1c75a24a8441e551f57a4b1c3d48b"
+    },
     "2.analog": {
       "file": "evidence/item2.json",
-      "content_hash": "sha256:e232410292afbd32db39286b1d7862c9f577ebeeaff489fa9ba2ff1656c37d9e"
+      "content_hash": "sha256:27ba1a27d93b3a297ff08ee290b47477d23a08b4c96b1a571b47adca6a5f5ca9"
     },
     "2.digital": {
       "file": "evidence/item2_digital.json",
       "content_hash": "sha256:d590c9ea2cceef8e27a53d59848ab9e8e2ca7b6aa7b0cdc95c46ba5f4306f95e"
     },
+    "4.digital": {
+      "file": "lvs/readout.report.json",
+      "content_hash": "sha256:0a7fa49016cf3dd025c39492a7b46af14e0c4f3f241709826fc3a411d9d0bc78"
+    },
     "5.analog": {
       "file": "evidence/item5_analog.json",
       "content_hash": "sha256:8103130d068c67ede6e552fcfc45f605d4ad8533d8392e4d73ce56218084ae45"
+    },
+    "6.analog": {
+      "file": "sim/solve/mc/yield-sized-bank.json",
+      "content_hash": "sha256:71fa2e5127fbd248b88465c25366f70ca55101e95d6a062df67cd01e552bcb78"
     },
     "6.digital": {
       "not_applicable": {
@@ -41,10 +49,6 @@
           "content_hash": "sha256:f2eabab6e79ca3cebf5ee244593dd101cc273dd7cd8d2e0118eec88a3c787c3d"
         }
       }
-    },
-    "6.analog": {
-      "file": "sim/solve/mc/yield-sized-bank.json",
-      "content_hash": "sha256:71fa2e5127fbd248b88465c25366f70ca55101e95d6a062df67cd01e552bcb78"
     }
   }
 }

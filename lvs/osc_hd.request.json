@@ -1,0 +1,20 @@
+{
+  "schema": "klt.lvs.request/1",
+  "portable_paths": true,
+  "layout": {
+    "netlist": "osc_hd.layout.spice",
+    "top": "osc_hd"
+  },
+  "reference": {
+    "netlist": "osc_hd.ref.spice",
+    "top": "osc_hd",
+    "form": "subckt-call",
+    "deck": "sky130",
+    "device_map": {
+      "sky130_fd_pr__pfet_01v8_hvt": "pfet"
+    }
+  },
+  "options": {
+    "flatten_reference": true
+  }
+}

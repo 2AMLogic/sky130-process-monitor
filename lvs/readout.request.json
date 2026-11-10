@@ -1,0 +1,12 @@
+{
+  "schema": "klt.lvs.request/1",
+  "portable_paths": true,
+  "layout": {"netlist": "readout.gate.spice", "top": "readout"},
+  "reference": {
+    "netlist": "../layout/readout/out/readout.v",
+    "top": "readout",
+    "form": "gate-level-verilog",
+    "library": "sky130_fd_sc_hd",
+    "pdk": "sky130A"
+  }
+}
