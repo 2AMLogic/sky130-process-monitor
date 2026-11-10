@@ -81,13 +81,21 @@ def sized_requests(oscs=None, chunks=SIZED_CHUNKS, cells=None, n=SIZED_CHUNK):
     return out
 
 
-if __name__ == "__main__" and "--sized" in sys.argv:
-    d = os.path.join(HERE, "mc", "requests-sized")
+def serialise(req):
+    """Exact bytes of a request file as written by this generator."""
+    return json.dumps(req, indent=2) + "\n"
+
+
+def write_sized(d):
+    """Write the sized request set into directory `d` (created if needed)."""
     os.makedirs(d, exist_ok=True)
     for name, req in sized_requests().items():
         with open(os.path.join(d, name), "w") as f:
-            json.dump(req, f, indent=2)
-            f.write("\n")
+            f.write(serialise(req))
+
+
+if __name__ == "__main__" and "--sized" in sys.argv:
+    write_sized(os.path.join(HERE, "mc", "requests-sized"))
     sys.exit(0)
 
 if __name__ == "__main__":

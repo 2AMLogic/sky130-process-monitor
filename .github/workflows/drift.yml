@@ -1,0 +1,27 @@
+name: sized-request drift
+
+# sim/solve/mc/requests-sized/ is committed because recorded yield results cite
+# those files as inputs. Fail if it drifts from what gen_binding_mc.py --sized
+# generates (the test generates into a temp dir; it does not touch the tree).
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  sized-requests:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+
+      - name: Check committed sized MC requests match the generator
+        run: python3 -I sim/solve/test_gen_binding_mc.py
