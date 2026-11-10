@@ -35,7 +35,7 @@ LVS against the first-pass stream mismatched on device parameters (all values fr
 2. In `osc_subth` the series LVT header PFET shared the 0.84 µm inverter-PFET diffusion; the schematic header is
    0.42 µm. The diffusion now steps to 0.42 µm across the header.
 
-`evidence/item2.json` was re-attested for the new stream. DRC (#25) and extraction (#32) have not been re-run on it.
+`evidence/item2.json` was re-attested for the new stream. DRC was re-run (#25, `drc/README.md`); extraction (#32) has not been.
 
 ## PDK provenance
 
