@@ -58,6 +58,23 @@
         }
       }
     },
+    "7.analog": [
+      {
+        "file": "sim/pex/records/2026-11-10-osc_hd.pex.report.json"
+      },
+      {
+        "file": "sim/pex/records/2026-11-10-osc_nmos.pex.report.json"
+      },
+      {
+        "file": "sim/pex/records/2026-11-10-osc_pmos.pex.report.json"
+      },
+      {
+        "file": "sim/pex/records/2026-11-10-osc_wire.pex.report.json"
+      }
+    ],
+    "7.digital": {
+      "file": "verification/readout/functional-verification-sdf.report.json"
+    },
     "3.analog": {
       "file": "drc/osc_bank.report.json",
       "content_hash": "sha256:76c6a407061578bcf49baa7426b4b9714e343f879821a50043ff61c60dc18e1b"
