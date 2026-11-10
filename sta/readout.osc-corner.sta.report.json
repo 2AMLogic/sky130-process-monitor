@@ -1,0 +1,622 @@
+{
+  "kind": "SIMULATED",
+  "t1_item": 5,
+  "domain": "digital",
+  "analysis": "static timing (OpenSTA via klt sta)",
+  "issue": 89,
+  "io_delay_ns_assumed": 10.0,
+  "clock_mode": "ideal",
+  "geometry_source": "routed",
+  "engine": "openroad",
+  "engine_version": "26Q3-1510-g6cb3f2b704",
+  "klt_version": "0.9.1",
+  "klt_git_commit": "4d0d29be4fd991f499d59e783a908082d5e24c56",
+  "pdk": {
+    "name": "sky130A",
+    "source": "--pdk-root flag",
+    "version": "open_pdks f6eeac7dad085ffcc829ccfd721f7b4ce39edcf7"
+  },
+  "frequency_source": "sim/sensitivity/records/reports",
+  "results": [
+    {
+      "corner": "ss_100C_1v60",
+      "oscillator": "osc_hd",
+      "request": "sta/osc/ss_100C_1v60.osc_hd.sta.json",
+      "grid_cell": {
+        "process": "ss",
+        "vdd_V": 1.62,
+        "temp_C": 125
+      },
+      "f_osc_hz": 341852483.0948427,
+      "period_ns": 2.9252,
+      "source_n_edges": 102,
+      "setup_slack_ns": -2.92067,
+      "hold_slack_ns": 0.67759,
+      "fmax_mhz": 171.061,
+      "timing_status": "constrained",
+      "constraint_completeness": "complete",
+      "setup_violation_count": 125,
+      "hold_violation_count": 0,
+      "worst_setup_path": {
+        "status": "ok",
+        "check_type": "setup",
+        "engine_check_role": "setup",
+        "startpoint": "u_cnt/_214_/Q",
+        "endpoint": "u_cnt/_218_/D",
+        "slack_ns": -2.92067,
+        "consistent_with_aggregate": true,
+        "reason": null
+      },
+      "worst_hold_path": {
+        "status": "ok",
+        "check_type": "hold",
+        "engine_check_role": "hold",
+        "startpoint": "_1862_/Q",
+        "endpoint": "_1863_/D",
+        "slack_ns": 0.67759,
+        "consistent_with_aggregate": true,
+        "reason": null
+      }
+    },
+    {
+      "corner": "ss_100C_1v60",
+      "oscillator": "osc_nmos",
+      "request": "sta/osc/ss_100C_1v60.osc_nmos.sta.json",
+      "grid_cell": {
+        "process": "ss",
+        "vdd_V": 1.62,
+        "temp_C": 125
+      },
+      "f_osc_hz": 110189101.86267188,
+      "period_ns": 9.0753,
+      "source_n_edges": 88,
+      "setup_slack_ns": 3.22943,
+      "hold_slack_ns": 0.67759,
+      "fmax_mhz": 171.061,
+      "timing_status": "constrained",
+      "constraint_completeness": "complete",
+      "setup_violation_count": 0,
+      "hold_violation_count": 0,
+      "worst_setup_path": {
+        "status": "ok",
+        "check_type": "setup",
+        "engine_check_role": "setup",
+        "startpoint": "u_cnt/_214_/Q",
+        "endpoint": "u_cnt/_218_/D",
+        "slack_ns": 3.22943,
+        "consistent_with_aggregate": true,
+        "reason": null
+      },
+      "worst_hold_path": {
+        "status": "ok",
+        "check_type": "hold",
+        "engine_check_role": "hold",
+        "startpoint": "_1862_/Q",
+        "endpoint": "_1863_/D",
+        "slack_ns": 0.67759,
+        "consistent_with_aggregate": true,
+        "reason": null
+      }
+    },
+    {
+      "corner": "ss_100C_1v60",
+      "oscillator": "osc_pmos",
+      "request": "sta/osc/ss_100C_1v60.osc_pmos.sta.json",
+      "grid_cell": {
+        "process": "ss",
+        "vdd_V": 1.62,
+        "temp_C": 125
+      },
+      "f_osc_hz": 44345898.19578647,
+      "period_ns": 22.55,
+      "source_n_edges": 110,
+      "setup_slack_ns": 16.7041,
+      "hold_slack_ns": 0.67759,
+      "fmax_mhz": 171.061,
+      "timing_status": "constrained",
+      "constraint_completeness": "complete",
+      "setup_violation_count": 0,
+      "hold_violation_count": 0,
+      "worst_setup_path": {
+        "status": "ok",
+        "check_type": "setup",
+        "engine_check_role": "setup",
+        "startpoint": "u_cnt/_214_/Q",
+        "endpoint": "u_cnt/_218_/D",
+        "slack_ns": 16.70413,
+        "consistent_with_aggregate": true,
+        "reason": null
+      },
+      "worst_hold_path": {
+        "status": "ok",
+        "check_type": "hold",
+        "engine_check_role": "hold",
+        "startpoint": "_1862_/Q",
+        "endpoint": "_1863_/D",
+        "slack_ns": 0.67759,
+        "consistent_with_aggregate": true,
+        "reason": null
+      }
+    },
+    {
+      "corner": "ss_100C_1v60",
+      "oscillator": "osc_wire",
+      "request": "sta/osc/ss_100C_1v60.osc_wire.sta.json",
+      "grid_cell": {
+        "process": "ss",
+        "vdd_V": 1.62,
+        "temp_C": 125
+      },
+      "f_osc_hz": 51318193.62450861,
+      "period_ns": 19.4863,
+      "source_n_edges": 128,
+      "setup_slack_ns": 13.6404,
+      "hold_slack_ns": 0.67759,
+      "fmax_mhz": 171.061,
+      "timing_status": "constrained",
+      "constraint_completeness": "complete",
+      "setup_violation_count": 0,
+      "hold_violation_count": 0,
+      "worst_setup_path": {
+        "status": "ok",
+        "check_type": "setup",
+        "engine_check_role": "setup",
+        "startpoint": "u_cnt/_214_/Q",
+        "endpoint": "u_cnt/_218_/D",
+        "slack_ns": 13.64043,
+        "consistent_with_aggregate": true,
+        "reason": null
+      },
+      "worst_hold_path": {
+        "status": "ok",
+        "check_type": "hold",
+        "engine_check_role": "hold",
+        "startpoint": "_1862_/Q",
+        "endpoint": "_1863_/D",
+        "slack_ns": 0.67759,
+        "consistent_with_aggregate": true,
+        "reason": null
+      }
+    },
+    {
+      "corner": "ss_100C_1v60",
+      "oscillator": "osc_subth",
+      "request": "sta/osc/ss_100C_1v60.osc_subth.sta.json",
+      "grid_cell": {
+        "process": "ss",
+        "vdd_V": 1.62,
+        "temp_C": 125
+      },
+      "f_osc_hz": 2919993.459026449,
+      "period_ns": 342.4665,
+      "source_n_edges": 400,
+      "setup_slack_ns": 77.223,
+      "hold_slack_ns": 0.67759,
+      "fmax_mhz": 171.061,
+      "timing_status": "constrained",
+      "constraint_completeness": "complete",
+      "setup_violation_count": 0,
+      "hold_violation_count": 0,
+      "worst_setup_path": {
+        "status": "ok",
+        "check_type": "output_setup",
+        "engine_check_role": "output setup",
+        "startpoint": "addr[0]",
+        "endpoint": "rdata[3]",
+        "slack_ns": 77.22295,
+        "consistent_with_aggregate": true,
+        "reason": null
+      },
+      "worst_hold_path": {
+        "status": "ok",
+        "check_type": "hold",
+        "engine_check_role": "hold",
+        "startpoint": "_1862_/Q",
+        "endpoint": "_1863_/D",
+        "slack_ns": 0.67759,
+        "consistent_with_aggregate": true,
+        "reason": null
+      }
+    },
+    {
+      "corner": "tt_025C_1v80",
+      "oscillator": "osc_hd",
+      "request": "sta/osc/tt_025C_1v80.osc_hd.sta.json",
+      "grid_cell": {
+        "process": "tt",
+        "vdd_V": 1.8,
+        "temp_C": 27
+      },
+      "f_osc_hz": 641025642.5249137,
+      "period_ns": 1.56,
+      "source_n_edges": 191,
+      "setup_slack_ns": -1.22662,
+      "hold_slack_ns": 0.33121,
+      "fmax_mhz": 358.857,
+      "timing_status": "constrained",
+      "constraint_completeness": "complete",
+      "setup_violation_count": 125,
+      "hold_violation_count": 0,
+      "worst_setup_path": {
+        "status": "ok",
+        "check_type": "setup",
+        "engine_check_role": "setup",
+        "startpoint": "u_cnt/_214_/Q",
+        "endpoint": "u_cnt/_218_/D",
+        "slack_ns": -1.22662,
+        "consistent_with_aggregate": true,
+        "reason": null
+      },
+      "worst_hold_path": {
+        "status": "ok",
+        "check_type": "hold",
+        "engine_check_role": "hold",
+        "startpoint": "_1862_/Q",
+        "endpoint": "_1863_/D",
+        "slack_ns": 0.33121,
+        "consistent_with_aggregate": true,
+        "reason": null
+      }
+    },
+    {
+      "corner": "tt_025C_1v80",
+      "oscillator": "osc_nmos",
+      "request": "sta/osc/tt_025C_1v80.osc_nmos.sta.json",
+      "grid_cell": {
+        "process": "tt",
+        "vdd_V": 1.8,
+        "temp_C": 27
+      },
+      "f_osc_hz": 221971285.92119876,
+      "period_ns": 4.5051,
+      "source_n_edges": 177,
+      "setup_slack_ns": 1.71848,
+      "hold_slack_ns": 0.33121,
+      "fmax_mhz": 358.857,
+      "timing_status": "constrained",
+      "constraint_completeness": "complete",
+      "setup_violation_count": 0,
+      "hold_violation_count": 0,
+      "worst_setup_path": {
+        "status": "ok",
+        "check_type": "setup",
+        "engine_check_role": "setup",
+        "startpoint": "u_cnt/_214_/Q",
+        "endpoint": "u_cnt/_218_/D",
+        "slack_ns": 1.71848,
+        "consistent_with_aggregate": true,
+        "reason": null
+      },
+      "worst_hold_path": {
+        "status": "ok",
+        "check_type": "hold",
+        "engine_check_role": "hold",
+        "startpoint": "_1862_/Q",
+        "endpoint": "_1863_/D",
+        "slack_ns": 0.33121,
+        "consistent_with_aggregate": true,
+        "reason": null
+      }
+    },
+    {
+      "corner": "tt_025C_1v80",
+      "oscillator": "osc_pmos",
+      "request": "sta/osc/tt_025C_1v80.osc_pmos.sta.json",
+      "grid_cell": {
+        "process": "tt",
+        "vdd_V": 1.8,
+        "temp_C": 27
+      },
+      "f_osc_hz": 79365062.28017792,
+      "period_ns": 12.6,
+      "source_n_edges": 198,
+      "setup_slack_ns": 9.81338,
+      "hold_slack_ns": 0.33121,
+      "fmax_mhz": 358.857,
+      "timing_status": "constrained",
+      "constraint_completeness": "complete",
+      "setup_violation_count": 0,
+      "hold_violation_count": 0,
+      "worst_setup_path": {
+        "status": "ok",
+        "check_type": "setup",
+        "engine_check_role": "setup",
+        "startpoint": "u_cnt/_214_/Q",
+        "endpoint": "u_cnt/_218_/D",
+        "slack_ns": 9.81338,
+        "consistent_with_aggregate": true,
+        "reason": null
+      },
+      "worst_hold_path": {
+        "status": "ok",
+        "check_type": "hold",
+        "engine_check_role": "hold",
+        "startpoint": "_1862_/Q",
+        "endpoint": "_1863_/D",
+        "slack_ns": 0.33121,
+        "consistent_with_aggregate": true,
+        "reason": null
+      }
+    },
+    {
+      "corner": "tt_025C_1v80",
+      "oscillator": "osc_wire",
+      "request": "sta/osc/tt_025C_1v80.osc_wire.sta.json",
+      "grid_cell": {
+        "process": "tt",
+        "vdd_V": 1.8,
+        "temp_C": 27
+      },
+      "f_osc_hz": 75669245.54416709,
+      "period_ns": 13.2154,
+      "source_n_edges": 189,
+      "setup_slack_ns": 10.4288,
+      "hold_slack_ns": 0.33121,
+      "fmax_mhz": 358.857,
+      "timing_status": "constrained",
+      "constraint_completeness": "complete",
+      "setup_violation_count": 0,
+      "hold_violation_count": 0,
+      "worst_setup_path": {
+        "status": "ok",
+        "check_type": "setup",
+        "engine_check_role": "setup",
+        "startpoint": "u_cnt/_214_/Q",
+        "endpoint": "u_cnt/_218_/D",
+        "slack_ns": 10.42878,
+        "consistent_with_aggregate": true,
+        "reason": null
+      },
+      "worst_hold_path": {
+        "status": "ok",
+        "check_type": "hold",
+        "engine_check_role": "hold",
+        "startpoint": "_1862_/Q",
+        "endpoint": "_1863_/D",
+        "slack_ns": 0.33121,
+        "consistent_with_aggregate": true,
+        "reason": null
+      }
+    },
+    {
+      "corner": "tt_025C_1v80",
+      "oscillator": "osc_subth",
+      "request": "sta/osc/tt_025C_1v80.osc_subth.sta.json",
+      "grid_cell": {
+        "process": "tt",
+        "vdd_V": 1.8,
+        "temp_C": 27
+      },
+      "f_osc_hz": 2840955.9890419813,
+      "period_ns": 351.9942,
+      "source_n_edges": 400,
+      "setup_slack_ns": 78.5801,
+      "hold_slack_ns": 0.33121,
+      "fmax_mhz": 358.859,
+      "timing_status": "constrained",
+      "constraint_completeness": "complete",
+      "setup_violation_count": 0,
+      "hold_violation_count": 0,
+      "worst_setup_path": {
+        "status": "ok",
+        "check_type": "output_setup",
+        "engine_check_role": "output setup",
+        "startpoint": "addr[2]",
+        "endpoint": "rdata[2]",
+        "slack_ns": 78.58007,
+        "consistent_with_aggregate": true,
+        "reason": null
+      },
+      "worst_hold_path": {
+        "status": "ok",
+        "check_type": "hold",
+        "engine_check_role": "hold",
+        "startpoint": "_1862_/Q",
+        "endpoint": "_1863_/D",
+        "slack_ns": 0.33121,
+        "consistent_with_aggregate": true,
+        "reason": null
+      }
+    },
+    {
+      "corner": "ff_n40C_1v95",
+      "oscillator": "osc_hd",
+      "request": "sta/osc/ff_n40C_1v95.osc_hd.sta.json",
+      "grid_cell": {
+        "process": "ff",
+        "vdd_V": 1.98,
+        "temp_C": -40
+      },
+      "f_osc_hz": 1020313840.1445569,
+      "period_ns": 0.9801,
+      "source_n_edges": 305,
+      "setup_slack_ns": -0.72412,
+      "hold_slack_ns": 0.20407,
+      "fmax_mhz": 586.78,
+      "timing_status": "constrained",
+      "constraint_completeness": "complete",
+      "setup_violation_count": 125,
+      "hold_violation_count": 0,
+      "worst_setup_path": {
+        "status": "ok",
+        "check_type": "setup",
+        "engine_check_role": "setup",
+        "startpoint": "u_cnt/_214_/Q",
+        "endpoint": "u_cnt/_218_/D",
+        "slack_ns": -0.72412,
+        "consistent_with_aggregate": true,
+        "reason": null
+      },
+      "worst_hold_path": {
+        "status": "ok",
+        "check_type": "hold",
+        "engine_check_role": "hold",
+        "startpoint": "_1862_/Q",
+        "endpoint": "_1863_/D",
+        "slack_ns": 0.20407,
+        "consistent_with_aggregate": true,
+        "reason": null
+      }
+    },
+    {
+      "corner": "ff_n40C_1v95",
+      "oscillator": "osc_nmos",
+      "request": "sta/osc/ff_n40C_1v95.osc_nmos.sta.json",
+      "grid_cell": {
+        "process": "ff",
+        "vdd_V": 1.98,
+        "temp_C": -40
+      },
+      "f_osc_hz": 380567562.5952005,
+      "period_ns": 2.6277,
+      "source_n_edges": 304,
+      "setup_slack_ns": 0.92348,
+      "hold_slack_ns": 0.20407,
+      "fmax_mhz": 586.78,
+      "timing_status": "constrained",
+      "constraint_completeness": "complete",
+      "setup_violation_count": 0,
+      "hold_violation_count": 0,
+      "worst_setup_path": {
+        "status": "ok",
+        "check_type": "setup",
+        "engine_check_role": "setup",
+        "startpoint": "u_cnt/_214_/Q",
+        "endpoint": "u_cnt/_218_/D",
+        "slack_ns": 0.92348,
+        "consistent_with_aggregate": true,
+        "reason": null
+      },
+      "worst_hold_path": {
+        "status": "ok",
+        "check_type": "hold",
+        "engine_check_role": "hold",
+        "startpoint": "_1862_/Q",
+        "endpoint": "_1863_/D",
+        "slack_ns": 0.20407,
+        "consistent_with_aggregate": true,
+        "reason": null
+      }
+    },
+    {
+      "corner": "ff_n40C_1v95",
+      "oscillator": "osc_pmos",
+      "request": "sta/osc/ff_n40C_1v95.osc_pmos.sta.json",
+      "grid_cell": {
+        "process": "ff",
+        "vdd_V": 1.98,
+        "temp_C": -40
+      },
+      "f_osc_hz": 134992308.2402563,
+      "period_ns": 7.4078,
+      "source_n_edges": 337,
+      "setup_slack_ns": 5.70358,
+      "hold_slack_ns": 0.20407,
+      "fmax_mhz": 586.78,
+      "timing_status": "constrained",
+      "constraint_completeness": "complete",
+      "setup_violation_count": 0,
+      "hold_violation_count": 0,
+      "worst_setup_path": {
+        "status": "ok",
+        "check_type": "setup",
+        "engine_check_role": "setup",
+        "startpoint": "u_cnt/_214_/Q",
+        "endpoint": "u_cnt/_218_/D",
+        "slack_ns": 5.70358,
+        "consistent_with_aggregate": true,
+        "reason": null
+      },
+      "worst_hold_path": {
+        "status": "ok",
+        "check_type": "hold",
+        "engine_check_role": "hold",
+        "startpoint": "_1862_/Q",
+        "endpoint": "_1863_/D",
+        "slack_ns": 0.20407,
+        "consistent_with_aggregate": true,
+        "reason": null
+      }
+    },
+    {
+      "corner": "ff_n40C_1v95",
+      "oscillator": "osc_wire",
+      "request": "sta/osc/ff_n40C_1v95.osc_wire.sta.json",
+      "grid_cell": {
+        "process": "ff",
+        "vdd_V": 1.98,
+        "temp_C": -40
+      },
+      "f_osc_hz": 110773543.19602871,
+      "period_ns": 9.0274,
+      "source_n_edges": 276,
+      "setup_slack_ns": 7.32318,
+      "hold_slack_ns": 0.20407,
+      "fmax_mhz": 586.78,
+      "timing_status": "constrained",
+      "constraint_completeness": "complete",
+      "setup_violation_count": 0,
+      "hold_violation_count": 0,
+      "worst_setup_path": {
+        "status": "ok",
+        "check_type": "setup",
+        "engine_check_role": "setup",
+        "startpoint": "u_cnt/_214_/Q",
+        "endpoint": "u_cnt/_218_/D",
+        "slack_ns": 7.32318,
+        "consistent_with_aggregate": true,
+        "reason": null
+      },
+      "worst_hold_path": {
+        "status": "ok",
+        "check_type": "hold",
+        "engine_check_role": "hold",
+        "startpoint": "_1862_/Q",
+        "endpoint": "_1863_/D",
+        "slack_ns": 0.20407,
+        "consistent_with_aggregate": true,
+        "reason": null
+      }
+    },
+    {
+      "corner": "ff_n40C_1v95",
+      "oscillator": "osc_subth",
+      "request": "sta/osc/ff_n40C_1v95.osc_subth.sta.json",
+      "grid_cell": {
+        "process": "ff",
+        "vdd_V": 1.98,
+        "temp_C": -40
+      },
+      "f_osc_hz": 3409557.768434808,
+      "period_ns": 293.2932,
+      "source_n_edges": 400,
+      "setup_slack_ns": 79.1147,
+      "hold_slack_ns": 0.20407,
+      "fmax_mhz": 586.778,
+      "timing_status": "constrained",
+      "constraint_completeness": "complete",
+      "setup_violation_count": 0,
+      "hold_violation_count": 0,
+      "worst_setup_path": {
+        "status": "ok",
+        "check_type": "output_setup",
+        "engine_check_role": "output setup",
+        "startpoint": "addr[2]",
+        "endpoint": "rdata[2]",
+        "slack_ns": 79.11468,
+        "consistent_with_aggregate": true,
+        "reason": null
+      },
+      "worst_hold_path": {
+        "status": "ok",
+        "check_type": "hold",
+        "engine_check_role": "hold",
+        "startpoint": "_1862_/Q",
+        "endpoint": "_1863_/D",
+        "slack_ns": 0.20407,
+        "consistent_with_aggregate": true,
+        "reason": null
+      }
+    }
+  ]
+}
