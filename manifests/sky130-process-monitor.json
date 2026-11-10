@@ -57,6 +57,23 @@
           "content_hash": "sha256:f2eabab6e79ca3cebf5ee244593dd101cc273dd7cd8d2e0118eec88a3c787c3d"
         }
       }
+    },
+    "7.analog": [
+      {
+        "file": "sim/pex/records/2026-11-10-osc_hd.pex.report.json"
+      },
+      {
+        "file": "sim/pex/records/2026-11-10-osc_nmos.pex.report.json"
+      },
+      {
+        "file": "sim/pex/records/2026-11-10-osc_pmos.pex.report.json"
+      },
+      {
+        "file": "sim/pex/records/2026-11-10-osc_wire.pex.report.json"
+      }
+    ],
+    "7.digital": {
+      "file": "verification/readout/functional-verification-sdf.report.json"
     }
   }
 }

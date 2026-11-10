@@ -1,0 +1,19 @@
+{
+  "schema": "klt.functional_verification.request/1",
+  "engine": "icarus",
+  "sources": [
+    "../../layout/readout/out/readout.v",
+    "/home/ubuntu/.ciel/sky130A/libs.ref/sky130_fd_sc_hd/verilog/primitives.v",
+    "/home/ubuntu/.ciel/sky130A/libs.ref/sky130_fd_sc_hd/verilog/sky130_fd_sc_hd.v"
+  ],
+  "hdl_toplevel": "readout",
+  "testbench": {
+    "module": "test_readout",
+    "testcase": ["reset_values", "count_correctness", "select_switching", "busy_done_sequencing", "cal_readback", "reset_mid_gate", "full_read_cycle_count", "k0_phase_sweep"]
+  },
+  "options": {
+    "coverage": false,
+    "random_seed": 1,
+    "sdf": { "file": "../../layout/readout/out_sdf/readout_route.sdf", "corner": "typ" }
+  }
+}

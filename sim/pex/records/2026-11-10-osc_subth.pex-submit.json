@@ -1,0 +1,70 @@
+{
+  "schema_version": 2,
+  "complete": true,
+  "extracted_netlist_sha256": "73f06dc49bae9921c3b679a14696e05fd960815a05b32fb5382dcd2c71dfb03b",
+  "testbenches": [
+    {
+      "label": "00-osc_subth",
+      "request_sha256": "sha256:acb1f5ce135fc39605269d7fea0e067ea761613475e80a5a7dd89109e22132b2"
+    }
+  ],
+  "legs": [
+    {
+      "testbench": "00-osc_subth",
+      "side": "schematic",
+      "sharded": false,
+      "attach": "klt-sim-6aff7841c09f",
+      "unit_count": 45
+    },
+    {
+      "testbench": "00-osc_subth",
+      "side": "extracted",
+      "sharded": false,
+      "attach": "klt-sim-c37d82e8c234",
+      "unit_count": 45
+    }
+  ],
+  "request": {
+    "tie_declared_pins": false,
+    "layout": "layout/osc_bank.gds",
+    "testbenches": [
+      "sim/pex/requests/osc_subth.json"
+    ],
+    "measure_command": null,
+    "reference_netlist": null,
+    "measure_timeout_s": null,
+    "flatten_schematic": false,
+    "device_only_leg": false,
+    "extract_only": false,
+    "deck": "sky130",
+    "output": "sim/pex/extracted/osc_subth.spice",
+    "top": "osc_subth",
+    "pdk": "sky130A",
+    "pdk_root": null,
+    "outdir": "/tmp/pex32/run/osc_subth",
+    "backend": "batch",
+    "max_units_per_job": null,
+    "max_concurrent_jobs": null,
+    "hosts": null,
+    "resume": null,
+    "deck_options": null,
+    "pins": "en,out,vdd,vss",
+    "rename_declared_pins": false,
+    "label_layers": null,
+    "tie_nets": null,
+    "device_models": null,
+    "critical_nets": null,
+    "critical_net_patterns": null,
+    "critical_net_all": false,
+    "critical_net_excludes": null,
+    "distributed_rc": false,
+    "resistance_graph": false,
+    "resistance_graph_r_cut": null,
+    "parasitic_variants": null,
+    "substrate_tie_ohms": null,
+    "mom_rlc_net": null,
+    "mom_rlc_resistance_ohm": null,
+    "mom_rlc_capacitance_ff": null,
+    "mom_rlc_inductance_nh": null
+  }
+}
