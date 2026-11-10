@@ -1,0 +1,110 @@
+{
+  "schema_version": 1,
+  "kind": "generic",
+  "status": "pass",
+  "t1_item": 1,
+  "summary": "T1 item 1 (Design sources): 5/5 attestation checks passed (klt signoff --attest)",
+  "source": "attest/item1_digital.json",
+  "attestation": {
+    "producer": "klt signoff --attest",
+    "inventory_schema_version": 1,
+    "hash_algorithm": "sha256-raw-bytes",
+    "check_count": 5,
+    "passed_count": 5,
+    "checks": [
+      {
+        "check": "present",
+        "role": "source",
+        "path": "rtl/readout/readout.v",
+        "passed": true,
+        "content_hash": "sha256:b59f7b8c0ff0bcca2572ac2348bd70660b827bf35f4bdd5ad2a0e7721ef9628e"
+      },
+      {
+        "check": "present",
+        "role": "source",
+        "path": "rtl/readout/readout_counter.v",
+        "passed": true,
+        "content_hash": "sha256:86d35a6972b3b5a4a6d23bbf1dc12b16322351b0dcb46810945bd6ff8fc48de0"
+      },
+      {
+        "check": "present",
+        "role": "source",
+        "path": "synth/readout/request.json",
+        "passed": true,
+        "content_hash": "sha256:38693dfa8608ca8014389a28f70fd4d048cc526f77654ccb44000b81cf60fe03"
+      },
+      {
+        "check": "present",
+        "role": "derived",
+        "path": "synth/readout/readout.gl.v",
+        "passed": true,
+        "content_hash": "sha256:8932b6a9c7630a04e1925c9e2e0bd8a5bd2dc8643b27b79453a7eee5ca539653"
+      },
+      {
+        "check": "command",
+        "role": "freshness",
+        "target": "synth/readout/readout.gl.v",
+        "generator": "klt synthesize",
+        "argv": [
+          "klt",
+          "synthesize",
+          "synth/readout/request.json",
+          "--check",
+          "synth/readout/readout.synth.json",
+          "--netlist",
+          "synth/readout/readout.gl.v"
+        ],
+        "cwd": ".",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      }
+    ]
+  },
+  "provenance": {
+    "klt_version": "0.9.1",
+    "klayout_version": null,
+    "pdk": null,
+    "deck": null,
+    "input": {
+      "paths": [
+        {
+          "path": {
+            "path": "attest/item1_digital.json",
+            "scope": "repo"
+          },
+          "content_hash": "sha256:485feae41380e2b421e6a6ed2500068efc964288b0afa1ef951ceb907fce9490"
+        },
+        {
+          "path": {
+            "path": "rtl/readout/readout.v",
+            "scope": "repo"
+          },
+          "content_hash": "sha256:b59f7b8c0ff0bcca2572ac2348bd70660b827bf35f4bdd5ad2a0e7721ef9628e"
+        },
+        {
+          "path": {
+            "path": "rtl/readout/readout_counter.v",
+            "scope": "repo"
+          },
+          "content_hash": "sha256:86d35a6972b3b5a4a6d23bbf1dc12b16322351b0dcb46810945bd6ff8fc48de0"
+        },
+        {
+          "path": {
+            "path": "synth/readout/readout.gl.v",
+            "scope": "repo"
+          },
+          "content_hash": "sha256:8932b6a9c7630a04e1925c9e2e0bd8a5bd2dc8643b27b79453a7eee5ca539653"
+        },
+        {
+          "path": {
+            "path": "synth/readout/request.json",
+            "scope": "repo"
+          },
+          "content_hash": "sha256:38693dfa8608ca8014389a28f70fd4d048cc526f77654ccb44000b81cf60fe03"
+        }
+      ],
+      "content_hash": "sha256:bdc998632ab11a80db8cecd0aaf17dcfe08b7e7a4e69c828730946b71cefc120"
+    }
+  }
+}

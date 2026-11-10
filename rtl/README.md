@@ -34,3 +34,17 @@ gate/oscillator phase. One edge in the window is enough to complete. Simulated (
 `clk_ref` or `k` is very small; it is separate from the stopped-oscillator behaviour.
 
 Testbench: `make -C verification/readout` (see `verification/README.md`).
+
+## Synthesized netlist (T1 item 1)
+
+`synth/readout/` holds the `klt synthesize` request (`request.json`, top `readout`, `sky130_fd_sc_hd`, `tt_025C_1v80`
+liberty from the pinned sky130A), the gate-level netlist `readout.gl.v` (consumed by P&R and LVS), and the report
+`readout.synth.json`. Regenerate after any RTL change, then re-attest (`attest/item1_digital.json`):
+
+    export PDK=sky130A PDK_ROOT=<pinned PDK root>
+    klt synthesize synth/readout/request.json --verify-equivalence --equiv-engine yosys-sequential \
+        --format json > synth/readout/readout.synth.json
+    cp synth/readout/.klt/synthesize/run-*/readout_synth.v synth/readout/readout.gl.v   # then rm -r synth/readout/.klt
+    klt synthesize synth/readout/request.json --check synth/readout/readout.synth.json --netlist synth/readout/readout.gl.v
+
+The report carries the yosys-sequential equivalence verdict (RTL vs netlist). Synthesis reports no timing.

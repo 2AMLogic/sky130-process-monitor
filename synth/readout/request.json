@@ -1,0 +1,6 @@
+{
+  "schema": "klt.synthesize.request/1",
+  "sources": ["../../rtl/readout/readout.v", "../../rtl/readout/readout_counter.v"],
+  "hdl_toplevel": "readout",
+  "pdk": {"cell_library": "sky130_fd_sc_hd", "corner": "tt_025C_1v80"}
+}

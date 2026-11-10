@@ -10,6 +10,14 @@
       "file": "evidence/item10.json",
       "content_hash": "sha256:f0ce4143407b0b133ee3b956d2735b31ecb1c75a24a8441e551f57a4b1c3d48b"
     },
+    "1.analog": {
+      "file": "evidence/item1_analog.json",
+      "content_hash": "sha256:58e626333bf4bd669c29bb901ec77aced16b255383f6c8f64ffa3d1a7f5a8a10"
+    },
+    "1.digital": {
+      "file": "evidence/item1_digital.json",
+      "content_hash": "sha256:bdc998632ab11a80db8cecd0aaf17dcfe08b7e7a4e69c828730946b71cefc120"
+    },
     "2.analog": {
       "file": "evidence/item2.json",
       "content_hash": "sha256:e232410292afbd32db39286b1d7862c9f577ebeeaff489fa9ba2ff1656c37d9e"
