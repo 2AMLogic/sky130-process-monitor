@@ -26,4 +26,11 @@ closes, and a toggle plus 2-flop synchroniser carries completion back before `CO
 costs up to ±1 count per end. `sel` is latched at start, so the oscillator clock mux only changes while idle.
 Details in `readout/readout_counter.v`.
 
+**Minimum k.** Choose `k` so the gate window covers at least one oscillator period:
+`2^k / f_ref >= 1 / f_osc`, i.e. `k >= ceil(log2(f_ref / f_osc))`. With a shorter window the read hangs
+(`busy` never clears; only `rst_n` recovers) whenever no oscillator edge lands inside the window, which depends on
+gate/oscillator phase. One edge in the window is enough to complete. Simulated (Icarus, RTL only, no corner):
+`verification/readout/test_readout.py::k0_phase_sweep`. This applies only when the oscillator is slower than
+`clk_ref` or `k` is very small; it is separate from the stopped-oscillator behaviour.
+
 Testbench: `make -C verification/readout` (see `verification/README.md`).

@@ -255,3 +255,77 @@ async def full_read_cycle_count(dut):
     )
     assert total >= gate_cycles
     assert total < 1.2 * gate_cycles, "overhead unexpectedly large"
+
+
+async def _drive_osc(sig, period_ps, delay_ps):
+    """Ideal osc: low for delay_ps, then 50% duty square wave (phase set by delay_ps)."""
+    sig.value = 0
+    await Timer(max(delay_ps, 1), unit="ps")
+    while True:
+        sig.value = 1
+        await Timer(period_ps // 2, unit="ps")
+        sig.value = 0
+        await Timer(period_ps - period_ps // 2, unit="ps")
+
+
+async def _phase_trial(dut, h, period_ps, phase_ps, k):
+    """One read of osc[0] with the oscillator's first rising edge phase_ps after the CTRL write
+    edge. Returns (busy_cleared, count). A hung read is recovered with an asynchronous reset."""
+    dut.osc[0].value = 0
+    # CTRL write is sampled on the next clk_ref edge; place the osc relative to that edge.
+    d = dut
+    d.we.value, d.addr.value, d.wdata.value = 1, CTRL, ctrl(0, k)
+    await RisingEdge(d.clk_ref)
+    drv = cocotb.start_soon(_drive_osc(dut.osc[0], period_ps, phase_ps))
+    await Timer(1, unit="ns")
+    d.we.value = 0
+    cleared, cnt = False, None
+    for _ in range(60):
+        st = await h.read(STATUS)
+        if st & DONE:
+            cleared = True
+            break
+    if cleared:
+        cnt = await h.read(COUNT + 0)
+    drv.cancel()
+    dut.osc[0].value = 0
+    if not cleared:
+        dut.rst_n.value = 0
+        await Timer(3 * REF_PS, unit="ps")
+        dut.rst_n.value = 1
+        await Timer(3 * REF_PS, unit="ps")
+    return cleared, cnt
+
+
+@cocotb.test()
+async def k0_phase_sweep(dut):
+    """Phase sweep: gate start vs osc edge, k in {0, 1}, osc slower than clk_ref (1 us, 333 ns)
+    and equal/faster. Reports, per phase, whether busy clears. RTL simulation, Icarus, no corner.
+
+    Finding (issue #82): a read hangs (busy never clears, only rst_n recovers) iff NO osc rising
+    edge lands inside the gate window. One edge is enough (gate_s1 -> gate_s2 -> running still
+    completes after the gate drops), so it is not a two-edge condition. Window >= one osc period
+    always completes. Hence the documented minimum k: 2^k * T_ref >= T_osc."""
+    h = await setup(dut)
+    for period_ps in (1_000_000, 333_334, 100_000, 40_000):
+        for k in (0, 1, 2):
+            step = max(period_ps // 25, 1_000)
+            hung = []
+            for phase in range(0, period_ps + step, step):
+                ok, cnt = await _phase_trial(dut, h, period_ps, phase, k)
+                if not ok:
+                    hung.append(phase)
+            window_ps = (2 ** k) * REF_PS
+            if window_ps >= period_ps:
+                assert not hung, (
+                    f"window {window_ps} ps >= osc period {period_ps} ps (k={k}) must always "
+                    f"complete, but busy never cleared at phases {hung}"
+                )
+            else:
+                # Short window: a read hangs exactly when no osc edge lands inside it.
+                assert hung, f"k={k}, osc period {period_ps} ps: expected phase-dependent hang"
+                assert len(hung) < len(range(0, period_ps + step, step)), "some phases must complete"
+            dut._log.info(
+                f"SIMULATED (RTL, Icarus, test_readout.py::k0_phase_sweep): osc period {period_ps} ps, "
+                f"k={k}: busy never cleared at {len(hung)} phases {hung}"
+            )

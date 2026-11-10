@@ -20,6 +20,13 @@
 // only changed (by the parent) while not busy, so the clock mux never switches
 // with a window open. The oscillator must toggle after the gate closes for the
 // done toggle to be produced; a stopped oscillator leaves the read busy.
+//
+// Minimum gate length (simulated, verification/readout/test_readout.py::k0_phase_sweep):
+// a read also stays busy (until rst_n) if NO oscillator rising edge lands inside the
+// window, because `running` is only set by an edge that sees the synchronised gate high.
+// One edge suffices; a window of at least one oscillator period always completes. So the
+// caller must choose k with 2^k * T_ref >= T_osc, i.e. k >= ceil(log2(f_ref / f_osc)).
+// Below that, completion depends on the gate/oscillator phase. No timeout is provided.
 `default_nettype none
 module readout_counter (
     input  wire        osc_clk,   // selected oscillator
