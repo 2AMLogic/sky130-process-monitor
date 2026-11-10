@@ -1,0 +1,121 @@
+{
+  "schema_version": 1,
+  "kind": "t1-attestation-inventory",
+  "t1_item": 1,
+  "description": "Analog partition design sources: the five oscillator schematics (including the osc_hd standard-cell baseline) and their klt netlist outputs.",
+  "sources": [
+    "design/osc_bank/osc_hd.sch",
+    "design/osc_bank/osc_nmos.sch",
+    "design/osc_bank/osc_pmos.sch",
+    "design/osc_bank/osc_wire.sch",
+    "design/osc_bank/osc_subth.sch",
+    "design/osc_bank/xschemrc"
+  ],
+  "derived": [
+    {
+      "path": "design/osc_bank/osc_hd.spice",
+      "generator": "klt netlist",
+      "check": {
+        "argv": [
+          "klt",
+          "netlist",
+          "design/osc_bank/osc_hd.sch",
+          "-o",
+          "design/osc_bank/osc_hd.spice",
+          "--block",
+          "--rcfile",
+          "design/osc_bank/xschemrc",
+          "--pdk",
+          "sky130A",
+          "--check",
+          "--ignore-comments"
+        ],
+        "local_only": true
+      }
+    },
+    {
+      "path": "design/osc_bank/osc_nmos.spice",
+      "generator": "klt netlist",
+      "check": {
+        "argv": [
+          "klt",
+          "netlist",
+          "design/osc_bank/osc_nmos.sch",
+          "-o",
+          "design/osc_bank/osc_nmos.spice",
+          "--block",
+          "--rcfile",
+          "design/osc_bank/xschemrc",
+          "--pdk",
+          "sky130A",
+          "--check",
+          "--ignore-comments"
+        ],
+        "local_only": true
+      }
+    },
+    {
+      "path": "design/osc_bank/osc_pmos.spice",
+      "generator": "klt netlist",
+      "check": {
+        "argv": [
+          "klt",
+          "netlist",
+          "design/osc_bank/osc_pmos.sch",
+          "-o",
+          "design/osc_bank/osc_pmos.spice",
+          "--block",
+          "--rcfile",
+          "design/osc_bank/xschemrc",
+          "--pdk",
+          "sky130A",
+          "--check",
+          "--ignore-comments"
+        ],
+        "local_only": true
+      }
+    },
+    {
+      "path": "design/osc_bank/osc_wire.spice",
+      "generator": "klt netlist",
+      "check": {
+        "argv": [
+          "klt",
+          "netlist",
+          "design/osc_bank/osc_wire.sch",
+          "-o",
+          "design/osc_bank/osc_wire.spice",
+          "--block",
+          "--rcfile",
+          "design/osc_bank/xschemrc",
+          "--pdk",
+          "sky130A",
+          "--check",
+          "--ignore-comments"
+        ],
+        "local_only": true
+      }
+    },
+    {
+      "path": "design/osc_bank/osc_subth.spice",
+      "generator": "klt netlist",
+      "check": {
+        "argv": [
+          "klt",
+          "netlist",
+          "design/osc_bank/osc_subth.sch",
+          "-o",
+          "design/osc_bank/osc_subth.spice",
+          "--block",
+          "--rcfile",
+          "design/osc_bank/xschemrc",
+          "--pdk",
+          "sky130A",
+          "--check",
+          "--ignore-comments"
+        ],
+        "local_only": true
+      }
+    }
+  ]
+}

@@ -62,3 +62,14 @@ jobs:
         run: |
           klt signoff --attest 10 --inventory attest/item10.json \
                       --check evidence/item10.json
+
+      # The freshness commands in these inventories need the pinned PDK, xschem
+      # and Yosys, which this runner lacks: they are marked local_only, so
+      # --check re-hashes the inventory inputs and carries the committed
+      # outcome of those commands. Re-run them locally (see manifests/README.md).
+      - name: Re-attest T1 item 1 (analog, digital) and compare against the committed envelopes
+        run: |
+          klt signoff --attest 1 --inventory attest/item1_analog.json \
+                      --check evidence/item1_analog.json
+          klt signoff --attest 1 --inventory attest/item1_digital.json \
+                      --check evidence/item1_digital.json

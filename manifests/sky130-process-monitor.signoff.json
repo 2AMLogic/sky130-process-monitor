@@ -9,7 +9,7 @@
   "tier": null,
   "t1_item_count": 22,
   "build_t1_item_count": 22,
-  "t1_met_count": 3,
+  "t1_met_count": 5,
   "t1_not_applicable_count": 1,
   "source_doc": "manifests/design-evidence-tiers.md",
   "source_doc_content_hash": "sha256:c7a1e7e10627fae396007e0ff951734f37d95028b8f49f2e21e802e9f552f318",
@@ -31,10 +31,130 @@
       "partition_boundary": "Ring-oscillator bank (standard-cell and custom-cell variants, including the leakage-starved subthreshold oscillator) and the subthreshold sensing path.",
       "text": "committed schematic sources (or generator) plus the netlist derived from them, regenerated on design change.",
       "notes": [],
-      "status": "unmet",
-      "reason": "no_evidence",
+      "status": "met",
+      "reason": null,
       "graded_by_build": true,
-      "citation": null
+      "citation": {
+        "file": "evidence/item1_analog.json",
+        "command": null,
+        "kind": "generic",
+        "check_status": "pass",
+        "content_hash": "sha256:58e626333bf4bd669c29bb901ec77aced16b255383f6c8f64ffa3d1a7f5a8a10",
+        "input_verified": true,
+        "exit_status": 0,
+        "artifact_binding": {
+          "t1_item": 1,
+          "path": null,
+          "content_hash": "sha256:58e626333bf4bd669c29bb901ec77aced16b255383f6c8f64ffa3d1a7f5a8a10",
+          "input_verified": true,
+          "members": [
+            {
+              "path": {
+                "path": "attest/item1_analog.json",
+                "scope": "repo"
+              },
+              "content_hash": "sha256:4b195e7d93fc23c8f1b6d05dae680b4b7ae0ba58d88406a60900ef00882b4b08",
+              "status": "verified"
+            },
+            {
+              "path": {
+                "path": "design/osc_bank/osc_hd.sch",
+                "scope": "repo"
+              },
+              "content_hash": "sha256:5896d2719cfa9b5d634477efa14bb177080935e2a48ecb41f554577ef7376e55",
+              "status": "verified"
+            },
+            {
+              "path": {
+                "path": "design/osc_bank/osc_hd.spice",
+                "scope": "repo"
+              },
+              "content_hash": "sha256:5654c611b8b7ac867032a7c3853b6f5d69867fd4bee7367d61a791691f30fd81",
+              "status": "verified"
+            },
+            {
+              "path": {
+                "path": "design/osc_bank/osc_nmos.sch",
+                "scope": "repo"
+              },
+              "content_hash": "sha256:0d715773fbf11d6663864e7c719998e6c7df0c14bf329fb86e20a0a2eedd9c4e",
+              "status": "verified"
+            },
+            {
+              "path": {
+                "path": "design/osc_bank/osc_nmos.spice",
+                "scope": "repo"
+              },
+              "content_hash": "sha256:d6038257bee7a1b09a8b6d6fbf2e24d43d8d62afcc31d3ac33eaf94de50cdb5c",
+              "status": "verified"
+            },
+            {
+              "path": {
+                "path": "design/osc_bank/osc_pmos.sch",
+                "scope": "repo"
+              },
+              "content_hash": "sha256:88f6c289f48bc1c6dea0b757b9d765bdd693dbbdb74d4855fc7f06096f500dac",
+              "status": "verified"
+            },
+            {
+              "path": {
+                "path": "design/osc_bank/osc_pmos.spice",
+                "scope": "repo"
+              },
+              "content_hash": "sha256:4cc0534e39453b40ed75b60bcb4a2877fde699fcd4bc0919cefa02915f75f619",
+              "status": "verified"
+            },
+            {
+              "path": {
+                "path": "design/osc_bank/osc_subth.sch",
+                "scope": "repo"
+              },
+              "content_hash": "sha256:e59b73aa8d11f0fb856254a4977722c5e5058e4a914c432d0a472aae2ac4a9fc",
+              "status": "verified"
+            },
+            {
+              "path": {
+                "path": "design/osc_bank/osc_subth.spice",
+                "scope": "repo"
+              },
+              "content_hash": "sha256:b26767202fb2594d0055db35b12b1b51c1a86168d2462b1366ddb5bdbe04c00e",
+              "status": "verified"
+            },
+            {
+              "path": {
+                "path": "design/osc_bank/osc_wire.sch",
+                "scope": "repo"
+              },
+              "content_hash": "sha256:065b568729b3838624bca8a153041523cc306893b8a243f0c5a681b870f74ba4",
+              "status": "verified"
+            },
+            {
+              "path": {
+                "path": "design/osc_bank/osc_wire.spice",
+                "scope": "repo"
+              },
+              "content_hash": "sha256:11ed4cb7fb1aac224dd0f10bc39b575ee6dec0921ba2e95c90948a27db1ed4a8",
+              "status": "verified"
+            },
+            {
+              "path": {
+                "path": "design/osc_bank/xschemrc",
+                "scope": "repo"
+              },
+              "content_hash": "sha256:52e659f2c0f71e950dafcce073371dbd3d95a1f687a7cffaa19d295e5ae01f88",
+              "status": "verified"
+            }
+          ],
+          "summary": "T1 item 1 (Design sources): 16/16 attestation checks passed (klt signoff --attest)",
+          "source": "attest/item1_analog.json",
+          "attestation": {
+            "producer": "klt signoff --attest",
+            "inventory_schema_version": 1,
+            "check_count": 16,
+            "passed_count": 16
+          }
+        }
+      }
     },
     {
       "tier": "T1",
@@ -44,10 +164,74 @@
       "partition_boundary": "Enable/select logic, the counter-based frequency readout against an external reference clock, and the readout interface.",
       "text": "committed RTL sources plus the synthesized gate-level netlist derived from them, regenerated on design change. For a hand-captured full-custom digital partition (no RTL, no synthesis step \u2014 see \"Full-custom digital sub-case\" above), this item is satisfied instead by the Analog column's artifact: committed schematic sources (or generator) plus the netlist derived from them, regenerated on design change, with every logic gate captured as a schematic exactly like an analog partition's.",
       "notes": [],
-      "status": "unmet",
-      "reason": "no_evidence",
+      "status": "met",
+      "reason": null,
       "graded_by_build": true,
-      "citation": null
+      "citation": {
+        "file": "evidence/item1_digital.json",
+        "command": null,
+        "kind": "generic",
+        "check_status": "pass",
+        "content_hash": "sha256:bdc998632ab11a80db8cecd0aaf17dcfe08b7e7a4e69c828730946b71cefc120",
+        "input_verified": true,
+        "exit_status": 0,
+        "artifact_binding": {
+          "t1_item": 1,
+          "path": null,
+          "content_hash": "sha256:bdc998632ab11a80db8cecd0aaf17dcfe08b7e7a4e69c828730946b71cefc120",
+          "input_verified": true,
+          "members": [
+            {
+              "path": {
+                "path": "attest/item1_digital.json",
+                "scope": "repo"
+              },
+              "content_hash": "sha256:485feae41380e2b421e6a6ed2500068efc964288b0afa1ef951ceb907fce9490",
+              "status": "verified"
+            },
+            {
+              "path": {
+                "path": "rtl/readout/readout.v",
+                "scope": "repo"
+              },
+              "content_hash": "sha256:b59f7b8c0ff0bcca2572ac2348bd70660b827bf35f4bdd5ad2a0e7721ef9628e",
+              "status": "verified"
+            },
+            {
+              "path": {
+                "path": "rtl/readout/readout_counter.v",
+                "scope": "repo"
+              },
+              "content_hash": "sha256:86d35a6972b3b5a4a6d23bbf1dc12b16322351b0dcb46810945bd6ff8fc48de0",
+              "status": "verified"
+            },
+            {
+              "path": {
+                "path": "synth/readout/readout.gl.v",
+                "scope": "repo"
+              },
+              "content_hash": "sha256:8932b6a9c7630a04e1925c9e2e0bd8a5bd2dc8643b27b79453a7eee5ca539653",
+              "status": "verified"
+            },
+            {
+              "path": {
+                "path": "synth/readout/request.json",
+                "scope": "repo"
+              },
+              "content_hash": "sha256:38693dfa8608ca8014389a28f70fd4d048cc526f77654ccb44000b81cf60fe03",
+              "status": "verified"
+            }
+          ],
+          "summary": "T1 item 1 (Design sources): 5/5 attestation checks passed (klt signoff --attest)",
+          "source": "attest/item1_digital.json",
+          "attestation": {
+            "producer": "klt signoff --attest",
+            "inventory_schema_version": 1,
+            "check_count": 5,
+            "passed_count": 5
+          }
+        }
+      }
     },
     {
       "tier": "T1",

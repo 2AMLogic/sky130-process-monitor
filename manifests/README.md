@@ -55,3 +55,14 @@ repair it by regenerating the envelope, then the record, then confirming both
 `.github/workflows/signoff.yml` re-runs this on every push and PR with the
 same pinned version and byte-compares against the committed record.
 It also runs `klt signoff --attest 10 --check evidence/item10.json`.
+
+## Item 1 attestations
+
+`attest/item1_digital.json` (readout RTL, synthesis request, `synth/readout/readout.gl.v`, freshness via
+`klt synthesize --check`) and `attest/item1_analog.json` (the five `design/osc_bank/osc_*.sch` and their
+`klt netlist --check` netlists) produce `evidence/item1_{digital,analog}.json` with
+`klt signoff --attest 1 --inventory <inv> -o <envelope>`, run with `PDK=sky130A` and `PDK_ROOT` set to the pinned
+PDK and `klayout-tools==0.9.1` on `PATH`. The manifest cites them as `1.digital` / `1.analog` (hash = the
+envelope's `provenance.input.content_hash`). Their freshness commands are `local_only` (need the PDK, xschem,
+Yosys), so CI re-checks the input hashes and carries the committed outcome; regenerate the signoff record after
+any change.

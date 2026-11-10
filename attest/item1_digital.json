@@ -1,0 +1,29 @@
+{
+  "schema_version": 1,
+  "kind": "t1-attestation-inventory",
+  "t1_item": 1,
+  "description": "Digital partition design sources: readout RTL and the synthesized gate-level netlist (sky130_fd_sc_hd), with the klt synthesize freshness check.",
+  "sources": [
+    "rtl/readout/readout.v",
+    "rtl/readout/readout_counter.v",
+    "synth/readout/request.json"
+  ],
+  "derived": [
+    {
+      "path": "synth/readout/readout.gl.v",
+      "generator": "klt synthesize",
+      "check": {
+        "argv": [
+          "klt",
+          "synthesize",
+          "synth/readout/request.json",
+          "--check",
+          "synth/readout/readout.synth.json",
+          "--netlist",
+          "synth/readout/readout.gl.v"
+        ],
+        "local_only": true
+      }
+    }
+  ]
+}
