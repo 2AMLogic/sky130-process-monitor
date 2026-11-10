@@ -235,8 +235,9 @@ def build_custom(ctx, name, sts, wire=False, vbp=False):
     ctx.rect(cell, "met1", 0, YRV - 240, xmax, YRV + 240)
     ctx.label(cell, 100, 0, "vss")
     ctx.label(cell, 100, YRV, "vdd")
-    for g in geo:
-        ctx.rect(cell, "nwell", g["x0"] - 150, YP0 - 250, g["x1"] + 150, YRV + 400)
+    # One continuous nwell per cell: all pfet bulks/taps sit on vdd, and per-stage wells left a 0.10 um
+    # gap (nwell.space.1 needs more; found by klt drc, #25). Merging same-potential wells is legal.
+    ctx.rect(cell, "nwell", geo[0]["x0"] - 150, YP0 - 250, geo[-1]["x1"] + 150, YRV + 400)
 
     # stage output -> next stage input (direct li1; osc_wire goes through a serpentine instead)
     if not wire:
@@ -277,7 +278,9 @@ def build_custom(ctx, name, sts, wire=False, vbp=False):
     # The band sits under the stage column (not beside it). Each serpentine's two ends are
     # brought out on met2 to a feed column xL at the band's left edge, left of every stage x,
     # so a feed never crosses a serpentine run. Rows run top to bottom in stage order.
-    seg = (1_000_000 - (SERP_N - 1) * SERP_PITCH) // SERP_N
+    # Run length rounded to the 5 nm grid (met1.ongrid.1, found by klt drc, #25): 83 060 nm gives a
+    # centreline of 1 000.020 um (+0.002 %), not exactly 1000 um.
+    seg = -(-((1_000_000 - (SERP_N - 1) * SERP_PITCH) // SERP_N) // 5) * 5
     xout = xmax + 1500
     links = []
     for i, g in enumerate(geo):
@@ -345,22 +348,26 @@ def build_hd(ctx, pdk):
     xn = cells[0][1]
     # enable at nand B, feedback to nand A, nand Y -> first inverter
     ctx.mcon_pad(cell, xn + 225, 1190, M)
+    ctx.rect(cell, "met1", xn + 225 - M // 2, 1190 - 165, xn + 225 + M // 2, 1190 + 165)   # 260x330 nm: met1.area.1 (>= 0.083 um2)
     ctx.label(cell, xn + 225, 1190, "en")
     ctx.mcon_pad(cell, xn + 1145, 1190, M)
-    ctx.mcon_pad(cell, xn + 685, 850, M)
+    # Y pad sits inside the solid part of the nand2_1 output li1 (x 770..1295, y 255..885) so the
+    # 250 nm pad adds no notch against the cell's own li1 (li1.space.1 found by klt drc, #25).
+    ctx.mcon_pad(cell, xn + 1000, 600, M)
     x1 = cells[1][1]
-    ctx.m1_h(cell, 850, xn + 685, x1 + 445)
-    ctx.m1_v(cell, x1 + 445, 850, 1190)
-    ctx.mcon_pad(cell, x1 + 445, 1190, M)
+    # met1 L-joints overlap by the half-width (70 nm) so no 70 nm spur is left at a corner (met1.width.1)
+    ctx.m1_h(cell, 600, xn + 1000, x1 + 445 + 70)
+    ctx.m1_v(cell, x1 + 445, 600 - 70, 1200)
+    ctx.mcon_pad(cell, x1 + 445, 1200, M)      # y 1200: li1 pad bottom 1075 matches inv_1 A pad (li1.space.1)
     # inverter chain on li1
     for (_, xa), (_, xb) in zip(cells[1:-1], cells[2:]):
         ctx.rect(cell, "li1", xa + 900, 1105, xb + 400, 1275)
     xl = cells[-1][1]
-    ctx.mcon_pad(cell, xl + 905, 1190, M)
-    ctx.label(cell, xl + 905, 1190, "out")
-    ctx.m1_v(cell, xl + 905, 1190, 1700)
-    ctx.m1_h(cell, 1700, xn + 1145, xl + 905)
-    ctx.m1_v(cell, xn + 1145, 1190, 1700)
+    ctx.mcon_pad(cell, xl + 885, 570, M)       # inside the solid inv_1 Y li1 (720..1050 x 255..885)
+    ctx.label(cell, xl + 885, 570, "out")
+    ctx.m1_v(cell, xl + 885, 570, 1700 + 70)
+    ctx.m1_h(cell, 1700, xn + 1145 - 70, xl + 885 + 70)
+    ctx.m1_v(cell, xn + 1145, 1190, 1700 + 70)
     ctx.label(cell, 230, 0, "vss")
     ctx.label(cell, 230, 2720, "vdd")
     return cell, xend, 2960

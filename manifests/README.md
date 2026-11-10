@@ -75,3 +75,9 @@ any change.
   `klt place-and-route layout/readout/request.json --check layout/readout/report.json`, is `local_only`
   (needs OpenROAD and the pinned PDK); CI re-hashes the routed GDS and carries the committed outcome. The
   manifest pins the GDS's hash; re-running P&R without re-attesting turns the row stale.
+
+## Item 3 (DRC)
+
+- `3.analog`: `drc/osc_bank.report.json`; `3.digital`: `drc/readout.report.json` (hash = the report's `provenance.input.content_hash`,
+  i.e. the GDS). Re-run `klt drc` (commands in `drc/README.md`) after any GDS change, then re-attest item 2 and regenerate the signoff record.
+  The coverage disclosure and the native-deck disagreement on the analog stream are in `drc/README.md`.
