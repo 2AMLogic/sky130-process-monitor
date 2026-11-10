@@ -1,5 +1,8 @@
 # layout
 
+Two partitions: the digital readout (P&R, `readout/`, below) and the analog oscillator bank
+(generated stream, this section).
+
 Oscillator-bank layout (T1 item 2, analog partition; issue #23). **Planning-level geometry,
 generated from source, not DRC-, LVS- or extraction-checked** (those are #25, #26, #32). Nothing
 here is measured; every area below is a **simulated/derived** figure from the committed stream.
@@ -64,3 +67,36 @@ wire length is unchanged.
 
 The five-corner/PVT behaviour of this layout is untested: no parasitics are extracted (#32), so
 the #17 frequencies do not apply to this layout.
+
+## Digital readout (`readout/`, T1 item 2 digital; issue #24)
+
+Routed `readout` block from `klt place-and-route`, regenerated from the gate-level netlist
+`synth/readout/readout.gl.v` (#22). **Simulated-flow output (OpenROAD, `tt_025C_1v80`, seed 1); not
+DRC-, LVS- or extraction-checked (#25, #26, #32); nothing here is measured.**
+
+- `readout/request.json` — the request: `sky130_fd_sc_hd`, `power.preset: sky130hd` (tapcells, PDN, fillers),
+  40 % target utilization, `clk_ref` at 100 ns (10 MHz, spec §reference clock), `target_stage: route`.
+- `readout/report.json` — the `--format json` report (committed so `--check` has a baseline). It records
+  absolute paths from the machine that produced it; the hash fields drive `--check`.
+- `readout/out/readout.def`, `readout.gds` — routed DEF and merged GDS. `readout/out/readout.v` — the
+  **as-built** netlist (CTS buffers, antenna diodes). **LVS (#26) should use `readout.v`, not the pre-CTS
+  `synth/readout/readout.gl.v`.** Intermediate ODB, Tcl and per-corner metrics from the run are not committed.
+
+Regenerate (run from the repo root: the OpenROAD wrapper mounts only `$PWD`; ~5 min):
+
+```console
+klt place-and-route layout/readout/request.json --format json > layout/readout/report.json
+klt place-and-route layout/readout/request.json --check layout/readout/report.json          # cheap: re-hash netlist + liberty
+klt place-and-route layout/readout/request.json --check layout/readout/report.json --rerun  # re-run OpenROAD, diff verdicts
+```
+
+`--check` (cheap) and `--check --rerun` both reported `match` for the committed files. Then re-attest:
+`klt signoff --attest 2 --input layout/readout/out/readout.gds --inventory attest/item2_digital.json -o evidence/item2_digital.json`
+(cited as `2.digital`).
+
+Reported by the flow, **simulated, not a pass/fail claim here**: die 39 970 µm² (0.040 mm²), core
+36 435 µm², 42.9 % utilization, 5 341 components (468 tapcells, 3 620 fillers), PDN present
+(`power.pdn: true`), 0 setup / hold / antenna / route-DRC violations as counted by the flow (nominal-corner worst setup
+slack 82.06 ns against the 100 ns clock; the 16 swept corners are in the report). The die includes the floorplan margin and
+the 40 % utilization headroom; spec §8 (≤ 0.02 mm², *proposed*) is not judged here. Synthesis cell area was
+14 734 µm². The `readout` top has no timing sign-off claim: timing and PVT belong to #30.

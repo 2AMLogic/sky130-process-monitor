@@ -22,6 +22,10 @@
       "file": "evidence/item2.json",
       "content_hash": "sha256:e232410292afbd32db39286b1d7862c9f577ebeeaff489fa9ba2ff1656c37d9e"
     },
+    "2.digital": {
+      "file": "evidence/item2_digital.json",
+      "content_hash": "sha256:d590c9ea2cceef8e27a53d59848ab9e8e2ca7b6aa7b0cdc95c46ba5f4306f95e"
+    },
     "5.analog": {
       "file": "evidence/item5_analog.json",
       "content_hash": "sha256:8103130d068c67ede6e552fcfc45f605d4ad8533d8392e4d73ce56218084ae45"

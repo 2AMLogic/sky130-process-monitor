@@ -66,3 +66,12 @@ PDK and `klayout-tools==0.9.1` on `PATH`. The manifest cites them as `1.digital`
 envelope's `provenance.input.content_hash`). Their freshness commands are `local_only` (need the PDK, xschem,
 Yosys), so CI re-checks the input hashes and carries the committed outcome; regenerate the signoff record after
 any change.
+
+## Item 2 attestations
+
+- `2.analog`: `evidence/item2.json`, over `layout/osc_bank.gds` (see above).
+- `2.digital`: `evidence/item2_digital.json`, `klt signoff --attest 2 --input layout/readout/out/readout.gds
+  --inventory attest/item2_digital.json -o evidence/item2_digital.json`. The inventory's one declared check,
+  `klt place-and-route layout/readout/request.json --check layout/readout/report.json`, is `local_only`
+  (needs OpenROAD and the pinned PDK); CI re-hashes the routed GDS and carries the committed outcome. The
+  manifest pins the GDS's hash; re-running P&R without re-attesting turns the row stale.
