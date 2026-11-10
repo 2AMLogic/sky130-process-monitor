@@ -75,3 +75,11 @@ any change.
   `klt place-and-route layout/readout/request.json --check layout/readout/report.json`, is `local_only`
   (needs OpenROAD and the pinned PDK); CI re-hashes the routed GDS and carries the committed outcome. The
   manifest pins the GDS's hash; re-running P&R without re-attesting turns the row stale.
+
+## Item 5 (digital)
+
+`5.digital` cites two envelopes (list form): `sta/readout.sta.report.json` (`klt sta`, three liberty corners,
+reference clock only) and `verification/readout/functional-verification.report.json` (`klt
+functional-verification`, 9/9). Read `sta/README.md` for what the `constrained` verdict does not cover
+(oscillator-clocked counter untimed; 125 C / 1.62 V / 1.98 V not in the liberty set). Regenerate both with
+`uvx --from "klayout-tools==0.9.1" [--with cocotb==2.1.0] klt ...`, then the record.

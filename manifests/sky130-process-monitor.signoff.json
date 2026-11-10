@@ -9,7 +9,7 @@
   "tier": null,
   "t1_item_count": 22,
   "build_t1_item_count": 22,
-  "t1_met_count": 7,
+  "t1_met_count": 8,
   "t1_not_applicable_count": 1,
   "source_doc": "manifests/design-evidence-tiers.md",
   "source_doc_content_hash": "sha256:c7a1e7e10627fae396007e0ff951734f37d95028b8f49f2e21e802e9f552f318",
@@ -393,10 +393,50 @@
       "notes": [
         "Both require the spec table itself to be ratified \u2014 verdicts against a draft spec are provisional by construction."
       ],
-      "status": "unmet",
-      "reason": "no_evidence",
+      "status": "met",
+      "reason": null,
       "graded_by_build": true,
-      "citation": null
+      "citation": {
+        "file": "sta/readout.sta.report.json",
+        "command": null,
+        "kind": "sta",
+        "check_status": "ok",
+        "content_hash": "sha256:32aef48415079106ee0d16be09b3c83aef6b8569ad3ebfbe1b277e658b1a107e",
+        "input_verified": true,
+        "exit_status": 0
+      },
+      "citations_graded": [
+        {
+          "citation": "sta/readout.sta.report.json",
+          "status": "met",
+          "reason": null
+        },
+        {
+          "citation": "verification/readout/functional-verification.report.json",
+          "status": "met",
+          "reason": null
+        }
+      ],
+      "citations": [
+        {
+          "file": "sta/readout.sta.report.json",
+          "command": null,
+          "kind": "sta",
+          "check_status": "ok",
+          "content_hash": "sha256:32aef48415079106ee0d16be09b3c83aef6b8569ad3ebfbe1b277e658b1a107e",
+          "input_verified": true,
+          "exit_status": 0
+        },
+        {
+          "file": "verification/readout/functional-verification.report.json",
+          "command": null,
+          "kind": "functional-verification",
+          "check_status": "pass",
+          "content_hash": null,
+          "input_verified": null,
+          "exit_status": 0
+        }
+      ]
     },
     {
       "tier": "T1",
