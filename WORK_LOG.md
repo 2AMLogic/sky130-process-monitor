@@ -5,6 +5,9 @@ role. Newest first.
 
 ### 2026-11-10
 
+- **PR #94**: test(solve): add CI drift check for committed sized MC request set
+- **Issue #71** (closed): Stop committing 139 unrun, regenerable sized-MC request files (sim/solve/mc/requests-sized)
+- **PR #93**: feat(verification): post-layout klt pex reports and SDF-annotated readout re-run
 - **PR #91**: feat(sta): corner-matched oscillator STA for the readout counter and draft max-input-frequency decision
 - **PR #88**: feat(sta): add multi-corner STA and functional-verification evidence for T1 item 5 digital
 - **PR #87**: feat(drc): commit klt drc reports and fix analog generator DRC violations
