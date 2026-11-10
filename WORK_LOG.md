@@ -3,6 +3,19 @@
 Chronological record of merged PRs and closed issues, maintained by the Guide
 role. Newest first.
 
+### 2026-11-10
+
+- **PR #86**: feat(lvs): LVS readout and oscillators, fix poly and diffusion widths
+- **PR #85**: feat(layout): route readout with klt place-and-route and attest T1 item 2 digital
+- **PR #84**: feat(signoff): synthesized readout netlist and T1 item 1 attestation
+- **PR #83**: test(readout): phase-sweep short gate windows and document minimum k
+- **PR #18**: feat(rtl): add saturating gated readout counter and register file with cocotb tests
+- **Issue #24** (closed): T1 item 2 (layout, digital): placed-and-routed readout GDS from a committed klt place-and-route flow
+- **Issue #22** (closed): T1 item 1 (design sources): synthesized readout netlist plus item-1 attestation covering both partitions
+- **Issue #19** (closed): readout: read hangs busy if window is shorter than one oscillator period
+- **Issue #82** (closed): readout: read can stay busy if no osc edge lands inside a very short gate window
+- **Issue #16** (closed): Readout RTL: 24-bit saturating gated counter and register file, with cocotb tests in verification/readout/
+
 ### 2026-11-07
 
 - **PR #79**: Bump Repo Skills 0.25.1 -> 0.25.10
