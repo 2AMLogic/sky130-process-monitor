@@ -126,7 +126,7 @@ def nand_stage(Wn, Wp, Ln, Lp):
 
 def subth_stage(Wn, Wp, Ln, Lp, Lh):
     G = max(Ln, Lp)
-    return dict(Wn=Wn, Wp=Wp, cols=["R", Lh, "R700", G, "R"], ocol=4, nand=False,
+    return dict(Wn=Wn, Wp=Wp, Whdr=420, cols=["R", Lh, "R700", G, "R"], ocol=4, nand=False,
                 n=(2, ["vss", ("in", Ln), "out"]),
                 p=(0, ["vdd", ("vbp", Lh, "lvt"), "float", ("in", Lp), "out"]))
 
@@ -165,7 +165,13 @@ def build_custom(ctx, name, sts, wire=False, vbp=False):
         for kind, (c0, items), W, y0 in (("n", st["n"], st["Wn"], YN0),
                                          ("p", st["p"], st["Wp"], YP1 - st["Wp"])):
             xl, xr = xs[c0][0], xs[c0 + len(items) - 1][1]
-            ctx.rect(cell, "diff", xl, y0, xr, y0 + W)
+            Wh = st.get("Whdr") if kind == "p" else None
+            if Wh:      # series header is narrower than the inverter pfet: step the diffusion mid-"float" column
+                xstep = (xs[c0 + 2][0] + xs[c0 + 2][1]) // 2
+                ctx.rect(cell, "diff", xl, y0 + W - Wh, xstep, y0 + W)
+                ctx.rect(cell, "diff", xstep, y0, xr, y0 + W)
+            else:
+                ctx.rect(cell, "diff", xl, y0, xr, y0 + W)
             ctx.rect(cell, "nsdm" if kind == "n" else "psdm", xl - 125, y0 - 125, xr + 125, y0 + W + 125)
             for k, it in enumerate(items):
                 col = c0 + k
@@ -174,14 +180,19 @@ def build_custom(ctx, name, sts, wire=False, vbp=False):
                     if len(it) > 2:      # LVT header: lvtn spans its channel up to the shared region centre
                         ctx.rect(cell, "lvtn", xs[col - 1][0] - 100, y0 - 100, colc(col + 1), y0 + W + 100)
                 elif it != "float":
-                    ys = contact_ys(W)
+                    Wc, yc = (Wh, y0 + W - Wh) if (Wh and k == 0) else (W, y0)
+                    ys = contact_ys(Wc)
                     for yy in ys:
-                        ctx.cr(cell, "licon", colc(col), y0 + yy + LIC // 2, LIC)
-                    g["regs"][(kind, col)] = (it, colc(col), y0 + ys[0] - 80, y0 + ys[-1] + LIC + 80)
+                        ctx.cr(cell, "licon", colc(col), yc + yy + LIC // 2, LIC)
+                    g["regs"][(kind, col)] = (it, colc(col), yc + ys[0] - 80, yc + ys[-1] + LIC + 80)
         for (kind, col), (gnet, gx, L) in g["gates"].items():
+            ymid = YREF + GAP // 2      # poly steps between the nfet and pfet gate widths here
             if kind == "n":
-                ctx.rect(cell, "poly", gx - L // 2, YN0 - 130, gx - L // 2 + L, YP1 + 130)
-            elif ("n", col) not in g["gates"]:
+                ytop = ymid if ("p", col) in g["gates"] else YP1 + 130
+                ctx.rect(cell, "poly", gx - L // 2, YN0 - 130, gx - L // 2 + L, ytop)
+            elif ("n", col) in g["gates"]:
+                ctx.rect(cell, "poly", gx - L // 2, ymid, gx - L // 2 + L, YP1 + 130)
+            else:
                 ctx.rect(cell, "poly", gx - L // 2, YREF + Y_BUS - 165, gx - L // 2 + L, YP1 + 130)
         for (kind, col), (net, rx, lo, hi) in g["regs"].items():
             if net == "vss":

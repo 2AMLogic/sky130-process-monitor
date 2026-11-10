@@ -1,0 +1,14 @@
+{
+  "schema": "klt.lvs.request/1",
+  "portable_paths": true,
+  "layout": {
+    "netlist": "osc_pmos.layout.spice",
+    "top": "osc_pmos"
+  },
+  "reference": {
+    "netlist": "../design/osc_bank/osc_pmos.spice",
+    "top": "osc_pmos",
+    "form": "subckt-call",
+    "deck": "sky130"
+  }
+}

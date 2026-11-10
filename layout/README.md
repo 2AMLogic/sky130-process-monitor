@@ -24,7 +24,7 @@ Stage counts and device sizes follow the merged #17 schematics (`design/osc_bank
 for device. `osc_hd` places PDK `nand2_1` + 30 × `inv_1` (+ 5 `tapvpwrvgnd_1`) from the pinned PDK
 GDS; the other four are transistor-level (single finger, vertical poly, li1/met1, per-stage taps).
 
-## Not drawn (gaps against the #17 schematics — LVS #26 must resolve these)
+## Not drawn (gaps against the #17 schematics — LVS #26 found these keep `osc_wire`/`osc_subth` off the item-1 netlist; see `lvs/README.md`)
 
 - `osc_wire`: the 31 × 100 fF shunt capacitors (`C` in the schematic) are ideal placeholders and
   are **not drawn**. The `res_generic_m1` (W 0.14 µm, L 1000 µm) *is* drawn: met1 serpentine, 8

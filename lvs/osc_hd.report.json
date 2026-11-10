@@ -1,0 +1,307 @@
+{
+  "schema_version": 3,
+  "engine": "klayout",
+  "layout": {
+    "path": "lvs/osc_hd.layout.spice",
+    "scope": "repo"
+  },
+  "reference": {
+    "path": "lvs/osc_hd.ref.spice",
+    "scope": "repo"
+  },
+  "top": "OSC_HD",
+  "reference_top": "OSC_HD",
+  "reference_conversion": {
+    "form": "subckt-call",
+    "deck": "sky130",
+    "device_map": {
+      "sky130_fd_pr__pfet_01v8_hvt": "pfet"
+    }
+  },
+  "parameter_tolerance": null,
+  "options": {
+    "combine_devices": false,
+    "combine_devices_per_circuit": null,
+    "combine_devices_max_attempts": 5,
+    "flatten_layout": false,
+    "flatten_reference": true,
+    "netgen_setup": null,
+    "parameter_tolerance": null,
+    "compare_parameters": null,
+    "power_connectivity": null,
+    "anchor_top_level_pins": null,
+    "strict_top_level_pin_count": false,
+    "compare_mos_flavour": false,
+    "ignore_mos_bulk": false,
+    "supply_nets": [
+      "GND",
+      "VCC",
+      "VDD",
+      "VGND",
+      "VPWR",
+      "VSS"
+    ],
+    "finfet_bulk": null
+  },
+  "hints_applied": null,
+  "constant_nets_applied": null,
+  "status": "match",
+  "power_connectivity": {
+    "status": "unchecked",
+    "reason": "reference.form is 'subckt-call', whose reference netlist carries its own power/ground pins and nets -- they take part in the ordinary compare, so this check (which exists to cover the signal-only 'gate-level-verilog' form) does not apply",
+    "power_pins": [],
+    "power_pins_derivation": null,
+    "instance_count": 0,
+    "expected_nets": null,
+    "unchecked_expected_pins": [],
+    "excluded_pins": [],
+    "findings": [],
+    "finding_count": 0
+  },
+  "body_verification": {
+    "status": "unchecked",
+    "reason": "no request.layout.deck was given (the pre-extracted request.layout.netlist form), so nothing establishes this layout's substrate/well-tap convention and no synthesized body net can be told apart from a real one -- this run verified nothing about the device bodies either way",
+    "device_classes": [],
+    "device_count": 0,
+    "findings": [],
+    "finding_count": 0
+  },
+  "device_parameter_coverage": [],
+  "mismatch_count": 1,
+  "error_count": 0,
+  "category_counts": {
+    "topology.flattened": 1
+  },
+  "category_error_counts": {},
+  "counts": {
+    "nets": {
+      "layout": 35,
+      "reference": 35,
+      "matched": 35
+    },
+    "devices": {
+      "layout": 64,
+      "reference": 64,
+      "matched": 64
+    },
+    "pins": {
+      "layout": 34,
+      "reference": 4,
+      "matched": 34
+    }
+  },
+  "device_classes": null,
+  "environment": {
+    "engine": "klayout",
+    "engine_version": "0.30.13",
+    "netgen_binary": null,
+    "layout_sha256": "0d5d8bfa9e08351a41c0d3ba25bf4b72c7406b6c78abed2ee2c7b6c8ed282cb5",
+    "reference_sha256": "153472a76a598206b2b6ea941f505352477b4a91980b579bf21d23721f918f47",
+    "extracted_netlist": null
+  },
+  "provenance": {
+    "klt_version": "0.9.2.dev441+g0908e0586667",
+    "klt_git_commit": "0908e0586667f2aa2901199805df417620b2533d",
+    "klt_reinstall_spec": "klayout-tools @ git+https://github.com/2AMLogic/klayout-tools@0908e0586667f2aa2901199805df417620b2533d",
+    "klayout_version": "0.30.13",
+    "pdk": null,
+    "deck": null,
+    "input": {
+      "content_hash": "sha256:0d5d8bfa9e08351a41c0d3ba25bf4b72c7406b6c78abed2ee2c7b6c8ed282cb5",
+      "role": "netlist"
+    },
+    "klayout_version_mismatch": true
+  },
+  "mismatches": [
+    {
+      "category": "topology.flattened",
+      "severity": "warning",
+      "description": "options.flatten_reference flattened the reference netlist before comparing: 3 circuit(s) were collapsed into 1 top-level circuit(s), substituting every subcircuit-call instance in place -- this compare verified topology only after removing the original hierarchy boundaries on this side (see docs/cli/lvs.md, \"topology.flattened\")",
+      "side": "reference",
+      "net": null,
+      "device": null,
+      "property": null,
+      "details": null,
+      "circuit": null,
+      "instance": null,
+      "subcircuit": null
+    }
+  ],
+  "net_correspondence": [
+    {
+      "layout": "\\$34",
+      "reference": "0_A_113_47#",
+      "pin": false
+    },
+    {
+      "layout": "B|EN",
+      "reference": "EN",
+      "pin": true
+    },
+    {
+      "layout": "A|Y",
+      "reference": "N0",
+      "pin": true
+    },
+    {
+      "layout": "A|Y$1",
+      "reference": "N1",
+      "pin": true
+    },
+    {
+      "layout": "A|Y$10",
+      "reference": "N10",
+      "pin": true
+    },
+    {
+      "layout": "A|Y$11",
+      "reference": "N11",
+      "pin": true
+    },
+    {
+      "layout": "A|Y$12",
+      "reference": "N12",
+      "pin": true
+    },
+    {
+      "layout": "A|Y$13",
+      "reference": "N13",
+      "pin": true
+    },
+    {
+      "layout": "A|Y$14",
+      "reference": "N14",
+      "pin": true
+    },
+    {
+      "layout": "A|Y$15",
+      "reference": "N15",
+      "pin": true
+    },
+    {
+      "layout": "A|Y$16",
+      "reference": "N16",
+      "pin": true
+    },
+    {
+      "layout": "A|Y$17",
+      "reference": "N17",
+      "pin": true
+    },
+    {
+      "layout": "A|Y$18",
+      "reference": "N18",
+      "pin": true
+    },
+    {
+      "layout": "A|Y$19",
+      "reference": "N19",
+      "pin": true
+    },
+    {
+      "layout": "A|Y$2",
+      "reference": "N2",
+      "pin": true
+    },
+    {
+      "layout": "A|Y$20",
+      "reference": "N20",
+      "pin": true
+    },
+    {
+      "layout": "A|Y$21",
+      "reference": "N21",
+      "pin": true
+    },
+    {
+      "layout": "A|Y$22",
+      "reference": "N22",
+      "pin": true
+    },
+    {
+      "layout": "A|Y$23",
+      "reference": "N23",
+      "pin": true
+    },
+    {
+      "layout": "A|Y$24",
+      "reference": "N24",
+      "pin": true
+    },
+    {
+      "layout": "A|Y$25",
+      "reference": "N25",
+      "pin": true
+    },
+    {
+      "layout": "A|Y$26",
+      "reference": "N26",
+      "pin": true
+    },
+    {
+      "layout": "A|Y$27",
+      "reference": "N27",
+      "pin": true
+    },
+    {
+      "layout": "A|Y$28",
+      "reference": "N28",
+      "pin": true
+    },
+    {
+      "layout": "A|Y$29",
+      "reference": "N29",
+      "pin": true
+    },
+    {
+      "layout": "A|Y$3",
+      "reference": "N3",
+      "pin": true
+    },
+    {
+      "layout": "A|Y$4",
+      "reference": "N4",
+      "pin": true
+    },
+    {
+      "layout": "A|Y$5",
+      "reference": "N5",
+      "pin": true
+    },
+    {
+      "layout": "A|Y$6",
+      "reference": "N6",
+      "pin": true
+    },
+    {
+      "layout": "A|Y$7",
+      "reference": "N7",
+      "pin": true
+    },
+    {
+      "layout": "A|Y$8",
+      "reference": "N8",
+      "pin": true
+    },
+    {
+      "layout": "A|Y$9",
+      "reference": "N9",
+      "pin": true
+    },
+    {
+      "layout": "A|Y|OUT",
+      "reference": "OUT",
+      "pin": true
+    },
+    {
+      "layout": "VPB|VPWR|VDD",
+      "reference": "VDD",
+      "pin": true
+    },
+    {
+      "layout": "VGND|VSS",
+      "reference": "VSS",
+      "pin": true
+    }
+  ]
+}

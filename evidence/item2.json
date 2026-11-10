@@ -15,11 +15,11 @@
         "path": "layout/osc_bank.gds",
         "scope": "repo"
       },
-      "content_hash": "sha256:e232410292afbd32db39286b1d7862c9f577ebeeaff489fa9ba2ff1656c37d9e"
+      "content_hash": "sha256:27ba1a27d93b3a297ff08ee290b47477d23a08b4c96b1a571b47adca6a5f5ca9"
     },
     "regeneration": {
       "generator": "python3 layout/gen/gen_osc_bank.py -o <scratch>/osc_bank.gds",
-      "regenerated_hash": "sha256:e232410292afbd32db39286b1d7862c9f577ebeeaff489fa9ba2ff1656c37d9e"
+      "regenerated_hash": "sha256:27ba1a27d93b3a297ff08ee290b47477d23a08b4c96b1a571b47adca6a5f5ca9"
     }
   }
 }

@@ -1,0 +1,17 @@
+{
+  "schema": "klt.lvs.request/1",
+  "portable_paths": true,
+  "layout": {
+    "netlist": "osc_subth.layout.spice",
+    "top": "osc_subth"
+  },
+  "reference": {
+    "netlist": "osc_subth.ref.spice",
+    "top": "osc_subth",
+    "form": "subckt-call",
+    "deck": "sky130",
+    "device_map": {
+      "sky130_fd_pr__pfet_01v8_lvt": "pfet"
+    }
+  }
+}
