@@ -7,7 +7,7 @@ Prioritized roadmap from current GitHub label state, maintained by the Guide rol
 
 Judge-approved PRs under a hold (`loom:blocked` or `loom:operator`) — only a human merge decision is missing.
 
-- **#18**: feat(rtl): add saturating gated readout counter and register file with cocotb tests
+_None._
 
 ## Very Important
 
@@ -19,8 +19,7 @@ _None._
 
 `loom:important`; taken before unlabelled work.
 
-- **#16**: Readout RTL: 24-bit saturating gated counter and register file, with cocotb tests in verification/readout/
-- **#22**: T1 item 1 (design sources): synthesized readout netlist plus item-1 attestation covering both partitions
+_None._
 
 ## Ready
 
@@ -32,27 +31,30 @@ _None._
 
 Issues currently being built (`loom:building`).
 
-- **#16**: Readout RTL: 24-bit saturating gated counter and register file, with cocotb tests in verification/readout/
+- **#25**: T1 item 3 (DRC clean): klt drc reports for the oscillator bank and readout layouts with coverage disclosed
+- **#30**: T1 item 5 (corner verification, digital): multi-corner klt sta plus klt functional-verification for the readout
 
 ## PRs Awaiting Review
 
 PRs waiting on Judge (`loom:review-requested`).
 
-_None._
+- **#87**: feat(drc): commit klt drc reports and fix analog generator DRC violations
 
 ## Approved (Awaiting Merge)
 
 PRs that passed review and are queued for Champion auto-merge (`loom:pr`).
 
-- **#18**: feat(rtl): add saturating gated readout counter and register file with cocotb tests
+_None._
 
 ## Proposed
 
 Issues carrying `loom:curated`.
 
 - **#5**: Track the gap to T1 (klayout-tools design-evidence-tiers.md) *(curated)*
-- **#16**: Readout RTL: 24-bit saturating gated counter and register file, with cocotb tests in verification/readout/ *(curated)*
+- **#25**: T1 item 3 (DRC clean): klt drc reports for the oscillator bank and readout layouts with coverage disclosed *(curated)*
+- **#26**: T1 item 4 (LVS clean): klt lvs for the oscillator bank (vs schematics) and the readout (vs gate-level netlist) *(curated)*
 - **#27**: T1 item 9 (testbenches shipped): testbench inventories and klt signoff --attest 9 for both partitions *(curated)*
+- **#30**: T1 item 5 (corner verification, digital): multi-corner klt sta plus klt functional-verification for the readout *(curated)*
 - **#44**: Follow-on from PR #43: subthreshold Q2 bench follow-ups (cold-cell re-run, pfet S(T) reference, leakage floor) *(curated)*
 
 ## Proposed (Architect / Hermit)
@@ -62,21 +64,20 @@ Issues carrying `loom:curated`.
 
 ## Epics
 
-
 _None._
 
 ## Backlog Balance
 
 | Bucket | Count |
 |------|-------|
-| Operator merge-risk holds | 1 |
+| Operator merge-risk holds | 0 |
 | Very important | 0 |
-| Important | 2 |
+| Important | 0 |
 | Ready (`loom:issue`) | 0 |
-| In Progress (`loom:building`) | 1 |
-| PRs awaiting review | 0 |
-| Approved PRs awaiting merge | 1 |
-| Curated | 4 |
+| In Progress (`loom:building`) | 2 |
+| PRs awaiting review | 1 |
+| Approved PRs awaiting merge | 0 |
+| Curated | 6 |
 | Architect / Hermit proposals | 1 |
 | Active epics | 0 |
 <!-- guide:plan-body:end -->
