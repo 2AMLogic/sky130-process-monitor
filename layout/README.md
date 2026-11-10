@@ -4,7 +4,7 @@ Two partitions: the digital readout (P&R, `readout/`, below) and the analog osci
 (generated stream, this section).
 
 Oscillator-bank layout (T1 item 2, analog partition; issue #23). **Planning-level geometry,
-generated from source, not DRC-, LVS- or extraction-checked** (those are #25, #26, #32). Nothing
+generated from source; curated-deck DRC clean (`drc/`, #25), LVS in `lvs/` (#26), not extraction-checked (#32)**. Nothing
 here is measured; every area below is a **simulated/derived** figure from the committed stream.
 
 - `osc_bank.gds` — committed stream. Top cell `osc_bank`; cells `osc_hd`, `osc_nmos`, `osc_pmos`,
@@ -28,7 +28,7 @@ GDS; the other four are transistor-level (single finger, vertical poly, li1/met1
 
 - `osc_wire`: the 31 × 100 fF shunt capacitors (`C` in the schematic) are ideal placeholders and
   are **not drawn**. The `res_generic_m1` (W 0.14 µm, L 1000 µm) *is* drawn: met1 serpentine, 8
-  runs, centreline 1000 µm (feed stubs excluded).
+  runs, centreline 1000.020 µm (feed stubs excluded; run length rounded to the 5 nm grid).
 - `osc_subth`: the `Rb0`/`Rb1` bias divider (ideal resistors) is **not drawn**; `vbp` is a labelled
   met1 net that an external source or a later divider must drive.
 - LVT header pFETs use `lvtn` (125/44), which the sky130A tech file defines for LVT devices.

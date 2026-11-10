@@ -5,6 +5,12 @@ role. Newest first.
 
 ### 2026-11-10
 
+- **PR #91**: feat(sta): corner-matched oscillator STA for the readout counter and draft max-input-frequency decision
+- **PR #88**: feat(sta): add multi-corner STA and functional-verification evidence for T1 item 5 digital
+- **PR #87**: feat(drc): commit klt drc reports and fix analog generator DRC violations
+- **Issue #89** (closed): Readout counter: time the oscillator clock domain per corner (STA completeness)
+- **Issue #30** (closed): T1 item 5 (corner verification, digital): multi-corner klt sta plus klt functional-verification for the readout
+- **Issue #25** (closed): T1 item 3 (DRC clean): klt drc reports for the oscillator bank and readout layouts with coverage disclosed
 - **PR #86**: feat(lvs): LVS readout and oscillators, fix poly and diffusion widths
 - **PR #85**: feat(layout): route readout with klt place-and-route and attest T1 item 2 digital
 - **PR #84**: feat(signoff): synthesized readout netlist and T1 item 1 attestation
