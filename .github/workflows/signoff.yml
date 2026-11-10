@@ -73,3 +73,12 @@ jobs:
                       --check evidence/item1_analog.json
           klt signoff --attest 1 --inventory attest/item1_digital.json \
                       --check evidence/item1_digital.json
+
+      # The P&R freshness command needs OpenROAD and the pinned PDK, so it is
+      # marked local_only: --check re-hashes the routed GDS and carries the
+      # committed outcome. Re-run it locally (see layout/README.md).
+      - name: Re-attest T1 item 2 (digital) and compare against the committed envelope
+        run: |
+          klt signoff --attest 2 --input layout/readout/out/readout.gds \
+                      --inventory attest/item2_digital.json \
+                      --check evidence/item2_digital.json

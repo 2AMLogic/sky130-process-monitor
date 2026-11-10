@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "kind": "t1-attestation-inventory",
+  "t1_item": 2,
+  "checks": [
+    {
+      "name": "place-and-route-fresh",
+      "argv": ["klt", "place-and-route", "layout/readout/request.json", "--check", "layout/readout/report.json"],
+      "cwd": ".",
+      "timeout_s": 300,
+      "local_only": true
+    }
+  ]
+}
