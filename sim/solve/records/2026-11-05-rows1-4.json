@@ -1,0 +1,1020 @@
+{
+ "draws": 2000,
+ "kind": "SIMULATED",
+ "mc_pooled_sigma_lnf": {
+  "osc_hd": 0.00335645729608838,
+  "osc_nmos": 0.0030833026295411857,
+  "osc_pmos": 0.006711570064586323,
+  "osc_subth": 0.26612537512545015,
+  "osc_wire": 0.0014583321231023286
+ },
+ "row1": {
+  "fallback_bank_3": {
+   "cells_checked": 135,
+   "missing_cells": [
+    [
+     "osc_nmos",
+     "tt",
+     1.8,
+     -40
+    ]
+   ],
+   "oscillates_everywhere": false
+  },
+  "lowest_f_cell": {
+   "cell": [
+    "osc_subth",
+    "ss",
+    1.98,
+    -40
+   ],
+   "f_hz": 7542.433089897681
+  },
+  "target_bank_5": {
+   "cells_checked": 225,
+   "missing_cells": [
+    [
+     "osc_nmos",
+     "tt",
+     1.8,
+     -40
+    ],
+    [
+     "osc_wire",
+     "sf",
+     1.98,
+     -40
+    ],
+    [
+     "osc_subth",
+     "ss",
+     1.62,
+     -40
+    ],
+    [
+     "osc_subth",
+     "ss",
+     1.8,
+     -40
+    ],
+    [
+     "osc_subth",
+     "sf",
+     1.62,
+     -40
+    ],
+    [
+     "osc_subth",
+     "sf",
+     1.8,
+     -40
+    ],
+    [
+     "osc_subth",
+     "sf",
+     1.98,
+     -40
+    ]
+   ],
+   "oscillates_everywhere": false
+  },
+  "verdict_fallback": "FAIL",
+  "verdict_target": "FAIL"
+ },
+ "row2_ratio": {
+  "fallback_slow_fast": {
+   "cells": {
+    "1.62|-40": {
+     "confusions": {},
+     "draws_per_corner": 2000,
+     "errors": 0,
+     "gradable": true,
+     "identified": true,
+     "oscillators": [
+      "osc_hd",
+      "osc_nmos",
+      "osc_pmos",
+      "osc_wire"
+     ]
+    },
+    "1.62|125": {
+     "confusions": {},
+     "draws_per_corner": 2000,
+     "errors": 0,
+     "gradable": true,
+     "identified": true,
+     "oscillators": [
+      "osc_hd",
+      "osc_nmos",
+      "osc_pmos",
+      "osc_wire",
+      "osc_subth"
+     ]
+    },
+    "1.62|27": {
+     "confusions": {},
+     "draws_per_corner": 2000,
+     "errors": 0,
+     "gradable": true,
+     "identified": true,
+     "oscillators": [
+      "osc_hd",
+      "osc_nmos",
+      "osc_pmos",
+      "osc_wire",
+      "osc_subth"
+     ]
+    },
+    "1.80|-40": {
+     "confusions": {},
+     "draws_per_corner": 2000,
+     "errors": 0,
+     "gradable": true,
+     "identified": true,
+     "oscillators": [
+      "osc_hd",
+      "osc_pmos",
+      "osc_wire"
+     ]
+    },
+    "1.80|125": {
+     "confusions": {},
+     "draws_per_corner": 2000,
+     "errors": 0,
+     "gradable": true,
+     "identified": true,
+     "oscillators": [
+      "osc_hd",
+      "osc_nmos",
+      "osc_pmos",
+      "osc_wire",
+      "osc_subth"
+     ]
+    },
+    "1.80|27": {
+     "confusions": {},
+     "draws_per_corner": 2000,
+     "errors": 0,
+     "gradable": true,
+     "identified": true,
+     "oscillators": [
+      "osc_hd",
+      "osc_nmos",
+      "osc_pmos",
+      "osc_wire",
+      "osc_subth"
+     ]
+    },
+    "1.98|-40": {
+     "confusions": {},
+     "draws_per_corner": 2000,
+     "errors": 0,
+     "gradable": true,
+     "identified": true,
+     "oscillators": [
+      "osc_hd",
+      "osc_nmos",
+      "osc_pmos"
+     ]
+    },
+    "1.98|125": {
+     "confusions": {},
+     "draws_per_corner": 2000,
+     "errors": 0,
+     "gradable": true,
+     "identified": true,
+     "oscillators": [
+      "osc_hd",
+      "osc_nmos",
+      "osc_pmos",
+      "osc_wire",
+      "osc_subth"
+     ]
+    },
+    "1.98|27": {
+     "confusions": {},
+     "draws_per_corner": 2000,
+     "errors": 0,
+     "gradable": true,
+     "identified": true,
+     "oscillators": [
+      "osc_hd",
+      "osc_nmos",
+      "osc_pmos",
+      "osc_wire",
+      "osc_subth"
+     ]
+    }
+   },
+   "gradable_cells": 9,
+   "identified_cells": 9,
+   "total_cells": 9,
+   "verdict": "PASS"
+  },
+  "target_5_corner": {
+   "cells": {
+    "1.62|-40": {
+     "confusions": {},
+     "draws_per_corner": 2000,
+     "errors": 0,
+     "gradable": true,
+     "identified": true,
+     "oscillators": [
+      "osc_hd",
+      "osc_nmos",
+      "osc_pmos",
+      "osc_wire"
+     ]
+    },
+    "1.62|125": {
+     "confusions": {},
+     "draws_per_corner": 2000,
+     "errors": 0,
+     "gradable": true,
+     "identified": true,
+     "oscillators": [
+      "osc_hd",
+      "osc_nmos",
+      "osc_pmos",
+      "osc_wire",
+      "osc_subth"
+     ]
+    },
+    "1.62|27": {
+     "confusions": {},
+     "draws_per_corner": 2000,
+     "errors": 0,
+     "gradable": true,
+     "identified": true,
+     "oscillators": [
+      "osc_hd",
+      "osc_nmos",
+      "osc_pmos",
+      "osc_wire",
+      "osc_subth"
+     ]
+    },
+    "1.80|-40": {
+     "confusions": {},
+     "draws_per_corner": 2000,
+     "errors": 0,
+     "gradable": true,
+     "identified": true,
+     "oscillators": [
+      "osc_hd",
+      "osc_pmos",
+      "osc_wire"
+     ]
+    },
+    "1.80|125": {
+     "confusions": {},
+     "draws_per_corner": 2000,
+     "errors": 0,
+     "gradable": true,
+     "identified": true,
+     "oscillators": [
+      "osc_hd",
+      "osc_nmos",
+      "osc_pmos",
+      "osc_wire",
+      "osc_subth"
+     ]
+    },
+    "1.80|27": {
+     "confusions": {},
+     "draws_per_corner": 2000,
+     "errors": 0,
+     "gradable": true,
+     "identified": true,
+     "oscillators": [
+      "osc_hd",
+      "osc_nmos",
+      "osc_pmos",
+      "osc_wire",
+      "osc_subth"
+     ]
+    },
+    "1.98|-40": {
+     "confusions": {},
+     "draws_per_corner": 2000,
+     "errors": 0,
+     "gradable": true,
+     "identified": true,
+     "oscillators": [
+      "osc_hd",
+      "osc_nmos",
+      "osc_pmos"
+     ]
+    },
+    "1.98|125": {
+     "confusions": {},
+     "draws_per_corner": 2000,
+     "errors": 0,
+     "gradable": true,
+     "identified": true,
+     "oscillators": [
+      "osc_hd",
+      "osc_nmos",
+      "osc_pmos",
+      "osc_wire",
+      "osc_subth"
+     ]
+    },
+    "1.98|27": {
+     "confusions": {
+      "fs->tt": 1
+     },
+     "draws_per_corner": 2000,
+     "errors": 1,
+     "gradable": true,
+     "identified": false,
+     "oscillators": [
+      "osc_hd",
+      "osc_nmos",
+      "osc_pmos",
+      "osc_wire",
+      "osc_subth"
+     ]
+    }
+   },
+   "gradable_cells": 9,
+   "identified_cells": 8,
+   "total_cells": 9,
+   "verdict": "FAIL"
+  }
+ },
+ "row3": {
+  "binding_cell": "-40 C tt 1.62 V",
+  "cells": {
+   "-40|ff|1.62": {
+    "in_sample": true,
+    "oscillators": [
+     "osc_hd",
+     "osc_pmos"
+    ],
+    "p99_abs_err_v": 0.0040000000000000036,
+    "systematic_err_v": 0.0
+   },
+   "-40|ff|1.80": {
+    "in_sample": false,
+    "oscillators": [
+     "osc_hd",
+     "osc_pmos"
+    ],
+    "p99_abs_err_v": 0.038000000000000034,
+    "systematic_err_v": 0.03200000000000003
+   },
+   "-40|ff|1.98": {
+    "in_sample": true,
+    "oscillators": [
+     "osc_hd",
+     "osc_pmos"
+    ],
+    "p99_abs_err_v": 0.010000000000000009,
+    "systematic_err_v": 0.0
+   },
+   "-40|fs|1.62": {
+    "in_sample": true,
+    "oscillators": [
+     "osc_hd",
+     "osc_pmos"
+    ],
+    "p99_abs_err_v": 0.052000000000000046,
+    "systematic_err_v": 0.0
+   },
+   "-40|fs|1.80": {
+    "in_sample": false,
+    "oscillators": [
+     "osc_hd",
+     "osc_pmos"
+    ],
+    "p99_abs_err_v": 0.03200000000000003,
+    "systematic_err_v": 0.026000000000000023
+   },
+   "-40|fs|1.98": {
+    "in_sample": true,
+    "oscillators": [
+     "osc_hd",
+     "osc_pmos"
+    ],
+    "p99_abs_err_v": 0.010000000000000009,
+    "systematic_err_v": 0.0
+   },
+   "-40|sf|1.62": {
+    "in_sample": true,
+    "oscillators": [
+     "osc_hd",
+     "osc_pmos"
+    ],
+    "p99_abs_err_v": 0.0040000000000000036,
+    "systematic_err_v": 0.0
+   },
+   "-40|sf|1.80": {
+    "in_sample": false,
+    "oscillators": [
+     "osc_hd",
+     "osc_pmos"
+    ],
+    "p99_abs_err_v": 0.026000000000000023,
+    "systematic_err_v": 0.02200000000000002
+   },
+   "-40|sf|1.98": {
+    "in_sample": true,
+    "oscillators": [
+     "osc_hd",
+     "osc_pmos"
+    ],
+    "p99_abs_err_v": 0.008000000000000007,
+    "systematic_err_v": 0.0
+   },
+   "-40|ss|1.62": {
+    "in_sample": true,
+    "oscillators": [
+     "osc_hd",
+     "osc_pmos"
+    ],
+    "p99_abs_err_v": 0.0040000000000000036,
+    "systematic_err_v": 0.0
+   },
+   "-40|ss|1.80": {
+    "in_sample": false,
+    "oscillators": [
+     "osc_hd",
+     "osc_pmos"
+    ],
+    "p99_abs_err_v": 0.030000000000000027,
+    "systematic_err_v": 0.026000000000000023
+   },
+   "-40|ss|1.98": {
+    "in_sample": true,
+    "oscillators": [
+     "osc_hd",
+     "osc_pmos"
+    ],
+    "p99_abs_err_v": 0.006000000000000005,
+    "systematic_err_v": 0.0
+   },
+   "-40|tt|1.62": {
+    "in_sample": true,
+    "oscillators": [
+     "osc_hd",
+     "osc_pmos"
+    ],
+    "p99_abs_err_v": 0.062000000000000055,
+    "systematic_err_v": 0.0
+   },
+   "-40|tt|1.80": {
+    "in_sample": false,
+    "oscillators": [
+     "osc_hd",
+     "osc_pmos"
+    ],
+    "p99_abs_err_v": 0.03600000000000003,
+    "systematic_err_v": 0.030000000000000027
+   },
+   "-40|tt|1.98": {
+    "in_sample": true,
+    "oscillators": [
+     "osc_hd",
+     "osc_pmos"
+    ],
+    "p99_abs_err_v": 0.010000000000000009,
+    "systematic_err_v": 0.0
+   },
+   "125|ff|1.62": {
+    "in_sample": true,
+    "oscillators": [
+     "osc_hd",
+     "osc_nmos",
+     "osc_pmos",
+     "osc_wire",
+     "osc_subth"
+    ],
+    "p99_abs_err_v": 0.0040000000000000036,
+    "systematic_err_v": 0.0
+   },
+   "125|ff|1.80": {
+    "in_sample": false,
+    "oscillators": [
+     "osc_hd",
+     "osc_nmos",
+     "osc_pmos",
+     "osc_wire",
+     "osc_subth"
+    ],
+    "p99_abs_err_v": 0.03400000000000003,
+    "systematic_err_v": 0.028000000000000025
+   },
+   "125|ff|1.98": {
+    "in_sample": true,
+    "oscillators": [
+     "osc_hd",
+     "osc_nmos",
+     "osc_pmos",
+     "osc_wire",
+     "osc_subth"
+    ],
+    "p99_abs_err_v": 0.010000000000000009,
+    "systematic_err_v": 0.0
+   },
+   "125|fs|1.62": {
+    "in_sample": true,
+    "oscillators": [
+     "osc_hd",
+     "osc_nmos",
+     "osc_pmos",
+     "osc_wire",
+     "osc_subth"
+    ],
+    "p99_abs_err_v": 0.0040000000000000036,
+    "systematic_err_v": 0.0
+   },
+   "125|fs|1.80": {
+    "in_sample": false,
+    "oscillators": [
+     "osc_hd",
+     "osc_nmos",
+     "osc_pmos",
+     "osc_wire",
+     "osc_subth"
+    ],
+    "p99_abs_err_v": 0.028000000000000025,
+    "systematic_err_v": 0.02400000000000002
+   },
+   "125|fs|1.98": {
+    "in_sample": true,
+    "oscillators": [
+     "osc_hd",
+     "osc_nmos",
+     "osc_pmos",
+     "osc_wire",
+     "osc_subth"
+    ],
+    "p99_abs_err_v": 0.006000000000000005,
+    "systematic_err_v": 0.0
+   },
+   "125|sf|1.62": {
+    "in_sample": true,
+    "oscillators": [
+     "osc_hd",
+     "osc_nmos",
+     "osc_pmos",
+     "osc_wire",
+     "osc_subth"
+    ],
+    "p99_abs_err_v": 0.0040000000000000036,
+    "systematic_err_v": 0.0
+   },
+   "125|sf|1.80": {
+    "in_sample": false,
+    "oscillators": [
+     "osc_hd",
+     "osc_nmos",
+     "osc_pmos",
+     "osc_wire",
+     "osc_subth"
+    ],
+    "p99_abs_err_v": 0.030000000000000027,
+    "systematic_err_v": 0.026000000000000023
+   },
+   "125|sf|1.98": {
+    "in_sample": true,
+    "oscillators": [
+     "osc_hd",
+     "osc_nmos",
+     "osc_pmos",
+     "osc_wire",
+     "osc_subth"
+    ],
+    "p99_abs_err_v": 0.008000000000000007,
+    "systematic_err_v": 0.0
+   },
+   "125|ss|1.62": {
+    "in_sample": true,
+    "oscillators": [
+     "osc_hd",
+     "osc_nmos",
+     "osc_pmos",
+     "osc_wire",
+     "osc_subth"
+    ],
+    "p99_abs_err_v": 0.0020000000000000018,
+    "systematic_err_v": 0.0
+   },
+   "125|ss|1.80": {
+    "in_sample": false,
+    "oscillators": [
+     "osc_hd",
+     "osc_nmos",
+     "osc_pmos",
+     "osc_wire",
+     "osc_subth"
+    ],
+    "p99_abs_err_v": 0.028000000000000025,
+    "systematic_err_v": 0.02400000000000002
+   },
+   "125|ss|1.98": {
+    "in_sample": true,
+    "oscillators": [
+     "osc_hd",
+     "osc_nmos",
+     "osc_pmos",
+     "osc_wire",
+     "osc_subth"
+    ],
+    "p99_abs_err_v": 0.006000000000000005,
+    "systematic_err_v": 0.0
+   },
+   "125|tt|1.62": {
+    "in_sample": true,
+    "oscillators": [
+     "osc_hd",
+     "osc_nmos",
+     "osc_pmos",
+     "osc_wire",
+     "osc_subth"
+    ],
+    "p99_abs_err_v": 0.0040000000000000036,
+    "systematic_err_v": 0.0
+   },
+   "125|tt|1.80": {
+    "in_sample": false,
+    "oscillators": [
+     "osc_hd",
+     "osc_nmos",
+     "osc_pmos",
+     "osc_wire",
+     "osc_subth"
+    ],
+    "p99_abs_err_v": 0.03200000000000003,
+    "systematic_err_v": 0.028000000000000025
+   },
+   "125|tt|1.98": {
+    "in_sample": true,
+    "oscillators": [
+     "osc_hd",
+     "osc_nmos",
+     "osc_pmos",
+     "osc_wire",
+     "osc_subth"
+    ],
+    "p99_abs_err_v": 0.006000000000000005,
+    "systematic_err_v": 0.0
+   },
+   "27|ff|1.62": {
+    "in_sample": true,
+    "oscillators": [
+     "osc_hd",
+     "osc_nmos",
+     "osc_pmos",
+     "osc_wire",
+     "osc_subth"
+    ],
+    "p99_abs_err_v": 0.0040000000000000036,
+    "systematic_err_v": 0.0
+   },
+   "27|ff|1.80": {
+    "in_sample": false,
+    "oscillators": [
+     "osc_hd",
+     "osc_nmos",
+     "osc_pmos",
+     "osc_wire",
+     "osc_subth"
+    ],
+    "p99_abs_err_v": 0.03200000000000003,
+    "systematic_err_v": 0.028000000000000025
+   },
+   "27|ff|1.98": {
+    "in_sample": true,
+    "oscillators": [
+     "osc_hd",
+     "osc_nmos",
+     "osc_pmos",
+     "osc_wire",
+     "osc_subth"
+    ],
+    "p99_abs_err_v": 0.006000000000000005,
+    "systematic_err_v": 0.0
+   },
+   "27|fs|1.62": {
+    "in_sample": true,
+    "oscillators": [
+     "osc_hd",
+     "osc_nmos",
+     "osc_pmos",
+     "osc_wire",
+     "osc_subth"
+    ],
+    "p99_abs_err_v": 0.0020000000000000018,
+    "systematic_err_v": 0.0
+   },
+   "27|fs|1.80": {
+    "in_sample": false,
+    "oscillators": [
+     "osc_hd",
+     "osc_nmos",
+     "osc_pmos",
+     "osc_wire",
+     "osc_subth"
+    ],
+    "p99_abs_err_v": 0.03200000000000003,
+    "systematic_err_v": 0.028000000000000025
+   },
+   "27|fs|1.98": {
+    "in_sample": true,
+    "oscillators": [
+     "osc_hd",
+     "osc_nmos",
+     "osc_pmos",
+     "osc_wire",
+     "osc_subth"
+    ],
+    "p99_abs_err_v": 0.006000000000000005,
+    "systematic_err_v": 0.0
+   },
+   "27|sf|1.62": {
+    "in_sample": true,
+    "oscillators": [
+     "osc_hd",
+     "osc_nmos",
+     "osc_pmos",
+     "osc_wire",
+     "osc_subth"
+    ],
+    "p99_abs_err_v": 0.0020000000000000018,
+    "systematic_err_v": 0.0
+   },
+   "27|sf|1.80": {
+    "in_sample": false,
+    "oscillators": [
+     "osc_hd",
+     "osc_nmos",
+     "osc_pmos",
+     "osc_wire",
+     "osc_subth"
+    ],
+    "p99_abs_err_v": 0.030000000000000027,
+    "systematic_err_v": 0.026000000000000023
+   },
+   "27|sf|1.98": {
+    "in_sample": true,
+    "oscillators": [
+     "osc_hd",
+     "osc_nmos",
+     "osc_pmos",
+     "osc_wire",
+     "osc_subth"
+    ],
+    "p99_abs_err_v": 0.0040000000000000036,
+    "systematic_err_v": 0.0
+   },
+   "27|ss|1.62": {
+    "in_sample": true,
+    "oscillators": [
+     "osc_hd",
+     "osc_nmos",
+     "osc_pmos",
+     "osc_wire",
+     "osc_subth"
+    ],
+    "p99_abs_err_v": 0.0020000000000000018,
+    "systematic_err_v": 0.0
+   },
+   "27|ss|1.80": {
+    "in_sample": false,
+    "oscillators": [
+     "osc_hd",
+     "osc_nmos",
+     "osc_pmos",
+     "osc_wire",
+     "osc_subth"
+    ],
+    "p99_abs_err_v": 0.026000000000000023,
+    "systematic_err_v": 0.02400000000000002
+   },
+   "27|ss|1.98": {
+    "in_sample": true,
+    "oscillators": [
+     "osc_hd",
+     "osc_nmos",
+     "osc_pmos",
+     "osc_wire",
+     "osc_subth"
+    ],
+    "p99_abs_err_v": 0.0040000000000000036,
+    "systematic_err_v": 0.0
+   },
+   "27|tt|1.62": {
+    "in_sample": true,
+    "oscillators": [
+     "osc_hd",
+     "osc_nmos",
+     "osc_pmos",
+     "osc_wire",
+     "osc_subth"
+    ],
+    "p99_abs_err_v": 0.0020000000000000018,
+    "systematic_err_v": 0.0
+   },
+   "27|tt|1.80": {
+    "in_sample": false,
+    "oscillators": [
+     "osc_hd",
+     "osc_nmos",
+     "osc_pmos",
+     "osc_wire",
+     "osc_subth"
+    ],
+    "p99_abs_err_v": 0.028000000000000025,
+    "systematic_err_v": 0.02400000000000002
+   },
+   "27|tt|1.98": {
+    "in_sample": true,
+    "oscillators": [
+     "osc_hd",
+     "osc_nmos",
+     "osc_pmos",
+     "osc_wire",
+     "osc_subth"
+    ],
+    "p99_abs_err_v": 0.006000000000000005,
+    "systematic_err_v": 0.0
+   }
+  },
+  "cells_graded": 45,
+  "cells_total": 45,
+  "grade": {
+   "fallback": "FAIL",
+   "stretch": "FAIL",
+   "target": "FAIL"
+  },
+  "worst_p99_abs_err_v": 0.062000000000000055
+ },
+ "row4": {
+  "binding_cell": "ff 1.62 V 27 C",
+  "cells": {
+   "ff|1.62|-40": {
+    "in_sample": false,
+    "p99_abs_err_c": 5.0,
+    "systematic_err_c": -5.0
+   },
+   "ff|1.62|125": {
+    "in_sample": false,
+    "p99_abs_err_c": 5.0,
+    "systematic_err_c": 5.0
+   },
+   "ff|1.62|27": {
+    "in_sample": false,
+    "p99_abs_err_c": 19.0,
+    "systematic_err_c": -13.5
+   },
+   "ff|1.80|-40": {
+    "in_sample": false,
+    "p99_abs_err_c": 5.0,
+    "systematic_err_c": -5.0
+   },
+   "ff|1.80|125": {
+    "in_sample": false,
+    "p99_abs_err_c": 5.0,
+    "systematic_err_c": 5.0
+   },
+   "ff|1.80|27": {
+    "in_sample": false,
+    "p99_abs_err_c": 4.0,
+    "systematic_err_c": 0.0
+   },
+   "ff|1.98|-40": {
+    "in_sample": false,
+    "p99_abs_err_c": 5.0,
+    "systematic_err_c": -2.5
+   },
+   "ff|1.98|125": {
+    "in_sample": false,
+    "p99_abs_err_c": 5.0,
+    "systematic_err_c": 5.0
+   },
+   "ff|1.98|27": {
+    "in_sample": false,
+    "p99_abs_err_c": 19.0,
+    "systematic_err_c": 16.0
+   },
+   "fs|1.62|-40": {
+    "in_sample": false,
+    "p99_abs_err_c": 5.0,
+    "systematic_err_c": -5.0
+   },
+   "fs|1.62|125": {
+    "in_sample": false,
+    "p99_abs_err_c": 5.0,
+    "systematic_err_c": 5.0
+   },
+   "fs|1.62|27": {
+    "in_sample": false,
+    "p99_abs_err_c": 10.5,
+    "systematic_err_c": -5.0
+   },
+   "fs|1.80|-40": {
+    "in_sample": false,
+    "p99_abs_err_c": 5.0,
+    "systematic_err_c": -5.0
+   },
+   "fs|1.80|125": {
+    "in_sample": false,
+    "p99_abs_err_c": 5.0,
+    "systematic_err_c": 5.0
+   },
+   "fs|1.80|27": {
+    "in_sample": false,
+    "p99_abs_err_c": 4.0,
+    "systematic_err_c": 0.0
+   },
+   "fs|1.98|-40": {
+    "in_sample": false,
+    "p99_abs_err_c": 5.0,
+    "systematic_err_c": -5.0
+   },
+   "fs|1.98|125": {
+    "in_sample": false,
+    "p99_abs_err_c": 5.0,
+    "systematic_err_c": 5.0
+   },
+   "fs|1.98|27": {
+    "in_sample": false,
+    "p99_abs_err_c": 8.5,
+    "systematic_err_c": 5.0
+   },
+   "sf": {
+    "gradable": false
+   },
+   "ss": {
+    "gradable": false
+   },
+   "tt|1.62|-40": {
+    "in_sample": true,
+    "p99_abs_err_c": 5.0,
+    "systematic_err_c": 0.0
+   },
+   "tt|1.62|125": {
+    "in_sample": true,
+    "p99_abs_err_c": 7.5,
+    "systematic_err_c": 0.0
+   },
+   "tt|1.62|27": {
+    "in_sample": true,
+    "p99_abs_err_c": 6.0,
+    "systematic_err_c": 0.0
+   },
+   "tt|1.80|-40": {
+    "in_sample": true,
+    "p99_abs_err_c": 4.5,
+    "systematic_err_c": 0.0
+   },
+   "tt|1.80|125": {
+    "in_sample": true,
+    "p99_abs_err_c": 5.0,
+    "systematic_err_c": 0.0
+   },
+   "tt|1.80|27": {
+    "in_sample": true,
+    "p99_abs_err_c": 4.0,
+    "systematic_err_c": 0.0
+   },
+   "tt|1.98|-40": {
+    "in_sample": true,
+    "p99_abs_err_c": 3.5,
+    "systematic_err_c": 0.0
+   },
+   "tt|1.98|125": {
+    "in_sample": true,
+    "p99_abs_err_c": 3.5,
+    "systematic_err_c": 0.0
+   },
+   "tt|1.98|27": {
+    "in_sample": true,
+    "p99_abs_err_c": 3.0,
+    "systematic_err_c": 0.0
+   }
+  },
+  "cells_graded": 29,
+  "cells_total": 45,
+  "gradable": true,
+  "grade": {
+   "fallback": "FAIL",
+   "stretch": "FAIL",
+   "target": "FAIL"
+  },
+  "joint_VT_variant": "not run",
+  "oscillators": [
+   "osc_hd",
+   "osc_pmos",
+   "osc_wire",
+   "osc_subth"
+  ],
+  "oscillators_excluded": [
+   "osc_nmos"
+  ],
+  "worst_p99_abs_err_c": 19.0
+ },
+ "seed": 20261105
+}

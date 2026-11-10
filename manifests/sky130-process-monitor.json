@@ -5,5 +5,34 @@
     "analog": "Ring-oscillator bank (standard-cell and custom-cell variants, including the leakage-starved subthreshold oscillator) and the subthreshold sensing path.",
     "digital": "Enable/select logic, the counter-based frequency readout against an external reference clock, and the readout interface."
   },
-  "evidence": {}
+  "evidence": {
+    "10": {
+      "file": "evidence/item10.json",
+      "content_hash": "sha256:f0ce4143407b0b133ee3b956d2735b31ecb1c75a24a8441e551f57a4b1c3d48b"
+    },
+    "2.analog": {
+      "file": "evidence/item2.json",
+      "content_hash": "sha256:e232410292afbd32db39286b1d7862c9f577ebeeaff489fa9ba2ff1656c37d9e"
+    },
+    "5.analog": {
+      "file": "evidence/item5_analog.json",
+      "content_hash": "sha256:8103130d068c67ede6e552fcfc45f605d4ad8533d8392e4d73ce56218084ae45"
+    },
+    "6.digital": {
+      "not_applicable": {
+        "spec": {
+          "file": "spec/digital-rows.json",
+          "content_hash": "sha256:07ad2c7a8269474d4081800d53baa94650c79d46272e484d36d58123c6ddf66f"
+        },
+        "statement": {
+          "file": "verification/readout/not-statistical.json",
+          "content_hash": "sha256:f2eabab6e79ca3cebf5ee244593dd101cc273dd7cd8d2e0118eec88a3c787c3d"
+        }
+      }
+    },
+    "6.analog": {
+      "file": "sim/solve/mc/yield-sized-bank.json",
+      "content_hash": "sha256:71fa2e5127fbd248b88465c25366f70ca55101e95d6a062df67cd01e552bcb78"
+    }
+  }
 }

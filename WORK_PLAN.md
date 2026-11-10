@@ -7,19 +7,20 @@ Prioritized roadmap from current GitHub label state, maintained by the Guide rol
 
 Judge-approved PRs under a hold (`loom:blocked` or `loom:operator`) — only a human merge decision is missing.
 
-_None._
+- **#18**: feat(rtl): add saturating gated readout counter and register file with cocotb tests
 
 ## Very Important
 
 `loom:very-important` (one counts per workspace); every stage takes these first.
 
-- **#8**: Sensitivity matrix and conditioning across the PVT corner box (spec Q1)
+_None._
 
 ## Important
 
 `loom:important`; taken before unlabelled work.
 
-- **#10**: Subthreshold oscillator: model-limited vs design-limited across temperature (spec Q2)
+- **#16**: Readout RTL: 24-bit saturating gated counter and register file, with cocotb tests in verification/readout/
+- **#22**: T1 item 1 (design sources): synthesized readout netlist plus item-1 attestation covering both partitions
 
 ## Ready
 
@@ -31,31 +32,33 @@ _None._
 
 Issues currently being built (`loom:building`).
 
-- **#3**: Bring up both flows: pinned sky130 + ngspice smoke and a digital cocotb/Yosys skeleton (T1 item 9 groundwork)
+- **#16**: Readout RTL: 24-bit saturating gated counter and register file, with cocotb tests in verification/readout/
 
 ## PRs Awaiting Review
 
 PRs waiting on Judge (`loom:review-requested`).
 
-- **#6**: feat: add pinned analog and digital toolchain smoke flows
+_None._
 
 ## Approved (Awaiting Merge)
 
 PRs that passed review and are queued for Champion auto-merge (`loom:pr`).
 
-_None._
+- **#18**: feat(rtl): add saturating gated readout counter and register file with cocotb tests
 
 ## Proposed
 
 Issues carrying `loom:curated`.
 
-- **#3**: Bring up both flows: pinned sky130 + ngspice smoke and a digital cocotb/Yosys skeleton (T1 item 9 groundwork) *(curated)*
 - **#5**: Track the gap to T1 (klayout-tools design-evidence-tiers.md) *(curated)*
+- **#16**: Readout RTL: 24-bit saturating gated counter and register file, with cocotb tests in verification/readout/ *(curated)*
+- **#27**: T1 item 9 (testbenches shipped): testbench inventories and klt signoff --attest 9 for both partitions *(curated)*
+- **#44**: Follow-on from PR #43: subthreshold Q2 bench follow-ups (cold-cell re-run, pfet S(T) reference, leakage floor) *(curated)*
 
 ## Proposed (Architect / Hermit)
 
 
-_None._
+- **#71**: Stop committing 139 unrun, regenerable sized-MC request files (sim/solve/mc/requests-sized) *(hermit)*
 
 ## Epics
 
@@ -66,14 +69,14 @@ _None._
 
 | Bucket | Count |
 |------|-------|
-| Operator merge-risk holds | 0 |
-| Very important | 1 |
-| Important | 1 |
+| Operator merge-risk holds | 1 |
+| Very important | 0 |
+| Important | 2 |
 | Ready (`loom:issue`) | 0 |
 | In Progress (`loom:building`) | 1 |
-| PRs awaiting review | 1 |
-| Approved PRs awaiting merge | 0 |
-| Curated | 2 |
-| Architect / Hermit proposals | 0 |
+| PRs awaiting review | 0 |
+| Approved PRs awaiting merge | 1 |
+| Curated | 4 |
+| Architect / Hermit proposals | 1 |
 | Active epics | 0 |
 <!-- guide:plan-body:end -->

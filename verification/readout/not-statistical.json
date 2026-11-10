@@ -1,0 +1,16 @@
+{
+  "document": "Statement that the digital partition's spec rows are not statistical (T1 item 6, digital partition)",
+  "scope": "digital partition only (counter readout, select logic, readout interface); the analog partition's rows are graded with klt yield (evidence/item6_analog.json)",
+  "rows": [
+    {
+      "id": "5.readout",
+      "class": "deterministic-functional",
+      "reason": "Counter behaviour is a deterministic synchronous function of the gate length, the select input and the oscillator edge stream: gate/count correctness, saturation and select are pass/fail checks on a cycle-accurate model with no random process input. The reference clock is an input to the block with a stated tolerance requirement; the block neither generates nor varies it."
+    },
+    {
+      "id": "6.conversion_time",
+      "class": "deterministic-cycle-count",
+      "reason": "Conversion time is the number of reference-clock cycles of a fixed sequence (oscillators read one after another, each for 2^k cycles plus a fixed overhead) divided by the reference frequency: an exact arithmetic result of the design, with no spread to estimate. The oscillator-frequency dependence enters only through counts per gate, which the analog partition's rows cover."
+    }
+  ]
+}

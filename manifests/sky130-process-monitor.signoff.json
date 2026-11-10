@@ -9,17 +9,18 @@
   "tier": null,
   "t1_item_count": 22,
   "build_t1_item_count": 22,
-  "t1_met_count": 0,
+  "t1_met_count": 3,
+  "t1_not_applicable_count": 1,
   "source_doc": "manifests/design-evidence-tiers.md",
   "source_doc_content_hash": "sha256:c7a1e7e10627fae396007e0ff951734f37d95028b8f49f2e21e802e9f552f318",
   "build": {
-    "version": "0.7.0",
-    "package_version": "0.7.0",
-    "git_commit": "0e2362bda7309829398a35d54efaa989d5806065",
-    "git_tag": "v0.7.0",
+    "version": "0.9.1",
+    "package_version": "0.9.1",
+    "git_commit": "4d0d29be4fd991f499d59e783a908082d5e24c56",
+    "git_tag": "v0.9.1",
     "dirty": false,
     "is_release": true,
-    "grading_ruleset_id": "sha256:eb8d2ba54d1700c78f1139ac111aee598fd7bc48688ab9654fca22995b6ac25e"
+    "grading_ruleset_id": "sha256:22c42b66c4d1f99b5c00f6bf53d80b20fa8365860d857a921508ca5ab5f3771b"
   },
   "items": [
     {
@@ -56,10 +57,34 @@
       "partition_boundary": "Ring-oscillator bank (standard-cell and custom-cell variants, including the leakage-starved subthreshold oscillator) and the subthreshold sensing path.",
       "text": "committed GDS/OASIS, reproducibly generated or with documented provenance.",
       "notes": [],
-      "status": "unmet",
-      "reason": "no_evidence",
+      "status": "met",
+      "reason": null,
       "graded_by_build": true,
-      "citation": null
+      "citation": {
+        "file": "evidence/item2.json",
+        "command": null,
+        "kind": "generic",
+        "check_status": "pass",
+        "content_hash": "sha256:e232410292afbd32db39286b1d7862c9f577ebeeaff489fa9ba2ff1656c37d9e",
+        "input_verified": true,
+        "exit_status": 0,
+        "artifact_binding": {
+          "t1_item": 2,
+          "path": {
+            "path": "layout/osc_bank.gds",
+            "scope": "repo"
+          },
+          "content_hash": "sha256:e232410292afbd32db39286b1d7862c9f577ebeeaff489fa9ba2ff1656c37d9e",
+          "input_verified": true,
+          "summary": "T1 item 2 (Layout, analog): layout/osc_bank.gds regenerated from layout/gen/gen_osc_bank.py byte-identically; net-connectivity sanity check passes. Simulated/derived planning geometry, not DRC- or LVS-checked.",
+          "source": "layout/osc_bank.gds",
+          "regeneration": {
+            "generator": "python3 layout/gen/gen_osc_bank.py -o <scratch>/osc_bank.gds",
+            "regenerated_hash": "sha256:e232410292afbd32db39286b1d7862c9f577ebeeaff489fa9ba2ff1656c37d9e",
+            "executed_by_klt": false
+          }
+        }
+      }
     },
     {
       "tier": "T1",
@@ -137,7 +162,7 @@
         "Both require the spec table itself to be ratified \u2014 verdicts against a draft spec are provisional by construction."
       ],
       "status": "unmet",
-      "reason": "no_evidence",
+      "reason": "check_failed",
       "graded_by_build": true,
       "citation": null
     },
@@ -165,7 +190,7 @@
       "text": "any accuracy, offset, or matching spec row is statistical; a corner matrix (or STA corner sweep) cannot validate it. This applies to whichever spec rows are actually statistical, regardless of block kind \u2014 most digital spec rows (functional correctness, Fmax, timing closure) are not, and a block whose spec has no statistical row must say so explicitly rather than omit the item. Where it does apply, MC runs need a recorded seed, sample count, a deterministic negative control, and results combined with (not instead of) process corners (#344). A `klt yield` JSON report \u2014 a yield estimate with its confidence interval, sample-size verdict, and Cpk/sigma-to-spec against the row's own limits \u2014 is the machine-checkable evidence for this item (`klt signoff`'s tier-verdict mode grades it the same way it grades the deterministic items above).",
       "notes": [],
       "status": "unmet",
-      "reason": "no_evidence",
+      "reason": "check_failed",
       "graded_by_build": true,
       "citation": null
     },
@@ -177,10 +202,34 @@
       "partition_boundary": "Enable/select logic, the counter-based frequency readout against an external reference clock, and the readout interface.",
       "text": "any accuracy, offset, or matching spec row is statistical; a corner matrix (or STA corner sweep) cannot validate it. This applies to whichever spec rows are actually statistical, regardless of block kind \u2014 most digital spec rows (functional correctness, Fmax, timing closure) are not, and a block whose spec has no statistical row must say so explicitly rather than omit the item. Where it does apply, MC runs need a recorded seed, sample count, a deterministic negative control, and results combined with (not instead of) process corners (#344). A `klt yield` JSON report \u2014 a yield estimate with its confidence interval, sample-size verdict, and Cpk/sigma-to-spec against the row's own limits \u2014 is the machine-checkable evidence for this item (`klt signoff`'s tier-verdict mode grades it the same way it grades the deterministic items above).",
       "notes": [],
-      "status": "unmet",
-      "reason": "no_evidence",
+      "status": "not_applicable",
+      "reason": null,
       "graded_by_build": true,
-      "citation": null
+      "citation": null,
+      "not_applicable": {
+        "spec": {
+          "file": "spec/digital-rows.json",
+          "content_hash": "sha256:07ad2c7a8269474d4081800d53baa94650c79d46272e484d36d58123c6ddf66f",
+          "status": "ratified",
+          "row_count": 2
+        },
+        "statement": {
+          "file": "verification/readout/not-statistical.json",
+          "content_hash": "sha256:f2eabab6e79ca3cebf5ee244593dd101cc273dd7cd8d2e0118eec88a3c787c3d",
+          "rows": [
+            {
+              "id": "5.readout",
+              "class": "deterministic-functional",
+              "reason": "Counter behaviour is a deterministic synchronous function of the gate length, the select input and the oscillator edge stream: gate/count correctness, saturation and select are pass/fail checks on a cycle-accurate model with no random process input. The reference clock is an input to the block with a stated tolerance requirement; the block neither generates nor varies it."
+            },
+            {
+              "id": "6.conversion_time",
+              "class": "deterministic-cycle-count",
+              "reason": "Conversion time is the number of reference-clock cycles of a fixed sequence (oscillators read one after another, each for 2^k cycles plus a fixed overhead) divided by the reference frequency: an exact arithmetic result of the design, with no spread to estimate. The oscillator-frequency dependence enters only through counts per gate, which the analog partition's rows cover."
+            }
+          ]
+        }
+      }
     },
     {
       "tier": "T1",
@@ -272,10 +321,35 @@
       "partition_boundary": "Ring-oscillator bank (standard-cell and custom-cell variants, including the leakage-starved subthreshold oscillator) and the subthreshold sensing path.",
       "text": "a README stating what the block is, its spec table, and how to reproduce every result; a license; CI that at minimum keeps the harness and evidence formats valid.",
       "notes": [],
-      "status": "unmet",
-      "reason": "no_evidence",
+      "status": "met",
+      "reason": null,
       "graded_by_build": true,
-      "citation": null
+      "citation": {
+        "file": "evidence/item10.json",
+        "command": null,
+        "kind": "generic",
+        "check_status": "pass",
+        "content_hash": "sha256:f0ce4143407b0b133ee3b956d2735b31ecb1c75a24a8441e551f57a4b1c3d48b",
+        "input_verified": true,
+        "exit_status": 0,
+        "artifact_binding": {
+          "t1_item": 10,
+          "path": {
+            "path": "attest/item10.json",
+            "scope": "repo"
+          },
+          "content_hash": "sha256:f0ce4143407b0b133ee3b956d2735b31ecb1c75a24a8441e551f57a4b1c3d48b",
+          "input_verified": true,
+          "summary": "T1 item 10 (Repo hygiene): 5/5 attestation checks passed (klt signoff --attest)",
+          "source": "attest/item10.json",
+          "attestation": {
+            "producer": "klt signoff --attest",
+            "inventory_schema_version": 1,
+            "check_count": 5,
+            "passed_count": 5
+          }
+        }
+      }
     },
     {
       "tier": "T1",
@@ -285,10 +359,35 @@
       "partition_boundary": "Enable/select logic, the counter-based frequency readout against an external reference clock, and the readout interface.",
       "text": "a README stating what the block is, its spec table, and how to reproduce every result; a license; CI that at minimum keeps the harness and evidence formats valid.",
       "notes": [],
-      "status": "unmet",
-      "reason": "no_evidence",
+      "status": "met",
+      "reason": null,
       "graded_by_build": true,
-      "citation": null
+      "citation": {
+        "file": "evidence/item10.json",
+        "command": null,
+        "kind": "generic",
+        "check_status": "pass",
+        "content_hash": "sha256:f0ce4143407b0b133ee3b956d2735b31ecb1c75a24a8441e551f57a4b1c3d48b",
+        "input_verified": true,
+        "exit_status": 0,
+        "artifact_binding": {
+          "t1_item": 10,
+          "path": {
+            "path": "attest/item10.json",
+            "scope": "repo"
+          },
+          "content_hash": "sha256:f0ce4143407b0b133ee3b956d2735b31ecb1c75a24a8441e551f57a4b1c3d48b",
+          "input_verified": true,
+          "summary": "T1 item 10 (Repo hygiene): 5/5 attestation checks passed (klt signoff --attest)",
+          "source": "attest/item10.json",
+          "attestation": {
+            "producer": "klt signoff --attest",
+            "inventory_schema_version": 1,
+            "check_count": 5,
+            "passed_count": 5
+          }
+        }
+      }
     },
     {
       "tier": "T1",

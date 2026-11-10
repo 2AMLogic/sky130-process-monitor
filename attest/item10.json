@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "kind": "t1-attestation-inventory",
+  "t1_item": 10,
+  "description": "Repo hygiene: README (spec table, reproduce section), license, ratified spec, and the CI workflow that keeps the tier record valid.",
+  "hygiene": [
+    "README.md",
+    "LICENSE",
+    "spec/target-spec.md",
+    ".github/workflows/signoff.yml"
+  ],
+  "checks": [
+    {
+      "name": "signoff-record-reproduces",
+      "argv": [
+        "klt", "signoff",
+        "--manifest", "manifests/sky130-process-monitor.json",
+        "--tiers-doc", "manifests/design-evidence-tiers.md",
+        "--check", "manifests/sky130-process-monitor.signoff.json"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,903 @@
+{
+  "samples": "sim/solve/mc/samples-sized-negctl-hd0.3.json",
+  "limits": null,
+  "source": {
+    "kind": "sample-set",
+    "netlist": null,
+    "monte_carlo": null,
+    "provenance": {
+      "seed": 20261105,
+      "rng": "ngspice-46 mismatch MC via klt sim (fleet); python random for reading noise",
+      "corner_matrix": [
+        "tt",
+        "ff",
+        "ss",
+        "sf",
+        "fs"
+      ]
+    },
+    "sample_count": 209
+  },
+  "schema_version": 1,
+  "confidence": 0.95,
+  "target_ci_halfwidth": 0.01,
+  "min_samples": 2,
+  "status": "fail",
+  "measurement_count": 7,
+  "measurements": [
+    {
+      "name": "row2_margin_tt",
+      "unit": "whitened d^2 margin",
+      "n": 30,
+      "errored": 0,
+      "failed_unmeasurable": 0,
+      "censored": 0,
+      "inconclusive": 0,
+      "limits": {
+        "min": 0.0,
+        "exclusive_min": true,
+        "target_yield": 0.99
+      },
+      "source_corners": [],
+      "distribution": {
+        "model": "normal",
+        "mean": -26.2729448,
+        "stddev": 12.439881048678881,
+        "min": -51.975231,
+        "max": 2.858603,
+        "median": -26.5194585,
+        "skewness": 0.1721849366804615,
+        "excess_kurtosis": -0.38048794921147255,
+        "normality": {
+          "test": "anderson-darling",
+          "statistic": 0.22718223824665332,
+          "critical_value": 0.787,
+          "significance": 0.05,
+          "verdict": "consistent"
+        }
+      },
+      "yield": {
+        "empirical": {
+          "method": "clopper-pearson",
+          "estimate": 0.03333333333333333,
+          "confidence": 0.95,
+          "confidence_interval": {
+            "low": 0.0008435709266304771,
+            "high": 0.17216945563341263
+          },
+          "n": 30
+        },
+        "normal": {
+          "method": "normal-delta",
+          "estimate": 0.017343514149953942,
+          "confidence": 0.95,
+          "confidence_interval": {
+            "low": 0.0,
+            "high": 0.04492562417468367
+          },
+          "n": 30
+        },
+        "variance_reduced": null
+      },
+      "capability": {
+        "cp": null,
+        "cpk": -0.7039977498496043,
+        "cpk_confidence_interval": {
+          "low": -0.920914965487583,
+          "high": -0.4870805342116256
+        },
+        "sigma_to_spec": -2.1119932495488127,
+        "sigma_to_spec_confidence_interval": {
+          "low": -2.762744896462749,
+          "high": -1.461241602634877
+        },
+        "limiting_side": "lower"
+      },
+      "sample_size": {
+        "n": 30,
+        "observed_ci_halfwidth": 0.08566294235339107,
+        "target_ci_halfwidth": 0.01,
+        "required_n": 1238,
+        "required_n_for_target": null,
+        "verdict": "insufficient",
+        "method": "normal-approximation",
+        "variance_reduced": null
+      },
+      "negative_control": {
+        "description": "seeded defect: +0.3 on ln f of osc_hd",
+        "n": 30,
+        "errored": 0,
+        "failed_unmeasurable": 0,
+        "censored": 0,
+        "yield": {
+          "empirical": {
+            "method": "clopper-pearson",
+            "estimate": 0.0,
+            "confidence": 0.95,
+            "confidence_interval": {
+              "low": 0.0,
+              "high": 0.11570330822202773
+            },
+            "n": 30
+          },
+          "normal": {
+            "method": "normal-delta",
+            "estimate": 0.0,
+            "confidence": 0.95,
+            "confidence_interval": {
+              "low": 0.0,
+              "high": 0.0
+            },
+            "n": 30
+          },
+          "variance_reduced": null
+        },
+        "nominal_empirical_estimate": 0.03333333333333333,
+        "degradation_detected": false,
+        "verdict": "not_detected"
+      },
+      "analytic_cross_check": null,
+      "sampling": {
+        "strategy": "plain_random",
+        "replicates": null,
+        "effective_sample_size": null
+      },
+      "status": "fail",
+      "warnings": [
+        "measurement 'row2_margin_tt': N = 30 resolves the yield only to +/-0.0857 at 95% confidence; 1238 samples are needed for the requested +/-0.01",
+        "measurement 'row2_margin_tt': the observed pass rate (0.033333) is at or below the 0.99 target, so no sample count can support the claim -- this is the design falling short, not the campaign",
+        "measurement 'row2_margin_tt': the negative_control's empirical yield (0.000000, CI [0.000000, 0.115703]) is not statistically distinguishable from the nominal draw's (0.033333, CI [0.000844, 0.172169]) -- the deliberate defect did not show up as the degradation the statistics claim to detect"
+      ],
+      "spec_row": "2"
+    },
+    {
+      "name": "row2_margin_ff",
+      "unit": "whitened d^2 margin",
+      "n": 30,
+      "errored": 0,
+      "failed_unmeasurable": 0,
+      "censored": 0,
+      "inconclusive": 0,
+      "limits": {
+        "min": 0.0,
+        "exclusive_min": true,
+        "target_yield": 0.99
+      },
+      "source_corners": [],
+      "distribution": {
+        "model": "normal",
+        "mean": -1301.0381791333334,
+        "stddev": 144.27959165149127,
+        "min": -1521.835599,
+        "max": -920.631694,
+        "median": -1319.430617,
+        "skewness": 0.5362713971748314,
+        "excess_kurtosis": -0.19980792728511787,
+        "normality": {
+          "test": "anderson-darling",
+          "statistic": 0.5124847681010931,
+          "critical_value": 0.787,
+          "significance": 0.05,
+          "verdict": "consistent"
+        }
+      },
+      "yield": {
+        "empirical": {
+          "method": "clopper-pearson",
+          "estimate": 0.0,
+          "confidence": 0.95,
+          "confidence_interval": {
+            "low": 0.0,
+            "high": 0.11570330822202773
+          },
+          "n": 30
+        },
+        "normal": {
+          "method": "normal-delta",
+          "estimate": 0.0,
+          "confidence": 0.95,
+          "confidence_interval": {
+            "low": 0.0,
+            "high": 2.0282991915292178e-18
+          },
+          "n": 30
+        },
+        "variance_reduced": null
+      },
+      "capability": {
+        "cp": null,
+        "cpk": -3.0058263132044423,
+        "cpk_confidence_interval": {
+          "low": -3.788535482194414,
+          "high": -2.2231171442144704
+        },
+        "sigma_to_spec": -9.017478939613326,
+        "sigma_to_spec_confidence_interval": {
+          "low": -11.365606446583243,
+          "high": -6.669351432643412
+        },
+        "limiting_side": "lower"
+      },
+      "sample_size": {
+        "n": 30,
+        "observed_ci_halfwidth": 0.05785165411101387,
+        "target_ci_halfwidth": 0.01,
+        "required_n": 183,
+        "required_n_for_target": null,
+        "verdict": "insufficient",
+        "method": "clopper-pearson-zero-failures",
+        "variance_reduced": null
+      },
+      "negative_control": {
+        "description": "seeded defect: +0.3 on ln f of osc_hd",
+        "n": 30,
+        "errored": 0,
+        "failed_unmeasurable": 0,
+        "censored": 0,
+        "yield": {
+          "empirical": {
+            "method": "clopper-pearson",
+            "estimate": 1.0,
+            "confidence": 0.95,
+            "confidence_interval": {
+              "low": 0.8842966917779722,
+              "high": 1.0
+            },
+            "n": 30
+          },
+          "normal": {
+            "method": "normal-delta",
+            "estimate": 1.0,
+            "confidence": 0.95,
+            "confidence_interval": {
+              "low": 1.0,
+              "high": 1.0
+            },
+            "n": 30
+          },
+          "variance_reduced": null
+        },
+        "nominal_empirical_estimate": 0.0,
+        "degradation_detected": false,
+        "verdict": "not_detected"
+      },
+      "analytic_cross_check": null,
+      "sampling": {
+        "strategy": "plain_random",
+        "replicates": null,
+        "effective_sample_size": null
+      },
+      "status": "fail",
+      "warnings": [
+        "measurement 'row2_margin_ff': N = 30 resolves the yield only to +/-0.0579 at 95% confidence; 183 samples are needed for the requested +/-0.01",
+        "measurement 'row2_margin_ff': the observed pass rate (0.000000) is at or below the 0.99 target, so no sample count can support the claim -- this is the design falling short, not the campaign",
+        "measurement 'row2_margin_ff': the negative_control's empirical yield (1.000000, CI [0.884297, 1.000000]) is not statistically distinguishable from the nominal draw's (0.000000, CI [0.000000, 0.115703]) -- the deliberate defect did not show up as the degradation the statistics claim to detect"
+      ],
+      "spec_row": "2"
+    },
+    {
+      "name": "row2_margin_ss",
+      "unit": "whitened d^2 margin",
+      "n": 29,
+      "errored": 1,
+      "failed_unmeasurable": 0,
+      "censored": 0,
+      "inconclusive": 0,
+      "limits": {
+        "min": 0.0,
+        "exclusive_min": true,
+        "target_yield": 0.99
+      },
+      "source_corners": [],
+      "distribution": {
+        "model": "normal",
+        "mean": 2356.4106896551725,
+        "stddev": 109.31167072341911,
+        "min": 2212.990142,
+        "max": 2572.253351,
+        "median": 2313.979988,
+        "skewness": 0.6313490956632398,
+        "excess_kurtosis": -0.9445810879516321,
+        "normality": {
+          "test": "anderson-darling",
+          "statistic": 1.1873599887451343,
+          "critical_value": 0.787,
+          "significance": 0.05,
+          "verdict": "rejected"
+        }
+      },
+      "yield": {
+        "empirical": {
+          "method": "clopper-pearson",
+          "estimate": 1.0,
+          "confidence": 0.95,
+          "confidence_interval": {
+            "low": 0.8805551309304973,
+            "high": 1.0
+          },
+          "n": 29
+        },
+        "normal": {
+          "method": "normal-delta",
+          "estimate": 1.0,
+          "confidence": 0.95,
+          "confidence_interval": {
+            "low": 1.0,
+            "high": 1.0
+          },
+          "n": 29
+        },
+        "variance_reduced": null
+      },
+      "capability": {
+        "cp": null,
+        "cpk": 7.185602641390944,
+        "cpk_confidence_interval": {
+          "low": 5.299706568849542,
+          "high": 9.071498713932346
+        },
+        "sigma_to_spec": 21.556807924172833,
+        "sigma_to_spec_confidence_interval": {
+          "low": 15.899119706548626,
+          "high": 27.21449614179704
+        },
+        "limiting_side": "lower"
+      },
+      "sample_size": {
+        "n": 29,
+        "observed_ci_halfwidth": 0.059722434534751345,
+        "target_ci_halfwidth": 0.01,
+        "required_n": 183,
+        "required_n_for_target": 368,
+        "verdict": "insufficient",
+        "method": "clopper-pearson-zero-failures",
+        "variance_reduced": null
+      },
+      "negative_control": {
+        "description": "seeded defect: +0.3 on ln f of osc_hd",
+        "n": 29,
+        "errored": 1,
+        "failed_unmeasurable": 0,
+        "censored": 0,
+        "yield": {
+          "empirical": {
+            "method": "clopper-pearson",
+            "estimate": 0.0,
+            "confidence": 0.95,
+            "confidence_interval": {
+              "low": 0.0,
+              "high": 0.11944486906950263
+            },
+            "n": 29
+          },
+          "normal": {
+            "method": "normal-delta",
+            "estimate": 0.0,
+            "confidence": 0.95,
+            "confidence_interval": {
+              "low": 0.0,
+              "high": 0.0
+            },
+            "n": 29
+          },
+          "variance_reduced": null
+        },
+        "nominal_empirical_estimate": 1.0,
+        "degradation_detected": true,
+        "verdict": "detected"
+      },
+      "analytic_cross_check": null,
+      "sampling": {
+        "strategy": "plain_random",
+        "replicates": null,
+        "effective_sample_size": null
+      },
+      "status": "fail",
+      "warnings": [
+        "measurement 'row2_margin_ss': the sample set is not consistent with a normal distribution (Anderson-Darling A2* = 1.1874 > 0.787); treat the parametric yield estimate and Cpk as indicative only and prefer the empirical estimate",
+        "measurement 'row2_margin_ss': no sample fell outside the limits, so the empirical yield is bounded only from below -- \"at least 88.0555% at 95% confidence, N = 29\" is the honest statement, not \"100% yield\"",
+        "measurement 'row2_margin_ss': N = 29 resolves the yield only to +/-0.0597 at 95% confidence; 183 samples are needed for the requested +/-0.01",
+        "measurement 'row2_margin_ss': the observed pass rate clears the 0.99 target, but N = 29 is too small to *claim* it at 95% confidence (the lower bound is 0.880555); 368 samples at this rate would support the claim",
+        "measurement 'row2_margin_ss': 1 sample(s) produced no usable value and were excluded from every statistic below",
+        "measurement 'row2_margin_ss': 1 of the 30 sample(s) drawn (3.3%) produced no usable value, so the empirical yield reported here is conditional on the 29 sample(s) that produced one -- it is not the fraction of the whole draw that met spec. If a missing value is itself a failure for this measurement (an extraction only defined in-regime, a search that reports no operating point in range, a `.meas` that does not trigger), then counting every errored sample as a failure puts the yield over the whole draw at 0.966667, and the estimate reported here is an upper bound; see docs/cli/yield.md#errored-samples-and-conditional-yield"
+      ],
+      "spec_row": "2"
+    },
+    {
+      "name": "row2_margin_sf",
+      "unit": "whitened d^2 margin",
+      "n": 30,
+      "errored": 0,
+      "failed_unmeasurable": 0,
+      "censored": 0,
+      "inconclusive": 0,
+      "limits": {
+        "min": 0.0,
+        "exclusive_min": true,
+        "target_yield": 0.99
+      },
+      "source_corners": [],
+      "distribution": {
+        "model": "normal",
+        "mean": 581.1265561666667,
+        "stddev": 40.86211882355442,
+        "min": 517.369197,
+        "max": 683.307899,
+        "median": 570.569892,
+        "skewness": 0.8101617655455375,
+        "excess_kurtosis": 0.11010002813270603,
+        "normality": {
+          "test": "anderson-darling",
+          "statistic": 0.7584078738415894,
+          "critical_value": 0.787,
+          "significance": 0.05,
+          "verdict": "consistent"
+        }
+      },
+      "yield": {
+        "empirical": {
+          "method": "clopper-pearson",
+          "estimate": 1.0,
+          "confidence": 0.95,
+          "confidence_interval": {
+            "low": 0.8842966917779722,
+            "high": 1.0
+          },
+          "n": 30
+        },
+        "normal": {
+          "method": "normal-delta",
+          "estimate": 1.0,
+          "confidence": 0.95,
+          "confidence_interval": {
+            "low": 1.0,
+            "high": 1.0
+          },
+          "n": 30
+        },
+        "variance_reduced": null
+      },
+      "capability": {
+        "cp": null,
+        "cpk": 4.740548401124386,
+        "cpk_confidence_interval": {
+          "low": 3.5147233112197798,
+          "high": 5.966373491028992
+        },
+        "sigma_to_spec": 14.221645203373157,
+        "sigma_to_spec_confidence_interval": {
+          "low": 10.54416993365934,
+          "high": 17.899120473086974
+        },
+        "limiting_side": "lower"
+      },
+      "sample_size": {
+        "n": 30,
+        "observed_ci_halfwidth": 0.057851654111013895,
+        "target_ci_halfwidth": 0.01,
+        "required_n": 183,
+        "required_n_for_target": 368,
+        "verdict": "insufficient",
+        "method": "clopper-pearson-zero-failures",
+        "variance_reduced": null
+      },
+      "negative_control": {
+        "description": "seeded defect: +0.3 on ln f of osc_hd",
+        "n": 30,
+        "errored": 0,
+        "failed_unmeasurable": 0,
+        "censored": 0,
+        "yield": {
+          "empirical": {
+            "method": "clopper-pearson",
+            "estimate": 0.0,
+            "confidence": 0.95,
+            "confidence_interval": {
+              "low": 0.0,
+              "high": 0.11570330822202773
+            },
+            "n": 30
+          },
+          "normal": {
+            "method": "normal-delta",
+            "estimate": 0.0,
+            "confidence": 0.95,
+            "confidence_interval": {
+              "low": 0.0,
+              "high": 0.0
+            },
+            "n": 30
+          },
+          "variance_reduced": null
+        },
+        "nominal_empirical_estimate": 1.0,
+        "degradation_detected": true,
+        "verdict": "detected"
+      },
+      "analytic_cross_check": null,
+      "sampling": {
+        "strategy": "plain_random",
+        "replicates": null,
+        "effective_sample_size": null
+      },
+      "status": "fail",
+      "warnings": [
+        "measurement 'row2_margin_sf': no sample fell outside the limits, so the empirical yield is bounded only from below -- \"at least 88.4297% at 95% confidence, N = 30\" is the honest statement, not \"100% yield\"",
+        "measurement 'row2_margin_sf': N = 30 resolves the yield only to +/-0.0579 at 95% confidence; 183 samples are needed for the requested +/-0.01",
+        "measurement 'row2_margin_sf': the observed pass rate clears the 0.99 target, but N = 30 is too small to *claim* it at 95% confidence (the lower bound is 0.884297); 368 samples at this rate would support the claim"
+      ],
+      "spec_row": "2"
+    },
+    {
+      "name": "row2_margin_fs",
+      "unit": "whitened d^2 margin",
+      "n": 30,
+      "errored": 0,
+      "failed_unmeasurable": 0,
+      "censored": 0,
+      "inconclusive": 0,
+      "limits": {
+        "min": 0.0,
+        "exclusive_min": true,
+        "target_yield": 0.99
+      },
+      "source_corners": [],
+      "distribution": {
+        "model": "normal",
+        "mean": -79.52222213333334,
+        "stddev": 39.93264871671171,
+        "min": -179.483338,
+        "max": -12.304095,
+        "median": -72.73426950000001,
+        "skewness": -0.5433706321994018,
+        "excess_kurtosis": 0.19931398421125301,
+        "normality": {
+          "test": "anderson-darling",
+          "statistic": 0.3855700812468541,
+          "critical_value": 0.787,
+          "significance": 0.05,
+          "verdict": "consistent"
+        }
+      },
+      "yield": {
+        "empirical": {
+          "method": "clopper-pearson",
+          "estimate": 0.0,
+          "confidence": 0.95,
+          "confidence_interval": {
+            "low": 0.0,
+            "high": 0.11570330822202773
+          },
+          "n": 30
+        },
+        "normal": {
+          "method": "normal-delta",
+          "estimate": 0.02321798944022846,
+          "confidence": 0.95,
+          "confidence_interval": {
+            "low": 0.0,
+            "high": 0.057162605574142836
+          },
+          "n": 30
+        },
+        "variance_reduced": null
+      },
+      "capability": {
+        "cp": null,
+        "cpk": -0.6638028838463825,
+        "cpk_confidence_interval": {
+          "low": -0.8721577147698445,
+          "high": -0.45544805292292057
+        },
+        "sigma_to_spec": -1.9914086515391476,
+        "sigma_to_spec_confidence_interval": {
+          "low": -2.6164731443095333,
+          "high": -1.3663441587687617
+        },
+        "limiting_side": "lower"
+      },
+      "sample_size": {
+        "n": 30,
+        "observed_ci_halfwidth": 0.05785165411101387,
+        "target_ci_halfwidth": 0.01,
+        "required_n": 183,
+        "required_n_for_target": null,
+        "verdict": "insufficient",
+        "method": "clopper-pearson-zero-failures",
+        "variance_reduced": null
+      },
+      "negative_control": {
+        "description": "seeded defect: +0.3 on ln f of osc_hd",
+        "n": 30,
+        "errored": 0,
+        "failed_unmeasurable": 0,
+        "censored": 0,
+        "yield": {
+          "empirical": {
+            "method": "clopper-pearson",
+            "estimate": 0.0,
+            "confidence": 0.95,
+            "confidence_interval": {
+              "low": 0.0,
+              "high": 0.11570330822202773
+            },
+            "n": 30
+          },
+          "normal": {
+            "method": "normal-delta",
+            "estimate": 0.0,
+            "confidence": 0.95,
+            "confidence_interval": {
+              "low": 0.0,
+              "high": 0.0
+            },
+            "n": 30
+          },
+          "variance_reduced": null
+        },
+        "nominal_empirical_estimate": 0.0,
+        "degradation_detected": false,
+        "verdict": "not_detected"
+      },
+      "analytic_cross_check": null,
+      "sampling": {
+        "strategy": "plain_random",
+        "replicates": null,
+        "effective_sample_size": null
+      },
+      "status": "fail",
+      "warnings": [
+        "measurement 'row2_margin_fs': N = 30 resolves the yield only to +/-0.0579 at 95% confidence; 183 samples are needed for the requested +/-0.01",
+        "measurement 'row2_margin_fs': the observed pass rate (0.000000) is at or below the 0.99 target, so no sample count can support the claim -- this is the design falling short, not the campaign",
+        "measurement 'row2_margin_fs': the negative_control's empirical yield (0.000000, CI [0.000000, 0.115703]) is not statistically distinguishable from the nominal draw's (0.000000, CI [0.000000, 0.115703]) -- the deliberate defect did not show up as the degradation the statistics claim to detect"
+      ],
+      "spec_row": "2"
+    },
+    {
+      "name": "row3_dV",
+      "unit": "V",
+      "n": 30,
+      "errored": 0,
+      "failed_unmeasurable": 0,
+      "censored": 0,
+      "inconclusive": 0,
+      "limits": {
+        "min": -0.02,
+        "max": 0.02,
+        "target_yield": 0.99
+      },
+      "source_corners": [],
+      "distribution": {
+        "model": "normal",
+        "mean": -0.04780000000000003,
+        "stddev": 0.024264917203579154,
+        "min": -0.064,
+        "max": 0.004,
+        "median": -0.06,
+        "skewness": 1.4812908010327024,
+        "excess_kurtosis": 0.25430368782635693,
+        "normality": {
+          "test": "anderson-darling",
+          "statistic": 6.426476503284348,
+          "critical_value": 0.787,
+          "significance": 0.05,
+          "verdict": "rejected"
+        }
+      },
+      "yield": {
+        "empirical": {
+          "method": "clopper-pearson",
+          "estimate": 0.2,
+          "confidence": 0.95,
+          "confidence_interval": {
+            "low": 0.07713551200106558,
+            "high": 0.38566651099660676
+          },
+          "n": 30
+        },
+        "normal": {
+          "method": "normal-delta",
+          "estimate": 0.12336058748136136,
+          "confidence": 0.95,
+          "confidence_interval": {
+            "low": 0.033830229887482466,
+            "high": 0.21289094507524026
+          },
+          "n": 30
+        },
+        "variance_reduced": null
+      },
+      "capability": {
+        "cp": 0.27474508199365755,
+        "cpk": -0.3818956639711844,
+        "cpk_confidence_interval": {
+          "low": -0.5364504824349206,
+          "high": -0.22734084550744824
+        },
+        "sigma_to_spec": -1.1456869919135533,
+        "sigma_to_spec_confidence_interval": {
+          "low": -1.6093514473047617,
+          "high": -0.6820225365223447
+        },
+        "limiting_side": "lower"
+      },
+      "sample_size": {
+        "n": 30,
+        "observed_ci_halfwidth": 0.15426549949777058,
+        "target_ci_halfwidth": 0.01,
+        "required_n": 6147,
+        "required_n_for_target": null,
+        "verdict": "insufficient",
+        "method": "normal-approximation",
+        "variance_reduced": null
+      },
+      "negative_control": {
+        "description": "seeded defect: +0.3 on ln f of osc_hd",
+        "n": 30,
+        "errored": 0,
+        "failed_unmeasurable": 0,
+        "censored": 0,
+        "yield": {
+          "empirical": {
+            "method": "clopper-pearson",
+            "estimate": 0.0,
+            "confidence": 0.95,
+            "confidence_interval": {
+              "low": 0.0,
+              "high": 0.11570330822202773
+            },
+            "n": 30
+          },
+          "normal": null,
+          "variance_reduced": null
+        },
+        "nominal_empirical_estimate": 0.2,
+        "degradation_detected": false,
+        "verdict": "not_detected"
+      },
+      "analytic_cross_check": null,
+      "sampling": {
+        "strategy": "plain_random",
+        "replicates": null,
+        "effective_sample_size": null
+      },
+      "status": "fail",
+      "warnings": [
+        "measurement 'row3_dV': the sample set is not consistent with a normal distribution (Anderson-Darling A2* = 6.4265 > 0.787); treat the parametric yield estimate and Cpk as indicative only and prefer the empirical estimate",
+        "measurement 'row3_dV': N = 30 resolves the yield only to +/-0.1543 at 95% confidence; 6147 samples are needed for the requested +/-0.01",
+        "measurement 'row3_dV': the observed pass rate (0.200000) is at or below the 0.99 target, so no sample count can support the claim -- this is the design falling short, not the campaign",
+        "measurement 'row3_dV': the negative_control's empirical yield (0.000000, CI [0.000000, 0.115703]) is not statistically distinguishable from the nominal draw's (0.200000, CI [0.077136, 0.385667]) -- the deliberate defect did not show up as the degradation the statistics claim to detect"
+      ],
+      "spec_row": "3"
+    },
+    {
+      "name": "row4_dT",
+      "unit": "C",
+      "n": 30,
+      "errored": 0,
+      "failed_unmeasurable": 0,
+      "censored": 0,
+      "inconclusive": 0,
+      "limits": {
+        "min": -5.0,
+        "max": 5.0,
+        "target_yield": 0.99
+      },
+      "source_corners": [],
+      "distribution": {
+        "model": "normal",
+        "mean": -30.4,
+        "stddev": 1.2958820721144293,
+        "min": -32.5,
+        "max": -27.5,
+        "median": -30.5,
+        "skewness": 0.15084920797393087,
+        "excess_kurtosis": -0.7948509290843266,
+        "normality": {
+          "test": "anderson-darling",
+          "statistic": 0.4757470559769461,
+          "critical_value": 0.787,
+          "significance": 0.05,
+          "verdict": "consistent"
+        }
+      },
+      "yield": {
+        "empirical": {
+          "method": "clopper-pearson",
+          "estimate": 0.0,
+          "confidence": 0.95,
+          "confidence_interval": {
+            "low": 0.0,
+            "high": 0.11570330822202773
+          },
+          "n": 30
+        },
+        "normal": {
+          "method": "normal-delta",
+          "estimate": 0.0,
+          "confidence": 0.95,
+          "confidence_interval": {
+            "low": 0.0,
+            "high": 7.473452689497541e-84
+          },
+          "n": 30
+        },
+        "variance_reduced": null
+      },
+      "capability": {
+        "cp": 1.2861252597987143,
+        "cpk": -6.533516319777468,
+        "cpk_confidence_interval": {
+          "low": -8.219180636931082,
+          "high": -4.8478520026238545
+        },
+        "sigma_to_spec": -19.600548959332404,
+        "sigma_to_spec_confidence_interval": {
+          "low": -24.657541910793245,
+          "high": -14.543556007871564
+        },
+        "limiting_side": "lower"
+      },
+      "sample_size": {
+        "n": 30,
+        "observed_ci_halfwidth": 0.05785165411101387,
+        "target_ci_halfwidth": 0.01,
+        "required_n": 183,
+        "required_n_for_target": null,
+        "verdict": "insufficient",
+        "method": "clopper-pearson-zero-failures",
+        "variance_reduced": null
+      },
+      "negative_control": {
+        "description": "seeded defect: +0.3 on ln f of osc_hd",
+        "n": 30,
+        "errored": 0,
+        "failed_unmeasurable": 0,
+        "censored": 0,
+        "yield": {
+          "empirical": {
+            "method": "clopper-pearson",
+            "estimate": 0.0,
+            "confidence": 0.95,
+            "confidence_interval": {
+              "low": 0.0,
+              "high": 0.11570330822202773
+            },
+            "n": 30
+          },
+          "normal": {
+            "method": "normal-delta",
+            "estimate": 0.0,
+            "confidence": 0.95,
+            "confidence_interval": {
+              "low": 0.0,
+              "high": 5.422880672699028e-86
+            },
+            "n": 30
+          },
+          "variance_reduced": null
+        },
+        "nominal_empirical_estimate": 0.0,
+        "degradation_detected": false,
+        "verdict": "not_detected"
+      },
+      "analytic_cross_check": null,
+      "sampling": {
+        "strategy": "plain_random",
+        "replicates": null,
+        "effective_sample_size": null
+      },
+      "status": "fail",
+      "warnings": [
+        "measurement 'row4_dT': N = 30 resolves the yield only to +/-0.0579 at 95% confidence; 183 samples are needed for the requested +/-0.01",
+        "measurement 'row4_dT': the observed pass rate (0.000000) is at or below the 0.99 target, so no sample count can support the claim -- this is the design falling short, not the campaign",
+        "measurement 'row4_dT': the negative_control's empirical yield (0.000000, CI [0.000000, 0.115703]) is not statistically distinguishable from the nominal draw's (0.000000, CI [0.000000, 0.115703]) -- the deliberate defect did not show up as the degradation the statistics claim to detect"
+      ],
+      "spec_row": "4"
+    }
+  ],
+  "warnings": [
+    "at least one measurement's negative_control did not show the expected degradation -- see that measurement's own warnings",
+    "at least one measurement excluded errored samples from its denominator, so its empirical yield is conditional on the samples that produced a value rather than over the whole draw -- see that measurement's own warnings, and docs/cli/yield.md#errored-samples-and-conditional-yield"
+  ]
+}

@@ -1,0 +1,27 @@
+* OSC BANK BENCH - osc_nmos. SIMULATION: tt, 1.8 V, 27 C, single corner, no load but the ring.
+* @MODEL_LIB@, @CELL_SPICE@, @NETLIST@ and @EN_SRC@ are substituted by run.sh.
+* f_osc_hz = 20 cycles after skipping the first 5 rising edges (start-up);
+* i_avg_ua = mean supply current over the same window.
+.lib "@MODEL_LIB@" tt
+.include "@CELL_SPICE@"
+.include "@NETLIST@"
+.temp 27
+.option temp=27
+
+Vdd vdd 0 1.8
+Vss vss 0 0
+@EN_SRC@
+Xdut en out vdd vss osc_nmos
+
+.tran 5p 400n
+.control
+run
+meas tran t_a when v(out)=0.9 rise=5
+meas tran t_b when v(out)=0.9 rise=25
+let f_osc_hz = 20/(t_b - t_a)
+meas tran i_avg_a avg i(Vdd) from=t_a to=t_b
+let i_avg_ua = -i_avg_a*1e6
+echo "RESULT f_osc_hz = $&f_osc_hz"
+echo "RESULT i_avg_ua = $&i_avg_ua"
+.endc
+.end

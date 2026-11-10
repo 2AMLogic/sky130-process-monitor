@@ -1,0 +1,12 @@
+* Power bench (ACTIVE): osc_wire enabled; mean supply current. SIMULATION, schematic-level.
+* Sensitivity-grade testbench body for osc_wire (circuit body only: klt sim owns .control/.end).
+* SIMULATION: schematic-level netlist design/osc_bank/osc_wire.spice, no layout, no parasitics.
+* Enable is a behavioural source that follows v(vdd), so it swings rail to rail at every swept
+* supply (an explicit PULSE could not be swept with the supply in a Monte Carlo `units` request).
+* It is off for 1 ns and then ramps to v(vdd) over 100 ps.
+.options rshunt=1e12
+.include "../../../design/osc_bank/osc_wire.spice"
+Vdd vdd 0 1.8
+Vss vss 0 0
+Ben en 0 V='v(vdd)*min(max((time-1n)/100p,0),1)'
+Xdut en out vdd vss osc_wire
