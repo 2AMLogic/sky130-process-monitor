@@ -1,0 +1,8 @@
+{
+  "schema": "klt.functional_verification.request/1",
+  "engine": "icarus",
+  "sources": ["../../rtl/readout/readout.v", "../../rtl/readout/readout_counter.v"],
+  "hdl_toplevel": "readout",
+  "testbench": {"module": "test_readout"},
+  "options": {"coverage": false, "random_seed": 1}
+}
