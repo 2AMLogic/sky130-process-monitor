@@ -1,0 +1,38 @@
+{
+  "label": "SIMULATED/extraction only; nothing measured",
+  "issue": 117,
+  "date": "2026-11-11",
+  "klt": "0.9.2.dev661+g1de5c0432aad",
+  "deck": "sky130",
+  "pdk": "sky130A",
+  "layout": "layout/osc_bank.gds (sha256 625c8ff90f34c6fa...)",
+  "cell": "osc_subth",
+  "testbench": "none (structural: klt extract net comparison; no ngspice run)",
+  "script": "sim/pex/diag/vh_split.py",
+  "classification": "extraction/tool defect, not layout",
+  "result": {
+    "layout": {
+      "step_diff_merged_polygons": 14
+    },
+    "extracted": {
+      "headers": 14,
+      "headers_sharing_a_net_with_stage_pfet": 0
+    },
+    "control_no_lvtn": {
+      "headers": 14,
+      "headers_sharing_a_net_with_stage_pfet": 14
+    }
+  },
+  "scratch_experiments": [
+    "lvtn right edge moved from shared-column centre to the gate edge: still split",
+    "diffusion step filled to a full-height rect: still split",
+    "lvtn deleted: header drain and stage-PFET source are one net in all 14 stages"
+  ],
+  "upstream": "2AMLogic/klayout-tools#5311 (generic minimal repro added as a comment)",
+  "not_done": [
+    "no layout change",
+    "no extracted-netlist edit",
+    "no ring-start check: the extracted netlist is the defective one; run it after the tool fix",
+    "no spec threshold touched"
+  ]
+}

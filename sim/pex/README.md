@@ -308,3 +308,11 @@ SIMULATED only: ngspice-46, one local `ngspice -b` per case (5 total, no grid), 
    modelling are not implicated; no `spec/` change is needed.
 
 Remaining for `7.analog`: resolve the split `vh` nets under their own issue, then #32 re-runs the 45 cells.
+
+## Diagnosis 2026-11-11 (issue #117): the `vh` split in `osc_subth` is an extraction defect, not a layout one
+
+SIMULATED/extraction only (`klt 0.9.2.dev661`); record `records/2026-11-11-vh-split-diagnosis-osc_subth.json`, script `diag/vh_split.py`.
+The drawn diffusion at each of the 14 header/stage junctions is one merged polygon, but the extracted header drain and
+stage-PFET source are different nets in 14/14 stages; with `lvtn` deleted from a scratch copy they are one net in 14/14. Moving the
+marker edge to the gate edge or removing the diffusion step does not change it. Upstream: 2AMLogic/klayout-tools#5311 (generic repro added).
+No layout, netlist or threshold change; the one-corner ring-start check waits for the tool fix.
