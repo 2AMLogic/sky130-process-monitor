@@ -5,6 +5,9 @@ role. Newest first.
 
 ### 2026-11-11
 
+- **PR #102**: docs(pex): grade extracted oscillator values and record the two cold-cell probes
+- **PR #100**: docs(pex): correct finding 6, LVT marker is drawn; klt extraction gap
+- **Issue #98** (closed): Follow-on from PR #96: osc_subth layout lacks LVT marker (klt pex model_mismatch)
 - **PR #99**: refactor(sim): single-source report loading and oscillator list
 - **PR #96**: docs(pex): record osc_subth sharded re-run and LVT extraction mismatch
 - **Issue #97** (closed): Consolidate duplicated sim report-loading helpers and OSCS lists
