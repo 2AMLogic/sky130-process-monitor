@@ -29,8 +29,13 @@ GDS; the other four are transistor-level (single finger, vertical poly, li1/met1
 - `osc_wire`: the 31 × 100 fF shunt capacitors (`C` in the schematic) are ideal placeholders and
   are **not drawn**. The `res_generic_m1` (W 0.14 µm, L 1000 µm) *is* drawn: met1 serpentine, 8
   runs, centreline 1000.020 µm (feed stubs excluded; run length rounded to the 5 nm grid).
-- `osc_subth`: the `Rb0`/`Rb1` bias divider (ideal resistors) is **not drawn**; `vbp` is a labelled
-  met1 net that an external source or a later divider must drive.
+- (`osc_subth` bias divider: **now drawn**, issue #109.) `Rb0` (vbp–vdd) and `Rb1` (vss–vbp) are two
+  `sky130_fd_pr__res_high_po_0p35` poly serpentines (W 0.35 µm; 8 runs / L 270 µm and 34 runs / L 1360 µm), stacked
+  right of the stages and tied to the `vdd`/`vss` rails and the `vbp` bus. `klt extract` reports L = 269.99 and
+  1359.92 µm, both W = 0.35 µm. Lengths were set against the PDK model (tt, 27 °C, 1.8 V across the divider): ≈ 299 kΩ /
+  ≈ 1.50 MΩ, `vbp` ≈ 1.500 V (ideal 1.5 V). That is the model's value for the ideal 300k/1500k, not a measurement; the
+  model's resistance has a voltage and temperature dependence the ideal R does not, so `osc_subth` simulated with these
+  devices is a different netlist from the item-1 schematic (see `lvs/README.md`).
 - LVT header pFETs use `lvtn` (125/44), which the sky130A tech file defines for LVT devices.
 
 ## Area (derived from the stream; `klt stats --top <cell>`)
@@ -43,11 +48,11 @@ Footprint = bounding box of the cell (includes port stubs and, for `osc_wire`, t
 | `osc_nmos` | 84.8 × 8.8 | 742 |
 | `osc_pmos` | 84.8 × 11.3 | 961 |
 | `osc_wire` | 83.9 × 146.1 | 12 257 |
-| `osc_subth` | 53.1 × 6.6 | 350 |
-| **Sum of footprints** | | **14 457 µm² = 0.0145 mm²** |
+| `osc_subth` | 96.4 × 27.1 | 2 613 |
+| **Sum of footprints** | | **16 720 µm² = 0.0167 mm²** |
 
 Against spec §8 (≤ 0.02 mm² for the **whole** block, fallback ≤ 0.05 mm²): the oscillators alone,
-as laid out here, are 72 % of the target budget and 29 % of the fallback, before any readout
+as laid out here, are 84 % of the target budget and 33 % of the fallback, before any readout
 (#24). **This issue does not pass/fail §8**; it records the oscillator share. `osc_wire` was
 23 212 µm² before the repack (202.3 × 114.8 µm); it is now 12 257 µm², 47 % smaller. All figures
 are derived from the committed stream (`klt stats --top <cell> layout/osc_bank.gds`, summed by

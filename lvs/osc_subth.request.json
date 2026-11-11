@@ -3,6 +3,7 @@
   "portable_paths": true,
   "layout": {
     "netlist": "osc_subth.layout.spice",
+    "deck": "sky130",
     "top": "osc_subth"
   },
   "reference": {

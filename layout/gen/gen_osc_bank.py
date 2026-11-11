@@ -12,10 +12,10 @@ Drawn (device for device from design/osc_bank/*.spice, issue #17):
             transistor-level: single-finger devices; a stage is a pfet over an nfet sharing a
             vertical poly gate; li1 contacts, met1 rails, a substrate/well tap per stage.
             osc_wire draws each res_generic_m1 (W 0.14 um, L 1000 um) as a met1 serpentine.
+            osc_subth draws its Rb0/Rb1 bias divider as two res_high_po_0p35 poly serpentines (issue #109).
 
 NOT drawn (ideal placeholders in the #17 schematics; see layout/README.md):
-  the 100 fF shunt capacitors of osc_wire, and the Rb0/Rb1 bias divider of osc_subth
-  (the divider output `vbp` is a labelled met1 net).
+  the 100 fF shunt capacitors of osc_wire.
 
 Planning-level geometry: spacing/enclosure values are applied by hand and have NOT been
 run through a DRC deck (that is issue #25). Nothing here is measured.
@@ -35,6 +35,7 @@ LAYERS = dict(
     nwell=(64, 20), diff=(65, 20), tap=(65, 44), poly=(66, 20), licon=(66, 44),
     li1=(67, 20), mcon=(67, 44), met1=(68, 20), via=(68, 44), met2=(69, 20),
     nsdm=(93, 44), psdm=(94, 44), npc=(95, 20), lvtn=(125, 44),
+    polyres=(66, 13), rpm=(86, 20), psdm_r=(94, 20),     # poly-resistor marker, resistor-protect, p+ implant (LVS deck layers)
     li1_lbl=(67, 5), met1_lbl=(68, 5), met1_pin=(68, 16),
 )
 
@@ -47,6 +48,11 @@ YN0 = 600          # nfet diff bottom
 GAP = 1900         # reference nfet top -> pfet bottom
 Y_BUS, Y_PADB, Y_OUT, Y_IN = 300, 400, 800, 1400   # gap levels above the reference nfet top
 SERP_N, SERP_PITCH = 12, 300      # runs per serpentine; centre pitch (met1 space 160 nm vs 140 nm rule)
+# osc_subth bias divider: res_high_po_0p35 serpentines (poly W 0.35 um, pitch 0.60 um). Run lengths are chosen so the
+# area-derived length L = N*S + (N-1)*(PITCH-W) hits RB_L; RB_L values were set against the PDK model at tt/27C
+# (Rb0 ~300 kohm, Rb1 ~1.50 Mohm across a 1.8 V divider; see lvs/README.md).
+RB_W, RB_PITCH = 350, 600
+RB = {"Rb0": dict(L_um=270, N=8), "Rb1": dict(L_um=1360, N=34)}
 SERP_GAP = 700                    # clear gap between one serpentine's last run and the next row's feed
 
 
@@ -103,6 +109,31 @@ class Ctx:
         self.cr(cell, "li1", xpad, ypad, 250)
 
 
+def polyres_serp(ctx, cell, x0, y0, L_um, N):
+    """One res_high_po_0p35 serpentine. Runs start at x0 (head side), first run centred y0, N even so both heads
+    are on the left. Returns (S, head_a, head_b) with head centres (x, y)."""
+    assert N % 2 == 0
+    S = round((L_um * 1000 - (N - 1) * (RB_PITCH - RB_W)) / N / 5) * 5
+    h = RB_W // 2
+    ys = [y0 + k * RB_PITCH for k in range(N)]
+    for y in ys:
+        ctx.rect(cell, "poly", x0, y - h, x0 + S, y + h)
+    for k in range(N - 1):
+        xj = x0 + S - RB_W if k % 2 == 0 else x0
+        ctx.rect(cell, "poly", xj, ys[k] - h, xj + RB_W, ys[k + 1] + h)
+    heads = []
+    for y in (ys[0], ys[-1]):
+        xc = x0 - 250
+        ctx.rect(cell, "poly", x0 - 500, y - h, x0, y + h)
+        ctx.cr(cell, "licon", xc, y, LIC)
+        ctx.cr(cell, "npc", xc, y, 430)
+        heads.append((xc, y))
+    ctx.rect(cell, "polyres", x0, ys[0] - h, x0 + S, ys[-1] + h)
+    ctx.rect(cell, "rpm", x0, ys[0] - h, x0 + S, ys[-1] + h)
+    ctx.rect(cell, "psdm_r", x0 - 500 - 125, ys[0] - h - 125, x0 + S + 125, ys[-1] + h + 125)
+    return S, heads[0], heads[1]
+
+
 def contact_ys(W):
     n = (W - 120 + 170) // 340
     total = n * LIC + (n - 1) * LIC
@@ -141,6 +172,32 @@ def stages_for(kind):
     if kind == "osc_subth":
         return [nand_stage(840, 840, 150, 150)] + [subth_stage(420, 840, 150, 150, 500) for _ in range(14)]
     raise SystemExit("unknown oscillator " + kind)
+
+
+def draw_divider(ctx, cell, xmax, YRV, vbp_pad):
+    """Rb1 (vss-vbp) stacked under Rb0 (vbp-vdd) right of the stages. Strips left of the head column, in x order
+    vdd < vbp < vss, so no stub crosses another net's strip (the vss strip ends below Rb1, the vbp strip below
+    Rb0's vdd stub)."""
+    xd = xmax + 1000
+    xb, xs, xh = xd + 700, xd + 1400, xd + 2300
+    X0 = xh + 250
+    Y1 = 1000
+    S1, a1, b1 = polyres_serp(ctx, cell, X0, Y1, RB["Rb1"]["L_um"], RB["Rb1"]["N"])
+    yA0 = b1[1] + 1500
+    S0, a0, b0 = polyres_serp(ctx, cell, X0, yA0, RB["Rb0"]["L_um"], RB["Rb0"]["N"])
+    for (x, y) in (a1, b1, a0, b0):
+        ctx.mcon_pad(cell, xh, y)
+    ctx.m1_v(cell, xh, b1[1], a0[1])                    # Rb1 top head and Rb0 bottom head are both vbp
+    ctx.rect(cell, "met1", xmax, -240, xs + 150, 240)            # vss rail extension
+    ctx.rect(cell, "met1", xmax, YRV - 240, xd + 150, YRV + 240)   # vdd rail extension
+    ctx.rect(cell, "met1", xs - 150, 0, xs + 150, a1[1] + 70)     # vss strip up to Rb1 bottom head
+    ctx.m1_h(cell, a1[1], xs, xh)
+    ctx.rect(cell, "met1", xd - 150, YRV, xd + 150, b0[1] + 70)   # vdd strip up to Rb0 top head
+    ctx.m1_h(cell, b0[1], xd, xh)
+    yb = vbp_pad[1]
+    ctx.m1_h(cell, yb, vbp_pad[0], xb)                           # vbp bus -> vbp strip
+    ctx.rect(cell, "met1", xb - 150, yb - 70, xb + 150, b1[1] + 70)
+    ctx.m1_h(cell, b1[1], xb, xh)
 
 
 def build_custom(ctx, name, sts, wire=False, vbp=False):
@@ -258,6 +315,7 @@ def build_custom(ctx, name, sts, wire=False, vbp=False):
             ctx.mcon_pad(cell, xp, yp)
         ctx.m1_h(cell, pts[0][1], pts[0][0], pts[-1][0])
         ctx.label(cell, pts[0][0], pts[0][1], "vbp")
+        draw_divider(ctx, cell, xmax, YRV, pts[-1])
 
     yret = YRV + 1400
     pbx, pby = geo[0]["pads"]["out"]
