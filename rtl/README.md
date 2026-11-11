@@ -1,6 +1,6 @@
 # rtl
 
-Synthesizable Verilog. `rtl/smoke/` is a toolchain placeholder, not part of the design.
+Synthesizable Verilog.
 
 ## readout/
 

@@ -1,6 +1,6 @@
 # Readout: lint (Verilator) and cocotb on Icarus for rtl/readout/.
 # Entry point:  make -C verification/readout          (see verification/README.md)
-# Targets mirror verification/smoke/Makefile (check-env, lint, cocotb); pins are in sim/toolchain.json.
+# Targets: check-env, lint, cocotb, negative-control; pins are in sim/toolchain.json.
 READOUT_DIR := $(abspath $(dir $(lastword $(MAKEFILE_LIST))))
 REPO        := $(abspath $(READOUT_DIR)/../..)
 SIM_DIR     := $(REPO)/sim
