@@ -115,7 +115,7 @@ touched and no local ngspice grid was run (two single-corner `klt pex` probes ra
 
 - **#29 row 1 (oscillates), extracted side: met for `osc_hd`, `osc_nmos`, `osc_pmos`, `osc_wire` at all 45 cells.**
   The criterion needs at least 9 rising edges (3 dropped start-up edges + 5 cycles + 1); the smallest extracted
-  count is 70 (`osc_nmos`). This is the extracted leg only. `osc_subth` has no valid extraction (finding 6).
+  count is 65 (`osc_pmos`, ss/1.620V/-40C; `osc_nmos` is next at 70). This is the extracted leg only. `osc_subth` has no valid extraction (finding 6).
 - **The #29 frequency limits cannot be applied to the pex values, so rows 2-4 are NOT re-graded.** The pex scalar is a quantised
   rising-edge count in an 800 ns window and the report carries no crossing times, so #29's
   `f_osc = (n-1)/(t_last - t_first)` cannot be reproduced. #29 has no per-cell frequency window either: its limits are
