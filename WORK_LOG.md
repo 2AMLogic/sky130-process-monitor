@@ -3,6 +3,12 @@
 Chronological record of merged PRs and closed issues, maintained by the Guide
 role. Newest first.
 
+### 2026-11-11
+
+- **PR #99**: refactor(sim): single-source report loading and oscillator list
+- **PR #96**: docs(pex): record osc_subth sharded re-run and LVT extraction mismatch
+- **Issue #97** (closed): Consolidate duplicated sim report-loading helpers and OSCS lists
+
 ### 2026-11-10
 
 - **PR #94**: test(solve): add CI drift check for committed sized MC request set
