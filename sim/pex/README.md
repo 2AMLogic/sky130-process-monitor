@@ -105,8 +105,10 @@ The two cells that did produce a delta (`ss/1.62 V/−40 C`: 2 vs 341999; `ss/1.
    the sky130 1.8 V LVT flavours, so those devices still extract as plain `pfet_01v8` even with the marker
    present. This is a tool gap, filed as 2AMLogic/klayout-tools#5283. No layout change is needed or wanted:
    do not redraw the LVT marker. The `osc_subth` extracted-versus-schematic deltas stay **not comparable**, and
-   the #32 `osc_subth` re-run is deferred, until that klt fix lands. The recorded
-   `records/*.pex.report.json` is append-only evidence and is unchanged.
+   the #32 `osc_subth` re-run is deferred, until that klt fix lands. The `osc_subth` LVS `match`
+   (`lvs/osc_subth.report.json`) does not cover the LVT flavour: it is a `match` only because its `device_map`
+   collapses `pfet_01v8_lvt` to `pfet`, so it says nothing about whether the LVT marker is electrically correct.
+   The recorded `records/*.pex.report.json` is append-only evidence and is unchanged.
 
 Not done in this increment (no fleet headroom for another full run, no local grid by host rule): a converged
 schematic leg for `osc_nmos` tt/1.80 V/−40 C and `osc_wire` sf/1.98 V/−40 C; grading extracted values against the
