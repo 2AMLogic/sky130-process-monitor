@@ -161,3 +161,30 @@ The 2026-11-10 reports are not amended: they still read `error` with 44/45 cells
 `error`/incomplete (`osc_nmos`, `osc_wire`: one cell each, now covered by the supplementary cold-cell records above but
 not merged into those reports; `osc_subth`: no valid extraction). Remaining to close `7.analog`: the `osc_subth` LVT
 marker layout fix (#98), then one clean sharded `osc_subth` run.
+
+## Attempt 2026-11-11 (issue #32): `osc_subth` after klayout-tools#5283, extraction check and aborted grid
+
+SIMULATED/extraction only; `klt 0.9.2.dev632+gdd128366053f`. No `osc_subth` delta was produced and
+`7.analog` is still NOT met. Records are append-only; nothing earlier was edited.
+
+1. **The LVT flavour now extracts, but not like-for-like.** `klt pex layout/osc_bank.gds --deck sky130 --pdk sky130A
+   --top osc_subth --pins en,out,vdd,vss --extract-only` gives `extracted/osc_subth.dev632.spice` (sha256
+   `0e0c8114…`). Device models by count:
+
+   | | `nfet_01v8` | `pfet_01v8` | `pfet_01v8_lvt` |
+   |---|---|---|---|
+   | schematic `design/osc_bank/osc_subth.spice` | 16 | 16 | 14 |
+   | extraction before (`extracted/osc_subth.spice`, `73f06dc4…`) | 16 | 30 | 0 |
+   | extraction now (dev632) | 16 | 2 | **28** |
+
+   The extractor now recognises LVT, but classifies 28 of the 30 PFETs as LVT where the schematic has 14.
+   A grid would therefore still report `model_mismatch`. Not traced: whether the extra 14 come from the extraction deck
+   (marker overlap or a classification rule) or from the drawn `lvtn` geometry. That needs a look at the marker
+   shapes against the other 16 PFET gates before any layout change or tool issue is filed.
+2. **Grid not completed.** `klt pex ... --backend batch --hosts 45 --wait-for-capacity 600 --submit-only` ran into the
+   580 s wall clock after 34 of its schematic-side shard submissions and wrote no `pex-submit.json`
+   (the sharded `--submit-only` gap, 2AMLogic/klayout-tools#5280). The 34 submitted jobs are orphaned
+   (no manifest to attach to). Given finding 1 the grid was not retried: it would burn fleet capacity on a result
+   that is not comparable. No local ngspice grid was run (host rule).
+
+Remaining for `7.analog`: resolve the 28-vs-14 LVT classification, then one clean sharded `osc_subth` run.
