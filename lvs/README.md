@@ -12,7 +12,7 @@ PDK `sky130A`. **Simulated-flow results; nothing here is measured.** Each `*.rep
 | `osc_pmos` | same | `design/osc_bank/osc_pmos.spice` (item 1) | **match** | 35/35, 64/64 |
 | `osc_hd` | same | item-1 `osc_hd.spice` + PDK cell bodies (`make_osc_hd_ref.py`), flattened | **match** (warning `topology.flattened`) | 35/35, 64/64 |
 | `osc_wire` | same | **reduced** `osc_wire.ref.spice` (`make_reduced_refs.py`) | match, *not item-1* | 35/36, 64/64 |
-| `osc_subth` | same | **reduced** `osc_subth.ref.spice` (`make_reduced_refs.py`) | match, *not item-1* | 34/34, 46/46 |
+| `osc_subth` | same | `osc_subth.ref.spice` (`make_reduced_refs.py`): item-1 netlist with `Rb0`/`Rb1` realised as PDK `res_high_po_0p35` | match, *not item-1* (ideal R replaced) | 34/34, 48/48 |
 
 ## What is and is not claimed
 
@@ -21,8 +21,13 @@ PDK `sky130A`. **Simulated-flow results; nothing here is measured.** Each `*.rep
   schematic elements removed, so they are transistor-topology results, not LVS against the item-1 netlist:
   - `osc_wire`: the 31 ideal 100 fF shunt caps are dropped and each wire resistor is shorted (the met1 serpentine
     is plain metal to the extractor, so both ends are one net).
-  - `osc_subth`: the ideal `Rb0`/`Rb1` bias divider is dropped (`vbp` is a labelled net, not driven by a divider).
-  Against the unreduced item-1 netlists these cells cannot match (no capacitor, wire resistor or divider is drawn).
+  - `osc_subth` (issue #109): the divider is now drawn. The reference keeps `Rb0`/`Rb1` but swaps each ideal R for a
+    `sky130_fd_pr__res_high_po_0p35` at L = 270 / 1360 µm, W 0.35 µm (layout: 269.99 / 1359.92 µm by `klt extract`).
+    The item-1 schematic still has ideal 300k / 1500k, so this is still not LVS against item 1; closing it needs the
+    schematic to carry the PDK resistor (a `spec/` decision), not done here. **`klt lvs` does not compare resistor
+    L/W** (`device.geometry_not_compared`; `R` is a placeholder 0 on the reference side), so the L agreement above is
+    checked by hand from the extract, not by LVS. Topology (which net each resistor joins) is compared and matches.
+  Against the unreduced item-1 netlists `osc_wire` cannot match (no capacitor or wire resistor is drawn).
   Closing it needs either those devices drawn or a ratified schematic/netlist change; neither is done here.
 - The pin-count line for `osc_hd` (34 layout pins vs 4) is the flattened reference; see the report.
 
@@ -36,6 +41,16 @@ LVS against the first-pass stream mismatched on device parameters (all values fr
    0.42 µm. The diffusion now steps to 0.42 µm across the header.
 
 `evidence/item2.json` was re-attested for the new stream. DRC was re-run (#25, `drc/README.md`); extraction (#32) has not been.
+
+## Divider added (issue #109) — all re-run with `klayout-tools==0.9.1`
+
+`layout/osc_bank.gds` now draws the `osc_subth` bias divider (two `res_high_po_0p35` serpentines). Re-run with the CI pin
+(`uvx --from klayout-tools==0.9.1 klt extract … ; klt lvs …`): `osc_subth` `match` (34/34 nets, 48/48 devices); the other
+four cells still `match` with unchanged counts. The deck reads the resistors as `res_high_po` with its own sheet
+resistance, so the extracted `r=` (1.263 MΩ / 252 kΩ) differs from the 1.50 MΩ / 300 kΩ the *ngspice* model gives for the
+same L; the layout lengths were set from the ngspice model, not the extractor's `r`. Note: the current host `klt`
+(0.9.2.dev661) extracts the *unmodified* main stream with 14 `osc_subth` header-pFET mismatches, so these results are for
+the pin only; that drift is not caused by this change.
 
 ## PDK provenance
 

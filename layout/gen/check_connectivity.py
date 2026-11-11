@@ -23,6 +23,8 @@ for name, nstage in (("osc_hd", 31), ("osc_nmos", 31), ("osc_pmos", 31), ("osc_w
     diff, poly, licon, li1, mcon, met1, via, met2, tap = (mk(*x) for x in
         ((65, 20), (66, 20), (66, 44), (67, 20), (67, 44), (68, 20), (68, 44), (69, 20), (65, 44)))
     txt = l2n.make_text_layer(L(68, 5), "lbl")
+    pres = mk(66, 13)                                     # poly-resistor marker: the body is a resistor, not a wire
+    poly = poly - pres
     sd = diff - poly
     gp = poly & diff                                      # gate channel
     for lay in (sd, poly, licon, li1, mcon, met1, via, met2, tap):

@@ -8,7 +8,7 @@
 * pin vss
 .SUBCKT osc_subth en out vbp vdd vss
 * device instance $1 r0 *1 5.245,0.81 nfet
-M$1 \$4 \$2 vss vss nfet L=0.15U W=0.42U AS=0.294P AD=0.1218P PS=2.24U PD=1.42U
+M$1 \$4 \$3 vss vss nfet L=0.15U W=0.42U AS=0.294P AD=0.1218P PS=2.24U PD=1.42U
 * device instance $2 r0 *1 8.775,0.81 nfet
 M$2 \$5 \$4 vss vss nfet L=0.15U W=0.42U AS=0.294P AD=0.1218P PS=2.24U PD=1.42U
 * device instance $3 r0 *1 12.305,0.81 nfet
@@ -45,17 +45,17 @@ M$14 out \$16 vss vss nfet L=0.15U W=0.42U AS=0.294P AD=0.1218P PS=2.24U
 * device instance $15 r0 *1 0.865,1.02 nfet
 M$15 \$17 en vss vss nfet L=0.15U W=0.84U AS=0.2436P AD=0.294P PS=2.26U PD=1.54U
 * device instance $16 r0 *1 1.715,1.02 nfet
-M$16 \$2 out \$17 vss nfet L=0.15U W=0.84U AS=0.294P AD=0.2436P PS=1.54U
+M$16 \$3 out \$17 vss nfet L=0.15U W=0.84U AS=0.294P AD=0.2436P PS=1.54U
 + PD=2.26U
 * device instance $17 r0 *1 0.865,3.76 pfet
-M$17 \$2 en vdd vdd pfet L=0.15U W=0.84U AS=0.2436P AD=0.294P PS=2.26U PD=1.54U
+M$17 \$3 en vdd vdd pfet L=0.15U W=0.84U AS=0.2436P AD=0.294P PS=2.26U PD=1.54U
 * device instance $18 r0 *1 1.715,3.76 pfet
-M$18 vdd out \$2 vdd pfet L=0.15U W=0.84U AS=0.294P AD=0.2436P PS=1.54U PD=2.26U
+M$18 vdd out \$3 vdd pfet L=0.15U W=0.84U AS=0.294P AD=0.2436P PS=1.54U PD=2.26U
 * device instance $19 r0 *1 4.22,3.97 pfet
 M$19 vdd vbp \$21 vdd pfet L=0.5U W=0.42U AS=0.2205P AD=0.1218P PS=1.54U
 + PD=1.42U
 * device instance $20 r0 *1 5.245,3.76 pfet
-M$20 \$4 \$2 \$21 vdd pfet L=0.15U W=0.84U AS=0.2205P AD=0.2436P PS=1.54U
+M$20 \$4 \$3 \$21 vdd pfet L=0.15U W=0.84U AS=0.2205P AD=0.2436P PS=1.54U
 + PD=2.26U
 * device instance $21 r0 *1 7.75,3.97 pfet
 M$21 vdd vbp \$22 vdd pfet L=0.5U W=0.42U AS=0.2205P AD=0.1218P PS=1.54U
@@ -135,4 +135,8 @@ M$45 vdd vbp \$34 vdd pfet L=0.5U W=0.42U AS=0.2205P AD=0.1218P PS=1.54U
 * device instance $46 r0 *1 51.135,3.76 pfet
 M$46 out \$16 \$34 vdd pfet L=0.15U W=0.84U AS=0.2205P AD=0.2436P PS=1.54U
 + PD=2.26U
+* device instance $47 r0 *1 75.627,10.9 res_high_po
+X$47 vss vbp vss res_high_po r=1263179.60497 L=1359.92U W=0.35U
+* device instance $48 r0 *1 72.515,24.4 res_high_po
+X$48 vbp vdd vss res_high_po r=251639.724822 L=269.99U W=0.35U
 .ENDS osc_subth

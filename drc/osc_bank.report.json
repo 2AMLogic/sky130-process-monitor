@@ -69,6 +69,7 @@
       "68/44",
       "69/20",
       "78/44",
+      "86/20",
       "93/44",
       "94/20",
       "95/20",
@@ -78,6 +79,7 @@
       "64/5",
       "64/16",
       "64/59",
+      "66/13",
       "67/5",
       "67/16",
       "68/5",
@@ -149,6 +151,9 @@
       "psdm.ongrid.1",
       "psdm.space.1",
       "psdm.width.1",
+      "rpm.angle.1",
+      "rpm.ongrid.1",
+      "rpm.width.1",
       "tap.angle.1",
       "tap.enclosing.licon.1",
       "tap.ongrid.1",
@@ -220,9 +225,6 @@
       "pwde.ongrid.1",
       "pwell_rs.angle.1",
       "pwell_rs.ongrid.1",
-      "rpm.angle.1",
-      "rpm.ongrid.1",
-      "rpm.width.1",
       "tunm.angle.1",
       "tunm.ongrid.1",
       "uhvi.angle.1",
@@ -392,6 +394,9 @@
       "psdm.ongrid.1",
       "psdm.space.1",
       "psdm.width.1",
+      "rpm.angle.1",
+      "rpm.ongrid.1",
+      "rpm.width.1",
       "tap.angle.1",
       "tap.enclosing.licon.1",
       "tap.ongrid.1",
@@ -645,18 +650,6 @@
         "reason": "no_applicable_geometry"
       },
       {
-        "id": "rpm.angle.1",
-        "reason": "no_applicable_geometry"
-      },
-      {
-        "id": "rpm.ongrid.1",
-        "reason": "no_applicable_geometry"
-      },
-      {
-        "id": "rpm.width.1",
-        "reason": "no_applicable_geometry"
-      },
-      {
         "id": "tunm.angle.1",
         "reason": "no_applicable_geometry"
       },
@@ -764,7 +757,7 @@
       "released": true
     },
     "input": {
-      "content_hash": "sha256:76c6a407061578bcf49baa7426b4b9714e343f879821a50043ff61c60dc18e1b",
+      "content_hash": "sha256:625c8ff90f34c6fac7a88339d2c10ad5925da02e118eb6a15a6539c11e05bf29",
       "role": "layout"
     },
     "klayout_version_mismatch": true

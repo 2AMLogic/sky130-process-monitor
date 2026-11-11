@@ -12,7 +12,7 @@ klt drc layout/osc_bank.gds --deck sky130 --top osc_bank --pdk sky130A --check d
 
 | Cited as | Report | Input (committed GDS) | status | Input hash |
 |---|---|---|---|---|
-| `3.analog` | `drc/osc_bank.report.json` | `layout/osc_bank.gds` | **clean** (0 violations) | `sha256:76c6a407061578bcf49baa7426b4b9714e343f879821a50043ff61c60dc18e1b` |
+| `3.analog` | `drc/osc_bank.report.json` | `layout/osc_bank.gds` | **clean** (0 violations) | `sha256:625c8ff90f34c6fac7a88339d2c10ad5925da02e118eb6a15a6539c11e05bf29` |
 | `3.digital` | `drc/readout.report.json` | `layout/readout/out/readout.gds` | **clean** (0 violations) | `sha256:d590c9ea2cceef8e27a53d59848ab9e8e2ca7b6aa7b0cdc95c46ba5f4306f95e` |
 
 ## Coverage fields, quoted verbatim from each report's `coverage` block
@@ -21,8 +21,8 @@ A `clean` status does **not** mean these are checked. `klt signoff` grades on `s
 
 ### 3.analog
 
-- `coverage.layers_in_stream_without_rules`: `["64/5", "64/16", "64/59", "67/5", "67/16", "68/5", "68/16", "81/4", "83/44", "94/44", "122/16", "236/0"]`
-- `coverage.rules_skipped`: `["areaid_re.ongrid.1", "capm.enclosing.via3.1", "capm.separation.via3.1", "capm.space.1", "capm.width.1", "capm2.enclosing.via4.1", "capm2.separation.via4.1", "capm2.space.1", "capm2.width.1", "dnwell.angle.1", "dnwell.ongrid.1", "hvi.angle.1", "hvi.ongrid.1", "hvntm.angle.1", "hvntm.ongrid.1", "hvtr.angle.1", "hvtr.ongrid.1", "met2.enclosing.via2.1", "met2.enclosing_adjacent.via2.1", "met3.angle.1", "met3.area.1", "met3.enclosing.capm.1", "met3.enclosing.via2.1", "met3.enclosing.via3.1", "met3.enclosing_adjacent.via3.1", "met3.holes_area.1", "met3.ongrid.1", "met3.space.1", "met3.width.1", "met4.angle.1", "met4.area.1", "met4.enclosing.capm2.1", "met4.enclosing.via3.1", "met4.enclosing.via4.1", "met4.holes_area.1", "met4.ongrid.1", "met4.space.1", "met4.width.1", "met5.angle.1", "met5.area.1", "met5.enclosing.via4.1", "met5.holes_area.1", "met5.ongrid.1", "met5.space.1", "met5.width.1", "mf.angle.1", "mf.ongrid.1", "ncm.angle.1", "ncm.ongrid.1", "nsm.angle.1", "nsm.ongrid.1", "nwell.enclosed.hvi.1", "pad.angle.1", "pad.ongrid.1", "pwbm.angle.1", "pwbm.ongrid.1", "pwde.angle.1", "pwde.ongrid.1", "pwell_rs.angle.1", "pwell_rs.ongrid.1", "rpm.angle.1", "rpm.ongrid.1", "rpm.width.1", "tunm.angle.1", "tunm.ongrid.1", "uhvi.angle.1", "uhvi.ongrid.1", "urpm.width.1", "vhvi.angle.1", "vhvi.ongrid.1", "via2.angle.1", "via2.ongrid.1", "via2.space.1", "via2.width.1", "via3.angle.1", "via3.ongrid.1", "via3.space.1", "via3.width.1", "via4.angle.1", "via4.ongrid.1", "via4.space.1", "via4.width.1", "vpp.angle.1", "vpp.ongrid.1"]`
+- `coverage.layers_in_stream_without_rules`: `["64/5", "64/16", "64/59", "66/13", "67/5", "67/16", "68/5", "68/16", "81/4", "83/44", "94/44", "122/16", "236/0"]`
+- `coverage.rules_skipped`: `["areaid_re.ongrid.1", "capm.enclosing.via3.1", "capm.separation.via3.1", "capm.space.1", "capm.width.1", "capm2.enclosing.via4.1", "capm2.separation.via4.1", "capm2.space.1", "capm2.width.1", "dnwell.angle.1", "dnwell.ongrid.1", "hvi.angle.1", "hvi.ongrid.1", "hvntm.angle.1", "hvntm.ongrid.1", "hvtr.angle.1", "hvtr.ongrid.1", "met2.enclosing.via2.1", "met2.enclosing_adjacent.via2.1", "met3.angle.1", "met3.area.1", "met3.enclosing.capm.1", "met3.enclosing.via2.1", "met3.enclosing.via3.1", "met3.enclosing_adjacent.via3.1", "met3.holes_area.1", "met3.ongrid.1", "met3.space.1", "met3.width.1", "met4.angle.1", "met4.area.1", "met4.enclosing.capm2.1", "met4.enclosing.via3.1", "met4.enclosing.via4.1", "met4.holes_area.1", "met4.ongrid.1", "met4.space.1", "met4.width.1", "met5.angle.1", "met5.area.1", "met5.enclosing.via4.1", "met5.holes_area.1", "met5.ongrid.1", "met5.space.1", "met5.width.1", "mf.angle.1", "mf.ongrid.1", "ncm.angle.1", "ncm.ongrid.1", "nsm.angle.1", "nsm.ongrid.1", "nwell.enclosed.hvi.1", "pad.angle.1", "pad.ongrid.1", "pwbm.angle.1", "pwbm.ongrid.1", "pwde.angle.1", "pwde.ongrid.1", "pwell_rs.angle.1", "pwell_rs.ongrid.1", "tunm.angle.1", "tunm.ongrid.1", "uhvi.angle.1", "uhvi.ongrid.1", "urpm.width.1", "vhvi.angle.1", "vhvi.ongrid.1", "via2.angle.1", "via2.ongrid.1", "via2.space.1", "via2.width.1", "via3.angle.1", "via3.ongrid.1", "via3.space.1", "via3.width.1", "via4.angle.1", "via4.ongrid.1", "via4.space.1", "via4.width.1", "vpp.angle.1", "vpp.ongrid.1"]`
 - `coverage.deck_scope`: `["cap2m", "capm", "ct", "difftap", "li", "licon", "m1", "m2", "m3", "m4", "m5", "npc", "nsdm", "nwell", "poly", "psdm", "rpm", "urpm", "via", "via2", "via3", "via4", "x"]`
 
 ### 3.digital
@@ -33,8 +33,10 @@ A `clean` status does **not** mean these are checked. `klt signoff` grades on `s
 
 ## What is not claimed
 
-- DRC covers **drawn geometry only**. `layout/README.md` lists what `osc_wire` / `osc_subth` do not draw (shunt caps,
-  bias divider); none of that is checked.
+- DRC covers **drawn geometry only**. `layout/README.md` lists what `osc_wire` does not draw (the shunt caps); that is
+  not checked. The `osc_subth` bias divider is now drawn (issue #109): the curated deck reports the regenerated stream
+  clean, `rpm.width.1` / `rpm.angle.1` / `rpm.ongrid.1` now have geometry and pass; the poly-resistor marker 66/13 is
+  listed under `layers_in_stream_without_rules`, so it is not rule-checked.
 - **The PDK-native deck disagrees on the analog stream.** Cross-check, not cited:
   `klt drc layout/osc_bank.gds --engine klayout --pdk sky130A --top osc_bank` reports **562 violations: `ct.4` x220,
   `li.5` x342**, in the hand-drawn cells. The curated deck neither checks nor lists those rules as unmodeled (tool gap
