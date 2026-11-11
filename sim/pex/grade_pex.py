@@ -43,7 +43,7 @@ def main(out, paths):
             "cells_with_extracted_value": len(ext), "cells_below_min_edges": bad,
             "min_count": min(ext.values()), "max_count": max(ext.values()),
             "f_proxy_hz_min_max": [min(ext.values()) / WINDOW_S, max(ext.values()) / WINDOW_S],
-            "max_startup_bias_rel": (SKIP_EDGES + 1) / min(ext.values()),
+            "max_startup_bias_rel": (SKIP_EDGES + 1) / min(ext.values()) if min(ext.values()) else None,
             "cells_without_extracted_value": sorted(c for c in cells if c not in ext)}
     hd = reports["osc_hd"]
     for osc, cells in sorted(reports.items()):
@@ -52,13 +52,15 @@ def main(out, paths):
         sh = []
         for c, r in cells.items():
             h = hd.get(c)
-            if None in (r["schematic_value"], r["extracted_value"], h["schematic_value"], h["extracted_value"]):
+            vals = (r["schematic_value"], r["extracted_value"], h["schematic_value"], h["extracted_value"])
+            if None in vals or 0 in vals:  # a zero count has no log-ratio (e.g. a non-oscillating extraction)
                 continue
             sh.append((100 * (math.exp(math.log(r["extracted_value"] / h["extracted_value"])
                                        - math.log(r["schematic_value"] / h["schematic_value"])) - 1), c))
         sh.sort()
-        res["ratio_space_shift_pct"][osc] = {
+        res["ratio_space_shift_pct"][osc] = ({
             "cells": len(sh), "min": sh[0], "median": statistics.median(v for v, _ in sh), "max": sh[-1]}
+            if sh else {"cells": 0})
     with open(out, "w") as f:
         json.dump(res, f, indent=1, sort_keys=True)
         f.write("\n")
