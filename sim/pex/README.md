@@ -70,3 +70,36 @@ rows' frequency-window limits (#29) have not been re-graded on the extracted val
 5. **Model-set scope.** One extraction (no `--critical-net`, no lateral coupling, quasi-static lumped RC)
    and one PDK build (`f6eeac7d…`; `sim/pdk.json` pins `c6d73a35…`). The fleet runner stamps its own PDK
    (`environment.remote.worker_environment.pdk`); the client-side stamp is not comparable.
+
+## Re-run 2026-11-11: `osc_subth` full box, sharded (still no usable result)
+
+SIMULATED only (ngspice on the batch fleet; `klt 0.9.2.dev596+g97e73934a9f4`). Record:
+`records/2026-11-11-osc_subth.pex.report.json` (sha256 `896c1fa7…`; append-only, the 2026-11-10 files are untouched).
+Command (one clean run, one `--hosts` value, `batch.capacity_wait_s: 600` from the request, no `--resume`):
+
+    klt pex layout/osc_bank.gds sim/pex/requests/osc_subth.json --deck sky130 --pdk sky130A --top osc_subth \
+        --pins en,out,vdd,vss --backend batch --hosts 45 -o <dir>/osc_subth.spice --outdir <dir> \
+        --envelope-out <report.json> --format json
+
+**Result: report `error`, 2/45 cells with a delta, 43/45 errored. `7.analog` is still NOT met.**
+
+| Cause (per cell) | Cells |
+|---|---|
+| fleet `lost_shard`: launch refused, vCPU budget (`BATCH_MAX_VCPU=224`) exhausted | 31 |
+| extracted leg: ngspice did not complete within the 3000 s unit limit | 8 |
+| schematic leg: Spot job `interrupted` | 4 |
+| both legs errored | 9 (incl. above) |
+
+The two cells that did produce a delta (`ss/1.62 V/−40 C`: 2 vs 341999; `ss/1.62 V/27 C`: 173 vs 287334) are
+**not valid comparisons** and must not be read as frequency deltas. See finding 6.
+
+6. **`osc_subth` extraction is not like-for-like (device models).** `klt pex` reports `model_mismatch`: the schematic
+   has 14 `sky130_fd_pr__pfet_01v8_lvt`, the extracted netlist has 0 (those devices extract as plain
+   `pfet_01v8`, 16 → 30). The layout carries no LVT marker geometry, so the extractor cannot recognise them.
+   Re-running the grid will not fix this: the layout needs the LVT marker (#23's domain) before any `osc_subth`
+   delta means anything. This, not fleet capacity, is the blocker for `osc_subth`.
+
+Not done in this increment (no fleet headroom for another full run, no local grid by host rule): a converged
+schematic leg for `osc_nmos` tt/1.80 V/−40 C and `osc_wire` sf/1.98 V/−40 C; grading extracted values against the
+#29 frequency-window limits; any change to `manifests/`. `klt signoff` still grades `T1 #7 [analog]` `unmet`
+(`check_failed`); `T1 #7 [digital]` is MET.
