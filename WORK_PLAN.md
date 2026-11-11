@@ -31,7 +31,7 @@ _None._
 
 Issues currently being built (`loom:building`).
 
-_None._
+- **#32**: T1 item 7 (post-layout verification): klt pex re-run of the oscillator benches and SDF-annotated readout re-run
 
 ## PRs Awaiting Review
 
@@ -71,7 +71,7 @@ _None._
 | Very important | 0 |
 | Important | 1 |
 | Ready (`loom:issue`) | 0 |
-| In Progress (`loom:building`) | 0 |
+| In Progress (`loom:building`) | 1 |
 | PRs awaiting review | 0 |
 | Approved PRs awaiting merge | 0 |
 | Curated | 5 |
