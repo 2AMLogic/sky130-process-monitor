@@ -243,3 +243,39 @@ SIMULATED only (ngspice on the batch fleet; `klt 0.9.2.dev661+g1de5c0432aad`). `
 
 Remaining for `7.analog`: the `osc_subth` layout must carry the bias network (or the spec row must be re-decided through
 `spec/` with a decision record, not here); the 11 lost schematic cells are only worth re-running after that.
+
+## Re-run 2026-11-11 (issue #32, fourth): `osc_subth` on the #109 GDS (bias divider drawn); still does not oscillate
+
+SIMULATED only (ngspice on the batch fleet; `klt 0.9.2.dev661+g1de5c0432aad`, layout `layout/osc_bank.gds` as of #111).
+`7.analog` is still NOT met (`klt signoff`: `T1 #7 [analog]` `unmet`, `check_failed`; `[digital]` met). Nothing earlier was
+edited; no threshold was changed; no local grid was run. Records (new, dated):
+`records/2026-11-11-osc_subth-gds109.pex.report.json` (sha256 `96676c0b…`),
+`records/2026-11-11-grade-extracted-values-osc_subth-gds109.json`; extraction `extracted/osc_subth.gds109.spice` (sha256 `9a728593…`).
+
+Command (one clean run, `--hosts 45`, foreground, `--wait-for-capacity 600`, no `--resume`; ~70 min incl. Spot interruptions):
+
+    klt pex layout/osc_bank.gds sim/pex/requests/osc_subth.json --deck sky130 --pdk sky130A --top osc_subth \
+        --pins en,out,vdd,vss --backend batch --hosts 45 --wait-for-capacity 600 -o <dir>/osc_subth.spice \
+        --outdir <dir> --envelope-out <report.json> --format json
+
+1. **The bias divider is now extracted.** The extraction has 16 `nfet_01v8`, 16 `pfet_01v8`, 14 `pfet_01v8_lvt` (the
+   schematic's 16/16/14) plus 2 `res_high_po` (`vss`-`vbp` l=1359.92 w=0.35; `vbp`-`vdd` l=269.99 w=0.35). `vbp` is no
+   longer undriven. The report's `model_mismatch` is now `kind: model_set`, `extracted_only: [res_high_po]`: the
+   schematic models `Rb0`/`Rb1` as ideal resistors (300 k / 1500 k), so this is expected, not a like-for-like device
+   comparison for those two parts. `body_bias.status = biased`.
+2. **Coverage.** Report status `error`; 25/45 cells have a delta (`pass`), 20/45 do not: the **schematic** leg is missing in
+   11 cells (ff/1.62 V/-40 C, ff/1.80 V/125 C, ff/1.98 V/125 C, fs/1.62 V/125 C, fs/1.98 V/-40 C, fs/1.98 V/125 C,
+   sf/1.62 V/-40 C, sf/1.80 V/125 C, sf/1.98 V/27 C, ss/1.62 V/125 C, ss/1.80 V/27 C) and the **extracted** leg in 10 (tt/1.98 V/-40 C and 125 C, ff/1.62 V/27 C,
+   ff/1.80 V/27 C and 125 C, ff/1.98 V/-40 C and 27 C, ss/1.62 V/-40 C and 27 C, fs/1.62 V/-40 C); these are fleet
+   losses (`unfinished` lists them, resumable), not corners dropped by choice. ff/1.80 V/125 C has neither leg.
+3. **Result: the extracted `osc_subth` still does not oscillate.** In the 35 cells with an extracted value the count is 0 or
+   1 (row 1 needs >= 9 rising edges): **0/35 pass row 1** on the extracted side; the schematic side is 2-151593. The 25
+   deltas are -99.99 % to -100 %. Rows 2-4 are not re-graded (edge counts only, as before).
+4. **Cause not established.** The divider is present but its extracted resistance was not verified against the schematic:
+   at the PDK `res_high_po` sheet resistance both extracted legs look ~5x the schematic's 300 k / 1500 k (ratio kept),
+   which is a hypothesis only, not checked by a probe run. Whether `vbp` then settles where the schematic expects is
+   unverified. Diagnosing this is a layout/extraction question (#23's domain) and was not attempted here.
+
+Remaining for `7.analog`: find why the extracted `osc_subth` does not start (probe one corner, e.g. tt/1.80 V/27 C,
+locally is allowed by host rules), fix that in the layout under its own issue, then re-run; the 20 missing cells need a
+`--resume` or a new run after that.
