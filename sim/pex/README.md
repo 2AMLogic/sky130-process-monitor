@@ -188,3 +188,24 @@ SIMULATED/extraction only; `klt 0.9.2.dev632+gdd128366053f`. No `osc_subth` delt
    that is not comparable. No local ngspice grid was run (host rule).
 
 Remaining for `7.analog`: resolve the 28-vs-14 LVT classification, then one clean sharded `osc_subth` run.
+
+## Attempt 2026-11-11 (issue #32, second): 28-vs-14 LVT traced to the extractor; no grid submitted
+
+SIMULATED/extraction only; `klt 0.9.2.dev647+g1408ffee3fa6`. `7.analog` is still NOT met (`klt signoff`: `T1 #7 [analog]`
+`unmet`, `check_failed`; `[digital]` met). No `osc_subth` delta was produced. Nothing earlier was edited.
+
+1. **Re-extraction is unchanged from dev632.** `klt pex layout/osc_bank.gds --deck sky130 --pdk sky130A --top osc_subth
+   --pins en,out,vdd,vss --extract-only` gives a netlist with the same sha256 as `extracted/osc_subth.dev632.spice`
+   (`0e0c8114…`): 16 `nfet_01v8`, 2 `pfet_01v8`, 28 `pfet_01v8_lvt` (schematic: 16 / 16 / 14).
+2. **The drawn layout is right; the 28 is not a layout fault.** Gate-level check on `layout/osc_bank.gds`, cell `osc_subth`
+   (poly ∩ diff ∩ psdm, fraction of each gate covered by `lvtn` 125/44): 30 PFET gates, 14 at 100 % covered, 16 at 0 %, none
+   partial. That is the schematic's 14 LVT / 16 regular split. The `lvtn` rectangle for each series header ends at the
+   centre of the diffusion column it shares with the neighbouring inverter PFET (`layout/gen/gen_osc_bank.py:180-181`), so
+   it overlaps that shared source/drain region. The extractor appears to classify by marker overlap with the device's
+   diffusion terminal rather than its channel (hypothesis; the deck was not read). The marker was not redrawn.
+3. **Upstream:** filed as 2AMLogic/klayout-tools#5301 (generic description). Until it ships, `klt pex` reports
+   `model_mismatch` for `osc_subth` and any grid result is non-comparable, so no grid was submitted (no fleet capacity
+   spent, no local ngspice grid, host rule).
+
+Remaining for `7.analog`: a klt build that fixes #5301 (or a documented marker-enclosure rule that the layout then
+meets), then one clean sharded `osc_subth` run (`--backend batch --hosts 45 --wait-for-capacity 600`, foreground).
