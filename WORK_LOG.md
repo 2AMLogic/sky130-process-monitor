@@ -5,6 +5,8 @@ role. Newest first.
 
 ### 2026-11-11
 
+- **PR #111**: feat(layout): draw osc_subth vbp bias divider as PDK poly resistors
+- **Issue #109** (closed): osc_subth layout: draw the vbp bias divider (Rb0/Rb1) so the extracted oscillator can run
 - **PR #108**: docs(pex): record osc_subth 45-cell pex run on a klt dev build, extracted side does not oscillate
 - **PR #106**: docs(pex): record osc_subth LVT over-classification traced to the extractor
 - **PR #104**: docs(pex): record osc_subth re-extraction on klt dev632 and aborted sharded submit
