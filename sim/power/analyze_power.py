@@ -17,16 +17,27 @@ and no counter number is folded into any pass/fail here.
   * Spec row 7: active target < 100 uW, fallback < 500 uW, stretch < 20 uW; idle < 1 uW, < 10 uW, < 100 nW.
     Cells not gradable make the row INCOMPLETE; the row is never reported PASS with ungraded cells.
 """
-import gzip
+import importlib.util
 import json
+import os
 import sys
 
-OSCS = ["osc_hd", "osc_nmos", "osc_pmos", "osc_wire", "osc_subth"]
+HERE = os.path.dirname(os.path.abspath(__file__))
+
+
+def _load_sensitivity():
+    """Report loading and the oscillator list are defined once, in sensitivity/analyze.py. `python3 -I` drops
+    the script directory from sys.path, so load it by path."""
+    spec = importlib.util.spec_from_file_location(
+        "sens_analyze", os.path.join(HERE, "..", "sensitivity", "analyze.py"))
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    return mod
+
+
+_SENS = _load_sensitivity()
+OSCS, _load, _remote = _SENS.OSCS, _SENS._load, _SENS._remote
 BOUNDS_UW = {"active": (100.0, 500.0, 20.0), "idle": (1.0, 10.0, 0.1)}
-
-
-def _load(p):
-    return json.load((gzip.open if p.endswith(".gz") else open)(p, "rt"))
 
 
 def extract(paths):
@@ -36,9 +47,9 @@ def extract(paths):
         path = rep["netlist"]["path"]
         kind = "idle" if "idle_" in path else "active"
         osc = next(o for o in OSCS if o in path)
-        rem = (rep.get("environment") or {}).get("remote") or {}
+        rem, runner_pdk = _remote(rep)
         envs.append({"report": p, "kind": kind, "oscillator": osc, "job_id": rem.get("job_id"),
-                     "job_ids": rem.get("job_ids"), "runner_pdk": ((rem.get("worker_environment") or {}).get("pdk") or {}).get("stamp_text")})
+                     "job_ids": rem.get("job_ids"), "runner_pdk": runner_pdk})
         for c in rep["corners"]:
             m = {x["name"]: x for x in c["measurements"]}
             v = c["supply_v"]["vdd"]
