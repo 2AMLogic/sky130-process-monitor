@@ -20,7 +20,7 @@
     },
     "2.analog": {
       "file": "evidence/item2.json",
-      "content_hash": "sha256:76c6a407061578bcf49baa7426b4b9714e343f879821a50043ff61c60dc18e1b"
+      "content_hash": "sha256:625c8ff90f34c6fac7a88339d2c10ad5925da02e118eb6a15a6539c11e05bf29"
     },
     "2.digital": {
       "file": "evidence/item2_digital.json",
@@ -77,7 +77,7 @@
     },
     "3.analog": {
       "file": "drc/osc_bank.report.json",
-      "content_hash": "sha256:76c6a407061578bcf49baa7426b4b9714e343f879821a50043ff61c60dc18e1b"
+      "content_hash": "sha256:625c8ff90f34c6fac7a88339d2c10ad5925da02e118eb6a15a6539c11e05bf29"
     },
     "3.digital": {
       "file": "drc/readout.report.json",
