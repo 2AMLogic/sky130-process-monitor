@@ -17,11 +17,13 @@ def merged_step_polys(path, top):
     return [p for p in r.each() if p.num_points() > 4]
 
 def extract(path, top):
-    out = tempfile.mktemp(suffix=".spice")
-    subprocess.run(["klt", "extract", path, "--deck", "sky130", "--pdk", "sky130A", "--top", top,
-                    "--pins", "en,out,vdd,vss", "-o", out, "--format", "json"],
-                   check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
-    return open(out).read()
+    with tempfile.TemporaryDirectory() as d:
+        out = os.path.join(d, "extract.spice")
+        subprocess.run(["klt", "extract", path, "--deck", "sky130", "--pdk", "sky130A", "--top", top,
+                        "--pins", "en,out,vdd,vss", "-o", out, "--format", "json"],
+                       check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+        with open(out) as f:
+            return f.read()
 
 def pairs(spice):
     """(header S/D net, stage-pfet S/D nets) -> number of headers whose non-vdd terminal is shared with a stage pfet."""
@@ -41,8 +43,9 @@ def main(gds, out):
     res["extracted"] = dict(zip(("headers", "headers_sharing_a_net_with_stage_pfet"), pairs(extract(gds, top))))
     ly = db.Layout(); ly.read(gds); li = ly.layer(125, 44)
     for c in ly.each_cell(): c.shapes(li).clear()
-    scratch = tempfile.mktemp(suffix=".gds"); ly.write(scratch)
-    res["control_no_lvtn"] = dict(zip(("headers", "headers_sharing_a_net_with_stage_pfet"), pairs(extract(scratch, top))))
+    with tempfile.TemporaryDirectory() as d:
+        scratch = os.path.join(d, "control.gds"); ly.write(scratch)
+        res["control_no_lvtn"] = dict(zip(("headers", "headers_sharing_a_net_with_stage_pfet"), pairs(extract(scratch, top))))
     json.dump(res, open(out, "w"), indent=2); print(json.dumps(res, indent=2))
 
 if __name__ == "__main__":
