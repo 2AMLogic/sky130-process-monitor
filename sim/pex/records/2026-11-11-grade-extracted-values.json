@@ -1,0 +1,99 @@
+{
+ "inputs": [
+  "sim/pex/records/2026-11-10-osc_hd.pex.report.json",
+  "sim/pex/records/2026-11-10-osc_nmos.pex.report.json",
+  "sim/pex/records/2026-11-10-osc_pmos.pex.report.json",
+  "sim/pex/records/2026-11-10-osc_wire.pex.report.json"
+ ],
+ "kind": "SIMULATED",
+ "min_edges_for_oscillation": 9,
+ "ratio_space_shift_pct": {
+  "osc_nmos": {
+   "cells": 44,
+   "max": [
+    0.7025761124121788,
+    "fs/1.980V/125C"
+   ],
+   "median": -7.785537083746281,
+   "min": [
+    -17.553986146950972,
+    "ff/1.620V/-40C"
+   ]
+  },
+  "osc_pmos": {
+   "cells": 45,
+   "max": [
+    -0.2487338547753848,
+    "fs/1.800V/125C"
+   ],
+   "median": -10.948289090072105,
+   "min": [
+    -19.78705978705978,
+    "sf/1.620V/-40C"
+   ]
+  },
+  "osc_wire": {
+   "cells": 44,
+   "max": [
+    32.17213114754098,
+    "fs/1.980V/125C"
+   ],
+   "median": -1.554791092494584,
+   "min": [
+    -21.507537688442213,
+    "ff/1.620V/-40C"
+   ]
+  }
+ },
+ "row1_extracted_side": {
+  "osc_hd": {
+   "cells_below_min_edges": [],
+   "cells_with_extracted_value": 45,
+   "cells_without_extracted_value": [],
+   "f_proxy_hz_min_max": [
+    103750000.0,
+    325000000.0
+   ],
+   "max_count": 260,
+   "max_startup_bias_rel": 0.04819277108433735,
+   "min_count": 83
+  },
+  "osc_nmos": {
+   "cells_below_min_edges": [],
+   "cells_with_extracted_value": 45,
+   "cells_without_extracted_value": [],
+   "f_proxy_hz_min_max": [
+    87500000.0,
+    292500000.0
+   ],
+   "max_count": 234,
+   "max_startup_bias_rel": 0.05714285714285714,
+   "min_count": 70
+  },
+  "osc_pmos": {
+   "cells_below_min_edges": [],
+   "cells_with_extracted_value": 45,
+   "cells_without_extracted_value": [],
+   "f_proxy_hz_min_max": [
+    81250000.0,
+    333750000.0
+   ],
+   "max_count": 267,
+   "max_startup_bias_rel": 0.06153846153846154,
+   "min_count": 65
+  },
+  "osc_wire": {
+   "cells_below_min_edges": [],
+   "cells_with_extracted_value": 45,
+   "cells_without_extracted_value": [],
+   "f_proxy_hz_min_max": [
+    123750000.0,
+    262500000.0
+   ],
+   "max_count": 210,
+   "max_startup_bias_rel": 0.04040404040404041,
+   "min_count": 99
+  }
+ },
+ "window_s": 8e-07
+}

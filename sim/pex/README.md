@@ -114,3 +114,50 @@ Not done in this increment (no fleet headroom for another full run, no local gri
 schematic leg for `osc_nmos` tt/1.80 V/−40 C and `osc_wire` sf/1.98 V/−40 C; grading extracted values against the
 #29 frequency-window limits; any change to `manifests/`. `klt signoff` still grades `T1 #7 [analog]` `unmet`
 (`check_failed`); `T1 #7 [digital]` is MET.
+
+## Increment 2026-11-11 (issue #32): grading, the two cold cells, signoff
+
+SIMULATED only. Records are new dated files under `records/`; nothing earlier was edited. No spec threshold was
+touched and no local ngspice grid was run (two single-corner `klt pex` probes ran locally, which the host rules allow).
+
+### Grading the extracted values (`grade_pex.py`, `records/2026-11-11-grade-extracted-values.json`)
+
+    python3 -I sim/pex/grade_pex.py <out.json> records/2026-11-10-osc_{hd,nmos,pmos,wire}.pex.report.json
+
+- **#29 row 1 (oscillates), extracted side: met for `osc_hd`, `osc_nmos`, `osc_pmos`, `osc_wire` at all 45 cells.**
+  The criterion needs at least 9 rising edges (3 dropped start-up edges + 5 cycles + 1); the smallest extracted
+  count is 65 (`osc_pmos`, ss/1.620V/-40C; `osc_nmos` is next at 70). This is the extracted leg only. `osc_subth` has no valid extraction (finding 6).
+- **The #29 frequency limits cannot be applied to the pex values, so rows 2-4 are NOT re-graded.** The pex scalar is a quantised
+  rising-edge count in an 800 ns window and the report carries no crossing times, so #29's
+  `f_osc = (n-1)/(t_last - t_first)` cannot be reproduced. #29 has no per-cell frequency window either: its limits are
+  row 1 (oscillates), row 2 (five-corner identification in ln-ratio space), row 3 (V, ±20/50 mV) and row 4 (T, ±5/10 C).
+  Rows 2-4 need all five oscillators' frequencies, and `osc_subth` has none. The record gives a count-based frequency
+  proxy (counts/800 ns, 81-334 MHz across the four, start-up bias up to ~6 %) labelled as a proxy only.
+- **What the layout does to the row-2 coordinate** (ln f_i − ln f_osc_hd, extracted vs schematic, from counts; percent
+  change in f_i/f_osc_hd): `osc_nmos` median −7.8 % (−17.6 … +0.7), `osc_pmos` median −10.9 % (−19.8 … −0.2),
+  `osc_wire` median −1.6 % (−21.5 … +32.2; not like-for-like, finding 3). These are shifts of the classifier inputs;
+  a recalibration on extracted data is needed before any post-layout row-2 claim. No claim is made here.
+
+### The two non-converged cold cells (`records/2026-11-11-osc_{nmos,wire}-coldcell-*.pex.report.json`)
+
+Single-unit local `klt pex` runs (`klt 0.9.2.dev599`, ngspice 46), requests `requests/osc_{nmos,wire}_coldcell.json`.
+1. Default solver, `tran 20p 800n 0 10p` (tmax capped): the schematic leg still hits `timestep_too_small` at
+   `osc_nmos` tt/1.80 V/−40 C and `osc_wire` sf/1.98 V/−40 C (`*-coldcell-tmax10p`; their request file was later
+   edited to the relaxed bench, so the committed request is the second variant).
+2. Same bench plus `.options reltol=0.01 gmin=1e-10 method=gear` (`osc/tb_*_relaxed.spice`, the option set #69 used):
+   both converge. `osc_nmos`: 204 vs 158, −22.5 %. `osc_wire`: 68 vs 50, −26.5 %.
+
+Caveats: the relaxed solver changes the numerics for these two cells only, so the counts are not interchangeable with
+the other 44 cells'; the `osc_nmos` extracted netlist is the committed one (sha256 `68b62d0e…`), but the local klt
+re-extracted `osc_wire` to a different netlist (`09374950…`, committed as `extracted/osc_wire.dev599.spice`, same
+structure, different numbers) because the installed `klt` is newer than the one that produced `76c8872a…`. The `osc_wire` cell
+is therefore a different extraction build and, like the rest of `osc_wire`, not like-for-like (finding 3).
+The 2026-11-10 reports are not amended: they still read `error` with 44/45 cells.
+
+### Signoff
+
+`klt signoff --manifest manifests/sky130-process-monitor.json`: `T1 #7 [analog]` stays **UNMET** (`check_failed`);
+`T1 #7 [digital]` MET. The manifest already cites `7.analog`; no citation was added, because the cited reports are
+`error`/incomplete (`osc_nmos`, `osc_wire`: one cell each, now covered by the supplementary cold-cell records above but
+not merged into those reports; `osc_subth`: no valid extraction). Remaining to close `7.analog`: the `osc_subth` LVT
+marker layout fix (#98), then one clean sharded `osc_subth` run.
