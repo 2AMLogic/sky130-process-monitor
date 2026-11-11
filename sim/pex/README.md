@@ -209,3 +209,37 @@ SIMULATED/extraction only; `klt 0.9.2.dev647+g1408ffee3fa6`. `7.analog` is still
 
 Remaining for `7.analog`: a klt build that fixes #5301 (or a documented marker-enclosure rule that the layout then
 meets), then one clean sharded `osc_subth` run (`--backend batch --hosts 45 --wait-for-capacity 600`, foreground).
+
+## Re-run 2026-11-11 (issue #32, third): `osc_subth` full box on klt dev661, extracted side does not oscillate
+
+SIMULATED only (ngspice on the batch fleet; `klt 0.9.2.dev661+g1de5c0432aad`). `7.analog` is still NOT met (`klt signoff`:
+`T1 #7 [analog]` `unmet`, `check_failed`; `[digital]` met). Nothing earlier was edited or relaxed; both new files are dated records.
+
+1. **The model mismatch is gone.** `klt pex --extract-only` on `layout/osc_bank.gds` (`--top osc_subth`) now extracts
+   16 `nfet_01v8`, 16 `pfet_01v8`, 14 `pfet_01v8_lvt` against the schematic's 16 / 16 / 14 (klayout-tools#5301 fix,
+   #5304). The report's `model_mismatch` is `null`. Extracted netlist `extracted/osc_subth.dev661.spice` sha256 `94256045…`.
+2. **Run.** One clean sharded run, `--backend batch --hosts 45 --wait-for-capacity 600`, foreground, no `--resume`:
+
+       klt pex layout/osc_bank.gds sim/pex/requests/osc_subth.json --deck sky130 --pdk sky130A --top osc_subth \
+           --pins en,out,vdd,vss --backend batch --hosts 45 --wait-for-capacity 600 -o <dir>/osc_subth.spice \
+           --outdir <dir> --envelope-out <report.json> --format json
+
+   Record: `records/2026-11-11-osc_subth-dev661.pex.report.json` (sha256 `4d949f07…`). Report status `error`:
+   45/45 cells have an extracted value, 34/45 have a delta, 11/45 have no delta because the **schematic** leg was lost
+   (10 `lost_shard` at collect, 1 interrupted Spot job); the extracted leg completed everywhere. The 11 cells are
+   ff/1.62 V/125 C, ss/1.98 V/27 C and 125 C, tt/1.98 V/−40 C, ff/1.98 V/125 C, sf/1.62 V/{−40,27,125} C,
+   sf/1.98 V/{−40,125} C and fs/1.62 V/−40 C. No corner was dropped by choice; they are missing results.
+3. **Result: the extracted `osc_subth` does not oscillate.** The extracted-side crossings count is 0 or 1 in all 45 cells
+   (the schematic side is 102–27600 in the cells that completed). Delta is −99.98 % to −100 % in all 34 compared cells.
+   Graded as in `grade_pex.py` (row 1 needs ≥ 9 rising edges): **45/45 cells fail row 1 on the extracted side.**
+   Grading record: `records/2026-11-11-grade-extracted-values-osc_subth-dev661.json` (inputs: the `osc_hd`
+   2026-11-10 report and this report; the ratio-space shift is computable for 8 cells only because a zero count has no
+   log-ratio). Rows 2–4 are not re-graded (edge counts only, as before). No threshold was changed.
+4. **Likely cause, not proven here.** Caveat 3 above: the extraction has `vbp` as an undriven net and the `Rb0`/`Rb1`
+   bias divider is not drawn, so the subthreshold bias that sets the oscillator's current is absent. That is a layout
+   gap (#23's domain), out of scope for this issue and not edited. Not verified by a probe run.
+5. **`grade_pex.py`** now tolerates a zero count (division guard, and zero-count cells are skipped in the ratio-space
+   shift). Re-deriving the 2026-11-11 grading from its inputs is byte-identical.
+
+Remaining for `7.analog`: the `osc_subth` layout must carry the bias network (or the spec row must be re-decided through
+`spec/` with a decision record, not here); the 11 lost schematic cells are only worth re-running after that.
