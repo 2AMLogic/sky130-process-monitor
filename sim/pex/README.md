@@ -279,3 +279,32 @@ Command (one clean run, `--hosts 45`, foreground, `--wait-for-capacity 600`, no 
 Remaining for `7.analog`: find why the extracted `osc_subth` does not start (probe one corner, e.g. tt/1.80 V/27 C,
 locally is allowed by host rules), fix that in the layout under its own issue, then re-run; the 20 missing cells need a
 `--resume` or a new run after that.
+
+## Diagnosis 2026-11-11 (issue #116): why the extracted `osc_subth` does not start
+
+SIMULATED only: ngspice-46, one local `ngspice -b` per case (5 total, no grid), tt / 1.80 V / 27 C, 100 us transient,
+`sim/pex/probe/osc_subth_vbp_probe.cir` + `run_probe.sh`. Input: `extracted/osc_subth.gds109.spice` (sha256 `9a728593…`) and
+`design/osc_bank/osc_subth.spice` (sha256 `b2676720…`). klt was not run. Record (new, append-only):
+`records/2026-11-11-osc_subth-diagnosis.json`. Nothing earlier was edited; no threshold was changed.
+
+| case (tt/1.80 V/27 C) | settled `vbp` | rising edges in 100 us |
+| --- | --- | --- |
+| schematic | 1.5000 V | 169 |
+| extracted, free | 1.5002 V | 0 (`out` stuck 1.09-1.20 V) |
+| extracted, `vbp` forced to 1.5 V | 1.5000 V | 0 |
+| extracted, parasitic R -> 1 mohm and all C removed | 1.5011 V | 0 |
+| extracted + 14 tie resistors across the split `vh` nets | 1.4999 V | 126 |
+
+1. **`vbp` is not the cause.** The extracted divider settles at 1.5002 V against the schematic's 1.5000 V (the ~5x legs keep
+   the 5:1 ratio), and forcing `vbp` to the schematic value changes nothing. The README's earlier hypothesis is refuted.
+2. **Extractor parasitics are not the cause.** A devices-only version of the extracted netlist still does not start.
+3. **Cause: the 14 series-header nets `vh1`..`vh14` are split in the extraction.** The 14 stage PFET sources
+   (`$21 $24 $26 $27 $29 $31 $33 $35 $37 $39 $41 $44 $46 $47`) and the 14 header LVT PFET drains
+   (`$22 $23 $25 $28 $30 $32 $34 $36 $38 $40 $42 $43 $45 $48`) are 28 distinct nets with nothing joining them, so every
+   stage PFET source floats. Joining each pair with a 1 mohm resistor (pairing by stage order, see the record) restores
+   oscillation with the extracted parasitics kept: 126 edges against 169 on the schematic.
+4. **Not established:** whether this is a layout defect (no contact/metal between header drain and stage source) or an
+   extraction/deck defect. The GDS was not inspected and not edited (out of scope). The spec row and the ideal `Rb0`/`Rb1`
+   modelling are not implicated; no `spec/` change is needed.
+
+Remaining for `7.analog`: resolve the split `vh` nets under their own issue, then #32 re-runs the 45 cells.
