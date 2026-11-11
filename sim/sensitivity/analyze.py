@@ -63,12 +63,18 @@ def _osc_of(report):
     raise ValueError("cannot tell oscillator from netlist %r" % path)
 
 
+def _remote(report):
+    """The report's `environment.remote` block ({} for a local run) and the runner PDK stamp inside it."""
+    rem = (report.get("environment") or {}).get("remote") or {}
+    return rem, ((rem.get("worker_environment") or {}).get("pdk") or {}).get("stamp_text")
+
+
 def _env(report):
     e = report.get("environment", {})
-    rem = e.get("remote") or {}
+    rem, runner_pdk = _remote(report)
     wk = rem.get("worker_environment") or {}
     return {"engine_version": e.get("engine_version"), "job_id": rem.get("job_id"),
-            "runner_pdk": (wk.get("pdk") or {}).get("stamp_text"),
+            "runner_pdk": runner_pdk,
             "runner_ngspice": ((wk.get("simulator") or {}).get("version_banner") or "").split("\n")[1:2]}
 
 

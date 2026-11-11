@@ -5,12 +5,18 @@ same analysis window, measurement, solver options and corner box) with only the 
 swapped for sim/pex/osc/tb_<osc>.spice (one .include, as klt pex requires). Deterministic.
 Usage: python3 -I sim/pex/gen_requests.py
 """
+import importlib.util
 import json
 import os
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 SENS = os.path.join(os.path.dirname(HERE), "sensitivity", "requests")
-OSCS = ["osc_hd", "osc_nmos", "osc_pmos", "osc_wire", "osc_subth"]
+# `python3 -I` drops the script directory from sys.path, so load the sensitivity generator by path.
+_spec = importlib.util.spec_from_file_location(
+    "sens_gen_requests", os.path.join(os.path.dirname(HERE), "sensitivity", "gen_requests.py"))
+_SENS_GEN = importlib.util.module_from_spec(_spec)
+_spec.loader.exec_module(_SENS_GEN)
+OSCS = list(_SENS_GEN.OSCS)  # the oscillator list lives once, in the sensitivity generator
 
 os.makedirs(os.path.join(HERE, "requests"), exist_ok=True)
 
