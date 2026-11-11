@@ -264,8 +264,8 @@ Command (one clean run, `--hosts 45`, foreground, `--wait-for-capacity 600`, no 
    schematic models `Rb0`/`Rb1` as ideal resistors (300 k / 1500 k), so this is expected, not a like-for-like device
    comparison for those two parts. `body_bias.status = biased`.
 2. **Coverage.** Report status `error`; 25/45 cells have a delta (`pass`), 20/45 do not: the **schematic** leg is missing in
-   9 cells (ff/1.62 V/-40 C, ff/1.80 V/125 C, ss/1.62 V/125 C, ss/1.80 V/27 C, sf/1.62 V/-40 C, sf/1.80 V/125 C,
-   sf/1.98 V/27 C, fs/1.62 V/125 C, fs/1.98 V/-40 C) and the **extracted** leg in 10 (tt/1.98 V/-40 C and 125 C, ff/1.62 V/27 C,
+   11 cells (ff/1.62 V/-40 C, ff/1.80 V/125 C, ff/1.98 V/125 C, fs/1.62 V/125 C, fs/1.98 V/-40 C, fs/1.98 V/125 C,
+   sf/1.62 V/-40 C, sf/1.80 V/125 C, sf/1.98 V/27 C, ss/1.62 V/125 C, ss/1.80 V/27 C) and the **extracted** leg in 10 (tt/1.98 V/-40 C and 125 C, ff/1.62 V/27 C,
    ff/1.80 V/27 C and 125 C, ff/1.98 V/-40 C and 27 C, ss/1.62 V/-40 C and 27 C, fs/1.62 V/-40 C); these are fleet
    losses (`unfinished` lists them, resumable), not corners dropped by choice. ff/1.80 V/125 C has neither leg.
 3. **Result: the extracted `osc_subth` still does not oscillate.** In the 35 cells with an extracted value the count is 0 or
