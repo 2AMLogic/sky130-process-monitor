@@ -279,3 +279,11 @@ Command (one clean run, `--hosts 45`, foreground, `--wait-for-capacity 600`, no 
 Remaining for `7.analog`: find why the extracted `osc_subth` does not start (probe one corner, e.g. tt/1.80 V/27 C,
 locally is allowed by host rules), fix that in the layout under its own issue, then re-run; the 20 missing cells need a
 `--resume` or a new run after that.
+
+## Diagnosis 2026-11-11 (issue #117): the `vh` split in `osc_subth` is an extraction defect, not a layout one
+
+SIMULATED/extraction only (`klt 0.9.2.dev661`); record `records/2026-11-11-vh-split-diagnosis-osc_subth.json`, script `diag/vh_split.py`.
+The drawn diffusion at each of the 14 header/stage junctions is one merged polygon, but the extracted header drain and
+stage-PFET source are different nets in 14/14 stages; with `lvtn` deleted from a scratch copy they are one net in 14/14. Moving the
+marker edge to the gate edge or removing the diffusion step does not change it. Upstream: 2AMLogic/klayout-tools#5311 (generic repro added).
+No layout, netlist or threshold change; the one-corner ring-start check waits for the tool fix.
