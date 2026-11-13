@@ -107,9 +107,18 @@ verdict — every one of them *simulated*:
   digital partition only — `4.analog` stays unmet because `osc_wire` and
   `osc_subth` match reduced references, not the item-1 netlists
   ([`lvs/README.md`](lvs/README.md)).
-- *post-layout re-verification* — **digital partition only** (the SDF re-run
-  above). No parasitic extraction exists for the analog partition, so the
-  oscillator frequencies above do not apply to its layout.
+- *post-layout re-verification* — **digital cleared, analog attempted and
+  unmet.** The SDF re-run above covers the digital partition. On the analog
+  partition parasitic extraction and a 45-cell `klt pex` re-run exist for all
+  five oscillators, and `klt signoff` still grades `7.analog` `unmet`
+  ([`sim/pex/README.md`](sim/pex/README.md)): the four oscillators that
+  produced a delta come out slower once extracted (per-oscillator median
+  −14 % to −24 % on the edge-count proxy `klt pex` reports), `osc_subth`
+  does not oscillate at all in extraction — traced to an extractor
+  net-splitting defect (2AMLogic/klayout-tools#5311), not a layout fault —
+  and spec rows 2–4 have not been re-graded on extracted values. The
+  oscillator frequencies above are schematic-level and do not carry to the
+  layout unchanged.
 - *shuttle seat*, *measured silicon* — not reached. Nothing here is measured.
 
 ## Reproduce
@@ -139,8 +148,9 @@ section quotes an estimate accuracy, because none has been established.
 | Readout RTL verification (`verification/readout/`) | **command 5** — Verilator lint plus 9 cocotb tests on Icarus |
 | Layout DRC / LVS (`drc/`, `lvs/`) | **command 6** — freshness-checks all eight committed DRC and LVS reports |
 | T1 tier verdict of record | **command 7** |
+| Post-layout re-verification, analog (`sim/pex/`) | **command 8** — re-grades the committed `klt pex` reports; reproduces the recorded extracted-side row-1 verdict and ratio-space layout shift |
 
-Commands 1, 3 and 4 need only `python3` (the scripts are standard-library
+Commands 1, 3, 4 and 8 need only `python3` (the scripts are standard-library
 only); 2 needs `ngspice` and the pinned PDK; 5 needs Icarus, Verilator and a
 `cocotb` virtualenv; 6 and 7 need `uv`. Tool pins are in
 [`sim/toolchain.json`](sim/toolchain.json) and
@@ -187,7 +197,14 @@ python3 -I sim/sensitivity/analyze.py report /tmp/freq.json /tmp/mc.json
 Reproduces the recorded matrices, singular values, κ and margin, and reports
 the 7 missing cells by name. It forms an absolute matrix at 5 of the 9 (V,T)
 cells — the four it cannot form are the ones with missing oscillators, never
-interpolated. Monte Carlo exists only at the nominal 1.80 V / 27 °C cell, and
+interpolated. The `mc_osc_*` reports this command reads are mismatch Monte
+Carlo at the nominal 1.80 V / 27 °C cell only, and command 4's `solve.py`
+applies that pooled nominal σ to every cell. Off-nominal mismatch Monte Carlo
+(1.62 V / 125 °C and 1.98 V / −40 °C) is recorded separately — and recorded as
+**partial**, the cold `osc_subth` cell never collected — under
+`sim/sensitivity/records/reports/mc_offnom_*` and
+`sim/sensitivity/records/2026-11-05-mc-offnom-partial.md` /
+`2026-11-06-mc-offnominal-*.md`.
 `osc_subth`'s σ(ln f) is recorded as **unvalidated**; the margin it prints is a
 discrimination statistic, not an accuracy.
 
@@ -256,6 +273,27 @@ attestation and diffs it against `evidence/item10.json`. The attestation's
 `klt` check calls `klt` from `PATH`, so run the second from an environment
 where `klt` 0.9.1 is installed (CI installs it with `pip`). CI runs both on
 every push and pull request ([`signoff.yml`](.github/workflows/signoff.yml)).
+
+**8 — post-layout re-verification, analog.** Post-processing of the committed
+`klt pex` reports; re-runs no extraction and no simulation:
+
+```console
+python3 -I sim/pex/grade_pex.py /tmp/pexgrade.json \
+    sim/pex/records/2026-11-10-osc_{hd,nmos,pmos,wire}.pex.report.json
+```
+
+Reproduces [`sim/pex/records/2026-11-11-grade-extracted-values.json`](sim/pex/records/2026-11-11-grade-extracted-values.json):
+all four oscillators pass the row-1 "oscillates" criterion on the extracted
+side, and the row-2 ratio-space coordinate shifts by a median −7.8 %
+(`osc_nmos`), −10.9 % (`osc_pmos`) and −1.6 % (`osc_wire`). `osc_subth` is
+**not** in this record — its extraction does not oscillate at all — and rows
+2–4 are **not** re-graded, because the `klt pex` scalar is a quantised
+edge count rather than a frequency. Re-running the extraction and the 45-cell
+grid themselves is a batch-fleet submission, named in
+[`sim/pex/README.md`](sim/pex/README.md) § "Reproduce one oscillator" — named
+there for completeness, not re-run here. The caveats that keep `7.analog`
+unmet, including the `osc_wire` extraction not being like-for-like, are in
+that file.
 
 ## Tool flow
 
