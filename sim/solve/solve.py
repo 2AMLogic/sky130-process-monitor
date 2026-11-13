@@ -8,8 +8,12 @@ Inputs are the tables written by `sim/sensitivity/analyze.py extract / extract-m
 
 Conventions (every one is a grading choice made here, none relaxes the spec):
   * Noise per oscillator = counter quantization (analyze.sigma_quant) + pooled mismatch-MC sigma(ln f), in
-    quadrature. MC exists only at the nominal cell (1.80 V/27 C) and the pooled value is applied to every cell
-    (assumption inherited from #8). osc_subth's MC is UNVALIDATED.
+    quadrature. This script uses only the pooled sigma of the mc_table it is given (analyze.mc_sigmas' per-cell
+    sigmas are discarded) and applies that one value to every cell. The recorded run pins an mc_table built from
+    mc_osc_{hd,nmos,pmos,wire,subth}, whose draws are all at 1.80 V/27 C (five process corners), so the sigma in
+    use is a nominal-V/T one (assumption inherited from #8). Off-nominal mismatch MC is recorded separately
+    (sim/sensitivity/records/reports/mc_offnom_*); this script does not read those reports.
+    osc_subth's MC is UNVALIDATED.
   * Oscillator set at a cell = those with all needed cells present; missing cells are never interpolated.
     Every result names the set used.
   * Row 1: pass iff every oscillator oscillates at all 45 cells (fallback bank: osc_hd, osc_nmos, osc_pmos).

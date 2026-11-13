@@ -114,12 +114,18 @@ verdict — every one of them *simulated*:
   ([`sim/pex/README.md`](sim/pex/README.md)): the four oscillators that
   produced a delta come out slower once extracted (per-oscillator median
   −14 % to −24 % on the edge-count proxy `klt pex` reports), the extracted
-  `osc_subth` does not oscillate in any cell that produced an extracted value
-  — 0 or 1 crossings in every one of them across two 45-cell re-runs (45 of
-  45 and 35 of 35 extracted cells), none reaching the ≥ 9 rising edges row 1
-  needs, traced by a local single-corner probe to an extractor net-splitting
-  defect (2AMLogic/klayout-tools#5311), not a layout fault — and spec rows
-  2–4 have not been re-graded on extracted values. The
+  `osc_subth` does not oscillate in either of the two re-runs those counts
+  come from — 0 or 1 crossings in all 45 of 45 extracted cells on the
+  `dev661` run and all 35 of 35 on the `gds109` run, none reaching the
+  ≥ 9 rising edges row 1 needs. The earlier 2026-11-11 run is excluded: its
+  14 LVT PFETs extracted as plain `pfet_01v8`, which `klt pex` flags as a
+  `model_mismatch` and `sim/pex/README.md` records as not a valid comparison,
+  so its three large extracted counts are not read as deltas. A local
+  single-corner probe on the `gds109` extraction (tt / 1.80 V / 27 C) traced
+  the non-start to 14 split `vh` nets and left layout-defect versus
+  extraction-defect open; a separate structural diagnosis attributes the split
+  to the extractor (2AMLogic/klayout-tools#5311). And spec rows 2–4 have not
+  been re-graded on extracted values. The
   oscillator frequencies above are schematic-level and do not carry to the
   layout unchanged.
 - *shuttle seat*, *measured silicon* — not reached. Nothing here is measured.
@@ -302,8 +308,8 @@ Reproduces [`sim/pex/records/2026-11-11-grade-extracted-values.json`](sim/pex/re
 all four oscillators pass the row-1 "oscillates" criterion on the extracted
 side, and the row-2 ratio-space coordinate shifts by a median −7.8 %
 (`osc_nmos`), −10.9 % (`osc_pmos`) and −1.6 % (`osc_wire`). `osc_subth` is
-**not** in this record — its extracted side does not oscillate in any cell
-that ran (see the rung above) — and rows
+**not** in this record — its extracted side does not oscillate in the
+`dev661` or the `gds109` re-run (see the rung above) — and rows
 2–4 are **not** re-graded, because the `klt pex` scalar is a quantised
 edge count rather than a frequency. Re-running the extraction and the 45-cell
 grid themselves is a batch-fleet submission, named in
