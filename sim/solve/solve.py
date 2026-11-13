@@ -27,7 +27,7 @@ Conventions (every one is a grading choice made here, none relaxes the spec):
   * Row 4: T solved with one-point calibration at (27 C, 1.80 V) of the same die, V KNOWN (graded variant).
     Model = tt tensor-product quadratic of ln f(V,T) - ln f(1.8,27), corner-agnostic. The tt die itself is
     in-sample (model built from its own data) so it is noise-only; it is flagged and still counted in the max.
-    Joint V+T solve is reported as an informational variant.
+    A joint V+T solve is NOT implemented; the output key reports it as "not run".
   * Draws are seeded; results are deterministic.
 """
 import json
@@ -42,6 +42,10 @@ import analyze as A  # noqa: E402
 OSCS, BASE, PROC, VDD, TEMP = A.OSCS, A.BASELINE, A.PROCESS, A.VDD, A.TEMP
 FALLBACK_BANK = ["osc_hd", "osc_nmos", "osc_pmos"]
 BOUNDS = {"row3_V": (0.020, 0.050, 0.010), "row4_T": (5.0, 10.0, 2.0)}  # target, fallback, stretch
+# Search grids for the row 3 / row 4 estimators. One definition each: yield_samples.py searches the same
+# grids, so a refinement here moves the grade and the yield samples together (they describe one procedure).
+VGRID = [1.55 + 0.002 * i for i in range(251)]   # row 3 V search: 1.55..2.05 V, 2 mV step
+TGRID = [-45 + 0.5 * i for i in range(351)]      # row 4 T search: -45..130 C, 0.5 C step
 
 
 def lagr(xs, ys, x):
@@ -76,13 +80,15 @@ def row1(tab):
 
 
 # ------------------------------------------------------------------ row 2
+def distances(centroids, x, w):
+    """Whitened squared distance from feature vector x to each centroid; w = per-coordinate noise std."""
+    return {p: sum(((a - b) / s) ** 2 for a, b, s in zip(x, c, w)) for p, c in centroids.items()}
+
+
 def classify(centroids, x, w):
-    best, bd = None, None
-    for p, c in centroids.items():
-        d = sum(((a - b) / s) ** 2 for a, b, s in zip(x, c, w))
-        if bd is None or d < bd:
-            best, bd = p, d
-    return best
+    """Nearest centroid in the whitened space; ties go to the first centroid in iteration order."""
+    d = distances(centroids, x, w)
+    return min(d, key=d.get)
 
 
 def row2_cell(tab, mc, v, t, rng, draws, classes, ratio=True):
@@ -133,31 +139,42 @@ def vmodel(tab, o, p, t, skip_v, vgrid):
     return [lagr([a for a, _ in pts], [b for _, b in pts], v) for v in vgrid]
 
 
+def solve_v(meas, models, sg, oscs, vgrid):
+    """Joint search over (corner, V): the row 3 estimator.
+
+    models[(osc, corner)] = ln f over vgrid; sg[osc] = reading noise std. Returns (residual, V, corner)
+    for the lowest weighted squared residual, ties going to the first (corner, grid point) visited.
+    The caller chooses the models, which is where the row 3 hold-out rule lives.
+    """
+    best = None
+    for p in PROC:
+        for i, v in enumerate(vgrid):
+            r = sum(((meas[o] - models[(o, p)][i]) / sg[o]) ** 2 for o in oscs)
+            if best is None or r < best[0]:
+                best = (r, v, p)
+    return best
+
+
 def row3(tab, mc, draws, seed):
-    vgrid = [1.55 + 0.002 * i for i in range(251)]  # 1.55..2.05 V
     res, worst = {}, None
     for t in TEMP:
         oscs = [o for o in OSCS if all(tab.get((o, p, v, t)) for p in PROC for v in VDD) and o in mc]
         if len(oscs) < 2:
             res["%d" % t] = {"gradable": False, "oscillators": oscs}
             continue
-        full = {(o, p): vmodel(tab, o, p, t, None, vgrid) for o in oscs for p in PROC}
+        full = {(o, p): vmodel(tab, o, p, t, None, VGRID) for o in oscs for p in PROC}
         for p0 in PROC:
             for v0 in VDD:
                 rng = random.Random("%s|r3|%s|%s|%s" % (seed, t, p0, v0))
-                held = {o: vmodel(tab, o, p0, t, v0 if v0 == 1.8 else None, vgrid) for o in oscs}
+                held = {o: vmodel(tab, o, p0, t, v0 if v0 == 1.8 else None, VGRID) for o in oscs}
                 sg = sigmas(tab, mc, oscs, p0, v0, t)
-                def solve(meas):
-                    best = None
-                    for p in PROC:
-                        for i, v in enumerate(vgrid):
-                            r = sum(((meas[o] - (held[o][i] if p == p0 else full[(o, p)][i])) / sg[o]) ** 2 for o in oscs)
-                            if best is None or r < best[0]:
-                                best = (r, v, p)
-                    return best
+                # hold-out rule: the TRUE corner's model drops the truth cell (interior cells only);
+                # every other corner stays in-sample. yield_samples passes `full` for all corners.
+                models = {(o, p): (held[o] if p == p0 else full[(o, p)]) for o in oscs for p in PROC}
                 truth = {o: math.log(tab[(o, p0, v0, t)]) for o in oscs}
-                sys_err = solve(truth)[1] - v0
-                es = sorted(abs(solve({o: truth[o] + rng.gauss(0, sg[o]) for o in oscs})[1] - v0) for _ in range(draws))
+                sys_err = solve_v(truth, models, sg, oscs, VGRID)[1] - v0
+                es = sorted(abs(solve_v({o: truth[o] + rng.gauss(0, sg[o]) for o in oscs},
+                                        models, sg, oscs, VGRID)[1] - v0) for _ in range(draws))
                 p99 = es[min(len(es) - 1, int(0.99 * len(es)))]
                 res["%d|%s|%.2f" % (t, p0, v0)] = {"oscillators": oscs, "in_sample": v0 != 1.8, "systematic_err_v": sys_err, "p99_abs_err_v": p99}
                 if worst is None or p99 > worst[0]:
@@ -175,12 +192,16 @@ def tmodel_delta(tab, o, v, t):
     return l(v, t) - l(1.8, 27)
 
 
+def solve_t(d, mod, sd, oscs, tgrid):
+    """Search over T: the row 4 estimator. d[osc] = calibrated ln f delta, mod[osc] = model over tgrid,
+    sd[osc] = combined measurement+calibration noise std. Returns the index of the best tgrid point."""
+    return min(range(len(tgrid)), key=lambda i: sum(((d[o] - mod[o][i]) / sd[o]) ** 2 for o in oscs))
+
+
 def row4(tab, mc, draws, seed):
     oscs = [o for o in OSCS if all(tab.get((o, "tt", v, t)) for v in VDD for t in TEMP) and o in mc]
     other = [o for o in OSCS if o not in oscs]
-    tgrid = [-45 + 0.5 * i for i in range(351)]
-    vgrid = [1.58 + 0.01 * i for i in range(45)]
-    res, worst, worstj = {}, None, None
+    res, worst = {}, None
     if len(oscs) < 2:
         return {"gradable": False, "oscillators": oscs}
     for p0 in PROC:
@@ -193,12 +214,11 @@ def row4(tab, mc, draws, seed):
                 sg = sigmas(tab, mc, oscs, p0, v0, t0)
                 scal = sigmas(tab, mc, oscs, p0, 1.8, 27)
                 sd = {o: math.sqrt(sg[o] ** 2 + scal[o] ** 2) for o in oscs}
-                mod = {o: [tmodel_delta(tab, o, v0, tt_) for tt_ in tgrid] for o in oscs}
-                def solveT(d):
-                    return min(range(len(tgrid)), key=lambda i: sum(((d[o] - mod[o][i]) / sd[o]) ** 2 for o in oscs))
+                mod = {o: [tmodel_delta(tab, o, v0, tt_) for tt_ in TGRID] for o in oscs}
                 truth = {o: math.log(tab[(o, p0, v0, t0)]) - math.log(tab[(o, p0, 1.8, 27)]) for o in oscs}
-                se = tgrid[solveT(truth)] - t0
-                es = sorted(abs(tgrid[solveT({o: truth[o] + rng.gauss(0, sd[o]) for o in oscs})] - t0) for _ in range(draws))
+                se = TGRID[solve_t(truth, mod, sd, oscs, TGRID)] - t0
+                es = sorted(abs(TGRID[solve_t({o: truth[o] + rng.gauss(0, sd[o]) for o in oscs},
+                                              mod, sd, oscs, TGRID)] - t0) for _ in range(draws))
                 p99 = es[min(len(es) - 1, int(0.99 * len(es)))]
                 res["%s|%.2f|%d" % (p0, v0, t0)] = {"systematic_err_c": se, "p99_abs_err_c": p99, "in_sample": p0 == "tt"}
                 if worst is None or p99 > worst[0]:

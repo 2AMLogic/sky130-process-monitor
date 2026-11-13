@@ -9,7 +9,7 @@
   "tier": null,
   "t1_item_count": 22,
   "build_t1_item_count": 22,
-  "t1_met_count": 11,
+  "t1_met_count": 13,
   "t1_not_applicable_count": 1,
   "source_doc": "manifests/design-evidence-tiers.md",
   "source_doc_content_hash": "sha256:c7a1e7e10627fae396007e0ff951734f37d95028b8f49f2e21e802e9f552f318",
@@ -826,10 +826,35 @@
       "partition_boundary": "Ring-oscillator bank (standard-cell and custom-cell variants, including the leakage-starved subthreshold oscillator) and the subthreshold sensing path.",
       "text": "every claimed measurement's testbench committed, with a documented cold-start invocation a third party can run; pinned PDK revision.",
       "notes": [],
-      "status": "unmet",
-      "reason": "no_evidence",
+      "status": "met",
+      "reason": null,
       "graded_by_build": true,
-      "citation": null
+      "citation": {
+        "file": "evidence/item9_analog.json",
+        "command": null,
+        "kind": "generic",
+        "check_status": "pass",
+        "content_hash": "sha256:f9894bc4d7f8b300f37a0ad96b497c32ed2e651d3d158de9653dc21d4ac6b066",
+        "input_verified": true,
+        "exit_status": 0,
+        "artifact_binding": {
+          "t1_item": 9,
+          "path": {
+            "path": "attest/item9_analog.json",
+            "scope": "repo"
+          },
+          "content_hash": "sha256:f9894bc4d7f8b300f37a0ad96b497c32ed2e651d3d158de9653dc21d4ac6b066",
+          "input_verified": true,
+          "summary": "T1 item 9 (Testbenches shipped): 482/482 attestation checks passed (klt signoff --attest)",
+          "source": "attest/item9_analog.json",
+          "attestation": {
+            "producer": "klt signoff --attest",
+            "inventory_schema_version": 1,
+            "check_count": 482,
+            "passed_count": 482
+          }
+        }
+      }
     },
     {
       "tier": "T1",
@@ -839,10 +864,35 @@
       "partition_boundary": "Enable/select logic, the counter-based frequency readout against an external reference clock, and the readout interface.",
       "text": "every claimed measurement's testbench committed, with a documented cold-start invocation a third party can run; pinned PDK revision.",
       "notes": [],
-      "status": "unmet",
-      "reason": "no_evidence",
+      "status": "met",
+      "reason": null,
       "graded_by_build": true,
-      "citation": null
+      "citation": {
+        "file": "evidence/item9_digital.json",
+        "command": null,
+        "kind": "generic",
+        "check_status": "pass",
+        "content_hash": "sha256:f614f09ab6079a877d0442e7c28c6e4f0139c562ef3ed3787d3518b9726731cd",
+        "input_verified": true,
+        "exit_status": 0,
+        "artifact_binding": {
+          "t1_item": 9,
+          "path": {
+            "path": "attest/item9_digital.json",
+            "scope": "repo"
+          },
+          "content_hash": "sha256:f614f09ab6079a877d0442e7c28c6e4f0139c562ef3ed3787d3518b9726731cd",
+          "input_verified": true,
+          "summary": "T1 item 9 (Testbenches shipped): 8/8 attestation checks passed (klt signoff --attest)",
+          "source": "attest/item9_digital.json",
+          "attestation": {
+            "producer": "klt signoff --attest",
+            "inventory_schema_version": 1,
+            "check_count": 8,
+            "passed_count": 8
+          }
+        }
+      }
     },
     {
       "tier": "T1",

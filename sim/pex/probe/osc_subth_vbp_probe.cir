@@ -1,0 +1,20 @@
+* osc_subth vbp discriminating probe -- SIMULATED, ngspice, tt / 1.80 V / 27 C, ONE corner, no grid.
+* Placeholders (substituted by run_probe.sh, one `ngspice -b` per case):
+*   @PDKLIB@ sky130.lib.spice path, @NET@ DUT netlist (vbp-force line already spliced inside the subckt if forcing),
+*   @OUT@ wrdata output file.
+.lib "@PDKLIB@" tt
+.include "@NET@"
+.temp 27
+Vdd vdd 0 1.8
+Vss vss 0 0
+Ven en 0 PWL(0 0 1n 0 1.1n 1.8)
+Xdut en out vdd vss osc_subth
+.option method=gear reltol=1e-3
+.control
+op
+print v(xdut.vbp) v(out)
+tran 20n 100u
+wrdata @OUT@ v(out) v(xdut.vbp)
+quit
+.endc
+.end

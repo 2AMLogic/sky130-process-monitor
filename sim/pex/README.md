@@ -12,9 +12,10 @@ incomplete for two independent reasons (below). Nothing was relaxed; the failing
 
 | Path | What |
 |---|---|
-| `gen_requests.py` | writes `requests/*.json` (the #29 `grid_<osc>.json` with only the testbench body swapped) and `osc/osc_hd_dut.spice`. Deterministic |
-| `osc/tb_<osc>.spice` | testbench bodies, one `.include` each as `klt pex` requires. `osc_hd_dut.spice` is generated (see "osc_hd pin order") |
-| `requests/<osc>.json` | `klt pex` testbench requests (`batch.capacity_wait_s: 600`) |
+| `gen_requests.py` | writes **everything in `osc/` and `requests/<osc>.json`**: the #29 `grid_<osc>.json` with only the testbench body swapped, and the bench bodies themselves derived from `sim/sensitivity/osc/`. Deterministic; a re-run must leave `git status --porcelain sim/pex` empty |
+| `osc/tb_<osc>.spice`, `osc/tb_<osc>_relaxed.spice`, `osc/osc_hd_dut.spice` | GENERATED, do not edit. Derived from `sim/sensitivity/osc/tb_<osc>.spice` so the pex leg runs the #29 circuit and no second copy exists (issue #137): the line-2 provenance comment is swapped (except `osc_hd`, whose committed bench keeps the sensitivity wording and is reproduced as committed), `osc_hd` gets the one `.include` `klt pex` requires plus the extracted pin order (see "osc_hd pin order"), and `_relaxed` appends the #69 solver options. `sim/pex/test_gen_requests.py` (in `npm test`) fails if a committed file stops matching |
+| `requests/<osc>.json` | `klt pex` testbench requests (`batch.capacity_wait_s: 600`). GENERATED |
+| `requests/osc_{nmos,wire}_coldcell.json` | hand-written single-cell follow-up requests, not emitted by the generator (see "The two non-converged cold cells") |
 | `extracted/<osc>.spice` | the extracted netlists (`klt extract --parasitics`, deck `sky130`, `--pdk sky130A`) |
 | `records/2026-11-10-<osc>.pex.report.json` | the `klt pex` reports (append-only; a re-run is a new dated file) |
 | `records/2026-11-10-osc_subth.pex-submit.json` | the submit manifest of the `osc_subth` run that did not complete |
@@ -279,3 +280,40 @@ Command (one clean run, `--hosts 45`, foreground, `--wait-for-capacity 600`, no 
 Remaining for `7.analog`: find why the extracted `osc_subth` does not start (probe one corner, e.g. tt/1.80 V/27 C,
 locally is allowed by host rules), fix that in the layout under its own issue, then re-run; the 20 missing cells need a
 `--resume` or a new run after that.
+
+## Diagnosis 2026-11-11 (issue #116): why the extracted `osc_subth` does not start
+
+SIMULATED only: ngspice-46, one local `ngspice -b` per case (5 total, no grid), tt / 1.80 V / 27 C, 100 us transient,
+`sim/pex/probe/osc_subth_vbp_probe.cir` + `run_probe.sh`. Input: `extracted/osc_subth.gds109.spice` (sha256 `9a728593…`) and
+`design/osc_bank/osc_subth.spice` (sha256 `b2676720…`). klt was not run. Record (new, append-only):
+`records/2026-11-11-osc_subth-diagnosis.json`. Nothing earlier was edited; no threshold was changed.
+
+| case (tt/1.80 V/27 C) | settled `vbp` | rising edges in 100 us |
+| --- | --- | --- |
+| schematic | 1.5000 V | 169 |
+| extracted, free | 1.5002 V | 0 (`out` stuck 1.09-1.20 V) |
+| extracted, `vbp` forced to 1.5 V | 1.5000 V | 0 |
+| extracted, parasitic R -> 1 mohm and all C removed | 1.5011 V | 0 |
+| extracted + 14 tie resistors across the split `vh` nets | 1.4999 V | 126 |
+
+1. **`vbp` is not the cause.** The extracted divider settles at 1.5002 V against the schematic's 1.5000 V (the ~5x legs keep
+   the 5:1 ratio), and forcing `vbp` to the schematic value changes nothing. The README's earlier hypothesis is refuted.
+2. **Extractor parasitics are not the cause.** A devices-only version of the extracted netlist still does not start.
+3. **Cause: the 14 series-header nets `vh1`..`vh14` are split in the extraction.** The 14 stage PFET sources
+   (`$21 $24 $26 $27 $29 $31 $33 $35 $37 $39 $41 $44 $46 $47`) and the 14 header LVT PFET drains
+   (`$22 $23 $25 $28 $30 $32 $34 $36 $38 $40 $42 $43 $45 $48`) are 28 distinct nets with nothing joining them, so every
+   stage PFET source floats. Joining each pair with a 1 mohm resistor (pairing by stage order, see the record) restores
+   oscillation with the extracted parasitics kept: 126 edges against 169 on the schematic.
+4. **Not established:** whether this is a layout defect (no contact/metal between header drain and stage source) or an
+   extraction/deck defect. The GDS was not inspected and not edited (out of scope). The spec row and the ideal `Rb0`/`Rb1`
+   modelling are not implicated; no `spec/` change is needed.
+
+Remaining for `7.analog`: resolve the split `vh` nets under their own issue, then #32 re-runs the 45 cells.
+
+## Diagnosis 2026-11-11 (issue #117): the `vh` split in `osc_subth` is an extraction defect, not a layout one
+
+SIMULATED/extraction only (`klt 0.9.2.dev661`); record `records/2026-11-11-vh-split-diagnosis-osc_subth.json`, script `diag/vh_split.py`.
+The drawn diffusion at each of the 14 header/stage junctions is one merged polygon, but the extracted header drain and
+stage-PFET source are different nets in 14/14 stages; with `lvtn` deleted from a scratch copy they are one net in 14/14. Moving the
+marker edge to the gate edge or removing the diffusion step does not change it. Upstream: 2AMLogic/klayout-tools#5311 (generic repro added).
+No layout, netlist or threshold change; the one-corner ring-start check waits for the tool fix.

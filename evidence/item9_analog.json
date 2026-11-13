@@ -1,0 +1,5170 @@
+{
+  "schema_version": 1,
+  "kind": "generic",
+  "status": "pass",
+  "t1_item": 9,
+  "summary": "T1 item 9 (Testbenches shipped): 482/482 attestation checks passed (klt signoff --attest)",
+  "source": "attest/item9_analog.json",
+  "attestation": {
+    "producer": "klt signoff --attest",
+    "inventory_schema_version": 1,
+    "hash_algorithm": "sha256-raw-bytes",
+    "check_count": 482,
+    "passed_count": 482,
+    "checks": [
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/check_env.sh",
+        "passed": true,
+        "content_hash": "sha256:a69a48da591f132dc0823754fb61e252e0278541f1d650af84ed61c3bd0b43b2"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/osc_bank/bench_osc_hd.spice",
+        "passed": true,
+        "content_hash": "sha256:2f6486607de7a5e2cf1fecfc7ea89e5c0b1baa7ed04223c29e4aad98d8c12fbe"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/osc_bank/bench_osc_nmos.spice",
+        "passed": true,
+        "content_hash": "sha256:5e5f54827bfdf9e731a4a82c4a7f58dd984024b02b788d13070d2a8aaa0bc010"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/osc_bank/bench_osc_pmos.spice",
+        "passed": true,
+        "content_hash": "sha256:ac1913994f5d441a9e765c2c568c564b94929c931131d69cbafc59a91d496f69"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/osc_bank/bench_osc_subth.spice",
+        "passed": true,
+        "content_hash": "sha256:2cddb362ba7f165782535e872555243fd609628f2f084a3b6b30e463c07d8d2d"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/osc_bank/bench_osc_wire.spice",
+        "passed": true,
+        "content_hash": "sha256:2b0ff2950f70e872868e32d6b5d79adc86761c1913eda69dcf6bd4e722b06aae"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/osc_bank/run.sh",
+        "passed": true,
+        "content_hash": "sha256:b5fb16d045d31037516609553965883d4734e575c4678282d6dbdc2f9ed7c3fd"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/pex/osc/osc_hd_dut.spice",
+        "passed": true,
+        "content_hash": "sha256:e195d10b616e7934c8c2203f194e3186431f222e0478e0f72996c2aa63872429"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/pex/osc/tb_osc_hd.spice",
+        "passed": true,
+        "content_hash": "sha256:4f0df3f8cca97a86eb5866ba664ad44883e87e6c4e9213c9dede1bc68ccf3632"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/pex/osc/tb_osc_nmos.spice",
+        "passed": true,
+        "content_hash": "sha256:2b9c5482249ddb47e25c3280f01e57e53eca1e1097ffeefe7f07787fcb8fda74"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/pex/osc/tb_osc_nmos_relaxed.spice",
+        "passed": true,
+        "content_hash": "sha256:b3f3e4fd72fead619df318988cf1e239e483517880f99183bf50b2962add51fe"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/pex/osc/tb_osc_pmos.spice",
+        "passed": true,
+        "content_hash": "sha256:e5c0422965fb170ff9815c15b97484127f021de07a930f3cbcedb7b45544c29a"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/pex/osc/tb_osc_subth.spice",
+        "passed": true,
+        "content_hash": "sha256:c039fec6a0230d1593b67309de3cd158faeddcd7b29e621cc787637d562a6187"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/pex/osc/tb_osc_wire.spice",
+        "passed": true,
+        "content_hash": "sha256:1ab5d1a211f5457fde3efa5030a264d550a4735016547adb834592ccfb5d211c"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/pex/osc/tb_osc_wire_relaxed.spice",
+        "passed": true,
+        "content_hash": "sha256:4aee74c395018acebfa713b38a1838fb39755ff26a070c8a58006c1ab11db2b3"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/pex/probe/osc_subth_vbp_probe.cir",
+        "passed": true,
+        "content_hash": "sha256:3af65b5da9685e9877c6320d41977d9df41640aafa606c4c73b1c44e6c271927"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/pex/probe/run_probe.sh",
+        "passed": true,
+        "content_hash": "sha256:786b21587061a97eee70626e4c2c98752909b3892c995621837d7b5e04ca5b7a"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/pex/requests/osc_hd.json",
+        "passed": true,
+        "content_hash": "sha256:0e8db9715887b3251a309a06f205746a04d1f7f9cb93bfb96f5323b4ebaa7b34"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/pex/requests/osc_nmos.json",
+        "passed": true,
+        "content_hash": "sha256:e4437c783736c4f2cb5fc3bd67a206de5a55b9e9dfa304abb0bcd505337f5593"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/pex/requests/osc_nmos_coldcell.json",
+        "passed": true,
+        "content_hash": "sha256:44fa6deba2a31416d928d9d45540681fd6c6f860ec2d827c820359e8f4568e77"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/pex/requests/osc_pmos.json",
+        "passed": true,
+        "content_hash": "sha256:db76d0f4929673b95bc367be284d6cff9f373418a4082d1823c9af109aa1007a"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/pex/requests/osc_subth.json",
+        "passed": true,
+        "content_hash": "sha256:acb1f5ce135fc39605269d7fea0e067ea761613475e80a5a7dd89109e22132b2"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/pex/requests/osc_wire.json",
+        "passed": true,
+        "content_hash": "sha256:74dba1cb498bb40dc2ab7e14c6e0be72f54ee0a7908f71547ceb5983cfc0366d"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/pex/requests/osc_wire_coldcell.json",
+        "passed": true,
+        "content_hash": "sha256:049a82274edbb2663272f84b95ce89a5730e33dcf95f2c1207f3f332f1901ace"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/power/requests/active_osc_hd.json",
+        "passed": true,
+        "content_hash": "sha256:0b8390a95b66ed9cd00eddb0701c319e74cf9e31b723ab764004e7e92e8c1572"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/power/requests/active_osc_nmos.json",
+        "passed": true,
+        "content_hash": "sha256:abb6e1ffb2b68bcd6110b1d98dc36db591ccf2dd1dbd74996c205f1bfb133c0f"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/power/requests/active_osc_pmos.json",
+        "passed": true,
+        "content_hash": "sha256:87d8d3c84d0e9616bbdadabb8495b3bbf2f3f6f19d5890f8274438250d544e6e"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/power/requests/active_osc_subth.json",
+        "passed": true,
+        "content_hash": "sha256:3152acdaf1c53d4b9aec04afbfc3fcd388757e6a1e917cf854a4be63bd79248b"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/power/requests/active_osc_wire.json",
+        "passed": true,
+        "content_hash": "sha256:00f443bcbe05b30969e97f75922d6501f1488f3402dd829aa3a06153e7d4c5a8"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/power/requests/idle_osc_hd.json",
+        "passed": true,
+        "content_hash": "sha256:069f9aff7c0b90e2a03ec96a9802bbca164f295561bca80389127dd31c12a249"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/power/requests/idle_osc_nmos.json",
+        "passed": true,
+        "content_hash": "sha256:d1b0c81d9c5e9784a1c6217369da01eea0b6226eb304fd1c42d3e5504bdbaba9"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/power/requests/idle_osc_pmos.json",
+        "passed": true,
+        "content_hash": "sha256:195eb5b1cf5ba9356ee4b758f3214b87abcfc1e2bd27a9a7ffd7443808f1622c"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/power/requests/idle_osc_subth.json",
+        "passed": true,
+        "content_hash": "sha256:8f98f5d205a4011c824df582f3dba5f496d14f4256bc4d66b074730ac230da1b"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/power/requests/idle_osc_wire.json",
+        "passed": true,
+        "content_hash": "sha256:35f447b1f21c27de153ac7a521e11e4f5c02613aa6d8090ba78cc2f303c17d93"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/power/tb/active_osc_hd.spice",
+        "passed": true,
+        "content_hash": "sha256:4977b6e6d4efac3857a6e6f1921e477b878cdec9dd7ea23262e21bd55602d3aa"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/power/tb/active_osc_nmos.spice",
+        "passed": true,
+        "content_hash": "sha256:f99b6b4b997ee4c7ff36dcee6101c8c190b9de22f4dca8f6424d6b2befaed6eb"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/power/tb/active_osc_pmos.spice",
+        "passed": true,
+        "content_hash": "sha256:999089416df7a3abf0b15ae0f818a23b05ee7e7e74fb9de5156941819a48d570"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/power/tb/active_osc_subth.spice",
+        "passed": true,
+        "content_hash": "sha256:9c73aff02c47068b7ff06eea3a77db288be6641f3e8909b37bb14172669495c0"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/power/tb/active_osc_wire.spice",
+        "passed": true,
+        "content_hash": "sha256:cf4339c3c46938226479286cf615175ddf0c5536d24605e5e2dc6b5672199eaa"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/power/tb/idle_osc_hd.spice",
+        "passed": true,
+        "content_hash": "sha256:df284bf7212b20d4d2c1609c835a240daee11cee634f9f46e953b2c4deec9558"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/power/tb/idle_osc_nmos.spice",
+        "passed": true,
+        "content_hash": "sha256:c2468183e529e4060715add43d018af2335d96d07545f6afdd37c64f5069092f"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/power/tb/idle_osc_pmos.spice",
+        "passed": true,
+        "content_hash": "sha256:329d63168f4c75fbf90b430abddaf9e7c5ccd0fcce32136fe5504ac6b87481d5"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/power/tb/idle_osc_subth.spice",
+        "passed": true,
+        "content_hash": "sha256:6e0487a6a678c25ab00852d5d5ef92f20a67ca65516f2c75386d2c3828bf61c3"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/power/tb/idle_osc_wire.spice",
+        "passed": true,
+        "content_hash": "sha256:08eb104afe78530fb132794fa9ae0d216ed01f25b6001e7d3c31732d03ee97d6"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/sensitivity/analyze.py",
+        "passed": true,
+        "content_hash": "sha256:3339b6d765aa54be3ea74aea84b1d31e0fc9aec031d5abc30ba849119780269d"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/sensitivity/gen_requests.py",
+        "passed": true,
+        "content_hash": "sha256:cd3f3b7ccd1afc8f0b2e084bd473d17a03f7257e5fca0da5b0c298dc12c9a3bd"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/sensitivity/osc/tb_osc_hd.spice",
+        "passed": true,
+        "content_hash": "sha256:ec57e284c16c1b86d809308eddb83eea5f4991d6c09c8d743df0a002fc48755e"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/sensitivity/osc/tb_osc_nmos.spice",
+        "passed": true,
+        "content_hash": "sha256:4a6470f54e67a9e9e1cb492b5b98c9dd7e47efddd891ad96936b2ac64e7d2a37"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/sensitivity/osc/tb_osc_pmos.spice",
+        "passed": true,
+        "content_hash": "sha256:1b6d577419c235cd1ef7fe6ed2e2502dd4026ff3a96fc84850f5606174f39774"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/sensitivity/osc/tb_osc_subth.spice",
+        "passed": true,
+        "content_hash": "sha256:74a8392a9cf02320449d2891cec04982592371dda7ce0888e97d0fb0198a5ea2"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/sensitivity/osc/tb_osc_wire.spice",
+        "passed": true,
+        "content_hash": "sha256:81db45f6dc3cc36f3a138c66ccbf4a058beb9d3bd7e57d1b899362291afe37f3"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/sensitivity/osc/tb_osc_wire_probe.spice",
+        "passed": true,
+        "content_hash": "sha256:ae72254cef6cf046475aafb8ec10a448be7cc7711ba8df56718c21d320aecaac"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/sensitivity/requests/grid_osc_hd.json",
+        "passed": true,
+        "content_hash": "sha256:cf49033f5867d18a8f078ab0d895bae7e1aeb9a9460d6d733484171250f99245"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/sensitivity/requests/grid_osc_hd_5p.json",
+        "passed": true,
+        "content_hash": "sha256:b5831471fb00631115ca4c8e38c45d1b5a6292a4b1e342e06449901004b275d3"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/sensitivity/requests/grid_osc_nmos.json",
+        "passed": true,
+        "content_hash": "sha256:79f98f7283c956d6802ab8fa1664a2dbb56a9065b3d0a754f11c6a764f61c2d4"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/sensitivity/requests/grid_osc_pmos.json",
+        "passed": true,
+        "content_hash": "sha256:b534a87c853930edf92c6f11745c64fa07f4d54154905c4c8814977e3a7b7df9"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/sensitivity/requests/grid_osc_subth.json",
+        "passed": true,
+        "content_hash": "sha256:700febce7c99e39c692b471791a5453856e108f2ceee41568960c9ad2d358d0c"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/sensitivity/requests/grid_osc_subth_sf_cold.json",
+        "passed": true,
+        "content_hash": "sha256:d235ba0eb41b1babc160f0543b97af131bcfc042f43cac8cdc9fe28fd1b3f001"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/sensitivity/requests/grid_osc_wire.json",
+        "passed": true,
+        "content_hash": "sha256:ef0d0df71d2b5cbe36f0ba2113e75634dc225b105c65ca761d6d938c63d04871"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/sensitivity/requests/grid_osc_wire_sf_cold.json",
+        "passed": true,
+        "content_hash": "sha256:70ec6a54d361c84447a4b5251a7232d2188e9a93a1e3eed832155daed6744d7e"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/sensitivity/requests/mc_offnom_osc_hd.json",
+        "passed": true,
+        "content_hash": "sha256:ab938246ae48c110a030bf863293d32aac7b5514055fb74cc79e52cdf17c7dab"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/sensitivity/requests/mc_offnom_osc_hd_5p.json",
+        "passed": true,
+        "content_hash": "sha256:b869a582da54d2c9fb670f7169bc7386b32ddef863a3671c586e8bb014bed912"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/sensitivity/requests/mc_offnom_osc_nmos.json",
+        "passed": true,
+        "content_hash": "sha256:f4e3b8f3bcc3760c93971a4ad68aa41d5ddffd96bbe3ec4a2f9ddba008466653"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/sensitivity/requests/mc_offnom_osc_pmos.json",
+        "passed": true,
+        "content_hash": "sha256:24a7d496e3e819c3948817bcae9be48c9f9fa8fd44dbd153eb80bb27adee5f68"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/sensitivity/requests/mc_offnom_osc_subth_1.62V_125C.json",
+        "passed": true,
+        "content_hash": "sha256:7c259c43bc621935291aa92a65543872119f9c5c4e6b1c2a4f67458921ed8669"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/sensitivity/requests/mc_offnom_osc_subth_1.98V_-40C.json",
+        "passed": true,
+        "content_hash": "sha256:d8a71f971c32f7d0701e198b58db9a476c622d1c44a6aa1ca79b17b5b1a0dc9b"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/sensitivity/requests/mc_offnom_osc_subth_sf_1.98V_-40C.json",
+        "passed": true,
+        "content_hash": "sha256:68efc13924dc3390d403f61156d36826e47557261d40031121a4e200fade9605"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/sensitivity/requests/mc_offnom_osc_wire.json",
+        "passed": true,
+        "content_hash": "sha256:4d1c2ad9b353657b9c01bed245704cf82428709dae9b1dc68b89bda675205993"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/sensitivity/requests/mc_osc_hd.json",
+        "passed": true,
+        "content_hash": "sha256:4b48ee779f814cbcc61ab0bc53d16ed02ade65912e0a44963282b413f98ff9c0"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/sensitivity/requests/mc_osc_hd_5p.json",
+        "passed": true,
+        "content_hash": "sha256:652265463c594565aad59f14a6311d102a849f71a8c7d752624c41bb25515a96"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/sensitivity/requests/mc_osc_nmos.json",
+        "passed": true,
+        "content_hash": "sha256:22536f8db595830695f99884282527baa28e36b0597d7d188f486907caa2b91c"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/sensitivity/requests/mc_osc_pmos.json",
+        "passed": true,
+        "content_hash": "sha256:b1d9ef1f1b0cc5c34654c9403d0059359ab6355469049891be472fc16823ca49"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/sensitivity/requests/mc_osc_subth.json",
+        "passed": true,
+        "content_hash": "sha256:8e730bf08e81caf8ba8d4c2cae1b800fc2625c5127e8f9003f99f2ccd94ea4f7"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/sensitivity/requests/mc_osc_wire.json",
+        "passed": true,
+        "content_hash": "sha256:d2e923e65502159f15bfd17c340129f18b265324c3eb5fd24f0be05dacbab54c"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/sensitivity/requests/probe_wire_sf.json",
+        "passed": true,
+        "content_hash": "sha256:41cfe60becc78dc5276018258850f0de5a9dd32d432ce76cb9614f3614ec4cf4"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/sensitivity/requests/probe_wire_val.json",
+        "passed": true,
+        "content_hash": "sha256:a92ed7a1a2488495e3b69f427e4dbdc17b407ab056c3dd2c0903fc2927266513"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/sensitivity/test_analyze.py",
+        "passed": true,
+        "content_hash": "sha256:a73895860599c52e9b20291badfa67a18fba2b0ff56e83c5b5fdbcd3f1ba627e"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/smoke/inv_smoke.spice",
+        "passed": true,
+        "content_hash": "sha256:f371070292a377530efabec5eda318b0e49bcf1157f20774ef42dc2400d2ecc4"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/smoke/run.sh",
+        "passed": true,
+        "content_hash": "sha256:79144d6ffdbc5d6dc1c2b154cb93c2289a00045088e15729684108a9a647870f"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/solve/gen_binding_mc.py",
+        "passed": true,
+        "content_hash": "sha256:defb141703e17251b7c65e4636e3fb70cbebd6761639520f2c0367b5a0f81bff"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/solve/make_envelope.py",
+        "passed": true,
+        "content_hash": "sha256:f36d97679e258886317e3e9f89877d01484960f939c6bebc3eb6217c65f560bc"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/solve/mc/requests-sized/mc_sized_osc_hd_ff_1.62V_27C_c0.json",
+        "passed": true,
+        "content_hash": "sha256:598b1dc6fa1af251d9a0824acad7eb538873f63a583509092474a67bbba85a1c"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/solve/mc/requests-sized/mc_sized_osc_hd_ff_1.62V_27C_c1.json",
+        "passed": true,
+        "content_hash": "sha256:5a197654e7055c04b766d9c1cf50ef01788126fa5bce1b652a807e10160487a1"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/solve/mc/requests-sized/mc_sized_osc_hd_ff_1.62V_27C_c2.json",
+        "passed": true,
+        "content_hash": "sha256:1872b9c8c9dd3d731f00f7620a734239e6e426077302b1fb061523e4ed9d7f3a"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/solve/mc/requests-sized/mc_sized_osc_hd_ff_1.62V_27C_c3.json",
+        "passed": true,
+        "content_hash": "sha256:4989e540660fc420cbd9a527947d69986ac6e1cb4dfe5c23b4f71b1a063427a2"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/solve/mc/requests-sized/mc_sized_osc_hd_ff_1.98V_27C_c0.json",
+        "passed": true,
+        "content_hash": "sha256:14b2cb8ed083c42ff5d6b1087240db5685cb4411c6f9d0a15e0f9d683cb6ee0c"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/solve/mc/requests-sized/mc_sized_osc_hd_ff_1.98V_27C_c1.json",
+        "passed": true,
+        "content_hash": "sha256:7d4f77cf88671779bf63622030bf3f2dcae3d3e56c6a77f923e614421accd4e9"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/solve/mc/requests-sized/mc_sized_osc_hd_ff_1.98V_27C_c2.json",
+        "passed": true,
+        "content_hash": "sha256:ba52033bf7efe0479cc6755ecc26105f4b48e2c098a8b7a38a3a341af0dbdd31"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/solve/mc/requests-sized/mc_sized_osc_hd_ff_1.98V_27C_c3.json",
+        "passed": true,
+        "content_hash": "sha256:e054bb2857df31033a94cbf03b2ca5066adb537461e09d2d74b268353414eae2"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/solve/mc/requests-sized/mc_sized_osc_hd_fs_1.98V_27C_c0.json",
+        "passed": true,
+        "content_hash": "sha256:f7992552c1d47cb7db2ac9d3b338f6a227788a3dd0cd257d4502345b0d2abc90"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/solve/mc/requests-sized/mc_sized_osc_hd_fs_1.98V_27C_c1.json",
+        "passed": true,
+        "content_hash": "sha256:1e86f71b948d85a0ba45775824a3bacca34b6937b052a5ac8d80f3726c269b24"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/solve/mc/requests-sized/mc_sized_osc_hd_fs_1.98V_27C_c2.json",
+        "passed": true,
+        "content_hash": "sha256:048f058426b2888857eefc28f26abb3b814327fa959dce86c959c6ac88286516"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/solve/mc/requests-sized/mc_sized_osc_hd_fs_1.98V_27C_c3.json",
+        "passed": true,
+        "content_hash": "sha256:ce2ba6c3de2c8d602015a43c4a88a7e5741c629983a6559cff91499320f12d7b"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/solve/mc/requests-sized/mc_sized_osc_hd_sf_1.98V_27C_c0.json",
+        "passed": true,
+        "content_hash": "sha256:92564d5e853628ed73cae781c9d965020f945e911d88a082c61e659684329296"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/solve/mc/requests-sized/mc_sized_osc_hd_sf_1.98V_27C_c1.json",
+        "passed": true,
+        "content_hash": "sha256:07f08975692f5ee8b7437fea91990e1f5036b06d4e2cefb16641219ccde07b85"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/solve/mc/requests-sized/mc_sized_osc_hd_sf_1.98V_27C_c2.json",
+        "passed": true,
+        "content_hash": "sha256:f9eb3da9ad9062f9f7a8b227ae3628495e06bbf0c26f54c9ead85b7a581a180f"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/solve/mc/requests-sized/mc_sized_osc_hd_sf_1.98V_27C_c3.json",
+        "passed": true,
+        "content_hash": "sha256:00a082855010cccd7ad8e4097616a06dc81db6166a200ee12d03e33d94a0b668"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/solve/mc/requests-sized/mc_sized_osc_hd_ss_1.98V_27C_c0.json",
+        "passed": true,
+        "content_hash": "sha256:44ac140588b9686c731f748fbadf6a8629612ddfc56d6339f52109863977d179"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/solve/mc/requests-sized/mc_sized_osc_hd_ss_1.98V_27C_c1.json",
+        "passed": true,
+        "content_hash": "sha256:9a8c9045e46e00ce623c66962b8836f90e0ead18e174500c1f26f4c736499700"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/solve/mc/requests-sized/mc_sized_osc_hd_ss_1.98V_27C_c2.json",
+        "passed": true,
+        "content_hash": "sha256:6f8d221e4a00db22330f98e1c570f4978c6beb154bf07c9cb7b31840aa5a19c6"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/solve/mc/requests-sized/mc_sized_osc_hd_ss_1.98V_27C_c3.json",
+        "passed": true,
+        "content_hash": "sha256:68b1033a10564119bb40cbb3a776db4e02ec6f4b40b2700f1750f924013bce83"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/solve/mc/requests-sized/mc_sized_osc_hd_tt_1.62V_-40C_c0.json",
+        "passed": true,
+        "content_hash": "sha256:8c3742ca9105334ded630a219157088971c6e51f343d54f5c324ff54ab27ede3"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/solve/mc/requests-sized/mc_sized_osc_hd_tt_1.62V_-40C_c1.json",
+        "passed": true,
+        "content_hash": "sha256:7d21438f7592733af5d4b371ed561e01454be23c77165b200fb0e0181416b311"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/solve/mc/requests-sized/mc_sized_osc_hd_tt_1.62V_-40C_c2.json",
+        "passed": true,
+        "content_hash": "sha256:c65fdfd84d7b428560f1f5bb15b36512372c56457859f26fff89cc1d30da5839"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/solve/mc/requests-sized/mc_sized_osc_hd_tt_1.62V_-40C_c3.json",
+        "passed": true,
+        "content_hash": "sha256:fd2ca8b167aaf55bcedab1fb7b9d1513f2799a132077cb54d0104c02caaf163d"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/solve/mc/requests-sized/mc_sized_osc_hd_tt_1.98V_27C_c0.json",
+        "passed": true,
+        "content_hash": "sha256:a3ab138dd6d62a3b1e13dcd51d03ead510ed7c7a064429b01776d992038289f2"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/solve/mc/requests-sized/mc_sized_osc_hd_tt_1.98V_27C_c1.json",
+        "passed": true,
+        "content_hash": "sha256:3b34bd2fad0a4f020edecb6e3813114d168d8e733cadbc4128eb36aec3d2730a"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/solve/mc/requests-sized/mc_sized_osc_hd_tt_1.98V_27C_c2.json",
+        "passed": true,
+        "content_hash": "sha256:0f0d9c359ba4fb58eeb8675ab53c5adac175041edf38dd3dc86cb8c89c727468"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/solve/mc/requests-sized/mc_sized_osc_hd_tt_1.98V_27C_c3.json",
+        "passed": true,
+        "content_hash": "sha256:0cb0995c550c5454637f60cd5594284a4dc6282873df48a163cfad0aef584040"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/solve/mc/requests-sized/mc_sized_osc_nmos_ff_1.62V_27C_c0.json",
+        "passed": true,
+        "content_hash": "sha256:2cfc3f78df1c59b01dcc8ad0eaabb5ed17c4ac16300eb38b98e94a8571df8468"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/solve/mc/requests-sized/mc_sized_osc_nmos_ff_1.62V_27C_c1.json",
+        "passed": true,
+        "content_hash": "sha256:469717f9e5a254bc795e94a68f289db851496eeb336a8a18aaa234f003f83338"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/solve/mc/requests-sized/mc_sized_osc_nmos_ff_1.62V_27C_c2.json",
+        "passed": true,
+        "content_hash": "sha256:1f2c6d502905d8ac5cad8a83f164d1dd6e4fef75da72ecc670c63405760a1d93"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/solve/mc/requests-sized/mc_sized_osc_nmos_ff_1.62V_27C_c3.json",
+        "passed": true,
+        "content_hash": "sha256:4491331b8dd4d99399237ede7e5c1be21d99ead7dfe398b2754d7e80415e6f1e"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/solve/mc/requests-sized/mc_sized_osc_nmos_ff_1.98V_27C_c0.json",
+        "passed": true,
+        "content_hash": "sha256:3ba6a5839ed937687a06ade4e792124c70bbc533c15809eed42685fde72e2874"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/solve/mc/requests-sized/mc_sized_osc_nmos_ff_1.98V_27C_c1.json",
+        "passed": true,
+        "content_hash": "sha256:0e65f6a90a1bd1b1e5e5f5772093b211b9205745b73b68ecbf3e3f8ba52d45d8"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/solve/mc/requests-sized/mc_sized_osc_nmos_ff_1.98V_27C_c2.json",
+        "passed": true,
+        "content_hash": "sha256:0603870d27d1489ef70b1e0bca407ce4919a8acd8049eaa21cd0e00944c18eeb"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/solve/mc/requests-sized/mc_sized_osc_nmos_ff_1.98V_27C_c3.json",
+        "passed": true,
+        "content_hash": "sha256:3f16330a49f641ab469e241a8b82f2cdd155df28eea1c720257d41b71e5dd39c"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/solve/mc/requests-sized/mc_sized_osc_nmos_fs_1.98V_27C_c0.json",
+        "passed": true,
+        "content_hash": "sha256:7f375bc4c203cdd1c93b194ade86d229e238a303061131abb043948df9a4553d"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/solve/mc/requests-sized/mc_sized_osc_nmos_fs_1.98V_27C_c1.json",
+        "passed": true,
+        "content_hash": "sha256:b6ddbdb29cac0788946506647158e62a0f8a1a8d3b2be6a312ecb7c0e6eb355b"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/solve/mc/requests-sized/mc_sized_osc_nmos_fs_1.98V_27C_c2.json",
+        "passed": true,
+        "content_hash": "sha256:f4ca14056af363255a76bfd47f0045fcc13778eca6ed392f99bb65ef925a610b"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/solve/mc/requests-sized/mc_sized_osc_nmos_fs_1.98V_27C_c3.json",
+        "passed": true,
+        "content_hash": "sha256:558eb59e6be532501c701426eb54f81fd76ce00a334ad19a4df5fd33cfa34d73"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/solve/mc/requests-sized/mc_sized_osc_nmos_sf_1.98V_27C_c0.json",
+        "passed": true,
+        "content_hash": "sha256:78f0030976665e8e68ed6a2fd363c0b30fab1af95da7dcbb1c102108bcba53f0"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/solve/mc/requests-sized/mc_sized_osc_nmos_sf_1.98V_27C_c1.json",
+        "passed": true,
+        "content_hash": "sha256:4746c921c0c6897fb87933cf4e83d10ffe7fdb71426b47665a3948f701bf5d19"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/solve/mc/requests-sized/mc_sized_osc_nmos_sf_1.98V_27C_c2.json",
+        "passed": true,
+        "content_hash": "sha256:e5e040f07efa7d0d8f7314426dd036ff492c976e64fe437de7e1445748d7b30e"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/solve/mc/requests-sized/mc_sized_osc_nmos_sf_1.98V_27C_c3.json",
+        "passed": true,
+        "content_hash": "sha256:4daf8eef0d841645f9ccd262ed9865691d866250c3026c6c81fc074893fb8207"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/solve/mc/requests-sized/mc_sized_osc_nmos_ss_1.98V_27C_c0.json",
+        "passed": true,
+        "content_hash": "sha256:7517bd74ed48f6a48035c2fe490cbbd33e86544b086c7b41a3c785993e0dc561"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/solve/mc/requests-sized/mc_sized_osc_nmos_ss_1.98V_27C_c1.json",
+        "passed": true,
+        "content_hash": "sha256:88def650188c4d96a0b97cc9d93399621e9528985e6cad63f1d2bcbebcd63a31"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/solve/mc/requests-sized/mc_sized_osc_nmos_ss_1.98V_27C_c2.json",
+        "passed": true,
+        "content_hash": "sha256:de1aeb0fb5182a9c08da61535c074d74afbc53133719e9b86a129f6c564774b0"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/solve/mc/requests-sized/mc_sized_osc_nmos_ss_1.98V_27C_c3.json",
+        "passed": true,
+        "content_hash": "sha256:bd9baa2629453c8e78380d19b5648860aff6d0ce23a8f0cb5c0c83898c8c4e78"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/solve/mc/requests-sized/mc_sized_osc_nmos_tt_1.62V_-40C_c0.json",
+        "passed": true,
+        "content_hash": "sha256:e8ece7bd445294178a0ff21e6a52a623aa8e9c8bfe1e67a81a4491afbbe02b04"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/solve/mc/requests-sized/mc_sized_osc_nmos_tt_1.62V_-40C_c1.json",
+        "passed": true,
+        "content_hash": "sha256:1b49eb8b7a4706955aeb9c0da9291897493463a8b8a1fce953e631866ba1dbec"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/solve/mc/requests-sized/mc_sized_osc_nmos_tt_1.62V_-40C_c2.json",
+        "passed": true,
+        "content_hash": "sha256:076a78d781d226aa62f811b7733f48f117b8d95ff08d3ce83d4bf42f637fd7f1"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/solve/mc/requests-sized/mc_sized_osc_nmos_tt_1.62V_-40C_c3.json",
+        "passed": true,
+        "content_hash": "sha256:1183f09c564a526c55bd0312abf6d5a3b6496d3bf6759b3669ca1f42be3a1031"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/solve/mc/requests-sized/mc_sized_osc_nmos_tt_1.98V_27C_c0.json",
+        "passed": true,
+        "content_hash": "sha256:a7bbf9887f781b538f7963ce698142756d3e2d54e46f63223c88ddd3321a4bf7"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/solve/mc/requests-sized/mc_sized_osc_nmos_tt_1.98V_27C_c1.json",
+        "passed": true,
+        "content_hash": "sha256:820baa769c547406064d9dd2149f3605b702331a8bc43c059f86c03c54e2c1a2"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/solve/mc/requests-sized/mc_sized_osc_nmos_tt_1.98V_27C_c2.json",
+        "passed": true,
+        "content_hash": "sha256:7301e436d2f6654bb598729a325f12de178088736803b2d65ef9fa0208e9563a"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/solve/mc/requests-sized/mc_sized_osc_nmos_tt_1.98V_27C_c3.json",
+        "passed": true,
+        "content_hash": "sha256:f5d41c3d71988588248892d6f437469c02bc3f278d1f49daf16f14644059e2ac"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/solve/mc/requests-sized/mc_sized_osc_pmos_ff_1.62V_27C_c0.json",
+        "passed": true,
+        "content_hash": "sha256:66c2e310cc1235c973c23d8a82a1d22b1ad6dfaf510f64433a22e067a165653f"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/solve/mc/requests-sized/mc_sized_osc_pmos_ff_1.62V_27C_c1.json",
+        "passed": true,
+        "content_hash": "sha256:5a2fd78e77a38699447f64db6fd9becff94399ef9b8bcafe0cf2deaa0ce6ac11"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/solve/mc/requests-sized/mc_sized_osc_pmos_ff_1.62V_27C_c2.json",
+        "passed": true,
+        "content_hash": "sha256:8015f46e6106761b1958db378d745614b09572d239956b597122a6ad01ab3932"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/solve/mc/requests-sized/mc_sized_osc_pmos_ff_1.62V_27C_c3.json",
+        "passed": true,
+        "content_hash": "sha256:5ee6bdce847230fc374beeee5b4ee0da951a711ce7fc83534923c6767e5d5d84"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/solve/mc/requests-sized/mc_sized_osc_pmos_ff_1.98V_27C_c0.json",
+        "passed": true,
+        "content_hash": "sha256:38990157f072b6fbe9de16d4a0c386c5dad40a42388c6fd30ada1f8ea9fc08f9"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/solve/mc/requests-sized/mc_sized_osc_pmos_ff_1.98V_27C_c1.json",
+        "passed": true,
+        "content_hash": "sha256:d2f7c59cc5569304eb3227f4c5afbfbd18548a4f0080e29f24c883098f64de52"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/solve/mc/requests-sized/mc_sized_osc_pmos_ff_1.98V_27C_c2.json",
+        "passed": true,
+        "content_hash": "sha256:65e4b618a9d12cefb8dcb5a3ee415e5385e92bd94da6f66978ac749ebf306022"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/solve/mc/requests-sized/mc_sized_osc_pmos_ff_1.98V_27C_c3.json",
+        "passed": true,
+        "content_hash": "sha256:be542f7898cf84a5a38576de71ae173acaea72fa9938e8dbed5d56a91c6baed2"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/solve/mc/requests-sized/mc_sized_osc_pmos_fs_1.98V_27C_c0.json",
+        "passed": true,
+        "content_hash": "sha256:ab837447d9442311b871e9b877f5d2de38c06f61a28f6832c8147a9dddeed6db"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/solve/mc/requests-sized/mc_sized_osc_pmos_fs_1.98V_27C_c1.json",
+        "passed": true,
+        "content_hash": "sha256:ac9d586f3e3ac21ad0745ec3ab30c64ec4329fbb9de42506f4b6d412978b5978"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/solve/mc/requests-sized/mc_sized_osc_pmos_fs_1.98V_27C_c2.json",
+        "passed": true,
+        "content_hash": "sha256:91d616df81eea7705a5fada4ee3bd10b4faed284142e7f950d2ac342f67b7989"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/solve/mc/requests-sized/mc_sized_osc_pmos_fs_1.98V_27C_c3.json",
+        "passed": true,
+        "content_hash": "sha256:be65f93e172947886931c81fd9e34ff271a6c1c39f42682ef7fab6e7cc473de8"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/solve/mc/requests-sized/mc_sized_osc_pmos_sf_1.98V_27C_c0.json",
+        "passed": true,
+        "content_hash": "sha256:06a2e8c0c10df766c25c56f0521254982e24aeefe0c9ef138b5208838c4ed26f"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/solve/mc/requests-sized/mc_sized_osc_pmos_sf_1.98V_27C_c1.json",
+        "passed": true,
+        "content_hash": "sha256:961fc61e5ca4076f3194405789a87ecbf2f27972e9de3b97887bcd318635441f"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/solve/mc/requests-sized/mc_sized_osc_pmos_sf_1.98V_27C_c2.json",
+        "passed": true,
+        "content_hash": "sha256:fce71055a6eb8a4c10b9897cb58984a3a6745e564bb7545393d41f436c1e90ff"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/solve/mc/requests-sized/mc_sized_osc_pmos_sf_1.98V_27C_c3.json",
+        "passed": true,
+        "content_hash": "sha256:17ae3abd740db3701ba8941a910193b4730849a24dd69152275aad6b02f0ae87"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/solve/mc/requests-sized/mc_sized_osc_pmos_ss_1.98V_27C_c0.json",
+        "passed": true,
+        "content_hash": "sha256:a8dda0271babb455498ab98c4be9df6c094c5bd3a8107745808617e17044cf9c"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/solve/mc/requests-sized/mc_sized_osc_pmos_ss_1.98V_27C_c1.json",
+        "passed": true,
+        "content_hash": "sha256:cdd33ef5577f56286553ae22d6baf89edebb12bf1e490572d754a16008fa8ea5"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/solve/mc/requests-sized/mc_sized_osc_pmos_ss_1.98V_27C_c2.json",
+        "passed": true,
+        "content_hash": "sha256:c5d4ec513e05dea349a8687a74c24a7bccb5dee24b90a3f7a838768da4fa436b"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/solve/mc/requests-sized/mc_sized_osc_pmos_ss_1.98V_27C_c3.json",
+        "passed": true,
+        "content_hash": "sha256:92edd1f19e674bd2ac4c27c72d6ed4a653334621cec72130eaf2f84fe60e3082"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/solve/mc/requests-sized/mc_sized_osc_pmos_tt_1.62V_-40C_c0.json",
+        "passed": true,
+        "content_hash": "sha256:0fe4fe890571d9c9d02d2449578d3dce3c996b01f368136f4e13aacb75a77a48"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/solve/mc/requests-sized/mc_sized_osc_pmos_tt_1.62V_-40C_c1.json",
+        "passed": true,
+        "content_hash": "sha256:b8abc4b2b63c0e4a4b325c7e6502238dad3c1ced801b89134ac0b9279421c5a2"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/solve/mc/requests-sized/mc_sized_osc_pmos_tt_1.62V_-40C_c2.json",
+        "passed": true,
+        "content_hash": "sha256:e7fcea5f1c24078e625fc218bfc00f7b78c711ca0e33c55782c7b1e759f77028"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/solve/mc/requests-sized/mc_sized_osc_pmos_tt_1.62V_-40C_c3.json",
+        "passed": true,
+        "content_hash": "sha256:e27cf1a9d315c2214a9847aff5c862d2653e4f553f06984d287d2f3a1bd7e224"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/solve/mc/requests-sized/mc_sized_osc_pmos_tt_1.98V_27C_c0.json",
+        "passed": true,
+        "content_hash": "sha256:230415db6e7b641539dcf4c8d8481626ed0c973a5b9cb18929e95ad1ed5b110f"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/solve/mc/requests-sized/mc_sized_osc_pmos_tt_1.98V_27C_c1.json",
+        "passed": true,
+        "content_hash": "sha256:4735725a5ba719b43c7da8829c5cb9221e1342e3bec04b5f23a885acf23cf62c"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/solve/mc/requests-sized/mc_sized_osc_pmos_tt_1.98V_27C_c2.json",
+        "passed": true,
+        "content_hash": "sha256:33c99c67f202886742623cb2eea605583573ce4fa5cd49778ecae11d4599a811"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/solve/mc/requests-sized/mc_sized_osc_pmos_tt_1.98V_27C_c3.json",
+        "passed": true,
+        "content_hash": "sha256:d7d89666766c5ff533d5535f65b60e7e834c11719981b581fba99307a439b192"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/solve/mc/requests-sized/mc_sized_osc_subth_ff_1.62V_27C_c0.json",
+        "passed": true,
+        "content_hash": "sha256:501b95e999d8b4f5bd714ba005c78be35c420385fb70c862c057bd44d66d4bc3"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/solve/mc/requests-sized/mc_sized_osc_subth_ff_1.62V_27C_c1.json",
+        "passed": true,
+        "content_hash": "sha256:cc275cfb31457d1c03e8f400e70579bc2d7c58cda7d3bf16bf44ea8ffd3ba53f"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/solve/mc/requests-sized/mc_sized_osc_subth_ff_1.62V_27C_c2.json",
+        "passed": true,
+        "content_hash": "sha256:d7506169ca5cd74dd222c7573300fa147a31129cc903e8493ffe0b8ddfce7e40"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/solve/mc/requests-sized/mc_sized_osc_subth_ff_1.62V_27C_c3.json",
+        "passed": true,
+        "content_hash": "sha256:a8e600f2f45ed2840694df4794f7761bd6e0ae44a8c4902ccb30c61a28502b3c"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/solve/mc/requests-sized/mc_sized_osc_subth_ff_1.98V_27C_c0.json",
+        "passed": true,
+        "content_hash": "sha256:7f1037c1a3e2d54a60000dc11d8cd6f0f087820dfb7e103fe2a8bbb00f98f7c4"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/solve/mc/requests-sized/mc_sized_osc_subth_ff_1.98V_27C_c1.json",
+        "passed": true,
+        "content_hash": "sha256:68a47df3f726d00e64f45e80ecb494fc83329df865c342f9060e794162a511a4"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/solve/mc/requests-sized/mc_sized_osc_subth_ff_1.98V_27C_c2.json",
+        "passed": true,
+        "content_hash": "sha256:f2cfd75cb10db3a09e9252414b9a63e892af762168e5878b955b7a29298ab1cc"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/solve/mc/requests-sized/mc_sized_osc_subth_ff_1.98V_27C_c3.json",
+        "passed": true,
+        "content_hash": "sha256:9c677229973180d143e14ccf17f81a5c4e0c37ba335424e2724df31ec2758273"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/solve/mc/requests-sized/mc_sized_osc_subth_fs_1.98V_27C_c0.json",
+        "passed": true,
+        "content_hash": "sha256:08d2bcfe515678fed61536c534258e9baf72eb2f5774599c6934e3b659ed246f"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/solve/mc/requests-sized/mc_sized_osc_subth_fs_1.98V_27C_c1.json",
+        "passed": true,
+        "content_hash": "sha256:7df6f83531e1b6e9bbae3b7372286118cf60ce25a6e43fd15024166f06d1e58f"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/solve/mc/requests-sized/mc_sized_osc_subth_fs_1.98V_27C_c2.json",
+        "passed": true,
+        "content_hash": "sha256:60f630137137db0b48dc27ef5d40728ec9e9104445cd25cae8438801ca5fcfc8"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/solve/mc/requests-sized/mc_sized_osc_subth_fs_1.98V_27C_c3.json",
+        "passed": true,
+        "content_hash": "sha256:ebf1fd64fb01749fb8067e0c6e78acd5a985e87bfd8db5d2fbf6a5e2a301995e"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/solve/mc/requests-sized/mc_sized_osc_subth_sf_1.98V_27C_c0.json",
+        "passed": true,
+        "content_hash": "sha256:007d6d7caef07260c4c85c74158d080b866af49e565d6c7bdd8062627ec8d0e4"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/solve/mc/requests-sized/mc_sized_osc_subth_sf_1.98V_27C_c1.json",
+        "passed": true,
+        "content_hash": "sha256:3cd74fe3dd9860cf058cb6a9380441204c855ba6b6757c07ed5abf8516e57270"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/solve/mc/requests-sized/mc_sized_osc_subth_sf_1.98V_27C_c2.json",
+        "passed": true,
+        "content_hash": "sha256:a0b3be104284c5e52321873a832149d7ecddbc3970a013b2334608e91ea73523"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/solve/mc/requests-sized/mc_sized_osc_subth_sf_1.98V_27C_c3.json",
+        "passed": true,
+        "content_hash": "sha256:270d5ef0efa587d004bcc87128e739ac6fb9bd3e2342dc5badefb13e5d6611b2"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/solve/mc/requests-sized/mc_sized_osc_subth_ss_1.98V_27C_c0.json",
+        "passed": true,
+        "content_hash": "sha256:e2ea16b8541ff8de91fad256854e1b571717aed163049fd7679f23e0336bc4ad"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/solve/mc/requests-sized/mc_sized_osc_subth_ss_1.98V_27C_c1.json",
+        "passed": true,
+        "content_hash": "sha256:7428b03d32ba4a9c2752eb4b1e65faaf5bfa76ba7ec67b7591c98ea975d62315"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/solve/mc/requests-sized/mc_sized_osc_subth_ss_1.98V_27C_c2.json",
+        "passed": true,
+        "content_hash": "sha256:c615cbbf2148c7dfab41419ef26f1751fcdf5e1caa981b81988b77af0f1ff947"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/solve/mc/requests-sized/mc_sized_osc_subth_ss_1.98V_27C_c3.json",
+        "passed": true,
+        "content_hash": "sha256:098119fdd2d246d972e6516483bc10efa005e2e860e42d488499e6015929f2b4"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/solve/mc/requests-sized/mc_sized_osc_subth_tt_1.62V_-40C_c0.json",
+        "passed": true,
+        "content_hash": "sha256:3f783b3adaafd5d504477b7da6288d4b612b9fbf9d9a643e019c038c47041e57"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/solve/mc/requests-sized/mc_sized_osc_subth_tt_1.62V_-40C_c1.json",
+        "passed": true,
+        "content_hash": "sha256:14cef23aeaa32000e3221d61266523a52801135388fc58c15224986a4f9b8106"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/solve/mc/requests-sized/mc_sized_osc_subth_tt_1.62V_-40C_c2.json",
+        "passed": true,
+        "content_hash": "sha256:14bbf2c6dc474213a029e2224529a50aaf2f05ca19fbeae0d7e82aaa82e817f7"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/solve/mc/requests-sized/mc_sized_osc_subth_tt_1.62V_-40C_c3.json",
+        "passed": true,
+        "content_hash": "sha256:234f3b54dff3313f10f87f385dbb741e371349538001f4efcac55a1344cabe56"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/solve/mc/requests-sized/mc_sized_osc_subth_tt_1.98V_27C_c0.json",
+        "passed": true,
+        "content_hash": "sha256:3de74b766c7622284d7d19a39f0737602d2f4a69bc159b52ced064dbc6fe93c4"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/solve/mc/requests-sized/mc_sized_osc_subth_tt_1.98V_27C_c1.json",
+        "passed": true,
+        "content_hash": "sha256:7b707dbf4a950997d1edfbb6357a44169e7e9b6a8ba6bc5f7f79f6cf3e98cf6a"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/solve/mc/requests-sized/mc_sized_osc_subth_tt_1.98V_27C_c2.json",
+        "passed": true,
+        "content_hash": "sha256:41edff378eb6c7b07019509d439e729ff2b6792a7dcc87f89fb7b37940a3ac65"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/solve/mc/requests-sized/mc_sized_osc_subth_tt_1.98V_27C_c3.json",
+        "passed": true,
+        "content_hash": "sha256:69544b891a93b2879ab8b36ff2b5896adbe09cf7add93518fe1f5689d9c6f27b"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/solve/mc/requests-sized/mc_sized_osc_wire_ff_1.62V_27C_c0.json",
+        "passed": true,
+        "content_hash": "sha256:07374fe40bf9286e6519f7bbfa74ee5d59cc7a18fb09537a1b39ada93eaf3793"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/solve/mc/requests-sized/mc_sized_osc_wire_ff_1.62V_27C_c1.json",
+        "passed": true,
+        "content_hash": "sha256:9847c5a1e84c34bf881b22d02713202e9495a59b607ad80caf86c9e849243e8b"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/solve/mc/requests-sized/mc_sized_osc_wire_ff_1.62V_27C_c2.json",
+        "passed": true,
+        "content_hash": "sha256:808d6cccb068c176c7369f7a8444132e68e33aa7eee9a1dae54785beac7e750a"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/solve/mc/requests-sized/mc_sized_osc_wire_ff_1.62V_27C_c3.json",
+        "passed": true,
+        "content_hash": "sha256:a20c6ed873d9b580217a8ce7c6050fde8448034d1d8694012b4547fe2cf0f9dd"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/solve/mc/requests-sized/mc_sized_osc_wire_ff_1.98V_27C_c0.json",
+        "passed": true,
+        "content_hash": "sha256:280fd318b897f84f96d48ff8c3bf393a377005cb5efb001af6c989a561832ba2"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/solve/mc/requests-sized/mc_sized_osc_wire_ff_1.98V_27C_c1.json",
+        "passed": true,
+        "content_hash": "sha256:f23b4c27510a766c6d3f2449ef5c5a5574ad10eee91024764a44dde1497aa9dc"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/solve/mc/requests-sized/mc_sized_osc_wire_ff_1.98V_27C_c2.json",
+        "passed": true,
+        "content_hash": "sha256:dae95e6df9241efb882bcee0ff23a6cf1b272eaa1c0db4ba0b3e93b9f6c4a964"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/solve/mc/requests-sized/mc_sized_osc_wire_ff_1.98V_27C_c3.json",
+        "passed": true,
+        "content_hash": "sha256:f08b041e59b58ddb5fa55c1d80bdd6ecec3556e7ea992426071296042b171012"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/solve/mc/requests-sized/mc_sized_osc_wire_fs_1.98V_27C_c0.json",
+        "passed": true,
+        "content_hash": "sha256:b512ea03a247cdc72933e13d8ac4b3bf640c827c83fc0303e7f421e5d8076207"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/solve/mc/requests-sized/mc_sized_osc_wire_fs_1.98V_27C_c1.json",
+        "passed": true,
+        "content_hash": "sha256:73f745c13f96d9544deebf7461a77c061bd9f2439cceea7a738e3d8d6e1ee308"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/solve/mc/requests-sized/mc_sized_osc_wire_fs_1.98V_27C_c2.json",
+        "passed": true,
+        "content_hash": "sha256:27c894ef6ecb982753f8f9e4159c07046215cdd7dd82d6c3e76d49d812b8dbd1"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/solve/mc/requests-sized/mc_sized_osc_wire_fs_1.98V_27C_c3.json",
+        "passed": true,
+        "content_hash": "sha256:be5503cf732c699d9aef4c3f4d99ddb7c225d8505fee7bdcb46ab0d0f44180bc"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/solve/mc/requests-sized/mc_sized_osc_wire_sf_1.98V_27C_c0.json",
+        "passed": true,
+        "content_hash": "sha256:25fce5dd3d18d3bd7c86a00a4899323453cd9e0ab819e9f1059253ff1884a439"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/solve/mc/requests-sized/mc_sized_osc_wire_sf_1.98V_27C_c1.json",
+        "passed": true,
+        "content_hash": "sha256:8931f6e6b7493ce195d30a50a68f3dcdbd6153dffbbe47016715a9c1b44e2ef8"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/solve/mc/requests-sized/mc_sized_osc_wire_sf_1.98V_27C_c2.json",
+        "passed": true,
+        "content_hash": "sha256:91e8d8e8c893b167b4d43bc3eae309c61c33abc3f7d96fa29f4ba3ad26d5b42c"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/solve/mc/requests-sized/mc_sized_osc_wire_sf_1.98V_27C_c3.json",
+        "passed": true,
+        "content_hash": "sha256:91227101a3d17b91bbb382db34622934e7e6515bebf8759a8d2d159ae5152028"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/solve/mc/requests-sized/mc_sized_osc_wire_ss_1.98V_27C_c0.json",
+        "passed": true,
+        "content_hash": "sha256:18cedf86aea7f72fd8ce31c4e5612ee516ca94ea6b902dd9cfb0ecb2e7fdc4b1"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/solve/mc/requests-sized/mc_sized_osc_wire_ss_1.98V_27C_c1.json",
+        "passed": true,
+        "content_hash": "sha256:e287a060aedc12ac89384549d60a50f1e0325ecca1d8d1f74c6f443a31c627c6"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/solve/mc/requests-sized/mc_sized_osc_wire_ss_1.98V_27C_c2.json",
+        "passed": true,
+        "content_hash": "sha256:db7c5d09bffb03d379b3525f88101d2b7983dd31e24b91ef3ffe72e302edf9b3"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/solve/mc/requests-sized/mc_sized_osc_wire_ss_1.98V_27C_c3.json",
+        "passed": true,
+        "content_hash": "sha256:458c295928c7c1c2645af951d56aafc50741b6a68634d48f4e2f621d9ecc6131"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/solve/mc/requests-sized/mc_sized_osc_wire_tt_1.62V_-40C_c0.json",
+        "passed": true,
+        "content_hash": "sha256:12fca7a0c5046408c7f99e8f8a9eff8a4a9c719ec007672f6ccaa637e3bf3475"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/solve/mc/requests-sized/mc_sized_osc_wire_tt_1.62V_-40C_c1.json",
+        "passed": true,
+        "content_hash": "sha256:7690739a7e78683a3693dc10df588685ef37edf6267b097f5d211724015bebdf"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/solve/mc/requests-sized/mc_sized_osc_wire_tt_1.62V_-40C_c2.json",
+        "passed": true,
+        "content_hash": "sha256:6adfed211a770f88abb0cbf7ea132c984bfd13e74fb36cecf24150860b188747"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/solve/mc/requests-sized/mc_sized_osc_wire_tt_1.62V_-40C_c3.json",
+        "passed": true,
+        "content_hash": "sha256:5b0ec0acfb35e6055e2cec6e9b61a7c0ec8ffdcdfcf3ed930b34b41c6baee240"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/solve/mc/requests-sized/mc_sized_osc_wire_tt_1.98V_27C_c0.json",
+        "passed": true,
+        "content_hash": "sha256:3139a5d2ecac46f4da0234e039b9247d178b0d6505c6e8902ca00b1ae5754395"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/solve/mc/requests-sized/mc_sized_osc_wire_tt_1.98V_27C_c1.json",
+        "passed": true,
+        "content_hash": "sha256:585ff6f5a2ab8992a41b0bd4837074b0a5bd49ce0b6b3286402cf8f28f93cdc8"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/solve/mc/requests-sized/mc_sized_osc_wire_tt_1.98V_27C_c2.json",
+        "passed": true,
+        "content_hash": "sha256:510fd79c91b354927ac647dee4fcc633173b2d4595a85fb7fb97cd76d602a1fd"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/solve/mc/requests-sized/mc_sized_osc_wire_tt_1.98V_27C_c3.json",
+        "passed": true,
+        "content_hash": "sha256:511aca641ee5e39b15fcf2d9060c6b6b7d781610057fd49f26542741695868b9"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/solve/mc/requests/mc_bind_osc_hd.json",
+        "passed": true,
+        "content_hash": "sha256:672d46dc93a0f129acb5844608673ca2135aa64aab77a9c6cd12d4c58628fcd8"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/solve/mc/requests/mc_bind_osc_nmos_ff_1.62V_27C.json",
+        "passed": true,
+        "content_hash": "sha256:5a9ae7561a1676c304843f2ed3f1e37c4d3b395332b2413e4f922bf9e87b719d"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/solve/mc/requests/mc_bind_osc_nmos_ff_1.98V_27C.json",
+        "passed": true,
+        "content_hash": "sha256:c55f9b39e3dfb2c1b40311c583a46f6d2c01d37b32fdeac932257c2956ae5cc6"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/solve/mc/requests/mc_bind_osc_nmos_fs_1.98V_27C.json",
+        "passed": true,
+        "content_hash": "sha256:72e45d4377e4f20317557a097e67e0734374445f8476a30caccb7ca844463146"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/solve/mc/requests/mc_bind_osc_nmos_sf_1.98V_27C.json",
+        "passed": true,
+        "content_hash": "sha256:1ac055ac6ff1d172c0d3668e73a8fc3c60d63633394e8e2df8fbe40a6e19b353"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/solve/mc/requests/mc_bind_osc_nmos_ss_1.98V_27C.json",
+        "passed": true,
+        "content_hash": "sha256:0054030a835130ba715c6975dea8563e2b87f81bb0e6e5ec01fc3960edfa67b7"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/solve/mc/requests/mc_bind_osc_nmos_tt_1.62V_-40C.json",
+        "passed": true,
+        "content_hash": "sha256:7f5523ca71a6134082d9b31541fdac4c242be6f7966a4f8b6730a8e9d3b2c717"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/solve/mc/requests/mc_bind_osc_nmos_tt_1.98V_27C.json",
+        "passed": true,
+        "content_hash": "sha256:c4f979b1853ea10409065e112ff2887f25c7506dc3d5745e81fb4587a37ae34b"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/solve/mc/requests/mc_bind_osc_pmos.json",
+        "passed": true,
+        "content_hash": "sha256:e7f109327e79509f7451883b22fa2eef094d94be55d272d58488791ef870dac9"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/solve/mc/requests/mc_bind_osc_subth_-40C.json",
+        "passed": true,
+        "content_hash": "sha256:7fd1a15eafbcc21c2857931b86ad48a4d5d9c8ad1f2c52b99fb5d42154607643"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/solve/mc/requests/mc_bind_osc_subth_27C.json",
+        "passed": true,
+        "content_hash": "sha256:89aab50f089ab858bf13d8dc86c53273ccfa670fbfa18d7a78e8ef337b436164"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/solve/mc/requests/mc_bind_osc_wire_ff_1.62V_27C.json",
+        "passed": true,
+        "content_hash": "sha256:0e9bbd236d6a98f34c068ecdf8361a81f13d32ea7ee33365743ed1eff3bb0d60"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/solve/mc/requests/mc_bind_osc_wire_ff_1.98V_27C.json",
+        "passed": true,
+        "content_hash": "sha256:8b3adbfcb3f25d2af9ced446d1bc37be2716e7049bb03c3d54aa8a6253240468"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/solve/mc/requests/mc_bind_osc_wire_fs_1.98V_27C.json",
+        "passed": true,
+        "content_hash": "sha256:4d089828470c60d85ec47afaf0e047dbbca6fae2b8b70ccb3c683ecc75d88d9f"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/solve/mc/requests/mc_bind_osc_wire_sf_1.98V_27C.json",
+        "passed": true,
+        "content_hash": "sha256:4d9cf74f3ef857699b8b2b5e8c6a45c1e0be9ef76ec4a9d87ed84f09c72be258"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/solve/mc/requests/mc_bind_osc_wire_ss_1.98V_27C.json",
+        "passed": true,
+        "content_hash": "sha256:b83900598bb3f3b5c04cc67cd963ff905c61c9baae8a68df348e28802965bdbb"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/solve/mc/requests/mc_bind_osc_wire_tt_1.62V_-40C.json",
+        "passed": true,
+        "content_hash": "sha256:247fe14d843728881200d2cb28663ab87de5976bc83ba52ea84e25991a3995bf"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/solve/mc/requests/mc_bind_osc_wire_tt_1.98V_27C.json",
+        "passed": true,
+        "content_hash": "sha256:35de5530cabbe0dfaf0126d67406581f4d019acb33cfcbc7452ff4fc854e4194"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/solve/solve.py",
+        "passed": true,
+        "content_hash": "sha256:fab5566a403e66ea86419296c61c20e4a6580ba4b8aa1ac42b7d9fef96aaa4f8"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/solve/test_gen_binding_mc.py",
+        "passed": true,
+        "content_hash": "sha256:31572401c286f33cceda8c54a4fe9204c51d8fcf9283e929b1ffdd64155e795e"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/solve/test_solve.py",
+        "passed": true,
+        "content_hash": "sha256:65471dc5853b1335a63af921389759b7128b7f21ddbfcdd0de256845ab899131"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/solve/yield_samples.py",
+        "passed": true,
+        "content_hash": "sha256:083db3864d3baa20d9b23c2d3790f1b50fffc8b7919b21ab4821265bd8b3b916"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/subthreshold/osc_grid.request.json",
+        "passed": true,
+        "content_hash": "sha256:6f8d8914f720591cb7f164dfe3719fc5d97b872d42cd4fc623c07cdda7739c7b"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/subthreshold/osc_grid_cold_2ms.request.json",
+        "passed": true,
+        "content_hash": "sha256:26b022b9dd4061878ac624a7988e3979487de63aafe68d3916fa4bce1a035200"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/subthreshold/osc_grid_cold_2ms_edges.request.json",
+        "passed": true,
+        "content_hash": "sha256:c98c65fc7fc328d7032ec31b11e7c7cca3426f0fcf0dfc3c96e5f0a98d6647f6"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/subthreshold/osc_grid_fast.request.json",
+        "passed": true,
+        "content_hash": "sha256:16d2b534a543d17993626d22697c5677b0d3c33a20180907501ba370d8e72932"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/subthreshold/osc_grid_long.request.json",
+        "passed": true,
+        "content_hash": "sha256:9c9b6faf2feaf871b036405b10cc4caea2a3c8b495a8f134e5c7e38a7fd38651"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/subthreshold/osc_mc.request.json",
+        "passed": true,
+        "content_hash": "sha256:9c2f6ec27fac0496e06c0d41205751f8e6e5102ec4651b7ac246790b3aff57ee"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/subthreshold/osc_mc_125_fast.request.json",
+        "passed": true,
+        "content_hash": "sha256:60572cdcccc7a1ce3e1b2d60170b16c145865c4e6f523029fc4847572fdd4f8d"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/subthreshold/osc_mc_cold_long.request.json",
+        "passed": true,
+        "content_hash": "sha256:c804a224424a109daae2a99456e81676c8174ef5e15ed27c9e5af2519cebf416"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/subthreshold/osc_mc_control0.request.json",
+        "passed": true,
+        "content_hash": "sha256:cb9e7f385159fc325f22119e0ccc3bae5e6894ab9c2a5b5e0c8fbe3748315ea7"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/subthreshold/osc_subth_tb.spice",
+        "passed": true,
+        "content_hash": "sha256:fda11a064a8a702ffeb782a316b69bedce23281110336f9cdf57d1d4bc8a5fe6"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/subthreshold/probe.request.json",
+        "passed": true,
+        "content_hash": "sha256:8cf1df55e7da6dff1f81a31eb511dd3606243d477f8037f56bfeed87862d45c5"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/subthreshold/probe_gmin1e-15_abstol1e-18.request.json",
+        "passed": true,
+        "content_hash": "sha256:beae60b712f571331931996fad5352c9eac702245db6b1c89b35881466dc8f4d"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/subthreshold/probe_gmin1e-17.request.json",
+        "passed": true,
+        "content_hash": "sha256:488616899c7f2bd38741357af5069067a83545d2f8dc04d44d0551c1d5b74ab0"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/subthreshold/probe_gmin1e-18.request.json",
+        "passed": true,
+        "content_hash": "sha256:24d4529903d20f9e5eec8265170d6dba29e9d684ec5da31dc5f05a78fbaeaae3"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/subthreshold/probe_tb.spice",
+        "passed": true,
+        "content_hash": "sha256:0ffbdbdf5f8bd1d572c72ef946ad63969311b049d26957334229ce244af64240"
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "argv": [
+          "sim/check_env.sh"
+        ],
+        "cwd": ".",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/osc_bank/bench_osc_hd.spice",
+        "argv": [
+          "sim/osc_bank/run.sh",
+          "--no-record",
+          "osc_hd"
+        ],
+        "cwd": ".",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/osc_bank/bench_osc_nmos.spice",
+        "argv": [
+          "sim/osc_bank/run.sh",
+          "--no-record",
+          "osc_nmos"
+        ],
+        "cwd": ".",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/osc_bank/bench_osc_pmos.spice",
+        "argv": [
+          "sim/osc_bank/run.sh",
+          "--no-record",
+          "osc_pmos"
+        ],
+        "cwd": ".",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/osc_bank/bench_osc_subth.spice",
+        "argv": [
+          "sim/osc_bank/run.sh",
+          "--no-record",
+          "osc_subth"
+        ],
+        "cwd": ".",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/osc_bank/bench_osc_wire.spice",
+        "argv": [
+          "sim/osc_bank/run.sh",
+          "--no-record",
+          "osc_wire"
+        ],
+        "cwd": ".",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/pex/requests/osc_hd.json",
+        "argv": [
+          "klt",
+          "sim",
+          "osc_hd.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/pex/requests",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/pex/requests/osc_nmos.json",
+        "argv": [
+          "klt",
+          "sim",
+          "osc_nmos.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/pex/requests",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/pex/requests/osc_nmos_coldcell.json",
+        "argv": [
+          "klt",
+          "sim",
+          "osc_nmos_coldcell.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/pex/requests",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/pex/requests/osc_pmos.json",
+        "argv": [
+          "klt",
+          "sim",
+          "osc_pmos.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/pex/requests",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/pex/requests/osc_subth.json",
+        "argv": [
+          "klt",
+          "sim",
+          "osc_subth.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/pex/requests",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/pex/requests/osc_wire.json",
+        "argv": [
+          "klt",
+          "sim",
+          "osc_wire.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/pex/requests",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/pex/requests/osc_wire_coldcell.json",
+        "argv": [
+          "klt",
+          "sim",
+          "osc_wire_coldcell.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/pex/requests",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/power/requests/active_osc_hd.json",
+        "argv": [
+          "klt",
+          "sim",
+          "active_osc_hd.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/power/requests",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/power/requests/active_osc_nmos.json",
+        "argv": [
+          "klt",
+          "sim",
+          "active_osc_nmos.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/power/requests",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/power/requests/active_osc_pmos.json",
+        "argv": [
+          "klt",
+          "sim",
+          "active_osc_pmos.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/power/requests",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/power/requests/active_osc_subth.json",
+        "argv": [
+          "klt",
+          "sim",
+          "active_osc_subth.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/power/requests",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/power/requests/active_osc_wire.json",
+        "argv": [
+          "klt",
+          "sim",
+          "active_osc_wire.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/power/requests",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/power/requests/idle_osc_hd.json",
+        "argv": [
+          "klt",
+          "sim",
+          "idle_osc_hd.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/power/requests",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/power/requests/idle_osc_nmos.json",
+        "argv": [
+          "klt",
+          "sim",
+          "idle_osc_nmos.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/power/requests",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/power/requests/idle_osc_pmos.json",
+        "argv": [
+          "klt",
+          "sim",
+          "idle_osc_pmos.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/power/requests",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/power/requests/idle_osc_subth.json",
+        "argv": [
+          "klt",
+          "sim",
+          "idle_osc_subth.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/power/requests",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/power/requests/idle_osc_wire.json",
+        "argv": [
+          "klt",
+          "sim",
+          "idle_osc_wire.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/power/requests",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/sensitivity/requests/grid_osc_hd.json",
+        "argv": [
+          "klt",
+          "sim",
+          "grid_osc_hd.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/sensitivity/requests",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/sensitivity/requests/grid_osc_hd_5p.json",
+        "argv": [
+          "klt",
+          "sim",
+          "grid_osc_hd_5p.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/sensitivity/requests",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/sensitivity/requests/grid_osc_nmos.json",
+        "argv": [
+          "klt",
+          "sim",
+          "grid_osc_nmos.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/sensitivity/requests",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/sensitivity/requests/grid_osc_pmos.json",
+        "argv": [
+          "klt",
+          "sim",
+          "grid_osc_pmos.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/sensitivity/requests",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/sensitivity/requests/grid_osc_subth.json",
+        "argv": [
+          "klt",
+          "sim",
+          "grid_osc_subth.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/sensitivity/requests",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/sensitivity/requests/grid_osc_subth_sf_cold.json",
+        "argv": [
+          "klt",
+          "sim",
+          "grid_osc_subth_sf_cold.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/sensitivity/requests",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/sensitivity/requests/grid_osc_wire.json",
+        "argv": [
+          "klt",
+          "sim",
+          "grid_osc_wire.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/sensitivity/requests",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/sensitivity/requests/grid_osc_wire_sf_cold.json",
+        "argv": [
+          "klt",
+          "sim",
+          "grid_osc_wire_sf_cold.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/sensitivity/requests",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/sensitivity/requests/mc_offnom_osc_hd.json",
+        "argv": [
+          "klt",
+          "sim",
+          "mc_offnom_osc_hd.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/sensitivity/requests",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/sensitivity/requests/mc_offnom_osc_hd_5p.json",
+        "argv": [
+          "klt",
+          "sim",
+          "mc_offnom_osc_hd_5p.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/sensitivity/requests",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/sensitivity/requests/mc_offnom_osc_nmos.json",
+        "argv": [
+          "klt",
+          "sim",
+          "mc_offnom_osc_nmos.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/sensitivity/requests",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/sensitivity/requests/mc_offnom_osc_pmos.json",
+        "argv": [
+          "klt",
+          "sim",
+          "mc_offnom_osc_pmos.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/sensitivity/requests",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/sensitivity/requests/mc_offnom_osc_subth_1.62V_125C.json",
+        "argv": [
+          "klt",
+          "sim",
+          "mc_offnom_osc_subth_1.62V_125C.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/sensitivity/requests",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/sensitivity/requests/mc_offnom_osc_subth_1.98V_-40C.json",
+        "argv": [
+          "klt",
+          "sim",
+          "mc_offnom_osc_subth_1.98V_-40C.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/sensitivity/requests",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/sensitivity/requests/mc_offnom_osc_subth_sf_1.98V_-40C.json",
+        "argv": [
+          "klt",
+          "sim",
+          "mc_offnom_osc_subth_sf_1.98V_-40C.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/sensitivity/requests",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/sensitivity/requests/mc_offnom_osc_wire.json",
+        "argv": [
+          "klt",
+          "sim",
+          "mc_offnom_osc_wire.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/sensitivity/requests",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/sensitivity/requests/mc_osc_hd.json",
+        "argv": [
+          "klt",
+          "sim",
+          "mc_osc_hd.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/sensitivity/requests",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/sensitivity/requests/mc_osc_hd_5p.json",
+        "argv": [
+          "klt",
+          "sim",
+          "mc_osc_hd_5p.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/sensitivity/requests",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/sensitivity/requests/mc_osc_nmos.json",
+        "argv": [
+          "klt",
+          "sim",
+          "mc_osc_nmos.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/sensitivity/requests",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/sensitivity/requests/mc_osc_pmos.json",
+        "argv": [
+          "klt",
+          "sim",
+          "mc_osc_pmos.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/sensitivity/requests",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/sensitivity/requests/mc_osc_subth.json",
+        "argv": [
+          "klt",
+          "sim",
+          "mc_osc_subth.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/sensitivity/requests",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/sensitivity/requests/mc_osc_wire.json",
+        "argv": [
+          "klt",
+          "sim",
+          "mc_osc_wire.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/sensitivity/requests",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/sensitivity/requests/probe_wire_sf.json",
+        "argv": [
+          "klt",
+          "sim",
+          "probe_wire_sf.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/sensitivity/requests",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/sensitivity/requests/probe_wire_val.json",
+        "argv": [
+          "klt",
+          "sim",
+          "probe_wire_val.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/sensitivity/requests",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/sensitivity/test_analyze.py",
+        "argv": [
+          "python3",
+          "-I",
+          "sim/sensitivity/test_analyze.py"
+        ],
+        "cwd": ".",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/smoke/inv_smoke.spice",
+        "argv": [
+          "sim/smoke/run.sh",
+          "--no-record"
+        ],
+        "cwd": ".",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/solve/mc/requests-sized/mc_sized_osc_hd_ff_1.62V_27C_c0.json",
+        "argv": [
+          "klt",
+          "sim",
+          "mc_sized_osc_hd_ff_1.62V_27C_c0.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/solve/mc/requests-sized",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/solve/mc/requests-sized/mc_sized_osc_hd_ff_1.62V_27C_c1.json",
+        "argv": [
+          "klt",
+          "sim",
+          "mc_sized_osc_hd_ff_1.62V_27C_c1.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/solve/mc/requests-sized",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/solve/mc/requests-sized/mc_sized_osc_hd_ff_1.62V_27C_c2.json",
+        "argv": [
+          "klt",
+          "sim",
+          "mc_sized_osc_hd_ff_1.62V_27C_c2.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/solve/mc/requests-sized",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/solve/mc/requests-sized/mc_sized_osc_hd_ff_1.62V_27C_c3.json",
+        "argv": [
+          "klt",
+          "sim",
+          "mc_sized_osc_hd_ff_1.62V_27C_c3.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/solve/mc/requests-sized",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/solve/mc/requests-sized/mc_sized_osc_hd_ff_1.98V_27C_c0.json",
+        "argv": [
+          "klt",
+          "sim",
+          "mc_sized_osc_hd_ff_1.98V_27C_c0.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/solve/mc/requests-sized",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/solve/mc/requests-sized/mc_sized_osc_hd_ff_1.98V_27C_c1.json",
+        "argv": [
+          "klt",
+          "sim",
+          "mc_sized_osc_hd_ff_1.98V_27C_c1.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/solve/mc/requests-sized",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/solve/mc/requests-sized/mc_sized_osc_hd_ff_1.98V_27C_c2.json",
+        "argv": [
+          "klt",
+          "sim",
+          "mc_sized_osc_hd_ff_1.98V_27C_c2.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/solve/mc/requests-sized",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/solve/mc/requests-sized/mc_sized_osc_hd_ff_1.98V_27C_c3.json",
+        "argv": [
+          "klt",
+          "sim",
+          "mc_sized_osc_hd_ff_1.98V_27C_c3.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/solve/mc/requests-sized",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/solve/mc/requests-sized/mc_sized_osc_hd_fs_1.98V_27C_c0.json",
+        "argv": [
+          "klt",
+          "sim",
+          "mc_sized_osc_hd_fs_1.98V_27C_c0.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/solve/mc/requests-sized",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/solve/mc/requests-sized/mc_sized_osc_hd_fs_1.98V_27C_c1.json",
+        "argv": [
+          "klt",
+          "sim",
+          "mc_sized_osc_hd_fs_1.98V_27C_c1.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/solve/mc/requests-sized",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/solve/mc/requests-sized/mc_sized_osc_hd_fs_1.98V_27C_c2.json",
+        "argv": [
+          "klt",
+          "sim",
+          "mc_sized_osc_hd_fs_1.98V_27C_c2.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/solve/mc/requests-sized",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/solve/mc/requests-sized/mc_sized_osc_hd_fs_1.98V_27C_c3.json",
+        "argv": [
+          "klt",
+          "sim",
+          "mc_sized_osc_hd_fs_1.98V_27C_c3.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/solve/mc/requests-sized",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/solve/mc/requests-sized/mc_sized_osc_hd_sf_1.98V_27C_c0.json",
+        "argv": [
+          "klt",
+          "sim",
+          "mc_sized_osc_hd_sf_1.98V_27C_c0.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/solve/mc/requests-sized",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/solve/mc/requests-sized/mc_sized_osc_hd_sf_1.98V_27C_c1.json",
+        "argv": [
+          "klt",
+          "sim",
+          "mc_sized_osc_hd_sf_1.98V_27C_c1.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/solve/mc/requests-sized",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/solve/mc/requests-sized/mc_sized_osc_hd_sf_1.98V_27C_c2.json",
+        "argv": [
+          "klt",
+          "sim",
+          "mc_sized_osc_hd_sf_1.98V_27C_c2.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/solve/mc/requests-sized",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/solve/mc/requests-sized/mc_sized_osc_hd_sf_1.98V_27C_c3.json",
+        "argv": [
+          "klt",
+          "sim",
+          "mc_sized_osc_hd_sf_1.98V_27C_c3.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/solve/mc/requests-sized",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/solve/mc/requests-sized/mc_sized_osc_hd_ss_1.98V_27C_c0.json",
+        "argv": [
+          "klt",
+          "sim",
+          "mc_sized_osc_hd_ss_1.98V_27C_c0.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/solve/mc/requests-sized",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/solve/mc/requests-sized/mc_sized_osc_hd_ss_1.98V_27C_c1.json",
+        "argv": [
+          "klt",
+          "sim",
+          "mc_sized_osc_hd_ss_1.98V_27C_c1.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/solve/mc/requests-sized",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/solve/mc/requests-sized/mc_sized_osc_hd_ss_1.98V_27C_c2.json",
+        "argv": [
+          "klt",
+          "sim",
+          "mc_sized_osc_hd_ss_1.98V_27C_c2.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/solve/mc/requests-sized",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/solve/mc/requests-sized/mc_sized_osc_hd_ss_1.98V_27C_c3.json",
+        "argv": [
+          "klt",
+          "sim",
+          "mc_sized_osc_hd_ss_1.98V_27C_c3.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/solve/mc/requests-sized",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/solve/mc/requests-sized/mc_sized_osc_hd_tt_1.62V_-40C_c0.json",
+        "argv": [
+          "klt",
+          "sim",
+          "mc_sized_osc_hd_tt_1.62V_-40C_c0.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/solve/mc/requests-sized",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/solve/mc/requests-sized/mc_sized_osc_hd_tt_1.62V_-40C_c1.json",
+        "argv": [
+          "klt",
+          "sim",
+          "mc_sized_osc_hd_tt_1.62V_-40C_c1.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/solve/mc/requests-sized",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/solve/mc/requests-sized/mc_sized_osc_hd_tt_1.62V_-40C_c2.json",
+        "argv": [
+          "klt",
+          "sim",
+          "mc_sized_osc_hd_tt_1.62V_-40C_c2.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/solve/mc/requests-sized",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/solve/mc/requests-sized/mc_sized_osc_hd_tt_1.62V_-40C_c3.json",
+        "argv": [
+          "klt",
+          "sim",
+          "mc_sized_osc_hd_tt_1.62V_-40C_c3.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/solve/mc/requests-sized",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/solve/mc/requests-sized/mc_sized_osc_hd_tt_1.98V_27C_c0.json",
+        "argv": [
+          "klt",
+          "sim",
+          "mc_sized_osc_hd_tt_1.98V_27C_c0.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/solve/mc/requests-sized",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/solve/mc/requests-sized/mc_sized_osc_hd_tt_1.98V_27C_c1.json",
+        "argv": [
+          "klt",
+          "sim",
+          "mc_sized_osc_hd_tt_1.98V_27C_c1.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/solve/mc/requests-sized",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/solve/mc/requests-sized/mc_sized_osc_hd_tt_1.98V_27C_c2.json",
+        "argv": [
+          "klt",
+          "sim",
+          "mc_sized_osc_hd_tt_1.98V_27C_c2.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/solve/mc/requests-sized",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/solve/mc/requests-sized/mc_sized_osc_hd_tt_1.98V_27C_c3.json",
+        "argv": [
+          "klt",
+          "sim",
+          "mc_sized_osc_hd_tt_1.98V_27C_c3.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/solve/mc/requests-sized",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/solve/mc/requests-sized/mc_sized_osc_nmos_ff_1.62V_27C_c0.json",
+        "argv": [
+          "klt",
+          "sim",
+          "mc_sized_osc_nmos_ff_1.62V_27C_c0.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/solve/mc/requests-sized",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/solve/mc/requests-sized/mc_sized_osc_nmos_ff_1.62V_27C_c1.json",
+        "argv": [
+          "klt",
+          "sim",
+          "mc_sized_osc_nmos_ff_1.62V_27C_c1.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/solve/mc/requests-sized",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/solve/mc/requests-sized/mc_sized_osc_nmos_ff_1.62V_27C_c2.json",
+        "argv": [
+          "klt",
+          "sim",
+          "mc_sized_osc_nmos_ff_1.62V_27C_c2.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/solve/mc/requests-sized",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/solve/mc/requests-sized/mc_sized_osc_nmos_ff_1.62V_27C_c3.json",
+        "argv": [
+          "klt",
+          "sim",
+          "mc_sized_osc_nmos_ff_1.62V_27C_c3.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/solve/mc/requests-sized",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/solve/mc/requests-sized/mc_sized_osc_nmos_ff_1.98V_27C_c0.json",
+        "argv": [
+          "klt",
+          "sim",
+          "mc_sized_osc_nmos_ff_1.98V_27C_c0.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/solve/mc/requests-sized",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/solve/mc/requests-sized/mc_sized_osc_nmos_ff_1.98V_27C_c1.json",
+        "argv": [
+          "klt",
+          "sim",
+          "mc_sized_osc_nmos_ff_1.98V_27C_c1.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/solve/mc/requests-sized",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/solve/mc/requests-sized/mc_sized_osc_nmos_ff_1.98V_27C_c2.json",
+        "argv": [
+          "klt",
+          "sim",
+          "mc_sized_osc_nmos_ff_1.98V_27C_c2.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/solve/mc/requests-sized",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/solve/mc/requests-sized/mc_sized_osc_nmos_ff_1.98V_27C_c3.json",
+        "argv": [
+          "klt",
+          "sim",
+          "mc_sized_osc_nmos_ff_1.98V_27C_c3.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/solve/mc/requests-sized",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/solve/mc/requests-sized/mc_sized_osc_nmos_fs_1.98V_27C_c0.json",
+        "argv": [
+          "klt",
+          "sim",
+          "mc_sized_osc_nmos_fs_1.98V_27C_c0.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/solve/mc/requests-sized",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/solve/mc/requests-sized/mc_sized_osc_nmos_fs_1.98V_27C_c1.json",
+        "argv": [
+          "klt",
+          "sim",
+          "mc_sized_osc_nmos_fs_1.98V_27C_c1.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/solve/mc/requests-sized",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/solve/mc/requests-sized/mc_sized_osc_nmos_fs_1.98V_27C_c2.json",
+        "argv": [
+          "klt",
+          "sim",
+          "mc_sized_osc_nmos_fs_1.98V_27C_c2.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/solve/mc/requests-sized",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/solve/mc/requests-sized/mc_sized_osc_nmos_fs_1.98V_27C_c3.json",
+        "argv": [
+          "klt",
+          "sim",
+          "mc_sized_osc_nmos_fs_1.98V_27C_c3.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/solve/mc/requests-sized",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/solve/mc/requests-sized/mc_sized_osc_nmos_sf_1.98V_27C_c0.json",
+        "argv": [
+          "klt",
+          "sim",
+          "mc_sized_osc_nmos_sf_1.98V_27C_c0.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/solve/mc/requests-sized",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/solve/mc/requests-sized/mc_sized_osc_nmos_sf_1.98V_27C_c1.json",
+        "argv": [
+          "klt",
+          "sim",
+          "mc_sized_osc_nmos_sf_1.98V_27C_c1.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/solve/mc/requests-sized",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/solve/mc/requests-sized/mc_sized_osc_nmos_sf_1.98V_27C_c2.json",
+        "argv": [
+          "klt",
+          "sim",
+          "mc_sized_osc_nmos_sf_1.98V_27C_c2.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/solve/mc/requests-sized",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/solve/mc/requests-sized/mc_sized_osc_nmos_sf_1.98V_27C_c3.json",
+        "argv": [
+          "klt",
+          "sim",
+          "mc_sized_osc_nmos_sf_1.98V_27C_c3.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/solve/mc/requests-sized",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/solve/mc/requests-sized/mc_sized_osc_nmos_ss_1.98V_27C_c0.json",
+        "argv": [
+          "klt",
+          "sim",
+          "mc_sized_osc_nmos_ss_1.98V_27C_c0.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/solve/mc/requests-sized",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/solve/mc/requests-sized/mc_sized_osc_nmos_ss_1.98V_27C_c1.json",
+        "argv": [
+          "klt",
+          "sim",
+          "mc_sized_osc_nmos_ss_1.98V_27C_c1.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/solve/mc/requests-sized",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/solve/mc/requests-sized/mc_sized_osc_nmos_ss_1.98V_27C_c2.json",
+        "argv": [
+          "klt",
+          "sim",
+          "mc_sized_osc_nmos_ss_1.98V_27C_c2.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/solve/mc/requests-sized",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/solve/mc/requests-sized/mc_sized_osc_nmos_ss_1.98V_27C_c3.json",
+        "argv": [
+          "klt",
+          "sim",
+          "mc_sized_osc_nmos_ss_1.98V_27C_c3.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/solve/mc/requests-sized",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/solve/mc/requests-sized/mc_sized_osc_nmos_tt_1.62V_-40C_c0.json",
+        "argv": [
+          "klt",
+          "sim",
+          "mc_sized_osc_nmos_tt_1.62V_-40C_c0.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/solve/mc/requests-sized",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/solve/mc/requests-sized/mc_sized_osc_nmos_tt_1.62V_-40C_c1.json",
+        "argv": [
+          "klt",
+          "sim",
+          "mc_sized_osc_nmos_tt_1.62V_-40C_c1.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/solve/mc/requests-sized",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/solve/mc/requests-sized/mc_sized_osc_nmos_tt_1.62V_-40C_c2.json",
+        "argv": [
+          "klt",
+          "sim",
+          "mc_sized_osc_nmos_tt_1.62V_-40C_c2.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/solve/mc/requests-sized",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/solve/mc/requests-sized/mc_sized_osc_nmos_tt_1.62V_-40C_c3.json",
+        "argv": [
+          "klt",
+          "sim",
+          "mc_sized_osc_nmos_tt_1.62V_-40C_c3.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/solve/mc/requests-sized",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/solve/mc/requests-sized/mc_sized_osc_nmos_tt_1.98V_27C_c0.json",
+        "argv": [
+          "klt",
+          "sim",
+          "mc_sized_osc_nmos_tt_1.98V_27C_c0.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/solve/mc/requests-sized",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/solve/mc/requests-sized/mc_sized_osc_nmos_tt_1.98V_27C_c1.json",
+        "argv": [
+          "klt",
+          "sim",
+          "mc_sized_osc_nmos_tt_1.98V_27C_c1.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/solve/mc/requests-sized",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/solve/mc/requests-sized/mc_sized_osc_nmos_tt_1.98V_27C_c2.json",
+        "argv": [
+          "klt",
+          "sim",
+          "mc_sized_osc_nmos_tt_1.98V_27C_c2.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/solve/mc/requests-sized",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/solve/mc/requests-sized/mc_sized_osc_nmos_tt_1.98V_27C_c3.json",
+        "argv": [
+          "klt",
+          "sim",
+          "mc_sized_osc_nmos_tt_1.98V_27C_c3.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/solve/mc/requests-sized",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/solve/mc/requests-sized/mc_sized_osc_pmos_ff_1.62V_27C_c0.json",
+        "argv": [
+          "klt",
+          "sim",
+          "mc_sized_osc_pmos_ff_1.62V_27C_c0.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/solve/mc/requests-sized",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/solve/mc/requests-sized/mc_sized_osc_pmos_ff_1.62V_27C_c1.json",
+        "argv": [
+          "klt",
+          "sim",
+          "mc_sized_osc_pmos_ff_1.62V_27C_c1.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/solve/mc/requests-sized",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/solve/mc/requests-sized/mc_sized_osc_pmos_ff_1.62V_27C_c2.json",
+        "argv": [
+          "klt",
+          "sim",
+          "mc_sized_osc_pmos_ff_1.62V_27C_c2.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/solve/mc/requests-sized",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/solve/mc/requests-sized/mc_sized_osc_pmos_ff_1.62V_27C_c3.json",
+        "argv": [
+          "klt",
+          "sim",
+          "mc_sized_osc_pmos_ff_1.62V_27C_c3.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/solve/mc/requests-sized",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/solve/mc/requests-sized/mc_sized_osc_pmos_ff_1.98V_27C_c0.json",
+        "argv": [
+          "klt",
+          "sim",
+          "mc_sized_osc_pmos_ff_1.98V_27C_c0.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/solve/mc/requests-sized",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/solve/mc/requests-sized/mc_sized_osc_pmos_ff_1.98V_27C_c1.json",
+        "argv": [
+          "klt",
+          "sim",
+          "mc_sized_osc_pmos_ff_1.98V_27C_c1.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/solve/mc/requests-sized",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/solve/mc/requests-sized/mc_sized_osc_pmos_ff_1.98V_27C_c2.json",
+        "argv": [
+          "klt",
+          "sim",
+          "mc_sized_osc_pmos_ff_1.98V_27C_c2.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/solve/mc/requests-sized",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/solve/mc/requests-sized/mc_sized_osc_pmos_ff_1.98V_27C_c3.json",
+        "argv": [
+          "klt",
+          "sim",
+          "mc_sized_osc_pmos_ff_1.98V_27C_c3.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/solve/mc/requests-sized",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/solve/mc/requests-sized/mc_sized_osc_pmos_fs_1.98V_27C_c0.json",
+        "argv": [
+          "klt",
+          "sim",
+          "mc_sized_osc_pmos_fs_1.98V_27C_c0.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/solve/mc/requests-sized",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/solve/mc/requests-sized/mc_sized_osc_pmos_fs_1.98V_27C_c1.json",
+        "argv": [
+          "klt",
+          "sim",
+          "mc_sized_osc_pmos_fs_1.98V_27C_c1.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/solve/mc/requests-sized",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/solve/mc/requests-sized/mc_sized_osc_pmos_fs_1.98V_27C_c2.json",
+        "argv": [
+          "klt",
+          "sim",
+          "mc_sized_osc_pmos_fs_1.98V_27C_c2.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/solve/mc/requests-sized",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/solve/mc/requests-sized/mc_sized_osc_pmos_fs_1.98V_27C_c3.json",
+        "argv": [
+          "klt",
+          "sim",
+          "mc_sized_osc_pmos_fs_1.98V_27C_c3.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/solve/mc/requests-sized",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/solve/mc/requests-sized/mc_sized_osc_pmos_sf_1.98V_27C_c0.json",
+        "argv": [
+          "klt",
+          "sim",
+          "mc_sized_osc_pmos_sf_1.98V_27C_c0.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/solve/mc/requests-sized",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/solve/mc/requests-sized/mc_sized_osc_pmos_sf_1.98V_27C_c1.json",
+        "argv": [
+          "klt",
+          "sim",
+          "mc_sized_osc_pmos_sf_1.98V_27C_c1.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/solve/mc/requests-sized",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/solve/mc/requests-sized/mc_sized_osc_pmos_sf_1.98V_27C_c2.json",
+        "argv": [
+          "klt",
+          "sim",
+          "mc_sized_osc_pmos_sf_1.98V_27C_c2.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/solve/mc/requests-sized",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/solve/mc/requests-sized/mc_sized_osc_pmos_sf_1.98V_27C_c3.json",
+        "argv": [
+          "klt",
+          "sim",
+          "mc_sized_osc_pmos_sf_1.98V_27C_c3.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/solve/mc/requests-sized",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/solve/mc/requests-sized/mc_sized_osc_pmos_ss_1.98V_27C_c0.json",
+        "argv": [
+          "klt",
+          "sim",
+          "mc_sized_osc_pmos_ss_1.98V_27C_c0.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/solve/mc/requests-sized",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/solve/mc/requests-sized/mc_sized_osc_pmos_ss_1.98V_27C_c1.json",
+        "argv": [
+          "klt",
+          "sim",
+          "mc_sized_osc_pmos_ss_1.98V_27C_c1.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/solve/mc/requests-sized",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/solve/mc/requests-sized/mc_sized_osc_pmos_ss_1.98V_27C_c2.json",
+        "argv": [
+          "klt",
+          "sim",
+          "mc_sized_osc_pmos_ss_1.98V_27C_c2.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/solve/mc/requests-sized",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/solve/mc/requests-sized/mc_sized_osc_pmos_ss_1.98V_27C_c3.json",
+        "argv": [
+          "klt",
+          "sim",
+          "mc_sized_osc_pmos_ss_1.98V_27C_c3.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/solve/mc/requests-sized",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/solve/mc/requests-sized/mc_sized_osc_pmos_tt_1.62V_-40C_c0.json",
+        "argv": [
+          "klt",
+          "sim",
+          "mc_sized_osc_pmos_tt_1.62V_-40C_c0.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/solve/mc/requests-sized",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/solve/mc/requests-sized/mc_sized_osc_pmos_tt_1.62V_-40C_c1.json",
+        "argv": [
+          "klt",
+          "sim",
+          "mc_sized_osc_pmos_tt_1.62V_-40C_c1.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/solve/mc/requests-sized",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/solve/mc/requests-sized/mc_sized_osc_pmos_tt_1.62V_-40C_c2.json",
+        "argv": [
+          "klt",
+          "sim",
+          "mc_sized_osc_pmos_tt_1.62V_-40C_c2.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/solve/mc/requests-sized",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/solve/mc/requests-sized/mc_sized_osc_pmos_tt_1.62V_-40C_c3.json",
+        "argv": [
+          "klt",
+          "sim",
+          "mc_sized_osc_pmos_tt_1.62V_-40C_c3.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/solve/mc/requests-sized",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/solve/mc/requests-sized/mc_sized_osc_pmos_tt_1.98V_27C_c0.json",
+        "argv": [
+          "klt",
+          "sim",
+          "mc_sized_osc_pmos_tt_1.98V_27C_c0.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/solve/mc/requests-sized",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/solve/mc/requests-sized/mc_sized_osc_pmos_tt_1.98V_27C_c1.json",
+        "argv": [
+          "klt",
+          "sim",
+          "mc_sized_osc_pmos_tt_1.98V_27C_c1.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/solve/mc/requests-sized",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/solve/mc/requests-sized/mc_sized_osc_pmos_tt_1.98V_27C_c2.json",
+        "argv": [
+          "klt",
+          "sim",
+          "mc_sized_osc_pmos_tt_1.98V_27C_c2.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/solve/mc/requests-sized",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/solve/mc/requests-sized/mc_sized_osc_pmos_tt_1.98V_27C_c3.json",
+        "argv": [
+          "klt",
+          "sim",
+          "mc_sized_osc_pmos_tt_1.98V_27C_c3.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/solve/mc/requests-sized",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/solve/mc/requests-sized/mc_sized_osc_subth_ff_1.62V_27C_c0.json",
+        "argv": [
+          "klt",
+          "sim",
+          "mc_sized_osc_subth_ff_1.62V_27C_c0.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/solve/mc/requests-sized",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/solve/mc/requests-sized/mc_sized_osc_subth_ff_1.62V_27C_c1.json",
+        "argv": [
+          "klt",
+          "sim",
+          "mc_sized_osc_subth_ff_1.62V_27C_c1.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/solve/mc/requests-sized",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/solve/mc/requests-sized/mc_sized_osc_subth_ff_1.62V_27C_c2.json",
+        "argv": [
+          "klt",
+          "sim",
+          "mc_sized_osc_subth_ff_1.62V_27C_c2.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/solve/mc/requests-sized",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/solve/mc/requests-sized/mc_sized_osc_subth_ff_1.62V_27C_c3.json",
+        "argv": [
+          "klt",
+          "sim",
+          "mc_sized_osc_subth_ff_1.62V_27C_c3.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/solve/mc/requests-sized",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/solve/mc/requests-sized/mc_sized_osc_subth_ff_1.98V_27C_c0.json",
+        "argv": [
+          "klt",
+          "sim",
+          "mc_sized_osc_subth_ff_1.98V_27C_c0.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/solve/mc/requests-sized",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/solve/mc/requests-sized/mc_sized_osc_subth_ff_1.98V_27C_c1.json",
+        "argv": [
+          "klt",
+          "sim",
+          "mc_sized_osc_subth_ff_1.98V_27C_c1.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/solve/mc/requests-sized",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/solve/mc/requests-sized/mc_sized_osc_subth_ff_1.98V_27C_c2.json",
+        "argv": [
+          "klt",
+          "sim",
+          "mc_sized_osc_subth_ff_1.98V_27C_c2.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/solve/mc/requests-sized",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/solve/mc/requests-sized/mc_sized_osc_subth_ff_1.98V_27C_c3.json",
+        "argv": [
+          "klt",
+          "sim",
+          "mc_sized_osc_subth_ff_1.98V_27C_c3.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/solve/mc/requests-sized",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/solve/mc/requests-sized/mc_sized_osc_subth_fs_1.98V_27C_c0.json",
+        "argv": [
+          "klt",
+          "sim",
+          "mc_sized_osc_subth_fs_1.98V_27C_c0.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/solve/mc/requests-sized",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/solve/mc/requests-sized/mc_sized_osc_subth_fs_1.98V_27C_c1.json",
+        "argv": [
+          "klt",
+          "sim",
+          "mc_sized_osc_subth_fs_1.98V_27C_c1.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/solve/mc/requests-sized",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/solve/mc/requests-sized/mc_sized_osc_subth_fs_1.98V_27C_c2.json",
+        "argv": [
+          "klt",
+          "sim",
+          "mc_sized_osc_subth_fs_1.98V_27C_c2.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/solve/mc/requests-sized",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/solve/mc/requests-sized/mc_sized_osc_subth_fs_1.98V_27C_c3.json",
+        "argv": [
+          "klt",
+          "sim",
+          "mc_sized_osc_subth_fs_1.98V_27C_c3.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/solve/mc/requests-sized",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/solve/mc/requests-sized/mc_sized_osc_subth_sf_1.98V_27C_c0.json",
+        "argv": [
+          "klt",
+          "sim",
+          "mc_sized_osc_subth_sf_1.98V_27C_c0.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/solve/mc/requests-sized",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/solve/mc/requests-sized/mc_sized_osc_subth_sf_1.98V_27C_c1.json",
+        "argv": [
+          "klt",
+          "sim",
+          "mc_sized_osc_subth_sf_1.98V_27C_c1.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/solve/mc/requests-sized",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/solve/mc/requests-sized/mc_sized_osc_subth_sf_1.98V_27C_c2.json",
+        "argv": [
+          "klt",
+          "sim",
+          "mc_sized_osc_subth_sf_1.98V_27C_c2.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/solve/mc/requests-sized",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/solve/mc/requests-sized/mc_sized_osc_subth_sf_1.98V_27C_c3.json",
+        "argv": [
+          "klt",
+          "sim",
+          "mc_sized_osc_subth_sf_1.98V_27C_c3.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/solve/mc/requests-sized",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/solve/mc/requests-sized/mc_sized_osc_subth_ss_1.98V_27C_c0.json",
+        "argv": [
+          "klt",
+          "sim",
+          "mc_sized_osc_subth_ss_1.98V_27C_c0.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/solve/mc/requests-sized",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/solve/mc/requests-sized/mc_sized_osc_subth_ss_1.98V_27C_c1.json",
+        "argv": [
+          "klt",
+          "sim",
+          "mc_sized_osc_subth_ss_1.98V_27C_c1.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/solve/mc/requests-sized",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/solve/mc/requests-sized/mc_sized_osc_subth_ss_1.98V_27C_c2.json",
+        "argv": [
+          "klt",
+          "sim",
+          "mc_sized_osc_subth_ss_1.98V_27C_c2.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/solve/mc/requests-sized",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/solve/mc/requests-sized/mc_sized_osc_subth_ss_1.98V_27C_c3.json",
+        "argv": [
+          "klt",
+          "sim",
+          "mc_sized_osc_subth_ss_1.98V_27C_c3.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/solve/mc/requests-sized",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/solve/mc/requests-sized/mc_sized_osc_subth_tt_1.62V_-40C_c0.json",
+        "argv": [
+          "klt",
+          "sim",
+          "mc_sized_osc_subth_tt_1.62V_-40C_c0.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/solve/mc/requests-sized",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/solve/mc/requests-sized/mc_sized_osc_subth_tt_1.62V_-40C_c1.json",
+        "argv": [
+          "klt",
+          "sim",
+          "mc_sized_osc_subth_tt_1.62V_-40C_c1.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/solve/mc/requests-sized",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/solve/mc/requests-sized/mc_sized_osc_subth_tt_1.62V_-40C_c2.json",
+        "argv": [
+          "klt",
+          "sim",
+          "mc_sized_osc_subth_tt_1.62V_-40C_c2.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/solve/mc/requests-sized",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/solve/mc/requests-sized/mc_sized_osc_subth_tt_1.62V_-40C_c3.json",
+        "argv": [
+          "klt",
+          "sim",
+          "mc_sized_osc_subth_tt_1.62V_-40C_c3.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/solve/mc/requests-sized",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/solve/mc/requests-sized/mc_sized_osc_subth_tt_1.98V_27C_c0.json",
+        "argv": [
+          "klt",
+          "sim",
+          "mc_sized_osc_subth_tt_1.98V_27C_c0.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/solve/mc/requests-sized",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/solve/mc/requests-sized/mc_sized_osc_subth_tt_1.98V_27C_c1.json",
+        "argv": [
+          "klt",
+          "sim",
+          "mc_sized_osc_subth_tt_1.98V_27C_c1.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/solve/mc/requests-sized",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/solve/mc/requests-sized/mc_sized_osc_subth_tt_1.98V_27C_c2.json",
+        "argv": [
+          "klt",
+          "sim",
+          "mc_sized_osc_subth_tt_1.98V_27C_c2.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/solve/mc/requests-sized",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/solve/mc/requests-sized/mc_sized_osc_subth_tt_1.98V_27C_c3.json",
+        "argv": [
+          "klt",
+          "sim",
+          "mc_sized_osc_subth_tt_1.98V_27C_c3.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/solve/mc/requests-sized",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/solve/mc/requests-sized/mc_sized_osc_wire_ff_1.62V_27C_c0.json",
+        "argv": [
+          "klt",
+          "sim",
+          "mc_sized_osc_wire_ff_1.62V_27C_c0.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/solve/mc/requests-sized",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/solve/mc/requests-sized/mc_sized_osc_wire_ff_1.62V_27C_c1.json",
+        "argv": [
+          "klt",
+          "sim",
+          "mc_sized_osc_wire_ff_1.62V_27C_c1.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/solve/mc/requests-sized",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/solve/mc/requests-sized/mc_sized_osc_wire_ff_1.62V_27C_c2.json",
+        "argv": [
+          "klt",
+          "sim",
+          "mc_sized_osc_wire_ff_1.62V_27C_c2.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/solve/mc/requests-sized",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/solve/mc/requests-sized/mc_sized_osc_wire_ff_1.62V_27C_c3.json",
+        "argv": [
+          "klt",
+          "sim",
+          "mc_sized_osc_wire_ff_1.62V_27C_c3.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/solve/mc/requests-sized",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/solve/mc/requests-sized/mc_sized_osc_wire_ff_1.98V_27C_c0.json",
+        "argv": [
+          "klt",
+          "sim",
+          "mc_sized_osc_wire_ff_1.98V_27C_c0.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/solve/mc/requests-sized",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/solve/mc/requests-sized/mc_sized_osc_wire_ff_1.98V_27C_c1.json",
+        "argv": [
+          "klt",
+          "sim",
+          "mc_sized_osc_wire_ff_1.98V_27C_c1.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/solve/mc/requests-sized",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/solve/mc/requests-sized/mc_sized_osc_wire_ff_1.98V_27C_c2.json",
+        "argv": [
+          "klt",
+          "sim",
+          "mc_sized_osc_wire_ff_1.98V_27C_c2.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/solve/mc/requests-sized",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/solve/mc/requests-sized/mc_sized_osc_wire_ff_1.98V_27C_c3.json",
+        "argv": [
+          "klt",
+          "sim",
+          "mc_sized_osc_wire_ff_1.98V_27C_c3.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/solve/mc/requests-sized",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/solve/mc/requests-sized/mc_sized_osc_wire_fs_1.98V_27C_c0.json",
+        "argv": [
+          "klt",
+          "sim",
+          "mc_sized_osc_wire_fs_1.98V_27C_c0.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/solve/mc/requests-sized",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/solve/mc/requests-sized/mc_sized_osc_wire_fs_1.98V_27C_c1.json",
+        "argv": [
+          "klt",
+          "sim",
+          "mc_sized_osc_wire_fs_1.98V_27C_c1.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/solve/mc/requests-sized",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/solve/mc/requests-sized/mc_sized_osc_wire_fs_1.98V_27C_c2.json",
+        "argv": [
+          "klt",
+          "sim",
+          "mc_sized_osc_wire_fs_1.98V_27C_c2.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/solve/mc/requests-sized",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/solve/mc/requests-sized/mc_sized_osc_wire_fs_1.98V_27C_c3.json",
+        "argv": [
+          "klt",
+          "sim",
+          "mc_sized_osc_wire_fs_1.98V_27C_c3.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/solve/mc/requests-sized",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/solve/mc/requests-sized/mc_sized_osc_wire_sf_1.98V_27C_c0.json",
+        "argv": [
+          "klt",
+          "sim",
+          "mc_sized_osc_wire_sf_1.98V_27C_c0.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/solve/mc/requests-sized",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/solve/mc/requests-sized/mc_sized_osc_wire_sf_1.98V_27C_c1.json",
+        "argv": [
+          "klt",
+          "sim",
+          "mc_sized_osc_wire_sf_1.98V_27C_c1.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/solve/mc/requests-sized",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/solve/mc/requests-sized/mc_sized_osc_wire_sf_1.98V_27C_c2.json",
+        "argv": [
+          "klt",
+          "sim",
+          "mc_sized_osc_wire_sf_1.98V_27C_c2.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/solve/mc/requests-sized",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/solve/mc/requests-sized/mc_sized_osc_wire_sf_1.98V_27C_c3.json",
+        "argv": [
+          "klt",
+          "sim",
+          "mc_sized_osc_wire_sf_1.98V_27C_c3.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/solve/mc/requests-sized",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/solve/mc/requests-sized/mc_sized_osc_wire_ss_1.98V_27C_c0.json",
+        "argv": [
+          "klt",
+          "sim",
+          "mc_sized_osc_wire_ss_1.98V_27C_c0.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/solve/mc/requests-sized",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/solve/mc/requests-sized/mc_sized_osc_wire_ss_1.98V_27C_c1.json",
+        "argv": [
+          "klt",
+          "sim",
+          "mc_sized_osc_wire_ss_1.98V_27C_c1.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/solve/mc/requests-sized",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/solve/mc/requests-sized/mc_sized_osc_wire_ss_1.98V_27C_c2.json",
+        "argv": [
+          "klt",
+          "sim",
+          "mc_sized_osc_wire_ss_1.98V_27C_c2.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/solve/mc/requests-sized",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/solve/mc/requests-sized/mc_sized_osc_wire_ss_1.98V_27C_c3.json",
+        "argv": [
+          "klt",
+          "sim",
+          "mc_sized_osc_wire_ss_1.98V_27C_c3.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/solve/mc/requests-sized",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/solve/mc/requests-sized/mc_sized_osc_wire_tt_1.62V_-40C_c0.json",
+        "argv": [
+          "klt",
+          "sim",
+          "mc_sized_osc_wire_tt_1.62V_-40C_c0.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/solve/mc/requests-sized",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/solve/mc/requests-sized/mc_sized_osc_wire_tt_1.62V_-40C_c1.json",
+        "argv": [
+          "klt",
+          "sim",
+          "mc_sized_osc_wire_tt_1.62V_-40C_c1.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/solve/mc/requests-sized",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/solve/mc/requests-sized/mc_sized_osc_wire_tt_1.62V_-40C_c2.json",
+        "argv": [
+          "klt",
+          "sim",
+          "mc_sized_osc_wire_tt_1.62V_-40C_c2.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/solve/mc/requests-sized",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/solve/mc/requests-sized/mc_sized_osc_wire_tt_1.62V_-40C_c3.json",
+        "argv": [
+          "klt",
+          "sim",
+          "mc_sized_osc_wire_tt_1.62V_-40C_c3.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/solve/mc/requests-sized",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/solve/mc/requests-sized/mc_sized_osc_wire_tt_1.98V_27C_c0.json",
+        "argv": [
+          "klt",
+          "sim",
+          "mc_sized_osc_wire_tt_1.98V_27C_c0.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/solve/mc/requests-sized",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/solve/mc/requests-sized/mc_sized_osc_wire_tt_1.98V_27C_c1.json",
+        "argv": [
+          "klt",
+          "sim",
+          "mc_sized_osc_wire_tt_1.98V_27C_c1.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/solve/mc/requests-sized",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/solve/mc/requests-sized/mc_sized_osc_wire_tt_1.98V_27C_c2.json",
+        "argv": [
+          "klt",
+          "sim",
+          "mc_sized_osc_wire_tt_1.98V_27C_c2.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/solve/mc/requests-sized",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/solve/mc/requests-sized/mc_sized_osc_wire_tt_1.98V_27C_c3.json",
+        "argv": [
+          "klt",
+          "sim",
+          "mc_sized_osc_wire_tt_1.98V_27C_c3.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/solve/mc/requests-sized",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/solve/mc/requests/mc_bind_osc_hd.json",
+        "argv": [
+          "klt",
+          "sim",
+          "mc_bind_osc_hd.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/solve/mc/requests",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/solve/mc/requests/mc_bind_osc_nmos_ff_1.62V_27C.json",
+        "argv": [
+          "klt",
+          "sim",
+          "mc_bind_osc_nmos_ff_1.62V_27C.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/solve/mc/requests",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/solve/mc/requests/mc_bind_osc_nmos_ff_1.98V_27C.json",
+        "argv": [
+          "klt",
+          "sim",
+          "mc_bind_osc_nmos_ff_1.98V_27C.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/solve/mc/requests",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/solve/mc/requests/mc_bind_osc_nmos_fs_1.98V_27C.json",
+        "argv": [
+          "klt",
+          "sim",
+          "mc_bind_osc_nmos_fs_1.98V_27C.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/solve/mc/requests",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/solve/mc/requests/mc_bind_osc_nmos_sf_1.98V_27C.json",
+        "argv": [
+          "klt",
+          "sim",
+          "mc_bind_osc_nmos_sf_1.98V_27C.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/solve/mc/requests",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/solve/mc/requests/mc_bind_osc_nmos_ss_1.98V_27C.json",
+        "argv": [
+          "klt",
+          "sim",
+          "mc_bind_osc_nmos_ss_1.98V_27C.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/solve/mc/requests",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/solve/mc/requests/mc_bind_osc_nmos_tt_1.62V_-40C.json",
+        "argv": [
+          "klt",
+          "sim",
+          "mc_bind_osc_nmos_tt_1.62V_-40C.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/solve/mc/requests",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/solve/mc/requests/mc_bind_osc_nmos_tt_1.98V_27C.json",
+        "argv": [
+          "klt",
+          "sim",
+          "mc_bind_osc_nmos_tt_1.98V_27C.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/solve/mc/requests",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/solve/mc/requests/mc_bind_osc_pmos.json",
+        "argv": [
+          "klt",
+          "sim",
+          "mc_bind_osc_pmos.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/solve/mc/requests",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/solve/mc/requests/mc_bind_osc_subth_-40C.json",
+        "argv": [
+          "klt",
+          "sim",
+          "mc_bind_osc_subth_-40C.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/solve/mc/requests",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/solve/mc/requests/mc_bind_osc_subth_27C.json",
+        "argv": [
+          "klt",
+          "sim",
+          "mc_bind_osc_subth_27C.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/solve/mc/requests",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/solve/mc/requests/mc_bind_osc_wire_ff_1.62V_27C.json",
+        "argv": [
+          "klt",
+          "sim",
+          "mc_bind_osc_wire_ff_1.62V_27C.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/solve/mc/requests",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/solve/mc/requests/mc_bind_osc_wire_ff_1.98V_27C.json",
+        "argv": [
+          "klt",
+          "sim",
+          "mc_bind_osc_wire_ff_1.98V_27C.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/solve/mc/requests",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/solve/mc/requests/mc_bind_osc_wire_fs_1.98V_27C.json",
+        "argv": [
+          "klt",
+          "sim",
+          "mc_bind_osc_wire_fs_1.98V_27C.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/solve/mc/requests",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/solve/mc/requests/mc_bind_osc_wire_sf_1.98V_27C.json",
+        "argv": [
+          "klt",
+          "sim",
+          "mc_bind_osc_wire_sf_1.98V_27C.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/solve/mc/requests",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/solve/mc/requests/mc_bind_osc_wire_ss_1.98V_27C.json",
+        "argv": [
+          "klt",
+          "sim",
+          "mc_bind_osc_wire_ss_1.98V_27C.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/solve/mc/requests",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/solve/mc/requests/mc_bind_osc_wire_tt_1.62V_-40C.json",
+        "argv": [
+          "klt",
+          "sim",
+          "mc_bind_osc_wire_tt_1.62V_-40C.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/solve/mc/requests",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/solve/mc/requests/mc_bind_osc_wire_tt_1.98V_27C.json",
+        "argv": [
+          "klt",
+          "sim",
+          "mc_bind_osc_wire_tt_1.98V_27C.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/solve/mc/requests",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/solve/test_gen_binding_mc.py",
+        "argv": [
+          "python3",
+          "-I",
+          "sim/solve/test_gen_binding_mc.py"
+        ],
+        "cwd": ".",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/solve/test_solve.py",
+        "argv": [
+          "python3",
+          "-I",
+          "sim/solve/test_solve.py"
+        ],
+        "cwd": ".",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/subthreshold/osc_grid.request.json",
+        "argv": [
+          "klt",
+          "sim",
+          "osc_grid.request.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/subthreshold",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/subthreshold/osc_grid_cold_2ms.request.json",
+        "argv": [
+          "klt",
+          "sim",
+          "osc_grid_cold_2ms.request.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/subthreshold",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/subthreshold/osc_grid_cold_2ms_edges.request.json",
+        "argv": [
+          "klt",
+          "sim",
+          "osc_grid_cold_2ms_edges.request.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/subthreshold",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/subthreshold/osc_grid_fast.request.json",
+        "argv": [
+          "klt",
+          "sim",
+          "osc_grid_fast.request.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/subthreshold",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/subthreshold/osc_grid_long.request.json",
+        "argv": [
+          "klt",
+          "sim",
+          "osc_grid_long.request.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/subthreshold",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/subthreshold/osc_mc.request.json",
+        "argv": [
+          "klt",
+          "sim",
+          "osc_mc.request.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/subthreshold",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/subthreshold/osc_mc_125_fast.request.json",
+        "argv": [
+          "klt",
+          "sim",
+          "osc_mc_125_fast.request.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/subthreshold",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/subthreshold/osc_mc_cold_long.request.json",
+        "argv": [
+          "klt",
+          "sim",
+          "osc_mc_cold_long.request.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/subthreshold",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/subthreshold/osc_mc_control0.request.json",
+        "argv": [
+          "klt",
+          "sim",
+          "osc_mc_control0.request.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/subthreshold",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/subthreshold/probe.request.json",
+        "argv": [
+          "klt",
+          "sim",
+          "probe.request.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/subthreshold",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/subthreshold/probe_gmin1e-15_abstol1e-18.request.json",
+        "argv": [
+          "klt",
+          "sim",
+          "probe_gmin1e-15_abstol1e-18.request.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/subthreshold",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/subthreshold/probe_gmin1e-17.request.json",
+        "argv": [
+          "klt",
+          "sim",
+          "probe_gmin1e-17.request.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/subthreshold",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/subthreshold/probe_gmin1e-18.request.json",
+        "argv": [
+          "klt",
+          "sim",
+          "probe_gmin1e-18.request.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/subthreshold",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "pin",
+        "role": "pdk",
+        "passed": true,
+        "value": {
+          "name": "sky130A",
+          "revision": "c6d73a35f524070e85faff4a6a9eef49553ebc2b"
+        }
+      },
+      {
+        "check": "pin",
+        "role": "tools",
+        "passed": true,
+        "value": {
+          "klayout-tools": "0.9.1",
+          "ngspice": ">=46"
+        }
+      }
+    ]
+  },
+  "provenance": {
+    "klt_version": "0.9.1",
+    "klayout_version": null,
+    "pdk": null,
+    "deck": null,
+    "input": {
+      "path": {
+        "path": "attest/item9_analog.json",
+        "scope": "repo"
+      },
+      "content_hash": "sha256:f9894bc4d7f8b300f37a0ad96b497c32ed2e651d3d158de9653dc21d4ac6b066"
+    }
+  }
+}

@@ -1,0 +1,821 @@
+{
+  "netlist": "probe_tb.spice",
+  "engine": "ngspice",
+  "models": {
+    "pdk": "sky130A",
+    "lib": "libs.tech/ngspice/sky130.lib.spice"
+  },
+  "corners": {
+    "process": [
+      "tt",
+      "ff",
+      "ss",
+      "sf",
+      "fs"
+    ],
+    "supply_v": {
+      "vdd": [
+        1.8
+      ]
+    },
+    "temperature_c": [
+      -40,
+      27,
+      125
+    ]
+  },
+  "analysis": {
+    "kind": "dc",
+    "args": "Vg 0 0.6 0.01"
+  },
+  "measurements": [
+    {
+      "name": "i000_n_w040",
+      "unit": "A",
+      "spice": ".meas dc i000_n_w040 find i(Vd_n_w040) at=0"
+    },
+    {
+      "name": "i050_n_w040",
+      "unit": "A",
+      "spice": ".meas dc i050_n_w040 find i(Vd_n_w040) at=0.05"
+    },
+    {
+      "name": "i150_n_w040",
+      "unit": "A",
+      "spice": ".meas dc i150_n_w040 find i(Vd_n_w040) at=0.15"
+    },
+    {
+      "name": "i300_n_w040",
+      "unit": "A",
+      "spice": ".meas dc i300_n_w040 find i(Vd_n_w040) at=0.3"
+    },
+    {
+      "name": "s05_n_w040",
+      "unit": "mV/dec",
+      "spice": ".meas dc s05_n_w040 param='100/log10(abs(i150_n_w040)/abs(i050_n_w040))'"
+    },
+    {
+      "name": "s_n_w040",
+      "unit": "mV/dec",
+      "spice": ".meas dc s_n_w040 param='150/log10(abs(i300_n_w040)/abs(i150_n_w040))'"
+    },
+    {
+      "name": "i000_n_w041",
+      "unit": "A",
+      "spice": ".meas dc i000_n_w041 find i(Vd_n_w041) at=0"
+    },
+    {
+      "name": "i050_n_w041",
+      "unit": "A",
+      "spice": ".meas dc i050_n_w041 find i(Vd_n_w041) at=0.05"
+    },
+    {
+      "name": "i150_n_w041",
+      "unit": "A",
+      "spice": ".meas dc i150_n_w041 find i(Vd_n_w041) at=0.15"
+    },
+    {
+      "name": "i300_n_w041",
+      "unit": "A",
+      "spice": ".meas dc i300_n_w041 find i(Vd_n_w041) at=0.3"
+    },
+    {
+      "name": "s05_n_w041",
+      "unit": "mV/dec",
+      "spice": ".meas dc s05_n_w041 param='100/log10(abs(i150_n_w041)/abs(i050_n_w041))'"
+    },
+    {
+      "name": "s_n_w041",
+      "unit": "mV/dec",
+      "spice": ".meas dc s_n_w041 param='150/log10(abs(i300_n_w041)/abs(i150_n_w041))'"
+    },
+    {
+      "name": "i000_n_w042",
+      "unit": "A",
+      "spice": ".meas dc i000_n_w042 find i(Vd_n_w042) at=0"
+    },
+    {
+      "name": "i050_n_w042",
+      "unit": "A",
+      "spice": ".meas dc i050_n_w042 find i(Vd_n_w042) at=0.05"
+    },
+    {
+      "name": "i150_n_w042",
+      "unit": "A",
+      "spice": ".meas dc i150_n_w042 find i(Vd_n_w042) at=0.15"
+    },
+    {
+      "name": "i300_n_w042",
+      "unit": "A",
+      "spice": ".meas dc i300_n_w042 find i(Vd_n_w042) at=0.3"
+    },
+    {
+      "name": "s05_n_w042",
+      "unit": "mV/dec",
+      "spice": ".meas dc s05_n_w042 param='100/log10(abs(i150_n_w042)/abs(i050_n_w042))'"
+    },
+    {
+      "name": "s_n_w042",
+      "unit": "mV/dec",
+      "spice": ".meas dc s_n_w042 param='150/log10(abs(i300_n_w042)/abs(i150_n_w042))'"
+    },
+    {
+      "name": "i000_n_w043",
+      "unit": "A",
+      "spice": ".meas dc i000_n_w043 find i(Vd_n_w043) at=0"
+    },
+    {
+      "name": "i050_n_w043",
+      "unit": "A",
+      "spice": ".meas dc i050_n_w043 find i(Vd_n_w043) at=0.05"
+    },
+    {
+      "name": "i150_n_w043",
+      "unit": "A",
+      "spice": ".meas dc i150_n_w043 find i(Vd_n_w043) at=0.15"
+    },
+    {
+      "name": "i300_n_w043",
+      "unit": "A",
+      "spice": ".meas dc i300_n_w043 find i(Vd_n_w043) at=0.3"
+    },
+    {
+      "name": "s05_n_w043",
+      "unit": "mV/dec",
+      "spice": ".meas dc s05_n_w043 param='100/log10(abs(i150_n_w043)/abs(i050_n_w043))'"
+    },
+    {
+      "name": "s_n_w043",
+      "unit": "mV/dec",
+      "spice": ".meas dc s_n_w043 param='150/log10(abs(i300_n_w043)/abs(i150_n_w043))'"
+    },
+    {
+      "name": "i000_n_w044",
+      "unit": "A",
+      "spice": ".meas dc i000_n_w044 find i(Vd_n_w044) at=0"
+    },
+    {
+      "name": "i050_n_w044",
+      "unit": "A",
+      "spice": ".meas dc i050_n_w044 find i(Vd_n_w044) at=0.05"
+    },
+    {
+      "name": "i150_n_w044",
+      "unit": "A",
+      "spice": ".meas dc i150_n_w044 find i(Vd_n_w044) at=0.15"
+    },
+    {
+      "name": "i300_n_w044",
+      "unit": "A",
+      "spice": ".meas dc i300_n_w044 find i(Vd_n_w044) at=0.3"
+    },
+    {
+      "name": "s05_n_w044",
+      "unit": "mV/dec",
+      "spice": ".meas dc s05_n_w044 param='100/log10(abs(i150_n_w044)/abs(i050_n_w044))'"
+    },
+    {
+      "name": "s_n_w044",
+      "unit": "mV/dec",
+      "spice": ".meas dc s_n_w044 param='150/log10(abs(i300_n_w044)/abs(i150_n_w044))'"
+    },
+    {
+      "name": "i000_n_w082",
+      "unit": "A",
+      "spice": ".meas dc i000_n_w082 find i(Vd_n_w082) at=0"
+    },
+    {
+      "name": "i050_n_w082",
+      "unit": "A",
+      "spice": ".meas dc i050_n_w082 find i(Vd_n_w082) at=0.05"
+    },
+    {
+      "name": "i150_n_w082",
+      "unit": "A",
+      "spice": ".meas dc i150_n_w082 find i(Vd_n_w082) at=0.15"
+    },
+    {
+      "name": "i300_n_w082",
+      "unit": "A",
+      "spice": ".meas dc i300_n_w082 find i(Vd_n_w082) at=0.3"
+    },
+    {
+      "name": "s05_n_w082",
+      "unit": "mV/dec",
+      "spice": ".meas dc s05_n_w082 param='100/log10(abs(i150_n_w082)/abs(i050_n_w082))'"
+    },
+    {
+      "name": "s_n_w082",
+      "unit": "mV/dec",
+      "spice": ".meas dc s_n_w082 param='150/log10(abs(i300_n_w082)/abs(i150_n_w082))'"
+    },
+    {
+      "name": "i000_n_w083",
+      "unit": "A",
+      "spice": ".meas dc i000_n_w083 find i(Vd_n_w083) at=0"
+    },
+    {
+      "name": "i050_n_w083",
+      "unit": "A",
+      "spice": ".meas dc i050_n_w083 find i(Vd_n_w083) at=0.05"
+    },
+    {
+      "name": "i150_n_w083",
+      "unit": "A",
+      "spice": ".meas dc i150_n_w083 find i(Vd_n_w083) at=0.15"
+    },
+    {
+      "name": "i300_n_w083",
+      "unit": "A",
+      "spice": ".meas dc i300_n_w083 find i(Vd_n_w083) at=0.3"
+    },
+    {
+      "name": "s05_n_w083",
+      "unit": "mV/dec",
+      "spice": ".meas dc s05_n_w083 param='100/log10(abs(i150_n_w083)/abs(i050_n_w083))'"
+    },
+    {
+      "name": "s_n_w083",
+      "unit": "mV/dec",
+      "spice": ".meas dc s_n_w083 param='150/log10(abs(i300_n_w083)/abs(i150_n_w083))'"
+    },
+    {
+      "name": "i000_n_w084",
+      "unit": "A",
+      "spice": ".meas dc i000_n_w084 find i(Vd_n_w084) at=0"
+    },
+    {
+      "name": "i050_n_w084",
+      "unit": "A",
+      "spice": ".meas dc i050_n_w084 find i(Vd_n_w084) at=0.05"
+    },
+    {
+      "name": "i150_n_w084",
+      "unit": "A",
+      "spice": ".meas dc i150_n_w084 find i(Vd_n_w084) at=0.15"
+    },
+    {
+      "name": "i300_n_w084",
+      "unit": "A",
+      "spice": ".meas dc i300_n_w084 find i(Vd_n_w084) at=0.3"
+    },
+    {
+      "name": "s05_n_w084",
+      "unit": "mV/dec",
+      "spice": ".meas dc s05_n_w084 param='100/log10(abs(i150_n_w084)/abs(i050_n_w084))'"
+    },
+    {
+      "name": "s_n_w084",
+      "unit": "mV/dec",
+      "spice": ".meas dc s_n_w084 param='150/log10(abs(i300_n_w084)/abs(i150_n_w084))'"
+    },
+    {
+      "name": "i000_n_w085",
+      "unit": "A",
+      "spice": ".meas dc i000_n_w085 find i(Vd_n_w085) at=0"
+    },
+    {
+      "name": "i050_n_w085",
+      "unit": "A",
+      "spice": ".meas dc i050_n_w085 find i(Vd_n_w085) at=0.05"
+    },
+    {
+      "name": "i150_n_w085",
+      "unit": "A",
+      "spice": ".meas dc i150_n_w085 find i(Vd_n_w085) at=0.15"
+    },
+    {
+      "name": "i300_n_w085",
+      "unit": "A",
+      "spice": ".meas dc i300_n_w085 find i(Vd_n_w085) at=0.3"
+    },
+    {
+      "name": "s05_n_w085",
+      "unit": "mV/dec",
+      "spice": ".meas dc s05_n_w085 param='100/log10(abs(i150_n_w085)/abs(i050_n_w085))'"
+    },
+    {
+      "name": "s_n_w085",
+      "unit": "mV/dec",
+      "spice": ".meas dc s_n_w085 param='150/log10(abs(i300_n_w085)/abs(i150_n_w085))'"
+    },
+    {
+      "name": "i000_n_w086",
+      "unit": "A",
+      "spice": ".meas dc i000_n_w086 find i(Vd_n_w086) at=0"
+    },
+    {
+      "name": "i050_n_w086",
+      "unit": "A",
+      "spice": ".meas dc i050_n_w086 find i(Vd_n_w086) at=0.05"
+    },
+    {
+      "name": "i150_n_w086",
+      "unit": "A",
+      "spice": ".meas dc i150_n_w086 find i(Vd_n_w086) at=0.15"
+    },
+    {
+      "name": "i300_n_w086",
+      "unit": "A",
+      "spice": ".meas dc i300_n_w086 find i(Vd_n_w086) at=0.3"
+    },
+    {
+      "name": "s05_n_w086",
+      "unit": "mV/dec",
+      "spice": ".meas dc s05_n_w086 param='100/log10(abs(i150_n_w086)/abs(i050_n_w086))'"
+    },
+    {
+      "name": "s_n_w086",
+      "unit": "mV/dec",
+      "spice": ".meas dc s_n_w086 param='150/log10(abs(i300_n_w086)/abs(i150_n_w086))'"
+    },
+    {
+      "name": "i000_p_w042",
+      "unit": "A",
+      "spice": ".meas dc i000_p_w042 find i(Vd_p_w042) at=0"
+    },
+    {
+      "name": "i050_p_w042",
+      "unit": "A",
+      "spice": ".meas dc i050_p_w042 find i(Vd_p_w042) at=0.05"
+    },
+    {
+      "name": "i150_p_w042",
+      "unit": "A",
+      "spice": ".meas dc i150_p_w042 find i(Vd_p_w042) at=0.15"
+    },
+    {
+      "name": "i300_p_w042",
+      "unit": "A",
+      "spice": ".meas dc i300_p_w042 find i(Vd_p_w042) at=0.3"
+    },
+    {
+      "name": "s05_p_w042",
+      "unit": "mV/dec",
+      "spice": ".meas dc s05_p_w042 param='100/log10(abs(i150_p_w042)/abs(i050_p_w042))'"
+    },
+    {
+      "name": "s_p_w042",
+      "unit": "mV/dec",
+      "spice": ".meas dc s_p_w042 param='150/log10(abs(i300_p_w042)/abs(i150_p_w042))'"
+    },
+    {
+      "name": "i000_p_w043",
+      "unit": "A",
+      "spice": ".meas dc i000_p_w043 find i(Vd_p_w043) at=0"
+    },
+    {
+      "name": "i050_p_w043",
+      "unit": "A",
+      "spice": ".meas dc i050_p_w043 find i(Vd_p_w043) at=0.05"
+    },
+    {
+      "name": "i150_p_w043",
+      "unit": "A",
+      "spice": ".meas dc i150_p_w043 find i(Vd_p_w043) at=0.15"
+    },
+    {
+      "name": "i300_p_w043",
+      "unit": "A",
+      "spice": ".meas dc i300_p_w043 find i(Vd_p_w043) at=0.3"
+    },
+    {
+      "name": "s05_p_w043",
+      "unit": "mV/dec",
+      "spice": ".meas dc s05_p_w043 param='100/log10(abs(i150_p_w043)/abs(i050_p_w043))'"
+    },
+    {
+      "name": "s_p_w043",
+      "unit": "mV/dec",
+      "spice": ".meas dc s_p_w043 param='150/log10(abs(i300_p_w043)/abs(i150_p_w043))'"
+    },
+    {
+      "name": "i000_p_w044",
+      "unit": "A",
+      "spice": ".meas dc i000_p_w044 find i(Vd_p_w044) at=0"
+    },
+    {
+      "name": "i050_p_w044",
+      "unit": "A",
+      "spice": ".meas dc i050_p_w044 find i(Vd_p_w044) at=0.05"
+    },
+    {
+      "name": "i150_p_w044",
+      "unit": "A",
+      "spice": ".meas dc i150_p_w044 find i(Vd_p_w044) at=0.15"
+    },
+    {
+      "name": "i300_p_w044",
+      "unit": "A",
+      "spice": ".meas dc i300_p_w044 find i(Vd_p_w044) at=0.3"
+    },
+    {
+      "name": "s05_p_w044",
+      "unit": "mV/dec",
+      "spice": ".meas dc s05_p_w044 param='100/log10(abs(i150_p_w044)/abs(i050_p_w044))'"
+    },
+    {
+      "name": "s_p_w044",
+      "unit": "mV/dec",
+      "spice": ".meas dc s_p_w044 param='150/log10(abs(i300_p_w044)/abs(i150_p_w044))'"
+    },
+    {
+      "name": "i000_p_w082",
+      "unit": "A",
+      "spice": ".meas dc i000_p_w082 find i(Vd_p_w082) at=0"
+    },
+    {
+      "name": "i050_p_w082",
+      "unit": "A",
+      "spice": ".meas dc i050_p_w082 find i(Vd_p_w082) at=0.05"
+    },
+    {
+      "name": "i150_p_w082",
+      "unit": "A",
+      "spice": ".meas dc i150_p_w082 find i(Vd_p_w082) at=0.15"
+    },
+    {
+      "name": "i300_p_w082",
+      "unit": "A",
+      "spice": ".meas dc i300_p_w082 find i(Vd_p_w082) at=0.3"
+    },
+    {
+      "name": "s05_p_w082",
+      "unit": "mV/dec",
+      "spice": ".meas dc s05_p_w082 param='100/log10(abs(i150_p_w082)/abs(i050_p_w082))'"
+    },
+    {
+      "name": "s_p_w082",
+      "unit": "mV/dec",
+      "spice": ".meas dc s_p_w082 param='150/log10(abs(i300_p_w082)/abs(i150_p_w082))'"
+    },
+    {
+      "name": "i000_p_w083",
+      "unit": "A",
+      "spice": ".meas dc i000_p_w083 find i(Vd_p_w083) at=0"
+    },
+    {
+      "name": "i050_p_w083",
+      "unit": "A",
+      "spice": ".meas dc i050_p_w083 find i(Vd_p_w083) at=0.05"
+    },
+    {
+      "name": "i150_p_w083",
+      "unit": "A",
+      "spice": ".meas dc i150_p_w083 find i(Vd_p_w083) at=0.15"
+    },
+    {
+      "name": "i300_p_w083",
+      "unit": "A",
+      "spice": ".meas dc i300_p_w083 find i(Vd_p_w083) at=0.3"
+    },
+    {
+      "name": "s05_p_w083",
+      "unit": "mV/dec",
+      "spice": ".meas dc s05_p_w083 param='100/log10(abs(i150_p_w083)/abs(i050_p_w083))'"
+    },
+    {
+      "name": "s_p_w083",
+      "unit": "mV/dec",
+      "spice": ".meas dc s_p_w083 param='150/log10(abs(i300_p_w083)/abs(i150_p_w083))'"
+    },
+    {
+      "name": "i000_p_w084",
+      "unit": "A",
+      "spice": ".meas dc i000_p_w084 find i(Vd_p_w084) at=0"
+    },
+    {
+      "name": "i050_p_w084",
+      "unit": "A",
+      "spice": ".meas dc i050_p_w084 find i(Vd_p_w084) at=0.05"
+    },
+    {
+      "name": "i150_p_w084",
+      "unit": "A",
+      "spice": ".meas dc i150_p_w084 find i(Vd_p_w084) at=0.15"
+    },
+    {
+      "name": "i300_p_w084",
+      "unit": "A",
+      "spice": ".meas dc i300_p_w084 find i(Vd_p_w084) at=0.3"
+    },
+    {
+      "name": "s05_p_w084",
+      "unit": "mV/dec",
+      "spice": ".meas dc s05_p_w084 param='100/log10(abs(i150_p_w084)/abs(i050_p_w084))'"
+    },
+    {
+      "name": "s_p_w084",
+      "unit": "mV/dec",
+      "spice": ".meas dc s_p_w084 param='150/log10(abs(i300_p_w084)/abs(i150_p_w084))'"
+    },
+    {
+      "name": "i000_p_w085",
+      "unit": "A",
+      "spice": ".meas dc i000_p_w085 find i(Vd_p_w085) at=0"
+    },
+    {
+      "name": "i050_p_w085",
+      "unit": "A",
+      "spice": ".meas dc i050_p_w085 find i(Vd_p_w085) at=0.05"
+    },
+    {
+      "name": "i150_p_w085",
+      "unit": "A",
+      "spice": ".meas dc i150_p_w085 find i(Vd_p_w085) at=0.15"
+    },
+    {
+      "name": "i300_p_w085",
+      "unit": "A",
+      "spice": ".meas dc i300_p_w085 find i(Vd_p_w085) at=0.3"
+    },
+    {
+      "name": "s05_p_w085",
+      "unit": "mV/dec",
+      "spice": ".meas dc s05_p_w085 param='100/log10(abs(i150_p_w085)/abs(i050_p_w085))'"
+    },
+    {
+      "name": "s_p_w085",
+      "unit": "mV/dec",
+      "spice": ".meas dc s_p_w085 param='150/log10(abs(i300_p_w085)/abs(i150_p_w085))'"
+    },
+    {
+      "name": "i000_p_w086",
+      "unit": "A",
+      "spice": ".meas dc i000_p_w086 find i(Vd_p_w086) at=0"
+    },
+    {
+      "name": "i050_p_w086",
+      "unit": "A",
+      "spice": ".meas dc i050_p_w086 find i(Vd_p_w086) at=0.05"
+    },
+    {
+      "name": "i150_p_w086",
+      "unit": "A",
+      "spice": ".meas dc i150_p_w086 find i(Vd_p_w086) at=0.15"
+    },
+    {
+      "name": "i300_p_w086",
+      "unit": "A",
+      "spice": ".meas dc i300_p_w086 find i(Vd_p_w086) at=0.3"
+    },
+    {
+      "name": "s05_p_w086",
+      "unit": "mV/dec",
+      "spice": ".meas dc s05_p_w086 param='100/log10(abs(i150_p_w086)/abs(i050_p_w086))'"
+    },
+    {
+      "name": "s_p_w086",
+      "unit": "mV/dec",
+      "spice": ".meas dc s_p_w086 param='150/log10(abs(i300_p_w086)/abs(i150_p_w086))'"
+    },
+    {
+      "name": "i000_l_w042",
+      "unit": "A",
+      "spice": ".meas dc i000_l_w042 find i(Vd_l_w042) at=0"
+    },
+    {
+      "name": "i050_l_w042",
+      "unit": "A",
+      "spice": ".meas dc i050_l_w042 find i(Vd_l_w042) at=0.05"
+    },
+    {
+      "name": "i150_l_w042",
+      "unit": "A",
+      "spice": ".meas dc i150_l_w042 find i(Vd_l_w042) at=0.15"
+    },
+    {
+      "name": "i300_l_w042",
+      "unit": "A",
+      "spice": ".meas dc i300_l_w042 find i(Vd_l_w042) at=0.3"
+    },
+    {
+      "name": "s05_l_w042",
+      "unit": "mV/dec",
+      "spice": ".meas dc s05_l_w042 param='100/log10(abs(i150_l_w042)/abs(i050_l_w042))'"
+    },
+    {
+      "name": "s_l_w042",
+      "unit": "mV/dec",
+      "spice": ".meas dc s_l_w042 param='150/log10(abs(i300_l_w042)/abs(i150_l_w042))'"
+    },
+    {
+      "name": "i000_l_w043",
+      "unit": "A",
+      "spice": ".meas dc i000_l_w043 find i(Vd_l_w043) at=0"
+    },
+    {
+      "name": "i050_l_w043",
+      "unit": "A",
+      "spice": ".meas dc i050_l_w043 find i(Vd_l_w043) at=0.05"
+    },
+    {
+      "name": "i150_l_w043",
+      "unit": "A",
+      "spice": ".meas dc i150_l_w043 find i(Vd_l_w043) at=0.15"
+    },
+    {
+      "name": "i300_l_w043",
+      "unit": "A",
+      "spice": ".meas dc i300_l_w043 find i(Vd_l_w043) at=0.3"
+    },
+    {
+      "name": "s05_l_w043",
+      "unit": "mV/dec",
+      "spice": ".meas dc s05_l_w043 param='100/log10(abs(i150_l_w043)/abs(i050_l_w043))'"
+    },
+    {
+      "name": "s_l_w043",
+      "unit": "mV/dec",
+      "spice": ".meas dc s_l_w043 param='150/log10(abs(i300_l_w043)/abs(i150_l_w043))'"
+    },
+    {
+      "name": "i000_l_w044",
+      "unit": "A",
+      "spice": ".meas dc i000_l_w044 find i(Vd_l_w044) at=0"
+    },
+    {
+      "name": "i050_l_w044",
+      "unit": "A",
+      "spice": ".meas dc i050_l_w044 find i(Vd_l_w044) at=0.05"
+    },
+    {
+      "name": "i150_l_w044",
+      "unit": "A",
+      "spice": ".meas dc i150_l_w044 find i(Vd_l_w044) at=0.15"
+    },
+    {
+      "name": "i300_l_w044",
+      "unit": "A",
+      "spice": ".meas dc i300_l_w044 find i(Vd_l_w044) at=0.3"
+    },
+    {
+      "name": "s05_l_w044",
+      "unit": "mV/dec",
+      "spice": ".meas dc s05_l_w044 param='100/log10(abs(i150_l_w044)/abs(i050_l_w044))'"
+    },
+    {
+      "name": "s_l_w044",
+      "unit": "mV/dec",
+      "spice": ".meas dc s_l_w044 param='150/log10(abs(i300_l_w044)/abs(i150_l_w044))'"
+    },
+    {
+      "name": "i000_l_w082",
+      "unit": "A",
+      "spice": ".meas dc i000_l_w082 find i(Vd_l_w082) at=0"
+    },
+    {
+      "name": "i050_l_w082",
+      "unit": "A",
+      "spice": ".meas dc i050_l_w082 find i(Vd_l_w082) at=0.05"
+    },
+    {
+      "name": "i150_l_w082",
+      "unit": "A",
+      "spice": ".meas dc i150_l_w082 find i(Vd_l_w082) at=0.15"
+    },
+    {
+      "name": "i300_l_w082",
+      "unit": "A",
+      "spice": ".meas dc i300_l_w082 find i(Vd_l_w082) at=0.3"
+    },
+    {
+      "name": "s05_l_w082",
+      "unit": "mV/dec",
+      "spice": ".meas dc s05_l_w082 param='100/log10(abs(i150_l_w082)/abs(i050_l_w082))'"
+    },
+    {
+      "name": "s_l_w082",
+      "unit": "mV/dec",
+      "spice": ".meas dc s_l_w082 param='150/log10(abs(i300_l_w082)/abs(i150_l_w082))'"
+    },
+    {
+      "name": "i000_l_w083",
+      "unit": "A",
+      "spice": ".meas dc i000_l_w083 find i(Vd_l_w083) at=0"
+    },
+    {
+      "name": "i050_l_w083",
+      "unit": "A",
+      "spice": ".meas dc i050_l_w083 find i(Vd_l_w083) at=0.05"
+    },
+    {
+      "name": "i150_l_w083",
+      "unit": "A",
+      "spice": ".meas dc i150_l_w083 find i(Vd_l_w083) at=0.15"
+    },
+    {
+      "name": "i300_l_w083",
+      "unit": "A",
+      "spice": ".meas dc i300_l_w083 find i(Vd_l_w083) at=0.3"
+    },
+    {
+      "name": "s05_l_w083",
+      "unit": "mV/dec",
+      "spice": ".meas dc s05_l_w083 param='100/log10(abs(i150_l_w083)/abs(i050_l_w083))'"
+    },
+    {
+      "name": "s_l_w083",
+      "unit": "mV/dec",
+      "spice": ".meas dc s_l_w083 param='150/log10(abs(i300_l_w083)/abs(i150_l_w083))'"
+    },
+    {
+      "name": "i000_l_w084",
+      "unit": "A",
+      "spice": ".meas dc i000_l_w084 find i(Vd_l_w084) at=0"
+    },
+    {
+      "name": "i050_l_w084",
+      "unit": "A",
+      "spice": ".meas dc i050_l_w084 find i(Vd_l_w084) at=0.05"
+    },
+    {
+      "name": "i150_l_w084",
+      "unit": "A",
+      "spice": ".meas dc i150_l_w084 find i(Vd_l_w084) at=0.15"
+    },
+    {
+      "name": "i300_l_w084",
+      "unit": "A",
+      "spice": ".meas dc i300_l_w084 find i(Vd_l_w084) at=0.3"
+    },
+    {
+      "name": "s05_l_w084",
+      "unit": "mV/dec",
+      "spice": ".meas dc s05_l_w084 param='100/log10(abs(i150_l_w084)/abs(i050_l_w084))'"
+    },
+    {
+      "name": "s_l_w084",
+      "unit": "mV/dec",
+      "spice": ".meas dc s_l_w084 param='150/log10(abs(i300_l_w084)/abs(i150_l_w084))'"
+    },
+    {
+      "name": "i000_l_w085",
+      "unit": "A",
+      "spice": ".meas dc i000_l_w085 find i(Vd_l_w085) at=0"
+    },
+    {
+      "name": "i050_l_w085",
+      "unit": "A",
+      "spice": ".meas dc i050_l_w085 find i(Vd_l_w085) at=0.05"
+    },
+    {
+      "name": "i150_l_w085",
+      "unit": "A",
+      "spice": ".meas dc i150_l_w085 find i(Vd_l_w085) at=0.15"
+    },
+    {
+      "name": "i300_l_w085",
+      "unit": "A",
+      "spice": ".meas dc i300_l_w085 find i(Vd_l_w085) at=0.3"
+    },
+    {
+      "name": "s05_l_w085",
+      "unit": "mV/dec",
+      "spice": ".meas dc s05_l_w085 param='100/log10(abs(i150_l_w085)/abs(i050_l_w085))'"
+    },
+    {
+      "name": "s_l_w085",
+      "unit": "mV/dec",
+      "spice": ".meas dc s_l_w085 param='150/log10(abs(i300_l_w085)/abs(i150_l_w085))'"
+    },
+    {
+      "name": "i000_l_w086",
+      "unit": "A",
+      "spice": ".meas dc i000_l_w086 find i(Vd_l_w086) at=0"
+    },
+    {
+      "name": "i050_l_w086",
+      "unit": "A",
+      "spice": ".meas dc i050_l_w086 find i(Vd_l_w086) at=0.05"
+    },
+    {
+      "name": "i150_l_w086",
+      "unit": "A",
+      "spice": ".meas dc i150_l_w086 find i(Vd_l_w086) at=0.15"
+    },
+    {
+      "name": "i300_l_w086",
+      "unit": "A",
+      "spice": ".meas dc i300_l_w086 find i(Vd_l_w086) at=0.3"
+    },
+    {
+      "name": "s05_l_w086",
+      "unit": "mV/dec",
+      "spice": ".meas dc s05_l_w086 param='100/log10(abs(i150_l_w086)/abs(i050_l_w086))'"
+    },
+    {
+      "name": "s_l_w086",
+      "unit": "mV/dec",
+      "spice": ".meas dc s_l_w086 param='150/log10(abs(i300_l_w086)/abs(i150_l_w086))'"
+    }
+  ],
+  "options": {
+    "timeout_s": 200,
+    "keep_artifacts": false,
+    "ngspice_options": {
+      "gmin": 1e-15,
+      "abstol": 1e-18
+    }
+  }
+}
