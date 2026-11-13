@@ -41,6 +41,10 @@ Wrong model path, edited PDK pin, edited tool pin and absent PDK must each fail 
 (the script greps for it), after a baseline `check_env.sh` pass, so a broken environment is not read as a control
 passing. Exit 0 means all did; exit 2 means the environment itself is broken. A failed run appends no record.
 
+That pass rule is not this script's alone: `expect_fail` and the baseline live in
+`sim/neg_control_common.sh`, which every negative-control script here sources (`sim/osc_bank/` and
+`sim/subthreshold/` too), so there is one rule rather than one per directory.
+
 ## Oscillator bank
 
     sim/osc_bank/run.sh [osc_name ...]      # default: all five

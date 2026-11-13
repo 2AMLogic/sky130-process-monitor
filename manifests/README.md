@@ -168,8 +168,9 @@ meaning (a testbench or the request that drives one):
   the first step of the reproduce chain in `sim/solve/records/2026-11-05-rows1-4.md` and
   `sim/solve/mc/RECORD-2026-11-06-item6-sized-bank.md`. They are on the measurement path for
   `5.analog` / `6.analog`, not convenience wrappers, so they are pinned with the rest of that path.
-- `sim/*/negative_controls.sh` and the top-level `sim/negative_controls.sh` (which that glob does
-  not match) — control runs that assert a bench fails when it should; they back no recorded
+- `sim/*/negative_controls.sh`, the top-level `sim/negative_controls.sh` (which that glob does
+  not match) and `sim/neg_control_common.sh` (the pass rule and `check_env.sh` baseline all three
+  source) — control runs that assert a bench fails when it should; they back no recorded
   measurement row.
 - The two `unittest` suites added after this inventory was attested — `sim/pex/test_gen_requests.py`
   (`4556cec`) and `sim/solve/test_records_reproduce.py` (`d157a7f`). Both are plain stdlib

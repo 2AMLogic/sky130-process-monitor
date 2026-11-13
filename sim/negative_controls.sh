@@ -1,28 +1,13 @@
 #!/usr/bin/env bash
 # Each control must make the flow FAIL for its own specific reason; this script
-# exits 0 only if all do. A control passes only if the command exits non-zero AND
-# its output matches the expected diagnostic, so a broken environment (wrong tool
-# version, missing PATH) cannot be read as a control passing.
+# exits 0 only if all do. The pass rule (non-zero exit AND a matching diagnostic)
+# and the baseline check_env.sh pass come from sim/neg_control_common.sh, which
+# every negative-control script in this tree sources.
 set -u
 SIM="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+# shellcheck source=sim/neg_control_common.sh
+. "$SIM/neg_control_common.sh"
 REC="$(dirname "$SIM")/measurements/inv_smoke_records.jsonl"
-rc=0
-expect_fail() { # name, expected-diagnostic regex, command...
-  local name="$1" pat="$2"; shift 2
-  local out
-  if out="$("$@" 2>&1)"; then echo "NEG-CONTROL FAIL (unexpectedly passed): $name"; rc=1
-  elif printf '%s\n' "$out" | grep -Eq -- "$pat"; then
-    echo "neg-control ok (failed as required, diagnostic matched): $name"
-  else
-    echo "NEG-CONTROL FAIL (failed for the wrong reason, no match for /$pat/): $name"
-    printf '%s\n' "$out" | tail -5 | sed 's/^/    /'; rc=1
-  fi
-}
-# Baseline: the environment must be sound, else a control "failing" proves nothing.
-if ! "$SIM/check_env.sh" >/dev/null; then
-  echo "NEG-CONTROL ABORT: environment check failed; fix it first:" >&2
-  "$SIM/check_env.sh" >/dev/null; exit 2
-fi
 before="$(wc -l < "$REC" 2>/dev/null || echo 0)"
 # run.sh's own message only says the delay was not measured; the cause (missing
 # library) is in the ngspice log, so print it after the failure.
