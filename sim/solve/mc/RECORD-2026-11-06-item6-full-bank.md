@@ -40,3 +40,51 @@ python3 -I sim/solve/yield_samples.py build freq.json mcnom.json mcbind.json -o 
 klt yield sim/solve/mc/samples-binding-cells.json --format json > sim/solve/mc/yield-binding-cells.json
 ```
 `klt yield` needs `klt_yield_native` (2AMLogic/klayout-tools#5018): built from `native/yield` at tag v0.9.1 into the worktree-local `.venv-yield` (host tools untouched). `klt signoff` (pinned 0.9.1) output is unchanged: item 6 analog `unmet`, digital `not_applicable`; manifest `6.analog` hash updated.
+
+## Inputs pinned 2026-11-13 (#140) — appended; nothing above this line is edited
+
+The Reproduce block above globs three directories. At this record's commit (`f1026ec`) they resolved
+to the 30 files below; `grid_*.json.gz` has since grown to 8 (the 2026-11-06 off-nominal cold-margin
+grids `grid_osc_subth_sf_cold.json.gz` / `grid_osc_wire_sf_cold.json.gz`), so the glob reading of that
+block is no longer the input set this record was produced from. It still happens to reproduce
+`samples-binding-cells.json` today, because the extra cold-margin grid cells are not read on this code
+path — luck, not pinning, which is the whole point of #140. Nothing above is edited and
+`samples-binding-cells.json` is not regenerated.
+
+Note that `grid_osc_hd_5p.json.gz` and `mc_osc_hd_5p.json.gz` (a 5-stage variant `analyze._osc_of`
+attributes to `osc_hd`) **are** part of this record's input set, unlike the rows 1-4 record and
+`RECORD-2026-11-06-item6.md`, whose pinned lists have five per-oscillator reports each. The globs in
+the three records look the same and denote three different sets.
+
+**Pinned input set** (6 grid + 6 nominal-MC + 18 binding-cell reports, in this order — order is part
+of the pin, because `analyze.py extract-mc` pools same-cell samples by concatenation):
+
+```
+R=sim/sensitivity/records/reports
+B=sim/solve/mc/reports
+python3 -I sim/sensitivity/analyze.py extract \
+  $R/grid_osc_hd.json.gz $R/grid_osc_hd_5p.json.gz $R/grid_osc_nmos.json.gz \
+  $R/grid_osc_pmos.json.gz $R/grid_osc_subth.json.gz $R/grid_osc_wire.json.gz -o freq.json
+python3 -I sim/sensitivity/analyze.py extract-mc \
+  $R/mc_osc_hd.json.gz $R/mc_osc_hd_5p.json.gz $R/mc_osc_nmos.json.gz \
+  $R/mc_osc_pmos.json.gz $R/mc_osc_subth.json.gz $R/mc_osc_wire.json.gz -o mcnom.json
+python3 -I sim/sensitivity/analyze.py extract-mc \
+  $B/mc_bind_osc_hd.json.gz \
+  $B/mc_bind_osc_nmos_ff_1.62V_27C.json.gz $B/mc_bind_osc_nmos_ff_1.98V_27C.json.gz \
+  $B/mc_bind_osc_nmos_fs_1.98V_27C.json.gz $B/mc_bind_osc_nmos_sf_1.98V_27C.json.gz \
+  $B/mc_bind_osc_nmos_ss_1.98V_27C.json.gz $B/mc_bind_osc_nmos_tt_1.62V_-40C.json.gz \
+  $B/mc_bind_osc_nmos_tt_1.98V_27C.json.gz \
+  $B/mc_bind_osc_pmos.json.gz $B/mc_bind_osc_subth_-40C.json.gz $B/mc_bind_osc_subth_27C.json.gz \
+  $B/mc_bind_osc_wire_ff_1.62V_27C.json.gz $B/mc_bind_osc_wire_ff_1.98V_27C.json.gz \
+  $B/mc_bind_osc_wire_fs_1.98V_27C.json.gz $B/mc_bind_osc_wire_sf_1.98V_27C.json.gz \
+  $B/mc_bind_osc_wire_ss_1.98V_27C.json.gz $B/mc_bind_osc_wire_tt_1.62V_-40C.json.gz \
+  $B/mc_bind_osc_wire_tt_1.98V_27C.json.gz -o mcbind.json
+python3 -I sim/solve/yield_samples.py build freq.json mcnom.json mcbind.json -o samples.json
+cmp samples.json sim/solve/mc/samples-binding-cells.json     # identical
+```
+
+Checked 2026-11-13 against `17d4279`: byte-identical, on CPython 3.10.22, 3.11.17, 3.12.3 and 3.13.16
+(this file rounds to 6 decimals, so unlike the rows 1-4 record it has no interpreter floor).
+`sim/solve/test_records_reproduce.py` asserts it on every `npm test` run from the same explicit list,
+reading no glob. The `klt yield` step of the block above is not covered: no released klt runs it
+(2AMLogic/klayout-tools#5018).

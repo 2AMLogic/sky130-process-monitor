@@ -38,3 +38,55 @@ analyze.py extract-mc sim/solve/mc/reports/*.json.gz sim/solve/mc/reports-sized/
 python3 -I sim/solve/yield_samples.py build freq.json mcnom.json mcbind.json -o sim/solve/mc/samples-sized.json
 klt yield sim/solve/mc/samples-sized.json --format json > sim/solve/mc/yield-sized.json   # exit 3 = fail
 ```
+
+## Inputs pinned 2026-11-13 (#140) — appended; nothing above this line is edited
+
+The Reproduce block above globs four directories. One of them has moved: `reports-sized/*.json.gz`
+resolved to the **24 osc_subth chunks** below at this record's commit (`0930916`), and to 120 files
+from `6d7a431` onwards, when the osc_hd / osc_nmos / osc_pmos / osc_wire sized campaign landed. Read
+as a glob today, that block produces `samples-sized-bank.json`, not `samples-sized.json` — the two
+records' Reproduce blocks differ in nothing but what the same glob denotes. Nothing above is edited
+and no committed JSON is regenerated; this note pins the set instead.
+
+The other three globs are unchanged since this commit: `grid_*.json.gz` is the 8 files below
+(including the `_5p` variant and the two off-nominal cold-margin grids), `mc_osc_*.json.gz` the 6
+below, and `reports/*.json.gz` the 18 below.
+
+**Pinned input set** (8 grid + 6 nominal-MC + 18 binding-cell + 24 sized osc_subth chunks, in this
+order — order is part of the pin, because `analyze.py extract-mc` pools same-cell samples by
+concatenation, and the sized chunks `c0..c3` pool onto the same cells). The brace forms below name
+exactly those files and contain no wildcard, so nothing new in those directories can join them:
+
+```
+R=sim/sensitivity/records/reports
+B=sim/solve/mc/reports
+Z=sim/solve/mc/reports-sized
+BIND=ff_1.62V_27C,ff_1.98V_27C,fs_1.98V_27C,sf_1.98V_27C,ss_1.98V_27C,tt_1.62V_-40C,tt_1.98V_27C
+CELL=ff_1.62V_27C,ff_1.98V_27C,fs_1.98V_27C,sf_1.98V_27C,ss_1.98V_27C,tt_1.98V_27C
+
+python3 -I sim/sensitivity/analyze.py extract \
+  $R/grid_osc_hd.json.gz $R/grid_osc_hd_5p.json.gz $R/grid_osc_nmos.json.gz \
+  $R/grid_osc_pmos.json.gz $R/grid_osc_subth.json.gz $R/grid_osc_subth_sf_cold.json.gz \
+  $R/grid_osc_wire.json.gz $R/grid_osc_wire_sf_cold.json.gz -o freq.json
+python3 -I sim/sensitivity/analyze.py extract-mc \
+  $R/mc_osc_hd.json.gz $R/mc_osc_hd_5p.json.gz $R/mc_osc_nmos.json.gz \
+  $R/mc_osc_pmos.json.gz $R/mc_osc_subth.json.gz $R/mc_osc_wire.json.gz -o mcnom.json
+python3 -I sim/sensitivity/analyze.py extract-mc \
+  $B/mc_bind_osc_hd.json.gz $B/mc_bind_osc_nmos_{$BIND}.json.gz $B/mc_bind_osc_pmos.json.gz \
+  $B/mc_bind_osc_subth_-40C.json.gz $B/mc_bind_osc_subth_27C.json.gz \
+  $B/mc_bind_osc_wire_{$BIND}.json.gz \
+  $Z/mc_sized_osc_subth_{$CELL}_c{0,1,2,3}.json.gz -o mcbind.json          # 18 + 24 reports
+python3 -I sim/solve/yield_samples.py build freq.json mcnom.json mcbind.json -o samples.json
+cmp samples.json sim/solve/mc/samples-sized.json                           # identical
+
+# the registering negative control of the section above, same draws, same inputs:
+python3 -I sim/solve/yield_samples.py build freq.json mcnom.json mcbind.json --defect 0.3 \
+  -o negctl.json
+cmp negctl.json sim/solve/mc/samples-sized-negctl-hd0.3.json               # identical
+```
+
+Checked 2026-11-13 against `17d4279`: both byte-identical, on CPython 3.10.22, 3.11.17, 3.12.3 and
+3.13.16. `sim/solve/test_records_reproduce.py` asserts both on every `npm test` run from the same
+literal 56-path list (8 + 6 + 18 + 24), reading no glob. The `klt yield` step of the block above is not covered: no
+released klt runs it (2AMLogic/klayout-tools#5018). `yield-sized.json`, the weak `+0.05` control, is
+`klt yield` output rather than a `yield_samples.py` output and is likewise not covered.
