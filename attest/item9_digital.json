@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "kind": "t1-attestation-inventory",
+  "t1_item": 9,
+  "description": "Digital partition testbenches: the readout cocotb bench (rtl/readout/, spec rows 5 and 6) and the two klt functional-verification requests that drive it -- the pre-layout run cited as 5.digital and the SDF-annotated post-route re-run cited as 7.digital. The cold start is the documented entry point `make -C verification/readout` (check_env, Verilator lint -Wall, then the full cocotb suite on Icarus); it reproduces the pre-layout run in full. The SDF re-run is NOT re-executed: request-sdf.json names host-absolute PDK timing-model and SDF paths (verification/README.md), so a third party adjusts them for their own install. verification/smoke/ is deliberately excluded: it exercises the placeholder rtl/smoke/smoke.v and backs no claimed measurement.",
+  "cold_start": {
+    "argv": ["make", "-C", "verification/readout"],
+    "cwd": ".",
+    "local_only": true,
+    "timeout_s": 1800
+  },
+  "testbenches": [
+    "verification/readout/Makefile",
+    "verification/readout/cocotb.mk",
+    "verification/readout/functional-verification.json",
+    "verification/readout/request-sdf.json",
+    "verification/readout/test_readout.py"
+  ],
+  "pins": {
+    "pdk": {
+      "name": "sky130A",
+      "revision": "c6d73a35f524070e85faff4a6a9eef49553ebc2b"
+    },
+    "tools": {
+      "cocotb": "2.1.0",
+      "iverilog": "13.0",
+      "klayout-tools": "0.9.1",
+      "verilator": "5.050",
+      "yosys": "0.67"
+    }
+  }
+}

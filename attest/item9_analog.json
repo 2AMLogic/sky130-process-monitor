@@ -1,0 +1,952 @@
+{
+  "schema_version": 1,
+  "kind": "t1-attestation-inventory",
+  "t1_item": 9,
+  "description": "Analog partition testbenches: every committed SPICE deck behind a recorded analog measurement, plus every committed `klt sim` request that drives one. Cold starts are bounded by construction and do NOT re-run the multi-hour batch-fleet grids: the oscillator-bank and smoke decks run their real single-corner `ngspice -b` locally (--no-record, so a repeat appends nothing to the append-only records), and every `klt sim` request is validated with `--dry-run` (deck staging, model resolution, corner/Monte-Carlo expansion against the pinned PDK) rather than simulated. The full fleet invocation for each grid is documented in that bench's README and in manifests/README.md; it is not executed by this attestation.",
+  "cold_start": {
+    "argv": [
+      "sim/check_env.sh"
+    ],
+    "cwd": ".",
+    "local_only": true,
+    "timeout_s": 300
+  },
+  "testbenches": [
+    {
+      "path": "sim/check_env.sh"
+    },
+    {
+      "path": "sim/osc_bank/bench_osc_hd.spice",
+      "cold_start": {
+        "argv": [
+          "sim/osc_bank/run.sh",
+          "--no-record",
+          "osc_hd"
+        ],
+        "cwd": ".",
+        "local_only": true,
+        "timeout_s": 1800
+      }
+    },
+    {
+      "path": "sim/osc_bank/bench_osc_nmos.spice",
+      "cold_start": {
+        "argv": [
+          "sim/osc_bank/run.sh",
+          "--no-record",
+          "osc_nmos"
+        ],
+        "cwd": ".",
+        "local_only": true,
+        "timeout_s": 1800
+      }
+    },
+    {
+      "path": "sim/osc_bank/bench_osc_pmos.spice",
+      "cold_start": {
+        "argv": [
+          "sim/osc_bank/run.sh",
+          "--no-record",
+          "osc_pmos"
+        ],
+        "cwd": ".",
+        "local_only": true,
+        "timeout_s": 1800
+      }
+    },
+    {
+      "path": "sim/osc_bank/bench_osc_subth.spice",
+      "cold_start": {
+        "argv": [
+          "sim/osc_bank/run.sh",
+          "--no-record",
+          "osc_subth"
+        ],
+        "cwd": ".",
+        "local_only": true,
+        "timeout_s": 1800
+      }
+    },
+    {
+      "path": "sim/osc_bank/bench_osc_wire.spice",
+      "cold_start": {
+        "argv": [
+          "sim/osc_bank/run.sh",
+          "--no-record",
+          "osc_wire"
+        ],
+        "cwd": ".",
+        "local_only": true,
+        "timeout_s": 1800
+      }
+    },
+    {
+      "path": "sim/osc_bank/run.sh"
+    },
+    {
+      "path": "sim/pex/osc/osc_hd_dut.spice"
+    },
+    {
+      "path": "sim/pex/osc/tb_osc_hd.spice"
+    },
+    {
+      "path": "sim/pex/osc/tb_osc_nmos.spice"
+    },
+    {
+      "path": "sim/pex/osc/tb_osc_nmos_relaxed.spice"
+    },
+    {
+      "path": "sim/pex/osc/tb_osc_pmos.spice"
+    },
+    {
+      "path": "sim/pex/osc/tb_osc_subth.spice"
+    },
+    {
+      "path": "sim/pex/osc/tb_osc_wire.spice"
+    },
+    {
+      "path": "sim/pex/osc/tb_osc_wire_relaxed.spice"
+    },
+    {
+      "path": "sim/pex/probe/osc_subth_vbp_probe.cir"
+    },
+    {
+      "path": "sim/pex/probe/run_probe.sh"
+    },
+    {
+      "path": "sim/pex/requests/osc_hd.json",
+      "cold_start": {
+        "argv": [
+          "klt",
+          "sim",
+          "osc_hd.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/pex/requests",
+        "local_only": true,
+        "timeout_s": 600
+      }
+    },
+    {
+      "path": "sim/pex/requests/osc_nmos.json",
+      "cold_start": {
+        "argv": [
+          "klt",
+          "sim",
+          "osc_nmos.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/pex/requests",
+        "local_only": true,
+        "timeout_s": 600
+      }
+    },
+    {
+      "path": "sim/pex/requests/osc_nmos_coldcell.json",
+      "cold_start": {
+        "argv": [
+          "klt",
+          "sim",
+          "osc_nmos_coldcell.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/pex/requests",
+        "local_only": true,
+        "timeout_s": 600
+      }
+    },
+    {
+      "path": "sim/pex/requests/osc_pmos.json",
+      "cold_start": {
+        "argv": [
+          "klt",
+          "sim",
+          "osc_pmos.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/pex/requests",
+        "local_only": true,
+        "timeout_s": 600
+      }
+    },
+    {
+      "path": "sim/pex/requests/osc_subth.json",
+      "cold_start": {
+        "argv": [
+          "klt",
+          "sim",
+          "osc_subth.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/pex/requests",
+        "local_only": true,
+        "timeout_s": 600
+      }
+    },
+    {
+      "path": "sim/pex/requests/osc_wire.json",
+      "cold_start": {
+        "argv": [
+          "klt",
+          "sim",
+          "osc_wire.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/pex/requests",
+        "local_only": true,
+        "timeout_s": 600
+      }
+    },
+    {
+      "path": "sim/pex/requests/osc_wire_coldcell.json",
+      "cold_start": {
+        "argv": [
+          "klt",
+          "sim",
+          "osc_wire_coldcell.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/pex/requests",
+        "local_only": true,
+        "timeout_s": 600
+      }
+    },
+    {
+      "path": "sim/power/requests/active_osc_hd.json",
+      "cold_start": {
+        "argv": [
+          "klt",
+          "sim",
+          "active_osc_hd.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/power/requests",
+        "local_only": true,
+        "timeout_s": 600
+      }
+    },
+    {
+      "path": "sim/power/requests/active_osc_nmos.json",
+      "cold_start": {
+        "argv": [
+          "klt",
+          "sim",
+          "active_osc_nmos.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/power/requests",
+        "local_only": true,
+        "timeout_s": 600
+      }
+    },
+    {
+      "path": "sim/power/requests/active_osc_pmos.json",
+      "cold_start": {
+        "argv": [
+          "klt",
+          "sim",
+          "active_osc_pmos.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/power/requests",
+        "local_only": true,
+        "timeout_s": 600
+      }
+    },
+    {
+      "path": "sim/power/requests/active_osc_subth.json",
+      "cold_start": {
+        "argv": [
+          "klt",
+          "sim",
+          "active_osc_subth.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/power/requests",
+        "local_only": true,
+        "timeout_s": 600
+      }
+    },
+    {
+      "path": "sim/power/requests/active_osc_wire.json",
+      "cold_start": {
+        "argv": [
+          "klt",
+          "sim",
+          "active_osc_wire.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/power/requests",
+        "local_only": true,
+        "timeout_s": 600
+      }
+    },
+    {
+      "path": "sim/power/requests/idle_osc_hd.json",
+      "cold_start": {
+        "argv": [
+          "klt",
+          "sim",
+          "idle_osc_hd.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/power/requests",
+        "local_only": true,
+        "timeout_s": 600
+      }
+    },
+    {
+      "path": "sim/power/requests/idle_osc_nmos.json",
+      "cold_start": {
+        "argv": [
+          "klt",
+          "sim",
+          "idle_osc_nmos.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/power/requests",
+        "local_only": true,
+        "timeout_s": 600
+      }
+    },
+    {
+      "path": "sim/power/requests/idle_osc_pmos.json",
+      "cold_start": {
+        "argv": [
+          "klt",
+          "sim",
+          "idle_osc_pmos.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/power/requests",
+        "local_only": true,
+        "timeout_s": 600
+      }
+    },
+    {
+      "path": "sim/power/requests/idle_osc_subth.json",
+      "cold_start": {
+        "argv": [
+          "klt",
+          "sim",
+          "idle_osc_subth.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/power/requests",
+        "local_only": true,
+        "timeout_s": 600
+      }
+    },
+    {
+      "path": "sim/power/requests/idle_osc_wire.json",
+      "cold_start": {
+        "argv": [
+          "klt",
+          "sim",
+          "idle_osc_wire.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/power/requests",
+        "local_only": true,
+        "timeout_s": 600
+      }
+    },
+    {
+      "path": "sim/power/tb/active_osc_hd.spice"
+    },
+    {
+      "path": "sim/power/tb/active_osc_nmos.spice"
+    },
+    {
+      "path": "sim/power/tb/active_osc_pmos.spice"
+    },
+    {
+      "path": "sim/power/tb/active_osc_subth.spice"
+    },
+    {
+      "path": "sim/power/tb/active_osc_wire.spice"
+    },
+    {
+      "path": "sim/power/tb/idle_osc_hd.spice"
+    },
+    {
+      "path": "sim/power/tb/idle_osc_nmos.spice"
+    },
+    {
+      "path": "sim/power/tb/idle_osc_pmos.spice"
+    },
+    {
+      "path": "sim/power/tb/idle_osc_subth.spice"
+    },
+    {
+      "path": "sim/power/tb/idle_osc_wire.spice"
+    },
+    {
+      "path": "sim/sensitivity/osc/tb_osc_hd.spice"
+    },
+    {
+      "path": "sim/sensitivity/osc/tb_osc_nmos.spice"
+    },
+    {
+      "path": "sim/sensitivity/osc/tb_osc_pmos.spice"
+    },
+    {
+      "path": "sim/sensitivity/osc/tb_osc_subth.spice"
+    },
+    {
+      "path": "sim/sensitivity/osc/tb_osc_wire.spice"
+    },
+    {
+      "path": "sim/sensitivity/osc/tb_osc_wire_probe.spice"
+    },
+    {
+      "path": "sim/sensitivity/requests/grid_osc_hd.json",
+      "cold_start": {
+        "argv": [
+          "klt",
+          "sim",
+          "grid_osc_hd.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/sensitivity/requests",
+        "local_only": true,
+        "timeout_s": 600
+      }
+    },
+    {
+      "path": "sim/sensitivity/requests/grid_osc_hd_5p.json",
+      "cold_start": {
+        "argv": [
+          "klt",
+          "sim",
+          "grid_osc_hd_5p.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/sensitivity/requests",
+        "local_only": true,
+        "timeout_s": 600
+      }
+    },
+    {
+      "path": "sim/sensitivity/requests/grid_osc_nmos.json",
+      "cold_start": {
+        "argv": [
+          "klt",
+          "sim",
+          "grid_osc_nmos.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/sensitivity/requests",
+        "local_only": true,
+        "timeout_s": 600
+      }
+    },
+    {
+      "path": "sim/sensitivity/requests/grid_osc_pmos.json",
+      "cold_start": {
+        "argv": [
+          "klt",
+          "sim",
+          "grid_osc_pmos.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/sensitivity/requests",
+        "local_only": true,
+        "timeout_s": 600
+      }
+    },
+    {
+      "path": "sim/sensitivity/requests/grid_osc_subth.json",
+      "cold_start": {
+        "argv": [
+          "klt",
+          "sim",
+          "grid_osc_subth.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/sensitivity/requests",
+        "local_only": true,
+        "timeout_s": 600
+      }
+    },
+    {
+      "path": "sim/sensitivity/requests/grid_osc_subth_sf_cold.json",
+      "cold_start": {
+        "argv": [
+          "klt",
+          "sim",
+          "grid_osc_subth_sf_cold.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/sensitivity/requests",
+        "local_only": true,
+        "timeout_s": 600
+      }
+    },
+    {
+      "path": "sim/sensitivity/requests/grid_osc_wire.json",
+      "cold_start": {
+        "argv": [
+          "klt",
+          "sim",
+          "grid_osc_wire.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/sensitivity/requests",
+        "local_only": true,
+        "timeout_s": 600
+      }
+    },
+    {
+      "path": "sim/sensitivity/requests/grid_osc_wire_sf_cold.json",
+      "cold_start": {
+        "argv": [
+          "klt",
+          "sim",
+          "grid_osc_wire_sf_cold.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/sensitivity/requests",
+        "local_only": true,
+        "timeout_s": 600
+      }
+    },
+    {
+      "path": "sim/sensitivity/requests/mc_offnom_osc_hd.json",
+      "cold_start": {
+        "argv": [
+          "klt",
+          "sim",
+          "mc_offnom_osc_hd.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/sensitivity/requests",
+        "local_only": true,
+        "timeout_s": 600
+      }
+    },
+    {
+      "path": "sim/sensitivity/requests/mc_offnom_osc_hd_5p.json",
+      "cold_start": {
+        "argv": [
+          "klt",
+          "sim",
+          "mc_offnom_osc_hd_5p.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/sensitivity/requests",
+        "local_only": true,
+        "timeout_s": 600
+      }
+    },
+    {
+      "path": "sim/sensitivity/requests/mc_offnom_osc_nmos.json",
+      "cold_start": {
+        "argv": [
+          "klt",
+          "sim",
+          "mc_offnom_osc_nmos.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/sensitivity/requests",
+        "local_only": true,
+        "timeout_s": 600
+      }
+    },
+    {
+      "path": "sim/sensitivity/requests/mc_offnom_osc_pmos.json",
+      "cold_start": {
+        "argv": [
+          "klt",
+          "sim",
+          "mc_offnom_osc_pmos.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/sensitivity/requests",
+        "local_only": true,
+        "timeout_s": 600
+      }
+    },
+    {
+      "path": "sim/sensitivity/requests/mc_offnom_osc_subth_1.62V_125C.json",
+      "cold_start": {
+        "argv": [
+          "klt",
+          "sim",
+          "mc_offnom_osc_subth_1.62V_125C.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/sensitivity/requests",
+        "local_only": true,
+        "timeout_s": 600
+      }
+    },
+    {
+      "path": "sim/sensitivity/requests/mc_offnom_osc_subth_1.98V_-40C.json",
+      "cold_start": {
+        "argv": [
+          "klt",
+          "sim",
+          "mc_offnom_osc_subth_1.98V_-40C.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/sensitivity/requests",
+        "local_only": true,
+        "timeout_s": 600
+      }
+    },
+    {
+      "path": "sim/sensitivity/requests/mc_offnom_osc_subth_sf_1.98V_-40C.json",
+      "cold_start": {
+        "argv": [
+          "klt",
+          "sim",
+          "mc_offnom_osc_subth_sf_1.98V_-40C.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/sensitivity/requests",
+        "local_only": true,
+        "timeout_s": 600
+      }
+    },
+    {
+      "path": "sim/sensitivity/requests/mc_offnom_osc_wire.json",
+      "cold_start": {
+        "argv": [
+          "klt",
+          "sim",
+          "mc_offnom_osc_wire.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/sensitivity/requests",
+        "local_only": true,
+        "timeout_s": 600
+      }
+    },
+    {
+      "path": "sim/sensitivity/requests/mc_osc_hd.json",
+      "cold_start": {
+        "argv": [
+          "klt",
+          "sim",
+          "mc_osc_hd.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/sensitivity/requests",
+        "local_only": true,
+        "timeout_s": 600
+      }
+    },
+    {
+      "path": "sim/sensitivity/requests/mc_osc_hd_5p.json",
+      "cold_start": {
+        "argv": [
+          "klt",
+          "sim",
+          "mc_osc_hd_5p.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/sensitivity/requests",
+        "local_only": true,
+        "timeout_s": 600
+      }
+    },
+    {
+      "path": "sim/sensitivity/requests/mc_osc_nmos.json",
+      "cold_start": {
+        "argv": [
+          "klt",
+          "sim",
+          "mc_osc_nmos.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/sensitivity/requests",
+        "local_only": true,
+        "timeout_s": 600
+      }
+    },
+    {
+      "path": "sim/sensitivity/requests/mc_osc_pmos.json",
+      "cold_start": {
+        "argv": [
+          "klt",
+          "sim",
+          "mc_osc_pmos.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/sensitivity/requests",
+        "local_only": true,
+        "timeout_s": 600
+      }
+    },
+    {
+      "path": "sim/sensitivity/requests/mc_osc_subth.json",
+      "cold_start": {
+        "argv": [
+          "klt",
+          "sim",
+          "mc_osc_subth.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/sensitivity/requests",
+        "local_only": true,
+        "timeout_s": 600
+      }
+    },
+    {
+      "path": "sim/sensitivity/requests/mc_osc_wire.json",
+      "cold_start": {
+        "argv": [
+          "klt",
+          "sim",
+          "mc_osc_wire.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/sensitivity/requests",
+        "local_only": true,
+        "timeout_s": 600
+      }
+    },
+    {
+      "path": "sim/sensitivity/requests/probe_wire_sf.json",
+      "cold_start": {
+        "argv": [
+          "klt",
+          "sim",
+          "probe_wire_sf.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/sensitivity/requests",
+        "local_only": true,
+        "timeout_s": 600
+      }
+    },
+    {
+      "path": "sim/sensitivity/requests/probe_wire_val.json",
+      "cold_start": {
+        "argv": [
+          "klt",
+          "sim",
+          "probe_wire_val.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/sensitivity/requests",
+        "local_only": true,
+        "timeout_s": 600
+      }
+    },
+    {
+      "path": "sim/smoke/inv_smoke.spice",
+      "cold_start": {
+        "argv": [
+          "sim/smoke/run.sh",
+          "--no-record"
+        ],
+        "cwd": ".",
+        "local_only": true,
+        "timeout_s": 600
+      }
+    },
+    {
+      "path": "sim/smoke/run.sh"
+    },
+    {
+      "path": "sim/subthreshold/osc_grid.request.json",
+      "cold_start": {
+        "argv": [
+          "klt",
+          "sim",
+          "osc_grid.request.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/subthreshold",
+        "local_only": true,
+        "timeout_s": 600
+      }
+    },
+    {
+      "path": "sim/subthreshold/osc_grid_cold_2ms.request.json",
+      "cold_start": {
+        "argv": [
+          "klt",
+          "sim",
+          "osc_grid_cold_2ms.request.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/subthreshold",
+        "local_only": true,
+        "timeout_s": 600
+      }
+    },
+    {
+      "path": "sim/subthreshold/osc_grid_cold_2ms_edges.request.json",
+      "cold_start": {
+        "argv": [
+          "klt",
+          "sim",
+          "osc_grid_cold_2ms_edges.request.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/subthreshold",
+        "local_only": true,
+        "timeout_s": 600
+      }
+    },
+    {
+      "path": "sim/subthreshold/osc_grid_fast.request.json",
+      "cold_start": {
+        "argv": [
+          "klt",
+          "sim",
+          "osc_grid_fast.request.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/subthreshold",
+        "local_only": true,
+        "timeout_s": 600
+      }
+    },
+    {
+      "path": "sim/subthreshold/osc_grid_long.request.json",
+      "cold_start": {
+        "argv": [
+          "klt",
+          "sim",
+          "osc_grid_long.request.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/subthreshold",
+        "local_only": true,
+        "timeout_s": 600
+      }
+    },
+    {
+      "path": "sim/subthreshold/osc_mc.request.json",
+      "cold_start": {
+        "argv": [
+          "klt",
+          "sim",
+          "osc_mc.request.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/subthreshold",
+        "local_only": true,
+        "timeout_s": 600
+      }
+    },
+    {
+      "path": "sim/subthreshold/osc_mc_125_fast.request.json",
+      "cold_start": {
+        "argv": [
+          "klt",
+          "sim",
+          "osc_mc_125_fast.request.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/subthreshold",
+        "local_only": true,
+        "timeout_s": 600
+      }
+    },
+    {
+      "path": "sim/subthreshold/osc_mc_cold_long.request.json",
+      "cold_start": {
+        "argv": [
+          "klt",
+          "sim",
+          "osc_mc_cold_long.request.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/subthreshold",
+        "local_only": true,
+        "timeout_s": 600
+      }
+    },
+    {
+      "path": "sim/subthreshold/osc_mc_control0.request.json",
+      "cold_start": {
+        "argv": [
+          "klt",
+          "sim",
+          "osc_mc_control0.request.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/subthreshold",
+        "local_only": true,
+        "timeout_s": 600
+      }
+    },
+    {
+      "path": "sim/subthreshold/osc_subth_tb.spice"
+    },
+    {
+      "path": "sim/subthreshold/probe.request.json",
+      "cold_start": {
+        "argv": [
+          "klt",
+          "sim",
+          "probe.request.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/subthreshold",
+        "local_only": true,
+        "timeout_s": 600
+      }
+    },
+    {
+      "path": "sim/subthreshold/probe_gmin1e-15_abstol1e-18.request.json",
+      "cold_start": {
+        "argv": [
+          "klt",
+          "sim",
+          "probe_gmin1e-15_abstol1e-18.request.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/subthreshold",
+        "local_only": true,
+        "timeout_s": 600
+      }
+    },
+    {
+      "path": "sim/subthreshold/probe_gmin1e-17.request.json",
+      "cold_start": {
+        "argv": [
+          "klt",
+          "sim",
+          "probe_gmin1e-17.request.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/subthreshold",
+        "local_only": true,
+        "timeout_s": 600
+      }
+    },
+    {
+      "path": "sim/subthreshold/probe_gmin1e-18.request.json",
+      "cold_start": {
+        "argv": [
+          "klt",
+          "sim",
+          "probe_gmin1e-18.request.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/subthreshold",
+        "local_only": true,
+        "timeout_s": 600
+      }
+    },
+    {
+      "path": "sim/subthreshold/probe_tb.spice"
+    }
+  ],
+  "pins": {
+    "pdk": {
+      "name": "sky130A",
+      "revision": "c6d73a35f524070e85faff4a6a9eef49553ebc2b"
+    },
+    "tools": {
+      "klayout-tools": "0.9.1",
+      "ngspice": ">=46"
+    }
+  }
+}

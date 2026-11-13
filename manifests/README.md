@@ -23,8 +23,12 @@ checklist: the `klt signoff` input and its committed output.
   repo's `LICENSE` does not relicense the vendored copy. When upstream moves,
   re-vendor and regenerate the record in the same PR.
 - **`sky130-process-monitor.signoff.json`** — the **verdict of record**,
-  graded with `klayout-tools==0.9.1`. Today 2.analog, 10.analog and 10.digital read
-  `met` and T1 5.analog reads `unmet` / `check_failed` (the cited `model-run` envelope grades, and fails its targets), and the other 18 T1 rows read `unmet` / `no_evidence`; the T2-T4 tier rows read `unmet` / `tier_not_supported` (the grader does not grade those tiers). Never hand-edit it.
+  graded with `klayout-tools==0.9.1`. Today 13 of the 22 T1 rows read `met`
+  (items 1, 2, 3, 9 and 10 on both partitions, plus 4.digital, 5.digital and 7.digital); 6.digital
+  reads `not_applicable`; 5.analog, 6.analog and 7.analog read `unmet` / `check_failed` (their
+  cited envelopes grade, and fail their targets); and 4.analog, 8 and 11 on both partitions read
+  `unmet` / `no_evidence`. The T2-T4 tier rows read `unmet` / `tier_not_supported` (the grader does
+  not grade those tiers). Never hand-edit it.
 
 ## Regenerate
 
@@ -81,6 +85,59 @@ any change.
 - `3.analog`: `drc/osc_bank.report.json`; `3.digital`: `drc/readout.report.json` (hash = the report's `provenance.input.content_hash`,
   i.e. the GDS). Re-run `klt drc` (commands in `drc/README.md`) after any GDS change, then re-attest item 2 and regenerate the signoff record.
   The coverage disclosure and the native-deck disagreement on the analog stream are in `drc/README.md`.
+
+## Item 9 (testbenches shipped)
+
+Two inventories, one per partition (item 9 is graded per partition):
+
+- `attest/item9_analog.json` -> `evidence/item9_analog.json`, cited as `9.analog`. It pins every
+  committed analog SPICE deck **and** every committed `klt sim` request that drives one (91 files).
+- `attest/item9_digital.json` -> `evidence/item9_digital.json`, cited as `9.digital`. It pins the
+  readout cocotb bench and its two `klt functional-verification` requests.
+
+Regenerate either with `klt signoff --attest 9 --inventory attest/item9_<p>.json -o
+evidence/item9_<p>.json`, then regenerate the signoff record. The manifest pins each envelope by
+its `provenance.input.content_hash` (the inventory's own sha256), so an inventory edit without a
+re-attest turns the row stale.
+
+**Run the producer from a different environment than the benches.** `klt signoff --attest` strips
+its own venv's `bin` from every declared command's `PATH` (so a bare `python3` resolves to the
+repo's interpreter). If `klt` and the pinned `cocotb`/`ngspice` share one venv, the cold starts
+lose that venv. Install the toolchain pins in a worktree venv, put its `bin` on `PATH`, and invoke
+the producer through a throwaway environment:
+
+```console
+python3 -m venv .venv && .venv/bin/pip install cocotb==2.1.0 klayout-tools==0.9.1
+PATH="$PWD/.venv/bin:$PATH" uvx --from "klayout-tools==0.9.1" klt signoff --attest 9 \
+    --inventory attest/item9_analog.json -o evidence/item9_analog.json
+```
+
+### What the cold starts do and do not cover (disclosure)
+
+`klt signoff --attest 9` only records that each declared cold start exited `0`; it cannot check that
+the command reproduces the measurement it is attached to (the tier doc says so for items 1, 2, 9 and
+10 — "Citing them honestly is the claimant's responsibility"). Stated plainly, then:
+
+| Bench family | Declared cold start | Does it reproduce the claimed numbers? |
+|---|---|---|
+| `sim/smoke/`, `sim/osc_bank/` | `run.sh --no-record [osc]` — the real single-corner `ngspice -b` | **Yes**, in full: these benches are single-unit and local by design. `--no-record` exists so repeating the cold start does not grow the append-only `measurements/*.jsonl`. |
+| `sim/sensitivity/`, `sim/power/`, `sim/pex/`, `sim/subthreshold/` | `klt sim <request> --dry-run` | **No.** The dry run validates the committed request and deck against the pinned PDK — deck staging, model resolution, corner / Monte-Carlo expansion and seeds — without simulating. Those grids ran on the batch fleet over hours; re-running them is not an attestation-time operation. Each bench's README gives the full fleet invocation (`klt sim --batch-set …`, `klt pex … --submit-only` / `--attach`), and the committed `records/` carry the results. |
+| `sim/pex/probe/osc_subth_vbp_probe.cir` | none (pinned by hash only) | **No.** One `ngspice -b`, but minutes on the extracted `osc_subth` netlist; it is a vh-split diagnosis probe (#117), not a spec-row measurement. |
+| `verification/readout/` | `make -C verification/readout` | **Yes** for the pre-layout run cited as `5.digital`: check-env, Verilator lint `-Wall`, then the full cocotb suite on Icarus (9/9). |
+| `verification/readout/request-sdf.json` | none (pinned by hash only) | **No.** The SDF-annotated re-run cited as `7.digital` names host-absolute PDK timing-model and SDF paths (`verification/README.md`); a third party adjusts them for their own install. |
+
+Rows the spec names that no committed bench covers, so no inventory lists one: **counter power**
+(spec §7's "one oscillator running plus counter" — the counter has no SPICE-level netlist, stated
+with every verdict in `sim/power/analyze_power.py`) and **spec §8 area**, whose testbench is the
+layout/P&R report, not a bench (`layout/README.md`). `verification/smoke/` is excluded on purpose:
+it exercises the placeholder `rtl/smoke/smoke.v` and backs no claimed measurement.
+
+### CI
+
+`.github/workflows/signoff.yml` runs `klt signoff --attest 9 --check evidence/item9_<p>.json` for
+both partitions. Every declared cold start is `local_only` (they need the pinned PDK, ngspice,
+Icarus, Verilator and cocotb, which the runner lacks), so `--check` re-hashes the inventoried files
+and carries the committed outcome of the commands, exactly as it does for items 1 and 2.
 
 ## Item 5 (digital)
 
