@@ -177,3 +177,59 @@ if "--append" in sys.argv:
                      testbench="sim/subthreshold/osc_subth_tb.spice", request="sim/subthreshold/osc_mc.request.json")
             fo.write(json.dumps(r) + "\n")
     print("appended records to", out)
+
+# --- 6. issue #44 follow-ups: >= 2 ms cold-cell re-run, gmin/abstol probe sweep, 5 MHz step audit
+cold = load("runs/osc_grid_cold_2ms.report.json.gz")[0]
+edges = load("runs/osc_grid_cold_2ms_edges.report.json.gz")[0]
+env2 = cold[1]["environment"]
+E = {cid(c): {m["name"]: m.get("value") for m in c["measurements"]} for c in edges[1]["corners"]}
+print("== cold-cell re-run (5n/2m; ngspice %s): f = 8/(t_b - t_a), rising edges 3 and 11 of v(out)=0.9 V" % env2.get("engine_version"))
+COLD = {}
+for c in cold[1]["corners"]:
+    k = cid(c); m = {x["name"]: x.get("value") for x in c["measurements"]}; COLD[k] = m
+    print("   %s %.2fV %4dC  t_a %s  t_b %s  f %s" % (k[0], k[1], k[2], m["t_a"], m["t_b"], m["f_osc_hz"] and "%.1f Hz" % m["f_osc_hz"]))
+vk = ("sf", 1.8, 27); prev = F[vk]; new = COLD[vk]["f_osc_hz"]
+print("   validation sf 1.80 V/27 C: 5n/400u (first run, ngspice 46) %.1f Hz vs 5n/2m (ngspice 47) %.1f Hz -> %.2f %% apart (tolerance 1 %%)" % (prev, new, 100 * abs(new / prev - 1)))
+print("== cold cells without f_osc in 2 ms: first rising edges and output swing (window 100 us..2 ms)")
+for k, m in sorted(E.items()):
+    per = (m["t_e2"] - m["t_e1"]) if m["t_e1"] and m["t_e2"] else None
+    print("   %s %.2fV %4dC  edge1 %s  edge2 %s  spacing-based f ~ %s  v(out) %.3g..%.3g V" % (
+        k[0], k[1], k[2], m["t_e1"], m["t_e2"], per and "%.0f Hz" % (1 / per), m["v_min"], m["v_max"]))
+print("== leakage-floor probe: Id at Vgs=0 [A], |Vds| 0.9 V, per solver setting")
+SWEEP = (("gmin1e-17", "probe_gmin1e-17"), ("gmin1e-18", "probe_gmin1e-18"), ("gmin1e-15_abstol1e-18", "probe_gmin1e-15_abstol1e-18"))
+PV = {"gmin1e-15": P}
+for tag, fn in SWEEP:
+    r = load("runs/%s.report.json.gz" % fn)[0]
+    PV[tag] = {cid(c)[0::2]: {m["name"]: m.get("value") for m in c["measurements"]} for c in r[1]["corners"]}
+for key in (("ss", -40), ("sf", -40), ("tt", 27)):
+    for d in ("n_w042", "p_w042", "l_w042"):
+        print("   %s %4dC %-6s %s" % (key[0], key[1], d, "  ".join("%s: %.4e" % (g, abs(PV[g][key]["i000_" + d])) for g in PV)))
+fl = [abs(PV["gmin1e-18"][k]["i000_" + d]) for k in PV["gmin1e-18"] for d in devs if k[1] == -40 and k[0] in ("ss", "sf", "fs")]
+print("   cold-corner Vgs=0 floor at gmin 1e-18: min %.4e max %.4e (gmin 1e-15: ~1.09e-14); gmin*Vds at 1e-15 = %.2e" % (min(fl), max(fl), 1e-15 * 0.9))
+print("   header pfet_lvt Id(|Vsg| 0.30 V, tt 27 C) per setting: %s" % "  ".join("%s: %.5e" % (g, abs(PV[g][("tt", 27)]["i300_l_w042"])) for g in PV))
+print("== 5 MHz audit: first-grid cells still at 2n step with f > 4.9 MHz:",
+      [(k, round(v / 1e3, 1)) for k, v in sorted(F.items()) if v and v > 4.9e6 and STEP[k] == "2n/80u"])
+
+if "--append-44" in sys.argv:
+    now = datetime.datetime.now(datetime.timezone.utc).isoformat(timespec="seconds")
+    base = {"date_utc": now, "kind": "SIMULATED", "ngspice": env2.get("engine_version"),
+            "models_lib_sha256": env2.get("models_lib_sha256"), "open_pdks_pin": "c6d73a35f524070e85faff4a6a9eef49553ebc2b",
+            "netlist": "design/osc_bank/osc_subth.spice", "testbench": "sim/subthreshold/osc_subth_tb.spice"}
+    out = os.path.join(REPO, "measurements", "subthreshold_records.jsonl")
+    with open(out, "a") as fo:
+        for (p, v, t), m in sorted(COLD.items()):
+            r = dict(base, record="osc_grid_cold_2ms", corner=p, vdd_V=v, temp_C=t, f_osc_hz=m["f_osc_hz"], t_a_s=m["t_a"], t_b_s=m["t_b"],
+                     no_complete_measurement_in_window=(m["f_osc_hz"] is None), tran_step_window="5n/2m",
+                     request="sim/subthreshold/osc_grid_cold_2ms.request.json", report=cold[0])
+            fo.write(json.dumps(r) + "\n")
+        for (p, v, t), m in sorted(E.items()):
+            r = dict(base, record="osc_cold_edges", corner=p, vdd_V=v, temp_C=t, values=m, tran_step_window="5n/2m",
+                     request="sim/subthreshold/osc_grid_cold_2ms_edges.request.json", report=edges[0])
+            fo.write(json.dumps(r) + "\n")
+        for tag, fn in SWEEP:
+            for (p, t), m in sorted(PV[tag].items()):
+                r = dict(base, record="device_probe_solver_sweep", corner=p, vdd_V=1.8, temp_C=t, vds_V=0.9, solver=tag, values=m,
+                         testbench="sim/subthreshold/probe_tb.spice", request="sim/subthreshold/%s.request.json" % fn,
+                         report="sim/subthreshold/runs/%s.report.json.gz" % fn)
+                fo.write(json.dumps(r) + "\n")
+        print("appended issue-44 records to", out)

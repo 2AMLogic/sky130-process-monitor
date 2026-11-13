@@ -1,0 +1,93 @@
+{
+  "netlist": "osc_subth_tb.spice",
+  "engine": "ngspice",
+  "models": {
+    "pdk": "sky130A",
+    "lib": "libs.tech/ngspice/sky130.lib.spice"
+  },
+  "corners": {
+    "units": [
+      {
+        "process": "ss",
+        "supply_v": {
+          "vdd": 1.62
+        },
+        "temperature_c": -40
+      },
+      {
+        "process": "ss",
+        "supply_v": {
+          "vdd": 1.8
+        },
+        "temperature_c": -40
+      },
+      {
+        "process": "ss",
+        "supply_v": {
+          "vdd": 1.98
+        },
+        "temperature_c": -40
+      },
+      {
+        "process": "sf",
+        "supply_v": {
+          "vdd": 1.62
+        },
+        "temperature_c": -40
+      },
+      {
+        "process": "sf",
+        "supply_v": {
+          "vdd": 1.8
+        },
+        "temperature_c": -40
+      },
+      {
+        "process": "sf",
+        "supply_v": {
+          "vdd": 1.98
+        },
+        "temperature_c": -40
+      },
+      {
+        "process": "sf",
+        "supply_v": {
+          "vdd": 1.62
+        },
+        "temperature_c": 27
+      },
+      {
+        "process": "sf",
+        "supply_v": {
+          "vdd": 1.8
+        },
+        "temperature_c": 27
+      }
+    ]
+  },
+  "analysis": {
+    "kind": "tran",
+    "args": "5n 2m"
+  },
+  "measurements": [
+    {
+      "name": "t_a",
+      "spice": ".meas tran t_a when v(out)=0.9 rise=3",
+      "unit": "s"
+    },
+    {
+      "name": "t_b",
+      "spice": ".meas tran t_b when v(out)=0.9 rise=11",
+      "unit": "s"
+    },
+    {
+      "name": "f_osc_hz",
+      "spice": ".meas tran f_osc_hz param='8/(t_b-t_a)'",
+      "unit": "Hz"
+    }
+  ],
+  "options": {
+    "timeout_s": 3600,
+    "keep_artifacts": false
+  }
+}

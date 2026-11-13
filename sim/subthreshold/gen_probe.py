@@ -35,7 +35,10 @@ def tb():
                   "XM_%s d_%s gp vdd vdd %s %s" % (name, name, model, a)]
     return "\n".join(o) + "\n"
 
-def request():
+def request(gmin=1e-15, abstol=None):
+    opts = {"gmin": gmin}
+    if abstol is not None:
+        opts["abstol"] = abstol
     ms = []
     for name, *_ in DEVS:
         for vg in VG_POINTS:
@@ -51,9 +54,12 @@ def request():
             "corners": {"process": ["tt", "ff", "ss", "sf", "fs"], "supply_v": {"vdd": [1.80]},
                         "temperature_c": [-40, 27, 125]},
             "analysis": {"kind": "dc", "args": "Vg 0 0.6 0.01"},
-            "measurements": ms, "options": {"timeout_s": 200, "keep_artifacts": False, "ngspice_options": {"gmin": 1e-15}}}
+            "measurements": ms, "options": {"timeout_s": 200, "keep_artifacts": False, "ngspice_options": opts}}
 
 if __name__ == "__main__":
     d = sys.argv[1] if len(sys.argv) > 1 else "."
     open(d + "/probe_tb.spice", "w").write(tb())
     open(d + "/probe.request.json", "w").write(json.dumps(request(), indent=2) + "\n")
+    # gmin / abstol sweep variants (issue #44): same probe, one solver setting changed per request
+    for tag, gm, at in (("gmin1e-17", 1e-17, None), ("gmin1e-18", 1e-18, None), ("gmin1e-15_abstol1e-18", 1e-15, 1e-18)):
+        open(d + "/probe_%s.request.json" % tag, "w").write(json.dumps(request(gm, at), indent=2) + "\n")
