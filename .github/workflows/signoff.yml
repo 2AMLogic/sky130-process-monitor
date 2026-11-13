@@ -74,6 +74,18 @@ jobs:
           klt signoff --attest 1 --inventory attest/item1_digital.json \
                       --check evidence/item1_digital.json
 
+      # Every item-9 cold start is local_only (the pinned PDK, ngspice, Icarus,
+      # Verilator and cocotb, none of which this runner has): --check re-hashes
+      # every inventoried testbench and request and carries the committed
+      # outcome of the commands. Re-run them locally (see manifests/README.md,
+      # "Item 9 (testbenches shipped)").
+      - name: Re-attest T1 item 9 (analog, digital) and compare against the committed envelopes
+        run: |
+          klt signoff --attest 9 --inventory attest/item9_analog.json \
+                      --check evidence/item9_analog.json
+          klt signoff --attest 9 --inventory attest/item9_digital.json \
+                      --check evidence/item9_digital.json
+
       # The P&R freshness command needs OpenROAD and the pinned PDK, so it is
       # marked local_only: --check re-hashes the routed GDS and carries the
       # committed outcome. Re-run it locally (see layout/README.md).
