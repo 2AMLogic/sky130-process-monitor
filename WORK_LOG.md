@@ -5,6 +5,24 @@ role. Newest first.
 
 ### 2026-11-13
 
+- **PR #145**: ci: put every workflow on one CPython 3.12 floor and enforce it repo-wide
+- **Issue #144** (closed): Put drift.yml, signoff.yml and the README on the CPython >= 3.12 floor that #140 sets for tests.yml
+- **PR #143**: test(solve): pin each committed sim/solve output to an explicit input report list
+- **Issue #140** (closed): The rows 1-4 record's Reproduce line does not name its input report set
+- **PR #115**: chore: remove superseded digital smoke flow
+- **Issue #114** (closed): Remove digital smoke flow (rtl/smoke, verification/smoke): superseded by readout flow
+- **PR #141**: refactor: define each row 2-4 estimator once in solve.py and share it
+- **Issue #136** (closed): Share the row 2-4 estimators between solve.py and yield_samples.py (duplicated solve logic)
+- **PR #133**: docs: give each README result class a verified reproduce command
+- **Issue #131** (closed): README Reproduce section still says no simulated result is recorded, and every result-class row reads 'no recorded results yet'
+- **PR #139**: refactor(pex): derive the klt pex testbenches from the sensitivity benches
+- **Issue #137** (closed): Generate the sim/pex/osc testbenches from the sensitivity benches instead of keeping hand copies
+- **PR #128**: evidence: attest T1 item 9 testbench inventories for both partitions
+- **Issue #27** (closed): T1 item 9 (testbenches shipped): testbench inventories and klt signoff --attest 9 for both partitions
+- **PR #134**: test: run the stdlib unit tests from npm test and in CI
+- **Issue #127** (closed): Wire package.json test/check:ci stubs to the real unit tests (they exit 0 having run nothing)
+- **PR #132**: docs: state actual artifact and sign-off status in README header
+- **Issue #129** (closed): README status line is stale: 'no design, testbench or recorded result exists yet' is false on all three counts
 - **PR #124**: sim: cold subthreshold cells at 2 ms, gmin/abstol floor sweep, 5 MHz step audit
 - **Issue #44** (closed): Follow-on from PR #43: subthreshold Q2 bench follow-ups (cold-cell re-run, pfet S(T) reference, leakage floor)
 
