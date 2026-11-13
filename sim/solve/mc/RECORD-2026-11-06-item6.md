@@ -38,3 +38,48 @@ klt yield sim/solve/mc/samples-binding-cells.json --format json > sim/solve/mc/y
 
 ## Digital (`6.digital`)
 `spec/digital-rows.json` (rows 5 and 6 only; reference-clock wording is "tolerance", an input requirement) and `verification/readout/not-statistical.json`, hash-bound in the manifest; `klt signoff` grades `not_applicable`. This is a classification of the rows, not a result: the readout testbench behind them (`verification/readout/`) is not yet built.
+
+## Inputs pinned 2026-11-13 (#140) — appended; nothing above this line is edited
+
+The Reproduce block above globs three directories. At this record's commit (`63392bd`) they resolved
+to a set that no longer exists, and **the output this record produced is no longer in the tree**:
+`sim/solve/mc/samples-binding-cells.json` was overwritten at `f1026ec` by the full-bank run of
+`RECORD-2026-11-06-item6-full-bank.md`, which is the record that supersedes this one's "Missing" and
+yield-table sections. So there is no committed file to diff this record against, and it is
+deliberately **left out of `sim/solve/test_records_reproduce.py`** rather than being made to pass
+against someone else's output. Nothing here is edited and nothing is regenerated.
+
+The input set is still identified. Measured 2026-11-13 against `17d4279`: with today's code, the list
+below reproduces `samples-binding-cells.json` **as committed at `63392bd`**
+(`git show 63392bd:sim/solve/mc/samples-binding-cells.json`) byte-identically — so the post-processing
+refactors since (`0930916`, `ff1ce1c`) did not change this record's numbers. It is out of the test
+only because a shallow CI checkout has no `63392bd` blob to compare against.
+
+```
+R=sim/sensitivity/records/reports
+B=sim/solve/mc/reports
+python3 -I sim/sensitivity/analyze.py extract \
+  $R/grid_osc_hd.json.gz $R/grid_osc_nmos.json.gz $R/grid_osc_pmos.json.gz \
+  $R/grid_osc_wire.json.gz $R/grid_osc_subth.json.gz -o freq.json
+python3 -I sim/sensitivity/analyze.py extract-mc \
+  $R/mc_osc_hd.json.gz $R/mc_osc_nmos.json.gz $R/mc_osc_pmos.json.gz \
+  $R/mc_osc_wire.json.gz $R/mc_osc_subth.json.gz -o mcnom.json
+python3 -I sim/sensitivity/analyze.py extract-mc \
+  $B/mc_bind_osc_hd.json.gz $B/mc_bind_osc_pmos.json.gz \
+  $B/mc_bind_osc_subth_-40C.json.gz $B/mc_bind_osc_subth_27C.json.gz -o mcbind.json
+python3 -I sim/solve/yield_samples.py build freq.json mcnom.json mcbind.json -o samples.json
+git show 63392bd:sim/solve/mc/samples-binding-cells.json > at-63392bd.json
+cmp samples.json at-63392bd.json      # identical
+```
+
+Two things the Reproduce block above does not say, both found by running it (#140):
+
+- **`grid_*.json.gz` / `mc_osc_*.json.gz` were already wider than the input set when this record was
+  written.** `grid_osc_hd_5p.json.gz` and `mc_osc_hd_5p.json.gz` were in `reports/` at `63392bd` and
+  match those globs, but including them does not reproduce this record; the five per-oscillator
+  reports above do. The `_5p` reports *are* part of the full-bank record's input set, which is why
+  that record's pinned list has six of each — the two records' globs look identical and denote
+  different sets.
+- **`sim/solve/mc/reports/*.json.gz` was four files here, eighteen from `f1026ec` onwards** (the
+  per-cell osc_nmos / osc_wire resubmission). That is the reduced bank this record reports, and it is
+  what makes the glob reading of this block return the full-bank numbers today.
