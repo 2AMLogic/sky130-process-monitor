@@ -140,7 +140,7 @@ Rows the spec names that no committed bench covers, so no inventory lists one: *
 with every verdict in `sim/power/analyze_power.py`) and **spec §8 area**, whose testbench is the
 layout/P&R report, not a bench (`layout/README.md`).
 
-**Inventory scope: decks, requests and the solve bench — not every file a bench reads.** Three
+**Inventory scope: decks, requests and the solve bench — not every file a bench reads.** Four
 classes of committed input are deliberately *not* pinned here, so that "inventoried" keeps one
 meaning (a testbench or the request that drives one):
 
@@ -152,11 +152,17 @@ meaning (a testbench or the request that drives one):
   by nothing. Stated here rather than left to inference.
 - The per-bench helper scripts that back no cited row — `sim/power/analyze_power.py`,
   `sim/power/gen_requests.py`, `sim/pex/grade_pex.py`, `sim/subthreshold/analyze.py` and
-  `sim/subthreshold/gen_probe.py`, `sim/pex/diag/vh_split.py`, and `sim/sensitivity/probe_skew.sh`
+  `sim/subthreshold/gen_probe.py`, `sim/pex/diag/vh_split.py`, `sim/sensitivity/probe_skew.sh`
   (which generates its deck inline and backs the sf/fs mapping in
-  `sim/sensitivity/records/2026-11-05-grid-sensitivity-partial.md`, a record no manifest row cites).
-  **`sim/sensitivity/analyze.py` and `gen_requests.py` are deliberately *not* in this class and
-  *are* inventoried** — `sim/solve/solve.py` imports `analyze` at run time (taking `OSCS`,
+  `sim/sensitivity/records/2026-11-05-grid-sensitivity-partial.md`, a record no manifest row cites),
+  and `sim/pex/gen_requests.py` — the deterministic generator that derives the `sim/pex/osc/*.spice`
+  testbenches and the `sim/pex/requests/<osc>.json` requests from the committed `sim/sensitivity/`
+  benches and grid requests. Its **outputs** are what the inventory pins (all 8 committed files
+  under `sim/pex/osc/` and all 7 under `sim/pex/requests/` are inventoried above), and `7.analog`
+  cites the `klt pex` reports rather than this script, so the generator itself backs no cited row.
+  **`sim/sensitivity/analyze.py` and `sim/sensitivity/gen_requests.py` (a different file from the
+  pex generator just named) are deliberately *not* in this class and *are* inventoried** —
+  `sim/solve/solve.py` imports `analyze` at run time (taking `OSCS`,
   `BASELINE`, `PROCESS`, `VDD`, `TEMP` and the `sigma_quant` quantization term from it) and
   `sim/solve/gen_binding_mc.py` imports `gen_requests`, and `analyze.py extract` / `extract-mc` is
   the first step of the reproduce chain in `sim/solve/records/2026-11-05-rows1-4.md` and
@@ -165,11 +171,21 @@ meaning (a testbench or the request that drives one):
 - `sim/*/negative_controls.sh` and the top-level `sim/negative_controls.sh` (which that glob does
   not match) — control runs that assert a bench fails when it should; they back no recorded
   measurement row.
+- The two `unittest` suites added after this inventory was attested — `sim/pex/test_gen_requests.py`
+  (`4556cec`) and `sim/solve/test_records_reproduce.py` (`d157a7f`). Both are plain stdlib
+  `unittest` files over committed inputs (no simulator, no PDK) run by `npm test` in `package.json`,
+  and so by `.github/workflows/tests.yml`. They are **not** inventoried and `klt signoff --attest 9`
+  does not run them: the three suites that *are* inventoried — `sim/sensitivity/test_analyze.py`,
+  `sim/solve/test_solve.py` and `sim/solve/test_gen_binding_mc.py` — each carry a declared cold
+  start in `attest/item9_analog.json`, and these two carry none. Whether they belong with those
+  three is a separate question this list does not settle; it only states the omission.
 
-Of the three classes, only the extracted netlists are an input to a cited row (`7.analog`); the
-helper scripts and negative controls named above back no cited row at all. This list exists so each
-omission is stated rather than inferred from the inventory, since `klt signoff --attest 9` cannot
-check completeness.
+Of the four classes, only the extracted netlists are an input to a cited row (`7.analog`); the
+helper scripts, negative controls and test suites named above back no cited row at all. This list
+exists so each omission is stated rather than inferred from the inventory, since
+`klt signoff --attest 9` cannot check completeness. Every `.py` and `.sh` file committed under
+`sim/` is therefore either a pinned `path` in `attest/item9_analog.json` or named here; a script
+added under `sim/` later belongs in one or the other.
 
 ### CI
 
