@@ -17,13 +17,16 @@ Conventions (grading choices made here; none relaxes the spec, no limit is edite
   * Reading noise = the MC sample itself (mismatch) plus counter quantization (analyze.sigma_quant), seeded.
     Estimator weights = per-oscillator sqrt(sigma_quant^2 + sigma_mc_cell^2), sigma_mc_cell from that cell's
     own samples (not the pooled value solve.py uses).
-  * Row 3 (V solve, T known, corner unknown): same joint corner x V search as solve.row3 with every model in-sample
-    (the binding cell is the 1.62 V edge, which solve.py also treats as in-sample). Sample = V_est - V_true [V].
-  * Row 4 (T solve, one-point calibration at 27 C / 1.80 V of the same die, V known): same model as solve.row4.
+  * Row 3 (V solve, T known, corner unknown): `solve.solve_v` over `solve.VGRID` -- literally the estimator and
+    grid solve.row3 grades -- with every model in-sample (the binding cell is the 1.62 V edge, which solve.py
+    also treats as in-sample). Sample = V_est - V_true [V].
+  * Row 4 (T solve, one-point calibration at 27 C / 1.80 V of the same die, V known): `solve.solve_t` over
+    `solve.TGRID` on `solve.tmodel_delta`, the estimator, grid and model solve.row4 grades.
     The calibration read is drawn from the #8 nominal-cell MC of the same corner, independent of the measurement
     draw (a real die would correlate them; independence is conservative). Sample = T_est - T_true [C].
-  * Row 2 (corner ID at known V,T, ratio space): sample = d(nearest wrong centroid) - d(true centroid) in the
-    whitened space; > 0 means classified correctly. Limit: margin > 0 (strict). One measurement per true corner.
+  * Row 2 (corner ID at known V,T, ratio space): `solve.distances`, the whitened distances solve.classify ranks;
+    sample = d(nearest wrong centroid) - d(true centroid); > 0 means classified correctly.
+    Limit: margin > 0 (strict). One measurement per true corner.
   * Negative control (per measurement): the same draws with a seeded defect, +DEFECT added to ln f of osc_hd.
     Expected to fail. It is a software-injected defect on the same data, not a second simulation; labelled so.
 """
@@ -86,12 +89,11 @@ def usable(mc, tab, p, v, t, need_all_proc=False):
 
 def row3_samples(tab, mc, seed, defect=0.0):
     p0, v0, t0 = CELLS["row3"]
-    vgrid = [1.55 + 0.002 * i for i in range(251)]
     oscs = [o for o in usable(mc, tab, p0, v0, t0)
             if all(tab.get((o, p, v, t0)) for p in A.PROCESS for v in A.VDD)]
     if len(oscs) < 2:
         return None, oscs
-    full = {(o, p): S.vmodel(tab, o, p, t0, None, vgrid) for o in oscs for p in A.PROCESS}
+    full = {(o, p): S.vmodel(tab, o, p, t0, None, S.VGRID) for o in oscs for p in A.PROCESS}
     rng = random.Random("%s|y3|%s" % (seed, defect))
     ds, sg, n = draws(tab, mc, oscs, p0, v0, t0, rng, defect)
     out = []
@@ -99,19 +101,12 @@ def row3_samples(tab, mc, seed, defect=0.0):
         if rd is None:
             out.append(None)
             continue
-        best = None
-        for p in A.PROCESS:
-            for i, v in enumerate(vgrid):
-                r = sum(((rd[o] - full[(o, p)][i]) / sg[o]) ** 2 for o in oscs)
-                if best is None or r < best[0]:
-                    best = (r, v)
-        out.append(round(best[1] - v0, 6))
+        out.append(round(S.solve_v(rd, full, sg, oscs, S.VGRID)[1] - v0, 6))
     return out, oscs
 
 
 def row4_samples(tab, mc, mc_nom, seed, defect=0.0):
     p0, v0, t0 = CELLS["row4"]
-    tgrid = [-45 + 0.5 * i for i in range(351)]
     oscs = [o for o in usable(mc, tab, p0, v0, t0)
             if all(tab.get((o, "tt", v, t)) for v in A.VDD for t in A.TEMP)
             and len(cell_samples(mc_nom, o, p0, 1.8, 27)) >= 3]
@@ -120,7 +115,7 @@ def row4_samples(tab, mc, mc_nom, seed, defect=0.0):
     rng = random.Random("%s|y4|%s" % (seed, defect))
     ds, sg, n = draws(tab, mc, oscs, p0, v0, t0, rng, defect)
     cs, scal, ncal = draws(tab, mc_nom, oscs, p0, 1.8, 27, random.Random("%s|y4cal|%s" % (seed, defect)), defect)
-    mod = {o: [S.tmodel_delta(tab, o, v0, tt) for tt in tgrid] for o in oscs}
+    mod = {o: [S.tmodel_delta(tab, o, v0, tt) for tt in S.TGRID] for o in oscs}
     sd = {o: math.sqrt(sg[o] ** 2 + scal[o] ** 2) for o in oscs}
     out = []
     for k, rd in enumerate(ds):
@@ -129,8 +124,7 @@ def row4_samples(tab, mc, mc_nom, seed, defect=0.0):
             out.append(None)
             continue
         d = {o: rd[o] - cal[o] for o in oscs}
-        i = min(range(len(tgrid)), key=lambda j: sum(((d[o] - mod[o][j]) / sd[o]) ** 2 for o in oscs))
-        out.append(round(tgrid[i] - t0, 4))
+        out.append(round(S.TGRID[S.solve_t(d, mod, sd, oscs, S.TGRID)] - t0, 4))
     return out, oscs
 
 
@@ -154,7 +148,7 @@ def row2_samples(tab, mc, seed, defect=0.0):
                 col.append(None)
                 continue
             x = [rd[o] - rd[A.BASELINE] for o in use]
-            dist = {q: sum(((a - b) / s) ** 2 for a, b, s in zip(x, cen[q], w)) for q in A.PROCESS}
+            dist = S.distances(cen, x, w)
             wrong = min(d for q, d in dist.items() if q != p)
             col.append(round(wrong - dist[p], 6))
         out[p] = col
