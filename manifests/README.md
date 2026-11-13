@@ -138,8 +138,7 @@ the command reproduces the measurement it is attached to (the tier doc says so f
 Rows the spec names that no committed bench covers, so no inventory lists one: **counter power**
 (spec §7's "one oscillator running plus counter" — the counter has no SPICE-level netlist, stated
 with every verdict in `sim/power/analyze_power.py`) and **spec §8 area**, whose testbench is the
-layout/P&R report, not a bench (`layout/README.md`). `verification/smoke/` is excluded on purpose:
-it exercises the placeholder `rtl/smoke/smoke.v` and backs no claimed measurement.
+layout/P&R report, not a bench (`layout/README.md`).
 
 **Inventory scope: decks, requests and the solve bench — not every file a bench reads.** Three
 classes of committed input are deliberately *not* pinned here, so that "inventoried" keeps one

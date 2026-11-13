@@ -1,27 +1,11 @@
 # verification
 
-Digital flow (cocotb + Icarus, Verilator lint, Yosys). Today only a toolchain smoke exists, against the
-placeholder `rtl/smoke/smoke.v` (a 4-bit counter, not part of the design).
+Digital flow (cocotb + Icarus, Verilator lint) for the readout partition. There is no root Makefile; run from the
+repo root with `make -C verification/readout <target>`. Tool pins and `PATH` requirements: see `sim/README.md`
+§ Environment. Synthesis is driven through `klt synthesize` (`synth/readout/`, see `rtl/README.md`). The analog
+and pin negative controls are in `sim/negative_controls.sh`.
 
 ## Entry point
-
-There is no root Makefile; run from the repo root with `make -C verification/smoke <target>`. Tool pins and `PATH`
-requirements: see `sim/README.md` § Environment.
-
-    make -C verification/smoke all
-
-Runs `sim/check_env.sh` (pins in `sim/pdk.json`, `sim/toolchain.json`), Verilator lint, the cocotb test
-`verification/smoke/test_smoke.py` on Icarus, then Yosys synthesis to `sky130_fd_sc_hd` against the
-typical Liberty (`tt_025C_1v80`). Scratch output goes to `sim/build/` (gitignored).
-
-## Negative controls
-
-    make -C verification/smoke negative-control
-
-A broken cocotb expectation (`SMOKE_BREAK=1`, must show an `AssertionError`) and a wrong Liberty path (Yosys must report it not found) must each fail; the target exits 0
-only if both do. The analog and pin controls are in `sim/negative_controls.sh`.
-
-## Readout
 
     make -C verification/readout            # check-env, Verilator lint (-Wall), cocotb on Icarus
     make -C verification/readout negative-control
@@ -46,9 +30,7 @@ first (`sim/README.md` § Environment).
 
 The SDF-annotated re-run below is **not** re-executed by the attestation: `request-sdf.json` names
 host-absolute PDK timing-model and SDF paths, so a third party adjusts them for their own install.
-`verification/smoke/` is deliberately outside the inventory — it exercises the placeholder
-`rtl/smoke/smoke.v` and backs no claimed measurement. Both exclusions are stated in
-`manifests/README.md` § "Item 9 (testbenches shipped)".
+That exclusion is stated in `manifests/README.md` § "Item 9 (testbenches shipped)".
 
 ## Post-layout re-run with back-annotated SDF (T1 item 7, digital; issue #32)
 

@@ -9,7 +9,7 @@ bring-up: nothing is a design result.
   root defaults to `~/.volare/sky130A`; override with `PDK_ROOT_SKY130A`.
 - `toolchain.json` — ngspice (a `>=` floor), Icarus, Yosys, Verilator, cocotb (exact) versions, and the xschem package version
   (checked via `dpkg-query` only; raw `xschem` is never run, use `klt netlist`).
-- `check_env.sh` — exits non-zero on any mismatch, version below the ngspice floor, or missing path; it prints the measured ngspice version. Both smoke flows call it first.
+- `check_env.sh` — exits non-zero on any mismatch, version below the ngspice floor, or missing path; it prints the measured ngspice version. The analog smoke (`sim/smoke/run.sh`) and the readout flow (`verification/readout/Makefile`) call it first.
 
 ## Environment
 

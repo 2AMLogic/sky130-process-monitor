@@ -10,6 +10,6 @@
   "xschem": {
     "dpkg_package": "xschem",
     "expect": "3.4.4-1",
-    "note": "Checked via dpkg only: raw xschem is never invoked (use klt netlist). Not used by the smoke flows."
+    "note": "Checked via dpkg only: raw xschem is never invoked (use klt netlist). Not used by the analog smoke or the readout flow."
   }
 }
