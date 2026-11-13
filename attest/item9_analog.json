@@ -2,7 +2,7 @@
   "schema_version": 1,
   "kind": "t1-attestation-inventory",
   "t1_item": 9,
-  "description": "Analog partition testbenches: every committed SPICE deck behind a recorded analog measurement, every committed `klt sim` request that drives one, and the solve procedure's own Python bench (`sim/solve/`), which post-processes those surfaces into the rows 1-4 estimate and the item-6 yield figures without re-simulating. Cold starts are bounded by construction and do NOT re-run the multi-hour batch-fleet grids: the oscillator-bank and smoke decks run their real single-corner `ngspice -b` locally (--no-record, so a repeat appends nothing to the append-only records), the `sim/solve/` unittest suites run for real (they are pure post-processing on committed inputs), and every `klt sim` request is validated with `--dry-run` (deck staging, model resolution, corner/Monte-Carlo expansion against the pinned PDK) rather than simulated. The full fleet invocation for each grid is documented in that bench's README or `RECORD-*.md` and in manifests/README.md; it is not executed by this attestation. Being inventoried means the file is pinned by content hash and its declared cold start exited 0 -- not that a fleet run of it was recorded: 20 of the 140 `sim/solve/mc/requests-sized/` requests (the tt/1.62V/-40C chunks) are committed, drift-checked and never run, as sim/solve/mc/RECORD-2026-11-06-item6-sized-partial.md states. What each cold start does and does not cover is tabulated in manifests/README.md, \"Item 9 (testbenches shipped)\".",
+  "description": "Analog partition testbenches: every committed SPICE deck behind a recorded analog measurement, every committed `klt sim` request that drives one, and the solve procedure's own Python bench (`sim/solve/`), which post-processes those surfaces into the rows 1-4 estimate and the item-6 yield figures without re-simulating. The solve bench does not stand alone: `sim/solve/solve.py` imports `sim/sensitivity/analyze.py` (for OSCS/BASELINE/PROCESS/VDD/TEMP and the sigma_quant quantization term) and `sim/solve/gen_binding_mc.py` imports `sim/sensitivity/gen_requests.py`, and `analyze.py extract` / `extract-mc` is the first step of the reproduce chain for every cited row in sim/solve/records/ and sim/solve/mc/RECORD-*.md, so those two modules and `sim/sensitivity/test_analyze.py` are inventoried here as part of that measurement path rather than left as unpinned helpers. Cold starts are bounded by construction and do NOT re-run the multi-hour batch-fleet grids: the oscillator-bank and smoke decks run their real single-corner `ngspice -b` locally (--no-record, so a repeat appends nothing to the append-only records), the `sim/solve/` unittest suites run for real (they are pure post-processing on committed inputs), and every `klt sim` request is validated with `--dry-run` (deck staging, model resolution, corner/Monte-Carlo expansion against the pinned PDK) rather than simulated. The full fleet invocation for each grid is documented in that bench's README or `RECORD-*.md` and in manifests/README.md; it is not executed by this attestation. Being inventoried means the file is pinned by content hash and its declared cold start exited 0 -- not that a fleet run of it was recorded: 20 of the 140 `sim/solve/mc/requests-sized/` requests (the tt/1.62V/-40C chunks) are committed, drift-checked and never run, as sim/solve/mc/RECORD-2026-11-06-item6-sized-partial.md states. What each cold start does and does not cover is tabulated in manifests/README.md, \"Item 9 (testbenches shipped)\".",
   "cold_start": {
     "argv": [
       "sim/check_env.sh"
@@ -382,6 +382,12 @@
       "path": "sim/power/tb/idle_osc_wire.spice"
     },
     {
+      "path": "sim/sensitivity/analyze.py"
+    },
+    {
+      "path": "sim/sensitivity/gen_requests.py"
+    },
+    {
       "path": "sim/sensitivity/osc/tb_osc_hd.spice"
     },
     {
@@ -731,6 +737,19 @@
           "--dry-run"
         ],
         "cwd": "sim/sensitivity/requests",
+        "local_only": true,
+        "timeout_s": 600
+      }
+    },
+    {
+      "path": "sim/sensitivity/test_analyze.py",
+      "cold_start": {
+        "argv": [
+          "python3",
+          "-I",
+          "sim/sensitivity/test_analyze.py"
+        ],
+        "cwd": ".",
         "local_only": true,
         "timeout_s": 600
       }

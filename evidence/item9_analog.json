@@ -3,14 +3,14 @@
   "kind": "generic",
   "status": "pass",
   "t1_item": 9,
-  "summary": "T1 item 9 (Testbenches shipped): 478/478 attestation checks passed (klt signoff --attest)",
+  "summary": "T1 item 9 (Testbenches shipped): 482/482 attestation checks passed (klt signoff --attest)",
   "source": "attest/item9_analog.json",
   "attestation": {
     "producer": "klt signoff --attest",
     "inventory_schema_version": 1,
     "hash_algorithm": "sha256-raw-bytes",
-    "check_count": 478,
-    "passed_count": 478,
+    "check_count": 482,
+    "passed_count": 482,
     "checks": [
       {
         "check": "present",
@@ -323,6 +323,20 @@
       {
         "check": "present",
         "role": "testbench",
+        "path": "sim/sensitivity/analyze.py",
+        "passed": true,
+        "content_hash": "sha256:3339b6d765aa54be3ea74aea84b1d31e0fc9aec031d5abc30ba849119780269d"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/sensitivity/gen_requests.py",
+        "passed": true,
+        "content_hash": "sha256:cd3f3b7ccd1afc8f0b2e084bd473d17a03f7257e5fca0da5b0c298dc12c9a3bd"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
         "path": "sim/sensitivity/osc/tb_osc_hd.spice",
         "passed": true,
         "content_hash": "sha256:ec57e284c16c1b86d809308eddb83eea5f4991d6c09c8d743df0a002fc48755e"
@@ -529,6 +543,13 @@
         "path": "sim/sensitivity/requests/probe_wire_val.json",
         "passed": true,
         "content_hash": "sha256:a92ed7a1a2488495e3b69f427e4dbdc17b407ab056c3dd2c0903fc2927266513"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/sensitivity/test_analyze.py",
+        "passed": true,
+        "content_hash": "sha256:a73895860599c52e9b20291badfa67a18fba2b0ff56e83c5b5fdbcd3f1ba627e"
       },
       {
         "check": "present",
@@ -2489,6 +2510,20 @@
           "--dry-run"
         ],
         "cwd": "sim/sensitivity/requests",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/sensitivity/test_analyze.py",
+        "argv": [
+          "python3",
+          "-I",
+          "sim/sensitivity/test_analyze.py"
+        ],
+        "cwd": ".",
         "exit_status": 0,
         "passed": true,
         "local_only": true
@@ -5129,7 +5164,7 @@
         "path": "attest/item9_analog.json",
         "scope": "repo"
       },
-      "content_hash": "sha256:34c53d6033d8072533125e8ee615751ef2b69cdf9a6c35cd4aa525e090797efa"
+      "content_hash": "sha256:f9894bc4d7f8b300f37a0ad96b497c32ed2e651d3d158de9653dc21d4ac6b066"
     }
   }
 }

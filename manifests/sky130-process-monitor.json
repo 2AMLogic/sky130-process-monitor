@@ -85,7 +85,7 @@
     },
     "9.analog": {
       "file": "evidence/item9_analog.json",
-      "content_hash": "sha256:34c53d6033d8072533125e8ee615751ef2b69cdf9a6c35cd4aa525e090797efa"
+      "content_hash": "sha256:f9894bc4d7f8b300f37a0ad96b497c32ed2e651d3d158de9653dc21d4ac6b066"
     },
     "9.digital": {
       "file": "evidence/item9_digital.json",

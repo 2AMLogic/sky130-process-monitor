@@ -92,8 +92,10 @@ Two inventories, one per partition (item 9 is graded per partition):
 
 - `attest/item9_analog.json` -> `evidence/item9_analog.json`, cited as `9.analog`. It pins every
   committed analog SPICE deck, every committed `klt sim` request that drives one, and the solve
-  procedure's own Python bench under `sim/solve/` (255 files: 91 decks and per-bench requests, plus
-  158 `sim/solve/mc/` requests and the 6 `sim/solve/` drivers and unittest suites).
+  procedure's own Python bench under `sim/solve/` (258 files: 91 decks and per-bench requests, plus
+  158 `sim/solve/mc/` requests, the 6 `sim/solve/` drivers and unittest suites, and the 3
+  `sim/sensitivity/` Python modules the solve bench imports at run time — `analyze.py`,
+  `gen_requests.py` and `test_analyze.py`).
 - `attest/item9_digital.json` -> `evidence/item9_digital.json`, cited as `9.digital`. It pins the
   readout cocotb bench and its two `klt functional-verification` requests.
 
@@ -127,6 +129,8 @@ the command reproduces the measurement it is attached to (the tier doc says so f
 | `sim/solve/mc/requests/` (18), `sim/solve/mc/requests-sized/` (140) | `klt sim <request> --dry-run` | **No**, same as the row above — and for 20 of the 140 sized requests there is nothing to reproduce: the `tt`/1.62 V/−40 °C chunks (5 oscillators × 4 chunks) are committed and drift-checked but **were never run**, so no report backs them (`RECORD-2026-11-06-item6-sized-partial.md`). The 18 binding-cell and the other 120 sized requests have committed reports under `mc/reports/` and `mc/reports-sized/`, submitted with `klt sim --batch-set` only (fleet job ids in each report's `environment.remote`); no local ngspice grid was ever run. The generator is `sim/solve/gen_binding_mc.py`, and `test_gen_binding_mc.py` is the committed drift check (issue #71) that the committed request bytes still equal what it emits. |
 | `sim/solve/` drivers — `solve.py`, `gen_binding_mc.py`, `yield_samples.py`, `make_envelope.py` | none of their own (pinned by hash; exercised by the two suites below) | **Partly, and unevenly.** These are the testbench behind the rows 1–4 estimate (`5.analog`) and the item-6 yield figures (`6.analog`): pure post-processing on the committed `mc/samples-*.json` inputs, no simulation. `solve.py` and `yield_samples.py` are exercised by `test_solve.py` on synthetic fixtures with negative controls, and `gen_binding_mc.py`'s `--sized` path by `test_gen_binding_mc.py`; **`make_envelope.py` is covered by no suite** (it builds `evidence/item5_analog.json`, and only its output is pinned, by the `5.analog` citation). In every case regrading the *recorded* rows is the explicit `python3 -I sim/solve/solve.py grade …` / `yield_samples.py build …` command in each `RECORD-*.md`, which the attestation does not run. |
 | `sim/solve/test_solve.py`, `sim/solve/test_gen_binding_mc.py` | `python3 -I sim/solve/<test>.py` | **Yes**, in full: both are stdlib `unittest` suites that run for real at attestation time (8 and 6 tests), including `test_solve.py`'s synthetic negative controls and `test_gen_binding_mc.py`'s request-drift check against the committed `requests-sized/` bytes. |
+| `sim/sensitivity/analyze.py`, `gen_requests.py` | none of their own (pinned by hash; `analyze.py` is exercised by the suite below) | **No simulation.** `analyze.py` turns the committed fleet reports into the frequency and Monte-Carlo tables that `sim/solve/solve.py` grades, and `solve.py` imports it at run time; `gen_binding_mc.py` imports `gen_requests.py`. `analyze.py extract` / `extract-mc` is the **first step** of the reproduce chain in `sim/solve/records/2026-11-05-rows1-4.md` and `sim/solve/mc/RECORD-2026-11-06-item6-sized-bank.md`, neither of which the attestation runs. Inventoried because they are on the `5.analog` / `6.analog` measurement path. |
+| `sim/sensitivity/test_analyze.py` | `python3 -I sim/sensitivity/test_analyze.py` | **Yes**, in full: a stdlib `unittest` suite that runs for real at attestation time (10 tests). It covers `analyze.py`; `gen_requests.py` has no suite of its own, and is pinned by hash only. |
 | `sim/pex/probe/osc_subth_vbp_probe.cir` | none (pinned by hash only) | **No.** One `ngspice -b`, but minutes on the extracted `osc_subth` netlist; it is a vh-split diagnosis probe (#117), not a spec-row measurement. |
 | `verification/readout/` | `make -C verification/readout` | **Yes** for the pre-layout run cited as `5.digital`: check-env, Verilator lint `-Wall`, then the full cocotb suite on Icarus (9/9). |
 | `verification/readout/request-sdf.json` | none (pinned by hash only) | **No.** The SDF-annotated re-run cited as `7.digital` names host-absolute PDK timing-model and SDF paths (`verification/README.md`); a third party adjusts them for their own install. |
@@ -147,15 +151,26 @@ meaning (a testbench or the request that drives one):
   `provenance.input.content_hash`, the **layout** it was extracted from — so the GDS side is
   hash-pinned and the extraction is regenerable, but the extracted netlist's own bytes are pinned
   by nothing. Stated here rather than left to inference.
-- The per-bench helper scripts — `sim/*/gen_requests.py`, `analyze*.py`, `grade_pex.py` — which
-  generate requests or post-process reports. `sim/solve/`'s equivalents *are* pinned, because
-  there they are the measurement path for `5.analog` / `6.analog` rather than a convenience wrapper.
-- `sim/*/negative_controls.sh` — control runs that assert a bench fails when it should; they back
-  no recorded measurement row.
+- The per-bench helper scripts that back no cited row — `sim/power/analyze_power.py`,
+  `sim/power/gen_requests.py`, `sim/pex/grade_pex.py`, `sim/subthreshold/analyze.py` and
+  `sim/subthreshold/gen_probe.py`, `sim/pex/diag/vh_split.py`, and `sim/sensitivity/probe_skew.sh`
+  (which generates its deck inline and backs the sf/fs mapping in
+  `sim/sensitivity/records/2026-11-05-grid-sensitivity-partial.md`, a record no manifest row cites).
+  **`sim/sensitivity/analyze.py` and `gen_requests.py` are deliberately *not* in this class and
+  *are* inventoried** — `sim/solve/solve.py` imports `analyze` at run time (taking `OSCS`,
+  `BASELINE`, `PROCESS`, `VDD`, `TEMP` and the `sigma_quant` quantization term from it) and
+  `sim/solve/gen_binding_mc.py` imports `gen_requests`, and `analyze.py extract` / `extract-mc` is
+  the first step of the reproduce chain in `sim/solve/records/2026-11-05-rows1-4.md` and
+  `sim/solve/mc/RECORD-2026-11-06-item6-sized-bank.md`. They are on the measurement path for
+  `5.analog` / `6.analog`, not convenience wrappers, so they are pinned with the rest of that path.
+- `sim/*/negative_controls.sh` and the top-level `sim/negative_controls.sh` (which that glob does
+  not match) — control runs that assert a bench fails when it should; they back no recorded
+  measurement row.
 
-Of the three, only the extracted netlists are an input to a cited row (`7.analog`); the helper
-scripts and negative controls back no cited row at all. This list exists so each omission is stated
-rather than inferred from the inventory, since `klt signoff --attest 9` cannot check completeness.
+Of the three classes, only the extracted netlists are an input to a cited row (`7.analog`); the
+helper scripts and negative controls named above back no cited row at all. This list exists so each
+omission is stated rather than inferred from the inventory, since `klt signoff --attest 9` cannot
+check completeness.
 
 ### CI
 

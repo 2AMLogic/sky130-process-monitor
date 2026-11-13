@@ -61,8 +61,9 @@ The controls check that a tied-off enable fails and appends nothing, and that a 
 ## Cold-start invocations (T1 item 9)
 
 `attest/item9_analog.json` is the committed inventory of every analog testbench deck, every `klt
-sim` request that drives one, and the `solve/` post-processing bench, with the cold start declared
-per bench; `klt signoff --attest 9` runs them and writes `evidence/item9_analog.json`, cited by the
+sim` request that drives one, the `solve/` post-processing bench, and the three `sensitivity/`
+Python modules that bench imports at run time, with the cold start declared per bench; `klt
+signoff --attest 9` runs them and writes `evidence/item9_analog.json`, cited by the
 manifest as `9.analog`. What each cold start does — and which ones do **not** re-simulate — is
 tabulated in `manifests/README.md` § "Item 9 (testbenches shipped)", together with the committed
 files the inventory deliberately leaves out. In short:
@@ -72,6 +73,7 @@ files the inventory deliberately leaves out. In short:
 | `smoke/`, `osc_bank/` | `run.sh --no-record [osc]` | yes, the real single-corner `ngspice -b` |
 | `sensitivity/`, `power/`, `pex/`, `subthreshold/` | `klt sim <request> --dry-run` | no — validates the committed request and deck against the pinned PDK (staging, models, corner/MC expansion). The full fleet run is the `klt sim --batch-set` / `klt pex --submit-only` command in each section above |
 | `solve/mc/requests/` (18), `solve/mc/requests-sized/` (140) | `klt sim <request> --dry-run` | no — same as the row above. 20 of the 140 sized requests (the `tt`/1.62 V/−40 °C chunks) are committed and drift-checked but were **never run**; the rest have reports under `solve/mc/reports*/`. See `solve/mc/RECORD-2026-11-06-item6*.md` |
+| `sensitivity/analyze.py`, `gen_requests.py`, `test_analyze.py` | `python3 -I sensitivity/test_analyze.py` (the two modules are pinned by hash) | no simulation — `analyze.py` builds the frequency and MC tables `solve.py` grades and is imported by it at run time (`gen_requests.py` likewise by `gen_binding_mc.py`), so `analyze.py extract` / `extract-mc` is the first step of the `5.analog` / `6.analog` reproduce chain. The suite runs for real (10 tests) and covers `analyze.py`; `gen_requests.py` has no suite |
 | `solve/` drivers (`solve.py`, `gen_binding_mc.py`, `yield_samples.py`, `make_envelope.py`) and their two unittest suites | `python3 -I solve/test_solve.py`, `python3 -I solve/test_gen_binding_mc.py` | no simulation at all — this is the post-processing path behind `5.analog` and `6.analog`. Both suites run for real (8 and 6 tests: synthetic negative controls, and the request-drift check against the committed `requests-sized/` bytes). Regrading the recorded rows is the explicit `solve.py grade` / `yield_samples.py build` command in each `RECORD-*.md`, which the attestation does not run |
 
 From a clean checkout, the precondition is `sim/check_env.sh` (the inventory's top-level cold start):
