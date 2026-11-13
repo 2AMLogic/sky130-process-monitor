@@ -12,9 +12,10 @@ incomplete for two independent reasons (below). Nothing was relaxed; the failing
 
 | Path | What |
 |---|---|
-| `gen_requests.py` | writes `requests/*.json` (the #29 `grid_<osc>.json` with only the testbench body swapped) and `osc/osc_hd_dut.spice`. Deterministic |
-| `osc/tb_<osc>.spice` | testbench bodies, one `.include` each as `klt pex` requires. `osc_hd_dut.spice` is generated (see "osc_hd pin order") |
-| `requests/<osc>.json` | `klt pex` testbench requests (`batch.capacity_wait_s: 600`) |
+| `gen_requests.py` | writes **everything in `osc/` and `requests/<osc>.json`**: the #29 `grid_<osc>.json` with only the testbench body swapped, and the bench bodies themselves derived from `sim/sensitivity/osc/`. Deterministic; a re-run must leave `git status --porcelain sim/pex` empty |
+| `osc/tb_<osc>.spice`, `osc/tb_<osc>_relaxed.spice`, `osc/osc_hd_dut.spice` | GENERATED, do not edit. Derived from `sim/sensitivity/osc/tb_<osc>.spice` so the pex leg runs the #29 circuit and no second copy exists (issue #137): the line-2 provenance comment is swapped (except `osc_hd`, whose committed bench keeps the sensitivity wording and is reproduced as committed), `osc_hd` gets the one `.include` `klt pex` requires plus the extracted pin order (see "osc_hd pin order"), and `_relaxed` appends the #69 solver options. `sim/pex/test_gen_requests.py` (in `npm test`) fails if a committed file stops matching |
+| `requests/<osc>.json` | `klt pex` testbench requests (`batch.capacity_wait_s: 600`). GENERATED |
+| `requests/osc_{nmos,wire}_coldcell.json` | hand-written single-cell follow-up requests, not emitted by the generator (see "The two non-converged cold cells") |
 | `extracted/<osc>.spice` | the extracted netlists (`klt extract --parasitics`, deck `sky130`, `--pdk sky130A`) |
 | `records/2026-11-10-<osc>.pex.report.json` | the `klt pex` reports (append-only; a re-run is a new dated file) |
 | `records/2026-11-10-osc_subth.pex-submit.json` | the submit manifest of the `osc_subth` run that did not complete |
