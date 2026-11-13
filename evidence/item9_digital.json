@@ -17,7 +17,7 @@
         "role": "testbench",
         "path": "verification/readout/Makefile",
         "passed": true,
-        "content_hash": "sha256:b37069f0c9c3dc3f24f1877deb2546e1dfe79e31c8322f8592bbe08f789f7019"
+        "content_hash": "sha256:54e895ee94be40645edecca8eba37ad5d250cdfd016db550997d87cd14cc9481"
       },
       {
         "check": "present",
@@ -93,7 +93,7 @@
         "path": "attest/item9_digital.json",
         "scope": "repo"
       },
-      "content_hash": "sha256:f614f09ab6079a877d0442e7c28c6e4f0139c562ef3ed3787d3518b9726731cd"
+      "content_hash": "sha256:d04c8aeaa4c1e9551082409ae6bf645b42167637a16dde373146f97877e90a93"
     }
   }
 }

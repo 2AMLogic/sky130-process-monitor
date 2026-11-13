@@ -30,9 +30,7 @@ first (`sim/README.md` § Environment).
 
 The SDF-annotated re-run below is **not** re-executed by the attestation: `request-sdf.json` names
 host-absolute PDK timing-model and SDF paths, so a third party adjusts them for their own install.
-`verification/smoke/` is deliberately outside the inventory — it exercises the placeholder
-`rtl/smoke/smoke.v` and backs no claimed measurement. Both exclusions are stated in
-`manifests/README.md` § "Item 9 (testbenches shipped)".
+That exclusion is stated in `manifests/README.md` § "Item 9 (testbenches shipped)".
 
 ## Post-layout re-run with back-annotated SDF (T1 item 7, digital; issue #32)
 
