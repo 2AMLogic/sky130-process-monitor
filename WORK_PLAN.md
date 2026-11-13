@@ -32,6 +32,7 @@ _None._
 
 Issues currently being built (`loom:building`).
 
+- **#27**: T1 item 9 (testbenches shipped): testbench inventories and klt signoff --attest 9 for both partitions
 - **#114**: Remove digital smoke flow (rtl/smoke, verification/smoke): superseded by readout flow
 
 ## PRs Awaiting Review
@@ -53,12 +54,12 @@ Issues carrying `loom:curated`.
 - **#5**: Track the gap to T1 (klayout-tools design-evidence-tiers.md) *(curated)*
 - **#26**: T1 item 4 (LVS clean): klt lvs for the oscillator bank (vs schematics) and the readout (vs gate-level netlist) *(curated)*
 - **#27**: T1 item 9 (testbenches shipped): testbench inventories and klt signoff --attest 9 for both partitions *(curated)*
-- **#37**: Champion: Merge-Risk Hold Digest *(curated)*
 - **#117**: osc_subth: 14 series-header nets (vh1..vh14) are split in the extraction, ring stage PFET sources float *(curated)*
+- **#129**: README status line is stale: 'no design, testbench or recorded result exists yet' is false on all three counts *(curated)*
 
 ## Proposed (Architect / Hermit)
 
-_None._
+- **#127**: Wire package.json test/check:ci stubs to the real unit tests (they exit 0 having run nothing) *(hermit)*
 
 ## Epics
 
@@ -72,10 +73,10 @@ _None._
 | Very important | 0 |
 | Important | 2 |
 | Ready (`loom:issue`) | 0 |
-| In Progress (`loom:building`) | 1 |
+| In Progress (`loom:building`) | 2 |
 | PRs awaiting review | 1 |
 | Approved PRs awaiting merge | 0 |
 | Curated | 5 |
-| Architect / Hermit proposals | 0 |
+| Architect / Hermit proposals | 1 |
 | Active epics | 0 |
 <!-- guide:plan-body:end -->
