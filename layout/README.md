@@ -16,9 +16,43 @@ here is measured; every area below is a **simulated/derived** figure from the co
 - `gen/check_connectivity.py` — net-connectivity sanity check (not LVS): labelled nets distinct,
   and the number of S/D-driven gate nets equals the #17 stage count (31 / 31 / 31 / 31 / 15), i.e.
   every stage output reaches the next stage's gate and the last output feeds back to the NAND.
-- `gen/attest_item2.py` — writes `evidence/item2.json` (artifact-anchored generic envelope, item 2;
-  `klt signoff --attest` has no item-2 verb). The manifest pins the stream's hash under `2.analog`;
-  editing the stream without re-running it turns the row stale.
+- `attest/item2_analog.json` — the item-2 attestation inventory: the two checks above, declared as
+  commands so `klt signoff --attest 2` runs them and records their exit status. Both are
+  `local_only` (they need `klayout==0.30.10` from `gen/requirements.txt` and, for the regeneration,
+  the sky130A PDK — neither of which the signoff runner installs).
+
+Re-attest after any change to the stream, the generator, the connectivity check or the inventory
+(`2.analog`). Both declared checks shell out to a bare `python3` that must import `klayout`, and
+`klt signoff --attest` strips its own venv's `bin` from every declared command's `PATH`
+(`manifests/README.md`, "Run the producer from a different environment than the benches"), so put
+the pinned `klayout` in a venv of your own and invoke the producer through a throwaway one. Run it
+from the repo root, with `PDK_ROOT_SKY130A` set if the PDK is not at `sim/pdk.json`'s
+`default_root`:
+
+```console
+python3 -m venv .venv && .venv/bin/pip install -r layout/gen/requirements.txt
+PATH="$PWD/.venv/bin:$PATH" uvx --from "klayout-tools==0.9.1" klt signoff --attest 2 \
+    --input layout/osc_bank.gds --inventory attest/item2_analog.json \
+    --generator "python3 layout/gen/gen_osc_bank.py -o <scratch>/osc_bank.gds" \
+    --regenerated-hash "sha256:<the hash that run produced>" \
+    -o evidence/item2_analog.json
+```
+
+`--generator`/`--regenerated-hash` are echoed, never run: they record the regeneration claim the
+grader compares against the committed stream (it reports the item `stale_artifact` if the two
+differ, and the record shows `executed_by_klt: false`). The declared `regenerate-byte-identical`
+check is what actually re-runs the generator and byte-compares. **A new stream hash has to be
+written in four places in the same PR** — the stream's `content_hash` under `2.analog` in
+`manifests/sky130-process-monitor.json`, the `--regenerated-hash` literal in
+`.github/workflows/signoff.yml`, the envelope (regenerate, above) and the signoff record
+(regenerate, `manifests/README.md`) — or CI goes red.
+
+The envelope's `summary` is `klt`'s fixed template (`N/M attestation checks passed`) and carries no
+claimant qualifier, so the scope disclosure for this stream is the paragraph at the top of this
+section and nowhere in the evidence chain: **planning-level geometry, DRC-clean against the curated
+deck only (`drc/`), LVS in `lvs/`, no extraction (#32); nothing here is measured.** The five checks
+the envelope does record are the three `klt` stream checks (readable, non-empty top cell, dbu on
+grid) plus the two declared commands above — none of them a DRC, LVS or PVT claim.
 
 Stage counts and device sizes follow the merged #17 schematics (`design/osc_bank/*.spice`) device
 for device. `osc_hd` places PDK `nand2_1` + 30 × `inv_1` (+ 5 `tapvpwrvgnd_1`) from the pinned PDK

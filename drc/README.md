@@ -55,4 +55,4 @@ First pass on the #23 stream: 862 violations. All were in generator geometry:
    (`met1.area.1`) and 70 nm met1 spurs at L-joints (`met1.width.1`).
 
 LVS (#26) was re-run on the regenerated stream with the same pin: all six `lvs/*.report.json` still `match`
-(`osc_wire`/`osc_subth` still against reduced references, so `4.analog` stays unmet). `evidence/item2.json` re-attested.
+(`osc_wire`/`osc_subth` still against reduced references, so `4.analog` stays unmet). `evidence/item2.json` re-attested (renamed `evidence/item2_analog.json` in #157).

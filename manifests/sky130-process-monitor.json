@@ -19,7 +19,7 @@
       "content_hash": "sha256:f0ce4143407b0b133ee3b956d2735b31ecb1c75a24a8441e551f57a4b1c3d48b"
     },
     "2.analog": {
-      "file": "evidence/item2.json",
+      "file": "evidence/item2_analog.json",
       "content_hash": "sha256:625c8ff90f34c6fac7a88339d2c10ad5925da02e118eb6a15a6539c11e05bf29"
     },
     "2.digital": {

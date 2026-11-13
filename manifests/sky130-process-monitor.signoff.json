@@ -245,7 +245,7 @@
       "reason": null,
       "graded_by_build": true,
       "citation": {
-        "file": "evidence/item2.json",
+        "file": "evidence/item2_analog.json",
         "command": null,
         "kind": "generic",
         "check_status": "pass",
@@ -260,8 +260,14 @@
           },
           "content_hash": "sha256:625c8ff90f34c6fac7a88339d2c10ad5925da02e118eb6a15a6539c11e05bf29",
           "input_verified": true,
-          "summary": "T1 item 2 (Layout, analog): layout/osc_bank.gds regenerated from layout/gen/gen_osc_bank.py byte-identically; net-connectivity sanity check passes. Simulated/derived planning geometry, not DRC- or LVS-checked.",
+          "summary": "T1 item 2 (Layout): 5/5 attestation checks passed (klt signoff --attest)",
           "source": "layout/osc_bank.gds",
+          "attestation": {
+            "producer": "klt signoff --attest",
+            "inventory_schema_version": null,
+            "check_count": 5,
+            "passed_count": 5
+          },
           "regeneration": {
             "generator": "python3 layout/gen/gen_osc_bank.py -o <scratch>/osc_bank.gds",
             "regenerated_hash": "sha256:625c8ff90f34c6fac7a88339d2c10ad5925da02e118eb6a15a6539c11e05bf29",
