@@ -113,10 +113,13 @@ verdict — every one of them *simulated*:
   five oscillators, and `klt signoff` still grades `7.analog` `unmet`
   ([`sim/pex/README.md`](sim/pex/README.md)): the four oscillators that
   produced a delta come out slower once extracted (per-oscillator median
-  −14 % to −24 % on the edge-count proxy `klt pex` reports), `osc_subth`
-  does not oscillate at all in extraction — traced to an extractor
-  net-splitting defect (2AMLogic/klayout-tools#5311), not a layout fault —
-  and spec rows 2–4 have not been re-graded on extracted values. The
+  −14 % to −24 % on the edge-count proxy `klt pex` reports), the extracted
+  `osc_subth` does not oscillate in any cell that produced an extracted value
+  — 0 or 1 crossings in every one of them across two 45-cell re-runs (45 of
+  45 and 35 of 35 extracted cells), none reaching the ≥ 9 rising edges row 1
+  needs, traced by a local single-corner probe to an extractor net-splitting
+  defect (2AMLogic/klayout-tools#5311), not a layout fault — and spec rows
+  2–4 have not been re-graded on extracted values. The
   oscillator frequencies above are schematic-level and do not carry to the
   layout unchanged.
 - *shuttle seat*, *measured silicon* — not reached. Nothing here is measured.
@@ -200,11 +203,17 @@ cells — the four it cannot form are the ones with missing oscillators, never
 interpolated. The `mc_osc_*` reports this command reads are mismatch Monte
 Carlo at the nominal 1.80 V / 27 °C cell only, and command 4's `solve.py`
 applies that pooled nominal σ to every cell. Off-nominal mismatch Monte Carlo
-(1.62 V / 125 °C and 1.98 V / −40 °C) is recorded separately — and recorded as
-**partial**, the cold `osc_subth` cell never collected — under
+(1.62 V / 125 °C and 1.98 V / −40 °C) is recorded separately, under
 `sim/sensitivity/records/reports/mc_offnom_*` and
 `sim/sensitivity/records/2026-11-05-mc-offnom-partial.md` /
-`2026-11-06-mc-offnominal-*.md`.
+`2026-11-06-mc-offnominal-*.md`. All five oscillators have it at **both** of
+those cells; what is **not** covered, per the latest of those records
+([`2026-11-06-mc-offnominal-cold-margin.md`](sim/sensitivity/records/2026-11-06-mc-offnominal-cold-margin.md)
+§4), is the other seven (V,T) cells, which have no off-nominal MC at all. Two
+caveats carry on what *is* collected: the cold `osc_subth` ss and sf samples
+are **truncated** (6 of 10 usable each — the slowest draws are exactly the ones
+lost, so both σ are biased low), and `osc_wire` sf at 1.98 V / −40 °C has no
+nominal grid cell, so no per-(V,T) margin is formed there.
 `osc_subth`'s σ(ln f) is recorded as **unvalidated**; the margin it prints is a
 discrimination statistic, not an accuracy.
 
@@ -286,7 +295,8 @@ Reproduces [`sim/pex/records/2026-11-11-grade-extracted-values.json`](sim/pex/re
 all four oscillators pass the row-1 "oscillates" criterion on the extracted
 side, and the row-2 ratio-space coordinate shifts by a median −7.8 %
 (`osc_nmos`), −10.9 % (`osc_pmos`) and −1.6 % (`osc_wire`). `osc_subth` is
-**not** in this record — its extraction does not oscillate at all — and rows
+**not** in this record — its extracted side does not oscillate in any cell
+that ran (see the rung above) — and rows
 2–4 are **not** re-graded, because the `klt pex` scalar is a quantised
 edge count rather than a frequency. Re-running the extraction and the 45-cell
 grid themselves is a batch-fleet submission, named in
