@@ -94,11 +94,24 @@ jobs:
           klt signoff --attest 9 --inventory attest/item9_digital.json \
                       --check evidence/item9_digital.json
 
-      # The P&R freshness command needs OpenROAD and the pinned PDK, so it is
-      # marked local_only: --check re-hashes the routed GDS and carries the
-      # committed outcome. Re-run it locally (see layout/README.md).
-      - name: Re-attest T1 item 2 (digital) and compare against the committed envelope
+      # Both partitions' declared freshness commands need a toolchain this
+      # runner lacks (digital: OpenROAD and the pinned PDK; analog: the pinned
+      # klayout==0.30.10 of layout/gen/requirements.txt and the sky130A PDK),
+      # so they are marked local_only: --check re-hashes the stream and the
+      # inventory, re-runs klt's own three stream checks, re-compares the
+      # recorded regeneration claim, and carries the committed outcome of the
+      # commands. Re-run them locally (see layout/README.md).
+      #
+      # The analog --generator/--regenerated-hash flags are load-bearing, not
+      # decoration: provenance.regeneration is part of what --check compares,
+      # so dropping them or changing the hash reports `drifted` (exit 3).
+      - name: Re-attest T1 item 2 (analog, digital) and compare against the committed envelopes
         run: |
+          klt signoff --attest 2 --input layout/osc_bank.gds \
+                      --inventory attest/item2_analog.json \
+                      --generator "python3 layout/gen/gen_osc_bank.py -o <scratch>/osc_bank.gds" \
+                      --regenerated-hash "sha256:625c8ff90f34c6fac7a88339d2c10ad5925da02e118eb6a15a6539c11e05bf29" \
+                      --check evidence/item2_analog.json
           klt signoff --attest 2 --input layout/readout/out/readout.gds \
                       --inventory attest/item2_digital.json \
                       --check evidence/item2_digital.json

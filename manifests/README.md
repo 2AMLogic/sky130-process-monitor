@@ -11,10 +11,10 @@ checklist: the `klt signoff` input and its committed output.
   does not grade it; refine it once the spec issue #2 ratifies). `evidence`
   cites T1 item 10 (repo hygiene): `evidence/item10.json`, the
   `klt signoff --attest 10` envelope over `attest/item10.json`, pinned by that
-  inventory's `content_hash`; and T1 item 2 analog (layout): `evidence/item2.json`,
-  an artifact-anchored generic envelope over `layout/osc_bank.gds`, pinned by the
-  stream's `content_hash` under `2.analog` (written by `layout/gen/attest_item2.py`;
-  `klt signoff --attest` has no item-2 verb). No other design artifact is cited yet.
+  inventory's `content_hash`; and T1 item 2 analog (layout): `evidence/item2_analog.json`,
+  the `klt signoff --attest 2 --input layout/osc_bank.gds` envelope over
+  `attest/item2_analog.json`, pinned by the stream's `content_hash` under `2.analog`.
+  No other design artifact is cited yet.
   The bare key `"10"` covers both the analog and digital partitions.
 - **`design-evidence-tiers.md`** — the checklist the grader parses. Vendored
   **byte-identical** from
@@ -73,7 +73,18 @@ any change.
 
 ## Item 2 attestations
 
-- `2.analog`: `evidence/item2.json`, over `layout/osc_bank.gds` (see above).
+- `2.analog`: `evidence/item2_analog.json`, `klt signoff --attest 2 --input layout/osc_bank.gds
+  --inventory attest/item2_analog.json --generator "python3 layout/gen/gen_osc_bank.py -o
+  <scratch>/osc_bank.gds" --regenerated-hash sha256:<hash> -o evidence/item2_analog.json`. The
+  inventory's two declared checks — `regenerate-byte-identical` (re-run the generator into a
+  scratch dir and `cmp` against the committed stream) and `connectivity-sanity`
+  (`layout/gen/check_connectivity.py`) — are both `local_only` (they need `klayout==0.30.10` of
+  `layout/gen/requirements.txt` and, for the regeneration, the sky130A PDK); CI re-hashes the
+  stream and the inventory, re-runs klt's own three stream checks, re-compares the recorded
+  regeneration claim and carries the committed outcome of the commands. `--generator` /
+  `--regenerated-hash` are echoed, never run, and `provenance.regeneration` is part of what
+  `--check` compares, so CI's step repeats both flags verbatim. Full recipe and the four places a
+  new stream hash has to be written: `layout/README.md`.
 - `2.digital`: `evidence/item2_digital.json`, `klt signoff --attest 2 --input layout/readout/out/readout.gds
   --inventory attest/item2_digital.json -o evidence/item2_digital.json`. The inventory's one declared check,
   `klt place-and-route layout/readout/request.json --check layout/readout/report.json`, is `local_only`

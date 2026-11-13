@@ -1,0 +1,25 @@
+{
+  "schema_version": 1,
+  "kind": "t1-attestation-inventory",
+  "t1_item": 2,
+  "description": "Analog partition layout: the two checks that back layout/osc_bank.gds beyond klt's own stream checks -- byte-identical regeneration from layout/gen/gen_osc_bank.py, and the net-connectivity sanity check (not LVS; that is issue #26).",
+  "checks": [
+    {
+      "name": "regenerate-byte-identical",
+      "argv": [
+        "sh", "-c",
+        "set -e; d=$(mktemp -d); trap 'rm -rf \"$d\"' EXIT; python3 layout/gen/gen_osc_bank.py -o \"$d/osc_bank.gds\" >/dev/null; cmp \"$d/osc_bank.gds\" layout/osc_bank.gds"
+      ],
+      "cwd": ".",
+      "timeout_s": 600,
+      "local_only": true
+    },
+    {
+      "name": "connectivity-sanity",
+      "argv": ["python3", "layout/gen/check_connectivity.py", "layout/osc_bank.gds"],
+      "cwd": ".",
+      "timeout_s": 300,
+      "local_only": true
+    }
+  ]
+}
