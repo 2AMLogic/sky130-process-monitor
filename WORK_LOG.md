@@ -3,6 +3,11 @@
 Chronological record of merged PRs and closed issues, maintained by the Guide
 role. Newest first.
 
+### 2026-11-13
+
+- **PR #124**: sim: cold subthreshold cells at 2 ms, gmin/abstol floor sweep, 5 MHz step audit
+- **Issue #44** (closed): Follow-on from PR #43: subthreshold Q2 bench follow-ups (cold-cell re-run, pfet S(T) reference, leakage floor)
+
 ### 2026-11-12
 
 - **PR #122**: Bump Repo Skills 0.25.10 -> 0.26.1
