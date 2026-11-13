@@ -229,7 +229,14 @@ row 1 FAIL (7 cells missing), row 2 five-corner **target** FAIL at 8 of 9 (V,T)
 cells with the slow/fast **fallback** PASS at 9 of 9, row 3 FAIL (worst
 p99 |ΔV| = 62 mV), row 4 FAIL (worst p99 |ΔT| = 19.0 °C). The grading
 conventions are choices made in the script's docstring, not spec changes, and
-the record lists the caveats behind each number.
+the record lists the caveats behind each number. The printed verdicts and every
+row 2/3/4 number reproduce on every CPython tried (3.10, 3.11, 3.12, 3.13), but
+`/tmp/rows1-4.json` is byte-identical to the committed
+[`sim/solve/records/2026-11-05-rows1-4.json`](sim/solve/records/2026-11-05-rows1-4.json)
+only on **CPython >= 3.12**, which is this repo's declared floor and what CI
+runs — on 3.10/3.11 two of the five `mc_pooled_sigma_lnf` values move by 1 ULP;
+the measurement is in the dated interpreter note at the foot of
+[`2026-11-05-rows1-4.md`](sim/solve/records/2026-11-05-rows1-4.md).
 
 **5 — readout RTL verification.** `cocotb` is not part of the worker tool spec,
 so install it in a worktree-local virtualenv rather than host-wide:
