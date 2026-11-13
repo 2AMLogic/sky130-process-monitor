@@ -5,6 +5,10 @@ role. Newest first.
 
 ### 2026-11-13
 
+- **PR #151**: docs: narrow three claims to the runs and records that back them
+- **Issue #142** (closed): README post-layout osc_subth wording and solve.py MC docstring are broader than the records
+- **PR #150**: docs(manifests): name the three uninventoried sim/ scripts in the item-9 scope list
+- **Issue #138** (closed): manifests/README.md item-9 scope list omits sim/pex/gen_requests.py
 - **PR #145**: ci: put every workflow on one CPython 3.12 floor and enforce it repo-wide
 - **Issue #144** (closed): Put drift.yml, signoff.yml and the README on the CPython >= 3.12 floor that #140 sets for tests.yml
 - **PR #143**: test(solve): pin each committed sim/solve output to an explicit input report list
