@@ -1,0 +1,33 @@
+name: unit tests
+
+# The same gate agents run locally before a PR: `npm test` from package.json.
+# CI runs the npm script itself rather than re-listing the test files, so the
+# local gate and this job cannot drift apart (issue #127).
+#
+# Stdlib-only `unittest`, no simulator and no PDK: sim/sensitivity/test_analyze.py
+# (sensitivity matrix + conditioning), sim/solve/test_gen_binding_mc.py (sized
+# MC request drift) and sim/solve/test_solve.py (synthetic negative controls for
+# the row 1-4 solve). The sized-request drift check also runs standalone in
+# .github/workflows/drift.yml, which owns that `sized-requests` status check.
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  unit-tests:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+
+      - name: npm test (sensitivity, sized-request drift, solve negative controls)
+        run: npm test
