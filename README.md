@@ -8,7 +8,14 @@ read out by a digital counter — designed by AI agents driving
 on the analog side and cocotb + Icarus, Yosys and OpenROAD on the digital
 side.
 
-**Status: specification ratified; no design, testbench or recorded result exists yet.**
+**Status: specification ratified; design, verification and layout under way.**
+The repo holds oscillator and sensing-path schematics, readout RTL, layout,
+ngspice and cocotb testbenches, and recorded results. Every recorded result is
+*simulated*, labelled with its corner and testbench — nothing here is measured,
+and nothing will be until silicon exists. T1 evidence sign-off is in progress
+and not every T1 row is met; the per-row verdict of record is
+[`manifests/sky130-process-monitor.signoff.json`](manifests/sky130-process-monitor.signoff.json),
+re-checkable with the commands under [Reproduce](#reproduce).
 
 **Built agent-native.** Every specification, decision record, testbench, and
 line of documentation here is produced by AI agents working from a ratified
@@ -130,7 +137,7 @@ rtl/           counter, select and readout sources
 sim/           testbenches + PVT corner results (ngspice)
 verification/  cocotb testbenches for the readout
 layout/        GDS + DRC/LVS reports (klayout-tools driven)
-measurements/  silicon characterization (empty until tape-out)
+measurements/  recorded results (simulated; silicon characterization after tape-out)
 ```
 
 ## License
