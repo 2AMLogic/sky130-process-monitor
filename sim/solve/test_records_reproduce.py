@@ -24,9 +24,10 @@ Interpreter requirement (measured, #140)
 `sim/solve/records/2026-11-05-rows1-4.json` is byte-reproducible only on CPython >= 3.12: it writes
 `mc_pooled_sigma_lnf` at full float repr, CPython 3.12 changed `sum()` of floats to Neumaier
 compensated summation (gh-100425), and two of its five sigmas move by 1 ULP on 3.10/3.11. No row
-2/3/4 number changes. The record is evidence and is not regenerated to hide this; `.github/
-workflows/tests.yml` runs 3.12 and `test_ci_python_satisfies_every_min_python` keeps it there. The
-samples files below round to 6 decimals and reproduce on every version tried (3.10, 3.11, 3.12, 3.13).
+2/3/4 number changes. The record is evidence and is not regenerated to hide this; every workflow
+under `.github/workflows/` that pins an interpreter runs 3.12, and
+`test_ci_python_satisfies_every_min_python` keeps all of them there (#144). The samples files below
+round to 6 decimals and reproduce on every version tried (3.10, 3.11, 3.12, 3.13).
 
 Not covered here
 ----------------
@@ -298,21 +299,34 @@ class PinnedListsAreLiteral(unittest.TestCase):
                                     "%s: pinned input is missing: %s" % (committed, tok))
 
     def test_ci_python_satisfies_every_min_python(self):
-        """CI must run an interpreter that can actually execute every pinned check.
+        """EVERY CI workflow must run an interpreter that can actually execute every pinned check.
 
-        Structural, not advisory: lowering `python-version` in the workflow below the version a
-        record reproduces on would otherwise turn a byte-identity gate into a silent skip.
+        Structural, not advisory: lowering `python-version` in any workflow below the version a
+        record reproduces on would otherwise turn a byte-identity gate into a silent skip. The
+        floor is repo-wide rather than per-workflow on purpose (#144): the workflow that runs the
+        byte-identity check today is not the only one that grades hash-bound evidence, so one
+        declared minimum spares the next full-repr float from rediscovering the 3.10-vs-3.12 split
+        in whichever workflow happens to produce it.
         """
         need = max([s["min_python"] for s in PINNED.values() if "min_python" in s] or [(0, 0)])
-        workflow = os.path.join(REPO, ".github", "workflows", "tests.yml")
-        with open(workflow) as f:
-            found = re.findall(r'python-version:\s*"?([0-9]+)\.([0-9]+)"?', f.read())
-        self.assertTrue(found, "no python-version pinned in %s" % workflow)
-        for major, minor in found:
-            self.assertGreaterEqual(
-                (int(major), int(minor)), need,
-                "tests.yml pins Python %s.%s, below the %d.%d a pinned record needs (#140)"
-                % ((major, minor) + need))
+        wf_dir = os.path.join(REPO, ".github", "workflows")
+        names = sorted(n for n in os.listdir(wf_dir) if n.endswith((".yml", ".yaml")))
+        self.assertTrue(names, "no workflow files in %s" % wf_dir)
+        pinned_anywhere = []
+        for name in names:
+            with open(os.path.join(wf_dir, name)) as f:
+                found = re.findall(r'python-version:\s*"?([0-9]+)\.([0-9]+)"?', f.read())
+            # A workflow that pins no interpreter is not a violation: it runs no Python, or takes
+            # the runner default, and there is no pin to lower. Only pins are constrained.
+            for major, minor in found:
+                pinned_anywhere.append(name)
+                self.assertGreaterEqual(
+                    (int(major), int(minor)), need,
+                    "%s pins Python %s.%s, below the %d.%d a pinned record needs (#140, #144)"
+                    % ((name, major, minor) + need))
+        self.assertTrue(pinned_anywhere,
+                        "no workflow in %s pins a python-version, so this floor is unenforced"
+                        % wf_dir)
 
     def test_pinned_list_sizes(self):
         """The counts the record notes quote, so a silently shortened list fails here too."""
