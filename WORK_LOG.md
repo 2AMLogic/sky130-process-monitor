@@ -3,6 +3,10 @@
 Chronological record of merged PRs and closed issues, maintained by the Guide
 role. Newest first.
 
+### 2026-11-12
+
+- **PR #122**: Bump Repo Skills 0.25.10 -> 0.26.1
+
 ### 2026-11-11
 
 - **PR #119**: docs(pex): classify osc_subth vh net split as an extraction defect
