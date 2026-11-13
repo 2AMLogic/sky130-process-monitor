@@ -91,7 +91,9 @@ any change.
 Two inventories, one per partition (item 9 is graded per partition):
 
 - `attest/item9_analog.json` -> `evidence/item9_analog.json`, cited as `9.analog`. It pins every
-  committed analog SPICE deck **and** every committed `klt sim` request that drives one (91 files).
+  committed analog SPICE deck, every committed `klt sim` request that drives one, and the solve
+  procedure's own Python bench under `sim/solve/` (255 files: 91 decks and per-bench requests, plus
+  158 `sim/solve/mc/` requests and the 6 `sim/solve/` drivers and unittest suites).
 - `attest/item9_digital.json` -> `evidence/item9_digital.json`, cited as `9.digital`. It pins the
   readout cocotb bench and its two `klt functional-verification` requests.
 
@@ -122,6 +124,9 @@ the command reproduces the measurement it is attached to (the tier doc says so f
 |---|---|---|
 | `sim/smoke/`, `sim/osc_bank/` | `run.sh --no-record [osc]` — the real single-corner `ngspice -b` | **Yes**, in full: these benches are single-unit and local by design. `--no-record` exists so repeating the cold start does not grow the append-only `measurements/*.jsonl`. |
 | `sim/sensitivity/`, `sim/power/`, `sim/pex/`, `sim/subthreshold/` | `klt sim <request> --dry-run` | **No.** The dry run validates the committed request and deck against the pinned PDK — deck staging, model resolution, corner / Monte-Carlo expansion and seeds — without simulating. Those grids ran on the batch fleet over hours; re-running them is not an attestation-time operation. Each bench's README gives the full fleet invocation (`klt sim --batch-set …`, `klt pex … --submit-only` / `--attach`), and the committed `records/` carry the results. |
+| `sim/solve/mc/requests/` (18), `sim/solve/mc/requests-sized/` (140) | `klt sim <request> --dry-run` | **No**, same as the row above — and for 20 of the 140 sized requests there is nothing to reproduce: the `tt`/1.62 V/−40 °C chunks (5 oscillators × 4 chunks) are committed and drift-checked but **were never run**, so no report backs them (`RECORD-2026-11-06-item6-sized-partial.md`). The 18 binding-cell and the other 120 sized requests have committed reports under `mc/reports/` and `mc/reports-sized/`, submitted with `klt sim --batch-set` only (fleet job ids in each report's `environment.remote`); no local ngspice grid was ever run. The generator is `sim/solve/gen_binding_mc.py`, and `test_gen_binding_mc.py` is the committed drift check (issue #71) that the committed request bytes still equal what it emits. |
+| `sim/solve/` drivers — `solve.py`, `gen_binding_mc.py`, `yield_samples.py`, `make_envelope.py` | none of their own (pinned by hash; exercised by the two suites below) | **Partly, and unevenly.** These are the testbench behind the rows 1–4 estimate (`5.analog`) and the item-6 yield figures (`6.analog`): pure post-processing on the committed `mc/samples-*.json` inputs, no simulation. `solve.py` and `yield_samples.py` are exercised by `test_solve.py` on synthetic fixtures with negative controls, and `gen_binding_mc.py`'s `--sized` path by `test_gen_binding_mc.py`; **`make_envelope.py` is covered by no suite** (it builds `evidence/item5_analog.json`, and only its output is pinned, by the `5.analog` citation). In every case regrading the *recorded* rows is the explicit `python3 -I sim/solve/solve.py grade …` / `yield_samples.py build …` command in each `RECORD-*.md`, which the attestation does not run. |
+| `sim/solve/test_solve.py`, `sim/solve/test_gen_binding_mc.py` | `python3 -I sim/solve/<test>.py` | **Yes**, in full: both are stdlib `unittest` suites that run for real at attestation time (8 and 6 tests), including `test_solve.py`'s synthetic negative controls and `test_gen_binding_mc.py`'s request-drift check against the committed `requests-sized/` bytes. |
 | `sim/pex/probe/osc_subth_vbp_probe.cir` | none (pinned by hash only) | **No.** One `ngspice -b`, but minutes on the extracted `osc_subth` netlist; it is a vh-split diagnosis probe (#117), not a spec-row measurement. |
 | `verification/readout/` | `make -C verification/readout` | **Yes** for the pre-layout run cited as `5.digital`: check-env, Verilator lint `-Wall`, then the full cocotb suite on Icarus (9/9). |
 | `verification/readout/request-sdf.json` | none (pinned by hash only) | **No.** The SDF-annotated re-run cited as `7.digital` names host-absolute PDK timing-model and SDF paths (`verification/README.md`); a third party adjusts them for their own install. |
@@ -131,6 +136,26 @@ Rows the spec names that no committed bench covers, so no inventory lists one: *
 with every verdict in `sim/power/analyze_power.py`) and **spec §8 area**, whose testbench is the
 layout/P&R report, not a bench (`layout/README.md`). `verification/smoke/` is excluded on purpose:
 it exercises the placeholder `rtl/smoke/smoke.v` and backs no claimed measurement.
+
+**Inventory scope: decks, requests and the solve bench — not every file a bench reads.** Three
+classes of committed input are deliberately *not* pinned here, so that "inventoried" keeps one
+meaning (a testbench or the request that drives one):
+
+- `sim/pex/extracted/*.spice` — the parasitic-extracted netlists that the `7.analog` decks' single
+  `.include` is re-pointed to. They are `klt pex` **output**, not hand-written benches: each
+  `sim/pex/records/*.pex.report.json` names one by path and pins, in its
+  `provenance.input.content_hash`, the **layout** it was extracted from — so the GDS side is
+  hash-pinned and the extraction is regenerable, but the extracted netlist's own bytes are pinned
+  by nothing. Stated here rather than left to inference.
+- The per-bench helper scripts — `sim/*/gen_requests.py`, `analyze*.py`, `grade_pex.py` — which
+  generate requests or post-process reports. `sim/solve/`'s equivalents *are* pinned, because
+  there they are the measurement path for `5.analog` / `6.analog` rather than a convenience wrapper.
+- `sim/*/negative_controls.sh` — control runs that assert a bench fails when it should; they back
+  no recorded measurement row.
+
+Of the three, only the extracted netlists are an input to a cited row (`7.analog`); the helper
+scripts and negative controls back no cited row at all. This list exists so each omission is stated
+rather than inferred from the inventory, since `klt signoff --attest 9` cannot check completeness.
 
 ### CI
 
