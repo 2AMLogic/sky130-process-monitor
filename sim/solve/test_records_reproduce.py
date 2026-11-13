@@ -58,8 +58,11 @@ Z = "sim/solve/mc/reports-sized"               # #31 sized (chunked) binding-cel
 # ---------------------------------------------------------------- pinned input sets
 #
 # Each list is the set the matching record's glob resolved to at the commit that wrote the record
-# (`git ls-tree <commit> <dir>`), in the order the shell expands it -- the order matters, because
-# `analyze.py extract-mc` pools same-cell samples by concatenation.
+# (`git ls-tree <commit> <dir>`), in the order that record's own command passes them -- the order
+# matters, because `analyze.py extract-mc` pools same-cell samples by concatenation. For every list
+# but GRID_5/MCNOM_5 that order is also the order the shell expands the glob in; those two are the
+# rows 1-4 record's own order (hd, nmos, pmos, wire, subth), which is the issue's order rather than
+# glob order (`... subth, wire`). The committed output is byte-identical either way.
 
 # `{grid,mc_osc}_*.json.gz` at e57415f (2026-11-05), the rows 1-4 record.
 GRID_5 = ["%s/grid_osc_%s.json.gz" % (R, o) for o in ("hd", "nmos", "pmos", "wire", "subth")]

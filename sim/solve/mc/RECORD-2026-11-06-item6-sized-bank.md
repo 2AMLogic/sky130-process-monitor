@@ -58,8 +58,6 @@ contain no wildcard, so nothing new in those directories can join them:
 R=sim/sensitivity/records/reports
 B=sim/solve/mc/reports
 Z=sim/solve/mc/reports-sized
-BIND=ff_1.62V_27C,ff_1.98V_27C,fs_1.98V_27C,sf_1.98V_27C,ss_1.98V_27C,tt_1.62V_-40C,tt_1.98V_27C
-CELL=ff_1.62V_27C,ff_1.98V_27C,fs_1.98V_27C,sf_1.98V_27C,ss_1.98V_27C,tt_1.98V_27C
 
 python3 -I sim/sensitivity/analyze.py extract \
   $R/grid_osc_hd.json.gz $R/grid_osc_hd_5p.json.gz $R/grid_osc_nmos.json.gz \
@@ -69,10 +67,13 @@ python3 -I sim/sensitivity/analyze.py extract-mc \
   $R/mc_osc_hd.json.gz $R/mc_osc_hd_5p.json.gz $R/mc_osc_nmos.json.gz \
   $R/mc_osc_pmos.json.gz $R/mc_osc_subth.json.gz $R/mc_osc_wire.json.gz -o mcnom.json
 python3 -I sim/sensitivity/analyze.py extract-mc \
-  $B/mc_bind_osc_hd.json.gz $B/mc_bind_osc_nmos_{$BIND}.json.gz $B/mc_bind_osc_pmos.json.gz \
+  $B/mc_bind_osc_hd.json.gz \
+  $B/mc_bind_osc_nmos_{ff_1.62V_27C,ff_1.98V_27C,fs_1.98V_27C,sf_1.98V_27C,ss_1.98V_27C,tt_1.62V_-40C,tt_1.98V_27C}.json.gz \
+  $B/mc_bind_osc_pmos.json.gz \
   $B/mc_bind_osc_subth_-40C.json.gz $B/mc_bind_osc_subth_27C.json.gz \
-  $B/mc_bind_osc_wire_{$BIND}.json.gz \
-  $Z/mc_sized_osc_{hd,nmos,pmos,subth,wire}_{$CELL}_c{0,1,2,3}.json.gz -o mcbind.json   # 18 + 120
+  $B/mc_bind_osc_wire_{ff_1.62V_27C,ff_1.98V_27C,fs_1.98V_27C,sf_1.98V_27C,ss_1.98V_27C,tt_1.62V_-40C,tt_1.98V_27C}.json.gz \
+  $Z/mc_sized_osc_{hd,nmos,pmos,subth,wire}_{ff_1.62V_27C,ff_1.98V_27C,fs_1.98V_27C,sf_1.98V_27C,ss_1.98V_27C,tt_1.98V_27C}_c{0,1,2,3}.json.gz \
+  -o mcbind.json                                                           # 18 + 120 reports
 python3 -I sim/solve/yield_samples.py build freq.json mcnom.json mcbind.json -o samples.json
 cmp samples.json sim/solve/mc/samples-sized-bank.json                      # identical
 
@@ -83,6 +84,12 @@ cmp negctl.json sim/solve/mc/samples-sized-bank-negctl-hd0.3.json          # ide
 ```
 
 Checked 2026-11-13 against `17d4279`: both byte-identical, on CPython 3.10.22, 3.11.17, 3.12.3 and
-3.13.16. `sim/solve/test_records_reproduce.py` asserts both on every `npm test` run from the same
-literal 152-path list (8 + 6 + 18 + 120), reading no glob. The `klt yield` step of the block above is not covered: no
-released klt runs it (2AMLogic/klayout-tools#5018).
+3.13.16. The block above was then run **verbatim**, as the text that appears here, in a clean shell
+(`env -i ... bash --noprofile --norc`, bash 5.2.21, CPython 3.12.3, no `eval`): both `cmp` steps exit
+0. The block's only brace forms are in the `mcbind.json` step, and they expand to exactly that step's
+138 pinned paths (18 binding-cell + 120 sized) in the pinned order -- that expansion was
+compared path-for-path with the corresponding list in `sim/solve/test_records_reproduce.py` and is
+identical, so the shell text here and the test's list denote one set, not two. The other two steps
+name their 8 and 6 inputs literally. That test asserts both outputs on every `npm test` run from the
+same literal 152-path list (8 + 6 + 18 + 120), reading no glob. The `klt yield` step of the block above is
+not covered: no released klt runs it (2AMLogic/klayout-tools#5018).
