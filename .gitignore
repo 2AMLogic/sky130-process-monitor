@@ -9,6 +9,10 @@ sim/build/
 # cocotb/Icarus build + result artifacts (verification/)
 sim_build/
 results.xml
+# klt functional-verification SDF scaffolding: regenerated on every run and
+# host-path-specific, so never committed (issue #152). results_icarus.xml in
+# the same directory IS cited evidence and stays tracked.
+verification/*/.fv-sdf/*.v
 # cocotb venv, made by hand inside the worktree (sim/README.md, "Environment")
 .venv/
 # >>> loom-managed (do not edit) >>>

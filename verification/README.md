@@ -63,3 +63,12 @@ Disclosed limits (not relaxed):
    multi-corner STA of item 5.
 4. **Oscillator timing.** `test_readout.py` drives the `osc` inputs as ideal clocks (periods ≥ 4 ns); the
    routed netlist's input-to-flop delay is not exercised at the real oscillator frequencies.
+5. **Two cited logs are not retained.** The report's `environment` block cites
+   `verification/readout/.fv-sdf/test_icarus.log` (sha256 `6018a71a…`) and
+   `verification/readout/.fv-sdf/build_icarus.log` (sha256 `32d6de32…`) with `scope: "repo"`, but neither
+   log was ever committed — `*.log` is ignored (`.gitignore:2`), and no `.log` file is tracked anywhere in
+   this repo. The original bytes were not recovered on the worker host searched (the run's `issue-32`
+   worktree is gone); other fleet hosts were not searched. A reader therefore cannot check those two
+   pinned hashes. The retained, checkable artifact of the same run is
+   `verification/readout/.fv-sdf/results_icarus.xml` (sha256 `8a0ff99f…`), whose hash matches the report's
+   `results_xml` pin and which carries the per-test pass/fail content.
