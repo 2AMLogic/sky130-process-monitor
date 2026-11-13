@@ -6,7 +6,7 @@
     "worktree:return": "./.loom/scripts/worktree-return.sh",
     "check:ci": "npm run test",
     "check:all": "npm run test",
-    "test": "python3 -I sim/sensitivity/test_analyze.py && python3 -I sim/solve/test_gen_binding_mc.py && python3 -I sim/solve/test_solve.py",
+    "test": "python3 -I sim/sensitivity/test_analyze.py && python3 -I sim/solve/test_gen_binding_mc.py && python3 -I sim/solve/test_solve.py && python3 -I sim/pex/test_gen_requests.py",
     "lint": "echo 'No linter configured. Customize this script for your project.' && exit 0"
   }
 }

@@ -26,6 +26,8 @@ or modifies those tools. The flows were verified from a worktree, not a fresh cl
 
     sim/smoke/run.sh
 
+    sim/smoke/run.sh --no-record    # same run, appends nothing (repeatable cold start)
+
 Runs one `ngspice -b` (single corner, local) on `sim/smoke/inv_smoke.spice`: `sky130_fd_sc_hd__inv_1`,
 `tt`, 1.8 V, 27 °C, 10 fF load. It appends one line to `measurements/inv_smoke_records.jsonl`
 (append-only; each record is labelled SIMULATED and names the corner, testbench, open_pdks revision,
@@ -42,6 +44,7 @@ passing. Exit 0 means all did; exit 2 means the environment itself is broken. A 
 ## Oscillator bank
 
     sim/osc_bank/run.sh [osc_name ...]      # default: all five
+    sim/osc_bank/run.sh --no-record [osc_name ...]   # same runs, appends nothing
     sim/osc_bank/negative_controls.sh
 
 One `ngspice -b` per oscillator (`bench_<osc>.spice`, netlists from `design/osc_bank/`), `tt` / 1.8 V / 27 °C,
@@ -49,10 +52,34 @@ single-unit and local by design. After skipping the start-up edges each bench me
 supply current `i_avg_ua` over a whole number of cycles. If **every** ring oscillates, one record per oscillator is
 appended to `measurements/osc_bank_records.jsonl` (append-only, labelled SIMULATED, with corner, testbench, netlist,
 open_pdks, model file and ngspice version); if any ring does not, `run.sh` exits non-zero, names it, and appends
-nothing. The PDK/ngspice pins are read via `check_env.sh`, not repeated. The PVT surfaces and Monte Carlo are #8
+nothing. `--no-record` runs the benches and prints the same results without appending — it is the repeatable
+cold-start invocation that `attest/item9_analog.json` declares, so re-attesting does not grow the record. The PDK/ngspice pins are read via `check_env.sh`, not repeated. The PVT surfaces and Monte Carlo are #8
 and go through `klt sim`. `osc_subth`'s `i_avg_ua` includes ~1 µA of bias divider (see `design/osc_bank/README.md`).
 The controls check that a tied-off enable fails and appends nothing, and that a drifted schematic is reported by
 `klt netlist --check`.
+
+## Cold-start invocations (T1 item 9)
+
+`attest/item9_analog.json` is the committed inventory of every analog testbench deck, every `klt
+sim` request that drives one, the `solve/` post-processing bench, and the three `sensitivity/`
+Python modules that bench imports at run time, with the cold start declared per bench; `klt
+signoff --attest 9` runs them and writes `evidence/item9_analog.json`, cited by the
+manifest as `9.analog`. What each cold start does — and which ones do **not** re-simulate — is
+tabulated in `manifests/README.md` § "Item 9 (testbenches shipped)", together with the committed
+files the inventory deliberately leaves out. In short:
+
+| Bench | Cold start | Re-simulates? |
+|---|---|---|
+| `smoke/`, `osc_bank/` | `run.sh --no-record [osc]` | yes, the real single-corner `ngspice -b` |
+| `sensitivity/`, `power/`, `pex/`, `subthreshold/` | `klt sim <request> --dry-run` | no — validates the committed request and deck against the pinned PDK (staging, models, corner/MC expansion). The full fleet run is the `klt sim --batch-set` / `klt pex --submit-only` command in each section above |
+| `solve/mc/requests/` (18), `solve/mc/requests-sized/` (140) | `klt sim <request> --dry-run` | no — same as the row above. 20 of the 140 sized requests (the `tt`/1.62 V/−40 °C chunks) are committed and drift-checked but were **never run**; the rest have reports under `solve/mc/reports*/`. See `solve/mc/RECORD-2026-11-06-item6*.md` |
+| `sensitivity/analyze.py`, `gen_requests.py`, `test_analyze.py` | `python3 -I sensitivity/test_analyze.py` (the two modules are pinned by hash) | no simulation — `analyze.py` builds the frequency and MC tables `solve.py` grades and is imported by it at run time (`gen_requests.py` likewise by `gen_binding_mc.py`), so `analyze.py extract` / `extract-mc` is the first step of the `5.analog` / `6.analog` reproduce chain. The suite runs for real (10 tests) and covers `analyze.py`; `gen_requests.py` has no suite |
+| `solve/` drivers (`solve.py`, `gen_binding_mc.py`, `yield_samples.py`, `make_envelope.py`) and their two unittest suites | `python3 -I solve/test_solve.py`, `python3 -I solve/test_gen_binding_mc.py` | no simulation at all — this is the post-processing path behind `5.analog` and `6.analog`. Both suites run for real (8 and 6 tests: synthetic negative controls, and the request-drift check against the committed `requests-sized/` bytes). Regrading the recorded rows is the explicit `solve.py grade` / `yield_samples.py build` command in each `RECORD-*.md`, which the attestation does not run |
+
+From a clean checkout, the precondition is `sim/check_env.sh` (the inventory's top-level cold start):
+it fails unless the PDK revision and every tool pin match. cocotb is not provisioned on workers, so
+make a worktree venv first — see § Environment, and `manifests/README.md` for why the `klt` that
+produces the envelope must not share that venv.
 
 ## Rows 1-4 grading and power (issue #29)
 

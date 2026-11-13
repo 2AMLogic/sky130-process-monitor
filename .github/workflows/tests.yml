@@ -6,8 +6,10 @@ name: unit tests
 #
 # Stdlib-only `unittest`, no simulator and no PDK: sim/sensitivity/test_analyze.py
 # (sensitivity matrix + conditioning), sim/solve/test_gen_binding_mc.py (sized
-# MC request drift) and sim/solve/test_solve.py (synthetic negative controls for
-# the row 1-4 solve). The sized-request drift check also runs standalone in
+# MC request drift), sim/solve/test_solve.py (synthetic negative controls for
+# the row 1-4 solve) and sim/pex/test_gen_requests.py (the pex benches still
+# equal what sim/pex/gen_requests.py derives from the #29 sensitivity benches,
+# issue #137). The sized-request drift check also runs standalone in
 # .github/workflows/drift.yml, which owns that `sized-requests` status check.
 
 on:
@@ -29,5 +31,5 @@ jobs:
         with:
           python-version: "3.10"
 
-      - name: npm test (sensitivity, sized-request drift, solve negative controls)
+      - name: npm test (sensitivity, sized-request drift, solve negative controls, pex bench derivation)
         run: npm test
