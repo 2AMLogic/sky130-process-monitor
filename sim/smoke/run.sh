@@ -1,8 +1,13 @@
 #!/usr/bin/env bash
 # Analog smoke: one ngspice -b run (single corner, local by design).
-# Appends a dated record to measurements/inv_smoke_records.jsonl.
+# Usage: sim/smoke/run.sh [--no-record]
+# Appends a dated record to measurements/inv_smoke_records.jsonl; --no-record runs the bench
+#   and prints the result but appends nothing (the repeatable cold-start invocation,
+#   attest/item9_analog.json, must not grow the append-only record).
 # SMOKE_MODEL_LIB overrides the model library path (used by the negative control).
 set -eu
+RECORD=1
+if [ "${1:-}" = "--no-record" ]; then RECORD=0; shift; fi
 HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 SIM="$(dirname "$HERE")"
 REPO="$(dirname "$SIM")"
@@ -29,6 +34,8 @@ if [ -z "$HL" ] || [ -z "$LH" ]; then
   echo "run.sh: FAIL: propagation delay not measured (see $LOG)" >&2
   exit 1
 fi
+
+if [ "$RECORD" = 0 ]; then echo "run.sh: --no-record: tpd_hl=$HL tpd_lh=$LH; no record appended"; exit 0; fi
 
 NGV="$(ngspice --version 2>&1 | sed -n 's/.*ngspice-\([0-9.]*\).*/\1/p' | head -1)"
 OPDK="$(python3 -I -c 'import json,sys;print(json.load(open(sys.argv[1]))["open_pdks"])' "$PDK_JSON")"

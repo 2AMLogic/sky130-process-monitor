@@ -34,6 +34,22 @@ five-oscillator read at 10 MHz, k = 10 as a simulated figure (RTL simulation, Ic
 `READOUT_BREAK=1` (every expected count offset) and must fail with an `AssertionError`. cocotb is not provisioned on
 workers: use a venv inside the worktree (`sim/README.md`).
 
+## Cold-start invocation (T1 item 9)
+
+    make -C verification/readout
+
+is the documented cold start for the digital partition, declared by `attest/item9_digital.json` and
+run by `klt signoff --attest 9` to produce `evidence/item9_digital.json` (cited as `9.digital`). It
+reproduces the pre-layout run cited as `5.digital` in full: `check_env.sh`, Verilator lint `-Wall`,
+then the whole cocotb suite on Icarus. cocotb is not provisioned on workers — make a worktree venv
+first (`sim/README.md` § Environment).
+
+The SDF-annotated re-run below is **not** re-executed by the attestation: `request-sdf.json` names
+host-absolute PDK timing-model and SDF paths, so a third party adjusts them for their own install.
+`verification/smoke/` is deliberately outside the inventory — it exercises the placeholder
+`rtl/smoke/smoke.v` and backs no claimed measurement. Both exclusions are stated in
+`manifests/README.md` § "Item 9 (testbenches shipped)".
+
 ## Post-layout re-run with back-annotated SDF (T1 item 7, digital; issue #32)
 
 SIMULATED (Icarus 13.0, cocotb 2.1.0, `klt 0.9.2.dev460+g1c0ae85debd3`); nothing here is measured.

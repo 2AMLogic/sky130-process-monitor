@@ -1,0 +1,99 @@
+{
+  "schema_version": 1,
+  "kind": "generic",
+  "status": "pass",
+  "t1_item": 9,
+  "summary": "T1 item 9 (Testbenches shipped): 8/8 attestation checks passed (klt signoff --attest)",
+  "source": "attest/item9_digital.json",
+  "attestation": {
+    "producer": "klt signoff --attest",
+    "inventory_schema_version": 1,
+    "hash_algorithm": "sha256-raw-bytes",
+    "check_count": 8,
+    "passed_count": 8,
+    "checks": [
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "verification/readout/Makefile",
+        "passed": true,
+        "content_hash": "sha256:b37069f0c9c3dc3f24f1877deb2546e1dfe79e31c8322f8592bbe08f789f7019"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "verification/readout/cocotb.mk",
+        "passed": true,
+        "content_hash": "sha256:b91b02ee6487b17d6a925ef045c5804794c2a391b55b6bbe20948f5a9c0168f7"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "verification/readout/functional-verification.json",
+        "passed": true,
+        "content_hash": "sha256:dfa412adaf6f4023994509ef411a3d9bfa28b2d629fa81a0369d9c43e7a403af"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "verification/readout/request-sdf.json",
+        "passed": true,
+        "content_hash": "sha256:8d23c8ffab742f03fb6f2ff2879cf381a73c74dd7906ef2ee9ef7dc7b1937a5a"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "verification/readout/test_readout.py",
+        "passed": true,
+        "content_hash": "sha256:5d60d71ea6ca906dd6687a093380bcc376de47a6a8311bae7683a4f56a723288"
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "argv": [
+          "make",
+          "-C",
+          "verification/readout"
+        ],
+        "cwd": ".",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "pin",
+        "role": "pdk",
+        "passed": true,
+        "value": {
+          "name": "sky130A",
+          "revision": "c6d73a35f524070e85faff4a6a9eef49553ebc2b"
+        }
+      },
+      {
+        "check": "pin",
+        "role": "tools",
+        "passed": true,
+        "value": {
+          "cocotb": "2.1.0",
+          "iverilog": "13.0",
+          "klayout-tools": "0.9.1",
+          "verilator": "5.050",
+          "yosys": "0.67"
+        }
+      }
+    ]
+  },
+  "provenance": {
+    "klt_version": "0.9.1",
+    "klayout_version": null,
+    "pdk": null,
+    "deck": null,
+    "input": {
+      "path": {
+        "path": "attest/item9_digital.json",
+        "scope": "repo"
+      },
+      "content_hash": "sha256:f614f09ab6079a877d0442e7c28c6e4f0139c562ef3ed3787d3518b9726731cd"
+    }
+  }
+}

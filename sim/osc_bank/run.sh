@@ -2,13 +2,17 @@
 # Oscillator-bank bench: one ngspice -b per oscillator (tt, 1.8 V, 27 C; single-unit, local by design).
 # Appends one dated SIMULATED record per oscillator to measurements/osc_bank_records.jsonl, but only
 # if EVERY ring oscillated (all-or-nothing: a failed run appends nothing).
-# Usage: sim/osc_bank/run.sh [osc_name ...]   (default: all five)
+# Usage: sim/osc_bank/run.sh [--no-record] [osc_name ...]   (default: all five)
+# --no-record runs the benches and prints the results but appends nothing: the repeatable
+#   cold-start invocation (attest/item9_analog.json) must not grow the append-only record.
 # OSC_EN_SRC overrides the enable source (negative control: enable tied off).
 set -eu
 HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 SIM="$(dirname "$HERE")"
 REPO="$(dirname "$SIM")"
 DESIGN="$REPO/design/osc_bank"
+RECORD=1
+if [ "${1:-}" = "--no-record" ]; then RECORD=0; shift; fi
 OSCS=("$@"); [ ${#OSCS[@]} -gt 0 ] || OSCS=(osc_hd osc_nmos osc_pmos osc_wire osc_subth)
 
 envout="$("$SIM/check_env.sh")"
@@ -41,6 +45,7 @@ for o in "${OSCS[@]}"; do
   results="$results$o $F $I"$'\n'
 done
 [ "$fail" = 0 ] || exit 1
+if [ "$RECORD" = 0 ]; then echo "run.sh: --no-record: all rings oscillated; no record appended"; exit 0; fi
 
 mkdir -p "$REPO/measurements"
 printf '%s' "$results" | python3 -I -c '
