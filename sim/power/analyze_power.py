@@ -9,7 +9,8 @@ POWER IS NOT COVERED; the spec's "one oscillator plus counter" active figure is 
 and no counter number is folded into any pass/fail here.
   * Active: one oscillator enabled, P = VDD * |mean supply current| (second half of the tran window; the
     averaging window is not an integer number of cycles, error <= 1 cycle / cycles in the window). A cell
-    whose ring did not oscillate (fewer than 5 rising crossings in the window) is MISSING, never graded.
+    whose ring did not run long enough for a frequency is MISSING, never graded; gradability is the #8 rule
+    read from sensitivity/analyze.py (MIN_EDGES below), not a second threshold stated here.
     Binding = the largest P over all oscillators and cells (worst oscillator, worst cell).
   * Idle: enable tied to vss, op analysis. Bank idle = SUM over the five oscillators at a cell (all gated
     off). Graded only where all five are present; partial sums are reported as lower bounds and NOT graded.
@@ -38,6 +39,10 @@ def _load_sensitivity():
 _SENS = _load_sensitivity()
 OSCS, _load, _remote = _SENS.OSCS, _SENS._load, _SENS._remote
 BOUNDS_UW = {"active": (100.0, 500.0, 20.0), "idle": (1.0, 10.0, 0.1)}
+# Gradability is the #8 rule, not a power-side threshold: freq_from_crossings drops SKIP_EDGES start-up
+# edges and then needs MIN_CYCLES full cycles, i.e. MIN_CYCLES + 1 further crossings. A cell the #8 surface
+# records as MISSING must not be graded for power here, so the count comes from _SENS, never a literal.
+MIN_EDGES = _SENS.SKIP_EDGES + _SENS.MIN_CYCLES + 1
 
 
 def extract(paths):
@@ -57,7 +62,7 @@ def extract(paths):
             if ok and kind == "active":
                 cr = ((m.get("t_rise") or {}).get("crossings") or {}).get("times") or []
                 v_i = (m.get("i_avg") or {}).get("value")
-                if len(cr) >= 5 + 3 and v_i is not None:   # >= 5 edges inside the run (3 start-up edges skipped as in #8)
+                if len(cr) >= MIN_EDGES and v_i is not None:
                     cur = abs(v_i)
             elif ok and kind == "idle":
                 v_i = (m.get("i_vdd") or {}).get("value")
