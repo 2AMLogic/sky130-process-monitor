@@ -1,0 +1,6 @@
+{
+  "note": "The PVT corner box (spec 'PVT corner box', 45 cells = 5 corners x 3 V x 3 T) is defined once, here. sim/sensitivity/gen_requests.py and sim/sensitivity/analyze.py, sim/subthreshold/analyze.py and sim/subthreshold/gen_probe.py load these lists; nothing restates them, and V_HALF/T_HALF in sim/sensitivity/analyze.py are derived as the half-spans of the vdd/temp_c lists, never written as literals.",
+  "process": ["tt", "ff", "ss", "sf", "fs"],
+  "vdd": [1.62, 1.80, 1.98],
+  "temp_c": [-40, 27, 125]
+}

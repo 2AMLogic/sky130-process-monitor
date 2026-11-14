@@ -24,9 +24,12 @@ OSCS = {
     "osc_wire": ("50p 2.5u", 400),
     "osc_subth": ("20n 2m", 400),
 }
-PROCESS = ["tt", "ff", "ss", "sf", "fs"]
-VDD = [1.62, 1.80, 1.98]
-TEMP = [-40, 27, 125]
+# The corner box lives once, in sim/corner_box.json (beside sim/pdk.json): these are the lists written
+# into every grid_*.json request, and sim/sensitivity/analyze.py indexes the returned table with the
+# same file, so the grid and its index cannot drift apart.
+with open(os.path.join(HERE, "..", "corner_box.json")) as _f:
+    _BOX = json.load(_f)
+PROCESS, VDD, TEMP = _BOX["process"], _BOX["vdd"], _BOX["temp_c"]
 # mismatch Monte Carlo cells. Issue #8 step 5 asks for five corners x {1.80 V/27 C, 1.62 V/125 C,
 # 1.98 V/-40 C}; per-unit wall time on the fleet is ~45 s whatever the window (model load), so 750 units
 # per oscillator do not fit a session. Scoped (host rule: scope, land, file the remainder) to the
