@@ -25,9 +25,9 @@ checklist: the `klt signoff` input and its committed output.
 - **`sky130-process-monitor.signoff.json`** — the **verdict of record**,
   graded with `klayout-tools==0.9.1`. Today 13 of the 22 T1 rows read `met`
   (items 1, 2, 3, 9 and 10 on both partitions, plus 4.digital, 5.digital and 7.digital); 6.digital
-  reads `not_applicable`; 5.analog, 6.analog and 7.analog read `unmet` / `check_failed` (their
-  cited envelopes grade, and fail their targets); and 4.analog, 8 and 11 on both partitions read
-  `unmet` / `no_evidence`. The T2-T4 tier rows read `unmet` / `tier_not_supported` (the grader does
+  reads `not_applicable`; 5.analog, 6.analog, 7.analog and item 8 on both partitions read
+  `unmet` / `check_failed` (their cited envelopes grade, and fail their targets); and 4.analog and
+  11 on both partitions read `unmet` / `no_evidence`. The T2-T4 tier rows read `unmet` / `tier_not_supported` (the grader does
   not grade those tiers). Never hand-edit it.
 
 ## Regenerate
@@ -213,3 +213,38 @@ reference clock only) and `verification/readout/functional-verification.report.j
 functional-verification`, 9/9). Read `sta/README.md` for what the `constrained` verdict does not cover
 (oscillator-clocked counter untimed; 125 C / 1.62 V / 1.98 V not in the liberty set). Regenerate both with
 `uvx --from "klayout-tools==0.9.1" [--with cocotb==2.1.0] klt ...`, then the record.
+
+## Item 8 (characterization report)
+
+`8.analog` and `8.digital` each cite a **bare generic evidence envelope** —
+`evidence/item8_analog.json` and `evidence/item8_digital.json` — over the
+hand-assembled reports `characterization/analog.md` and
+`characterization/digital.md`. Item 8 is the only T1 item `"kind": "generic"`
+may satisfy (`design-evidence-tiers.md` item 8: it names no `klt` verb, because
+no aggregation command exists; upstream tracker klayout-tools#309), and it is
+graded **per partition**.
+
+The envelopes are deliberately **bare**: `file` only in the manifest, with no
+`content_hash` pin, and no `coverage` block. Item 8 is not one of the items
+requiring an *anchored* generic envelope (items 1, 2, 9 and 10 are), so it needs
+neither a `provenance.input.path` nor a manifest-pinned hash — and pinning a
+Markdown report's own hash would turn every wording fix into a stale row and
+force a record regeneration. A `coverage` block is omitted on purpose: on a
+generic envelope it is a graded claim, not free disclosure (a block declaring
+skipped work downgrades a `pass` to `pass_partial`, and a malformed one renders
+`malformed`), so the reports disclose their gaps in prose and in the envelope
+`summary` instead.
+
+**Both envelopes read `"status": "fail"`, so both rows grade `unmet` /
+`check_failed`** — off `no_evidence`, and not `met`. `"pass"` is the only
+passing token for this kind, and a `fail` is the honest outcome: the analog
+report aggregates recorded failures of spec rows 1-4 and 7, and the digital
+report carries a recorded corner-matched STA failure (the counter does not cover
+`osc_hd` in any liberty corner) plus spec row 6, which has no recorded result at
+all. Per `CLAUDE.md` a recorded verdict is not relaxed to make a result pass, so
+these do not become `pass` by dropping a row.
+
+Regenerate nothing to refresh these: the envelopes are hand-written records, not
+tool output. Editing either report means updating its envelope `summary` by hand
+in the same change, and `characterization/test_citations.py` (run from
+`npm test`) checks that every record path the two reports cite still exists.
