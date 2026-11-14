@@ -16,9 +16,9 @@ quoted**: the margin below is a discrimination statistic, not an accuracy.
 | `requests/mc_<osc>.json` | mismatch Monte Carlo at the nominal cell only: 5 corners × 1.80 V/27 °C × 50 samples (osc_subth: 20), `mc_mm_switch=1` via `monte_carlo.mismatch_scale` |
 | `requests/mc_offnom_*.json` | mismatch Monte Carlo at the off-nominal cells: 5 corners × {1.62 V/125 °C, 1.98 V/−40 °C}, per-oscillator N from `OFFNOM_N` in `gen_requests.py` (osc_subth: one request per cell). Coverage status is recorded in `records/2026-11-05-mc-offnom-partial.md` and the later `records/2026-11-06-mc-offnominal-*.md`; this table makes no completeness claim |
 | `requests/*_osc_hd_5p.json` | osc_hd re-run with a 5 ps max step (grid, nominal MC, off-nominal MC); results in `records/2026-11-05-osc-hd-step-refined.md` |
-| `analyze.py` | frequency extraction, sensitivity matrix, SVD / κ / rank, margin (stdlib only) |
+| `analyze.py` | frequency extraction, sensitivity matrix, SVD / κ / rank, margin, counter-gate sweep (stdlib only) |
 | `test_analyze.py` | unit tests on synthetic data: `python3 -I sim/sensitivity/test_analyze.py` |
-| `records/` | dated, append-only result records (never edited; a re-run is a new dated file) |
+| `records/` | dated, append-only result records (never edited; a re-run is a new dated file). `2026-11-14-osc-subth-gate-sizing.md` sizes the `osc_subth` counter gate: counts and cold-cell (1.98 V / −40 °C) margin versus gate exponent `k`, and the result against spec §6 conversion time |
 
 ## Running
 
@@ -28,6 +28,11 @@ Multi-unit runs go to the batch fleet through `klt sim` (never hand-launched ngs
     python3 -I sim/sensitivity/analyze.py extract <grid reports> -o freq_table.json
     python3 -I sim/sensitivity/analyze.py extract-mc <mc reports> -o mc_table.json
     python3 -I sim/sensitivity/analyze.py report freq_table.json mc_table.json
+
+The counter gate defaults to spec §5's 2^10 reference cycles at 10 MHz (`GATE_S`). `report --gate-exp K`
+re-runs the same analysis at a gate of 2^K cycles, and `gate-sweep FREQ MC --vdd V --temp T` tabulates
+counts and margin over a range of `K` at one (V,T) cell; both label the gate they used, and neither
+changes the default. Extraction takes no gate option — it records `f_osc`, not counts.
 
 `--pdk-root` cannot be combined with the batch backend; the runner uses its own PDK, and the PDK stamp it
 reports (`environment.remote.worker_environment.pdk`) is what the record cites. The client-side
