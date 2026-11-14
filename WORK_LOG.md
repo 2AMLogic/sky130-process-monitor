@@ -3,8 +3,23 @@
 Chronological record of merged PRs and closed issues, maintained by the Guide
 role. Newest first.
 
+### 2026-11-14
+
+- **PR #164**: refactor: read the open_pdks pin from sim/pdk.json in the subthreshold analyzer
+- **Issue #163** (closed): Read the open_pdks pin from sim/pdk.json in sim/subthreshold/analyze.py instead of two hardcoded copies
+
 ### 2026-11-13
 
+- **PR #154**: chore: drop five .gitignore rules for flow/ and sim-harness paths this repo never had
+- **Issue #147** (closed): Remove stale .gitignore rules for flow/, sim harness and corners paths that never existed in this repo
+- **PR #162**: refactor: attest the analog item-2 envelope with klt signoff --attest 2
+- **Issue #157** (closed): Remove layout/gen/attest_item2.py: klt signoff --attest 2 now exists and the digital partition already uses it
+- **PR #161**: refactor(sim): share one negative-control pass rule; subthreshold no longer passes with klt missing
+- **Issue #159** (closed): Share one expect_fail helper across the negative-control scripts: the subthreshold one passes with klt missing
+- **PR #160**: docs: disclose the two SDF-run logs cited by hash but not retained
+- **Issue #156** (closed): SDF functional-verification report cites two log files by sha256 that are not in the repo
+- **PR #155**: chore: untrack regenerated SDF scaffolding under verification/readout/.fv-sdf
+- **Issue #152** (closed): Untrack two uncited generated files in verification/readout/.fv-sdf
 - **PR #151**: docs: narrow three claims to the runs and records that back them
 - **Issue #142** (closed): README post-layout osc_subth wording and solve.py MC docstring are broader than the records
 - **PR #150**: docs(manifests): name the three uninventoried sim/ scripts in the item-9 scope list

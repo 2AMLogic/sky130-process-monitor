@@ -331,9 +331,16 @@ that file.
 spec/          ratified spec + decision records
 design/        oscillator and sensing-path schematics (xschem)
 rtl/           counter, select and readout sources
+synth/         Yosys synthesis outputs for the readout (gate-level netlist)
 sim/           testbenches + PVT corner results (ngspice)
 verification/  cocotb testbenches for the readout
-layout/        GDS + DRC/LVS reports (klayout-tools driven)
+sta/           klt sta requests and static-timing reports for the readout
+layout/        GDS + layout generators (klayout-tools driven)
+drc/           klt drc reports for both partitions
+lvs/           klt lvs reports + the reduced schematic references they match
+attest/        klt signoff --attest inputs, one per T1 item
+evidence/      per-item evidence records the sign-off cites
+manifests/     block manifest + the per-row T1 tier verdict of record
 measurements/  recorded results (simulated; silicon characterization after tape-out)
 ```
 
