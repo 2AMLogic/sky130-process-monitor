@@ -23,10 +23,11 @@ checklist: the `klt signoff` input and its committed output.
   repo's `LICENSE` does not relicense the vendored copy. When upstream moves,
   re-vendor and regenerate the record in the same PR.
 - **`sky130-process-monitor.signoff.json`** — the **verdict of record**,
-  graded with `klayout-tools==0.9.1`. Today 13 of the 22 T1 rows read `met`
-  (items 1, 2, 3, 9 and 10 on both partitions, plus 4.digital, 5.digital and 7.digital); 6.digital
+  graded with `klayout-tools==0.9.1`. Today 14 of the 22 T1 rows read `met`
+  (items 1, 2, 3, 9 and 10 on both partitions, plus 4.digital, 5.digital, 7.digital and
+  11.digital); 6.digital
   reads `not_applicable`; 5.analog, 6.analog and 7.analog read `unmet` / `check_failed` (their
-  cited envelopes grade, and fail their targets); and 4.analog, 8 and 11 on both partitions read
+  cited envelopes grade, and fail their targets); and 4.analog, 8 and 11.analog read
   `unmet` / `no_evidence`. The T2-T4 tier rows read `unmet` / `tier_not_supported` (the grader does
   not grade those tiers). Never hand-edit it.
 
