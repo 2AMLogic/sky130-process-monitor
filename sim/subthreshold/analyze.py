@@ -2,9 +2,11 @@
 """Reduce the klt sim reports under runs/ into check tables (stdout) and, with --append,
 dated SIMULATED records appended to measurements/subthreshold_records.jsonl (append-only).
 Pure post-processing: runs no simulation."""
-import datetime, glob, gzip, json, math, os, sys
+import datetime, glob, gzip, json, os, sys
 HERE = os.path.dirname(os.path.abspath(__file__))
 REPO = os.path.dirname(os.path.dirname(HERE))
+PDK_JSON = os.path.join(REPO, "sim", "pdk.json")   # sim/pdk.json owns the open_pdks pin; do not restate it here
+with open(PDK_JSON) as fh: OPEN_PDKS = json.load(fh)["open_pdks"]
 def load(pat):
     out = []
     for f in sorted(glob.glob(os.path.join(HERE, pat))):
@@ -14,7 +16,6 @@ def val(c, n):
     for m in c["measurements"]:
         if m["name"] == n:
             return m.get("value")
-def pct(p): return p
 PROC = ["tt", "ff", "ss", "sf", "fs"]; TS = [-40, 27, 125]
 
 grid = load("runs/osc_grid.report.json.gz")[0]
@@ -157,7 +158,7 @@ print("   control (mismatch_scale 0, N=5): %s -> %s" % (cf, "identical = PASS" i
 if "--append" in sys.argv:
     now = datetime.datetime.now(datetime.timezone.utc).isoformat(timespec="seconds")
     base = {"date_utc": now, "kind": "SIMULATED", "ngspice": env.get("engine_version"),
-            "models_lib_sha256": env.get("models_lib_sha256"), "open_pdks_pin": "c6d73a35f524070e85faff4a6a9eef49553ebc2b",
+            "models_lib_sha256": env.get("models_lib_sha256"), "open_pdks_pin": OPEN_PDKS,
             "netlist": "design/osc_bank/osc_subth.spice"}
     out = os.path.join(REPO, "measurements", "subthreshold_records.jsonl")
     with open(out, "a") as fo:
@@ -213,7 +214,7 @@ print("== 5 MHz audit: first-grid cells still at 2n step with f > 4.9 MHz:",
 if "--append-44" in sys.argv:
     now = datetime.datetime.now(datetime.timezone.utc).isoformat(timespec="seconds")
     base = {"date_utc": now, "kind": "SIMULATED", "ngspice": env2.get("engine_version"),
-            "models_lib_sha256": env2.get("models_lib_sha256"), "open_pdks_pin": "c6d73a35f524070e85faff4a6a9eef49553ebc2b",
+            "models_lib_sha256": env2.get("models_lib_sha256"), "open_pdks_pin": OPEN_PDKS,
             "netlist": "design/osc_bank/osc_subth.spice", "testbench": "sim/subthreshold/osc_subth_tb.spice"}
     out = os.path.join(REPO, "measurements", "subthreshold_records.jsonl")
     with open(out, "a") as fo:
