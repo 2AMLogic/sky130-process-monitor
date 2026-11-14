@@ -57,7 +57,8 @@ What sits behind the unmet rows, each from a committed record:
 ## Now
 
 Startable today on `main`; each is one pull request. None needs a batch submission, a spec change or a
-tool release. None has an issue yet.
+tool release. Each is now filed and awaiting curation: #168, #169, #170 and #171, in the order
+below.
 
 1. **T1 item 11, digital slice.** Write the `klt erc` supply spec for the routed readout and commit its
    report. The inputs are already recorded: `layout/readout/report.json` has `power.pdn: true` with a
@@ -123,7 +124,8 @@ which await promotion.
 - **Decisions 0002 and 0003** — proposed, not ratified.
 
 The tracker has no `loom:issue` item today: every open T1 issue is blocked or awaiting a decision. The
-four Now items above are the dispatchable work once filed.
+four Now items above (#168-#171, filed `loom:triage`) are the dispatchable work once curated and
+promoted.
 
 ## Not planned
 
