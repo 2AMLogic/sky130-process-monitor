@@ -44,6 +44,22 @@ path with a counter readout — designed and verified by AI agents.
   never re-attest with the host's `klt`, which writes a non-reproducing
   envelope. Dropping a file from the inventory to quiet the gate is a
   `spec/` decision record, not a CI fix.
+- **Item 9 hash-pins the sim/ and verification/readout/ testbench sources.**
+  `attest/item9_analog.json` (every committed deck and `klt sim` request, the
+  `sim/solve/` and `sim/sensitivity/` Python modules, and the four
+  `sim/**/run*.sh` entrypoints) and `attest/item9_digital.json` (the
+  `verification/readout/` bench files) hash their bytes into
+  `evidence/item9_*.json` — so editing any of them, even a refactor or a
+  test-only edit, turns T1 item 9 stale and reds the `klt signoff` gate. A PR
+  that touches an inventoried source file runs `attest/regen-item9.sh analog`
+  (or `digital`, or `both`) and commits the regenerated envelope **in the
+  same commit** as the edit. The script reads the `klayout-tools` pin from
+  `.github/workflows/signoff.yml` and runs the partition's declared cold
+  starts for real on a host with the pinned PDK and ngspice (analog) or
+  cocotb/Icarus/Verilator (digital) — a bounded local single-unit attestation
+  pass, not a batch grid; never re-attest with the host's `klt`, which writes
+  a non-reproducing envelope. Dropping a file from an inventory to quiet the
+  gate is a `spec/` decision record, not a CI fix.
 - Spec changes go through `spec/` with a decision record; agents do not relax
   the ratified spec to make results pass.
 - **The five-corner target is the target.** Separating slow from fast is the

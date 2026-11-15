@@ -336,7 +336,7 @@ Standard-library `unittest`, no simulator and no PDK: it reads
 backtick-quoted repository paths, and fails if any does not exist — so a record
 renamed or deleted elsewhere reds CI instead of leaving a dangling citation
 behind a verdict. It also fails rather than passing vacuously if a report's
-citations are all removed. `npm test` runs it as the sixth suite. The reports'
+citations are all removed. `npm test` runs it as part of the chain. The reports'
 own verdicts are the verdicts the cited records already carry; both envelopes
 ([`evidence/item8_analog.json`](evidence/item8_analog.json),
 [`evidence/item8_digital.json`](evidence/item8_digital.json)) read `fail`, so
