@@ -154,10 +154,17 @@ Two inventories, one per partition (item 9 is graded per partition):
 - `attest/item9_digital.json` -> `evidence/item9_digital.json`, cited as `9.digital`. It pins the
   readout cocotb bench and its two `klt functional-verification` requests.
 
-Regenerate either with `klt signoff --attest 9 --inventory attest/item9_<p>.json -o
-evidence/item9_<p>.json`, then regenerate the signoff record. The manifest pins each envelope by
-its `provenance.input.content_hash` (the inventory's own sha256), so an inventory edit without a
-re-attest turns the row stale.
+Regenerate either with `attest/regen-item9.sh <partition>` (`analog`, `digital`, or `both`; issue
+#190): it reads the `klayout-tools` pin from `.github/workflows/signoff.yml`, pre-flights the
+partition's toolchain (naming what is missing and the venv recipe below), runs the declared cold
+starts for real, re-runs the gate's own checks, and reports whether the committed signoff record
+still reproduces -- writing neither the record nor anything else. An ordinary source edit moves only
+content hashes inside the envelope (the manifest cites the inventory's sha256, not the envelope's
+bytes), so the record usually reproduces unchanged; only an inventory edit moves it, and the script
+then exits 3 with the record-regeneration command. By hand, the same regeneration is
+`klt signoff --attest 9 --inventory attest/item9_<p>.json -o evidence/item9_<p>.json`. The manifest
+pins each envelope by its `provenance.input.content_hash` (the inventory's own sha256), so an
+inventory edit without a re-attest turns the row stale.
 
 **Run the producer from a different environment than the benches.** `klt signoff --attest` strips
 its own venv's `bin` from every declared command's `PATH` (so a bare `python3` resolves to the

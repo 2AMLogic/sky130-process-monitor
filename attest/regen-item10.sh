@@ -14,9 +14,10 @@
 # The pin is read from .github/workflows/signoff.yml's `pip install
 # klayout-tools==X.Y.Z` line -- that is the version CI byte-compares against,
 # and it is deliberately not restated here (pin-copy consolidation, #163).
-# Regenerating with the host's `klt` writes a different `provenance.klt_version`
-# and a non-reproducing envelope, so the run always goes through
-# `uvx --from "klayout-tools==<pin>" klt`.
+# The parser and the pinned-klt wrapper live in attest/lib/regen-common.sh,
+# shared with attest/regen-item9.sh. Regenerating with the host's `klt` writes
+# a different `provenance.klt_version` and a non-reproducing envelope, so the
+# run always goes through `uvx --from "klayout-tools==<pin>" klt`.
 #
 # Writes exactly one file: evidence/item10.json. The signoff record is never
 # left modified -- see "the circular bootstrap" below.
@@ -77,24 +78,26 @@ command -v uvx >/dev/null 2>&1 ||
   manifests/README.md by hand with klayout-tools==<pin> on PATH."
 
 # --- the pin -----------------------------------------------------------------
-PIN=$(sed -nE 's/^[[:space:]]*(run:[[:space:]]*)?pip install klayout-tools==([0-9][0-9A-Za-z.+!-]*)[[:space:]]*$/\2/p' \
-    "$REL_WORKFLOW" | head -n 1)
+# The parser and the pinned-klt wrapper are shared with attest/regen-item9.sh
+# (pin-copy consolidation, #163 -- restating them here is the drift the shared
+# file exists to prevent). REGEN_NAME/REGEN_WORKFLOW feed its messages, so a
+# refusal still names this script and this workflow.
+# Read by attest/lib/regen-common.sh's messages (sourced below).
+# shellcheck disable=SC2034
+REGEN_NAME=regen-item10.sh
+# shellcheck disable=SC2034
+REGEN_WORKFLOW="$REL_WORKFLOW"
+# shellcheck source=lib/regen-common.sh
+source "$ROOT/attest/lib/regen-common.sh"
 
-if [ -z "$PIN" ]; then
-    die "could not parse the klayout-tools pin from $REL_WORKFLOW.
-  Expected a line of the form:   run: pip install klayout-tools==X.Y.Z
-  That line is the single source of the pin this envelope is compared against;
-  if the workflow's install step was renamed or reshaped, update the sed
-  pattern in this script rather than hardcoding a version here. Nothing was
-  written."
-fi
+regen_require_pin "$REL_WORKFLOW"
 
 echo "pin:        klayout-tools==$PIN   (from $REL_WORKFLOW)"
 echo "inventory:  $REL_INV"
 echo "envelope:   $REL_ENV"
 echo
 
-klt() { uvx --quiet --from "klayout-tools==$PIN" klt "$@"; }
+klt() { regen_klt "$@"; }
 
 TMP_REPORT=$(mktemp) || exit 1
 TMP_ENV=$(mktemp) || exit 1
@@ -154,8 +157,6 @@ print("audit-only" if failed and all(is_record_audit(c) for c in failed) else "h
 PY
 }
 
-json_field() { python3 -I -c 'import json,sys; print(json.load(open(sys.argv[1]))[sys.argv[2]][sys.argv[3]])' "$@"; }
-
 # Re-attest into $TMP_ENV (bytes for the committed envelope) and into
 # $TMP_REPORT (same envelope on stdout, which klt emits even when the
 # attestation fails -- that is what makes the failure classifiable, since klt
@@ -187,14 +188,10 @@ install_envelope() {
         exit 1
     fi
 
-    local wrote_version
-    wrote_version=$(json_field "$TMP_ENV" provenance klt_version) || exit 1
-    if [ "$wrote_version" != "$PIN" ]; then
-        echo "regen-item10.sh: refusing to install an envelope stamped klt_version" >&2
-        echo "  '$wrote_version' when $REL_WORKFLOW pins '$PIN'. CI byte-compares" >&2
-        echo "  against the pin, so this envelope would not reproduce. Nothing was written." >&2
-        exit 1
-    fi
+    # The provenance guard is shared with attest/regen-item9.sh
+    # (attest/lib/regen-common.sh) and prints the same refusal via
+    # REGEN_NAME/REGEN_WORKFLOW.
+    regen_refuse_foreign_version "$TMP_ENV"
 
     if cmp -s "$TMP_ENV" "$REL_ENV"; then
         echo "$REL_ENV is already up to date (byte-identical); not rewritten."

@@ -14,8 +14,12 @@ import os
 import sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-sys.path.insert(0, os.path.join(HERE, "..", "sensitivity"))
-import gen_requests as G  # noqa: E402
+# `python3 -I` drops the script directory from sys.path, and the bare name `gen_requests` is ambiguous
+# in the tree, so the cross-directory sibling is loaded by path via the shared sim/ helper.
+sys.path.insert(0, os.path.join(HERE, ".."))
+import _siblings  # noqa: E402
+
+G = _siblings.load("sensitivity", "gen_requests")
 
 # (process, vdd, temp_c, row)
 CELLS = [(p, 1.98, 27) for p in G.PROCESS] + [("tt", 1.62, -40), ("ff", 1.62, 27)]
