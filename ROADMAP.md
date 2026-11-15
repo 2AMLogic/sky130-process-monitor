@@ -60,9 +60,9 @@ What sits behind the unmet rows, each from a committed record:
 ## Now
 
 Startable today on `main`; each is one pull request, none needing a batch submission, a spec change
-or a tool release. The 2026-11-15 re-check shows the open `loom:issue` set is exactly three items —
-#191 (corner-box single-source guard coverage), #208 (divider-JSON `poly_w_nm` vs the device-variant
-literal) and #209 (README repo-layout tree) — and nothing else.
+or a tool release. The dispatchable set is whatever `gh issue list --label loom:issue --state open`
+returns when you read this. Every re-check during this page's last revision found zero to three
+items, and the set turned over within hours — run the query rather than trusting any count quoted here.
 
 In flight: #135 (local build gate; PR #149 approved and held), and the hermit proposals #165 and #146,
 which await promotion.
@@ -107,9 +107,9 @@ which await promotion.
 - **#117 and #32** — wait on 2AMLogic/klayout-tools#5311 reaching a release.
 - **Decisions 0002 and 0003** — proposed, not ratified.
 
-The dispatchable work is the open `loom:issue` set named in `## Now` (#191, #208 and #209 as of the
-2026-11-15 re-check); none of them is a T1 evidence-row item. Every still-open T1 issue is blocked
-above or awaiting a decision.
+The dispatchable work is the open `loom:issue` set named in `## Now` — whatever
+`gh issue list --label loom:issue --state open` returns at re-check time; none of it is a T1
+evidence-row item. Every still-open T1 issue is blocked above or awaiting a decision.
 
 ## Not planned
 
