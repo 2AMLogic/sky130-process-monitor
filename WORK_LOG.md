@@ -5,6 +5,34 @@ role. Newest first.
 
 ### 2026-11-15
 
+- **PR #217**: docs: add characterization/ to README repo-layout tree, re-pad to col 20
+- **PR #216**: test: guard all three corner-box lists against literal re-statement in tracked *.py
+- **PR #215**: fix: pin the sim owner data files in the item-9 analog attestation inventory
+- **PR #211**: docs: drop hand-maintained npm test suite enumerations
+- **Issue #209** (closed): README repo-layout tree is missing characterization/ (pre-existing on main)
+- **Issue #201** (closed): Owner data files (sim/pdk.json, sim/corner_box.json) are load-bearing for attested generators but pinned by no attest/ inventory
+- **Issue #198** (closed): Hard-coded test-suite enumerations in README.md and tests.yml go stale every time a suite is added
+- **Issue #192** (closed): Collapse the five ambiguous sibling-module loads in sim/ into one shared by-path loader (sim/_siblings.py)
+- **Issue #191** (closed): Corner-box single-source guard misses sim/subthreshold/analyze.py (not importable, so the new test cannot reach it)
+- **Issue #189** (closed): ROADMAP.md is stale after 11.digital grades met (met count and the item-11 row)
+- **Issue #179** (closed): Remove four dead declarations in layout/gen/gen_osc_bank.py: an unused import, a pdk parameter always passed None, a never-drawn layer, and a discarded return value
+- **Issue #178** (closed): Remove two of the three hand-copied mismatch-MC request blocks: mc(), mc_offnom() and gen_binding_mc.request() each restate the monte_carlo settings
+- **Issue #177** (closed): Remove the hand-copied osc_subth divider geometry: lvs/make_reduced_refs.py restates RB from layout/gen/gen_osc_bank.py, and klt lvs cannot catch a drift
+- **Issue #174** (closed): Remove the duplicated PVT corner box: sensitivity's generator and analyzer each define PROCESS/VDD/TEMP, and V_HALF/T_HALF restate their spans
+- **Issue #173** (closed): Remove the last hand-copied oscillation threshold: sim/power/analyze_power.py restates SKIP_EDGES/MIN_CYCLES and is off by one
+- **Issue #171** (closed): manifests/README.md says only items 10 and 2.analog are cited; the manifest cites sixteen evidence keys
+- **Issue #170** (closed): Size the osc_subth gate: counts and cold-cell margin versus gate exponent k
+- **Issue #169** (closed): T1 item 8: characterization report for both partitions, cited through the generic evidence envelope
+- **PR #207**: refactor: collapse six hand-rolled sibling-module loaders in sim/ into one shared by-path helper
+- **PR #199**: refactor: read osc_subth divider geometry from one owner JSON both generators share
+- **PR #197**: feat: item-9 re-attest guardrails - regen-item9.sh, shared pin lib, gate remedy
+- **PR #196**: docs: list all 17 cited evidence keys in manifest Files section
+- **PR #187**: refactor(layout): drop four dead declarations from gen_osc_bank.py
+- **PR #185**: refactor: single-owner PVT corner box (sim/corner_box.json) with derived V_HALF/T_HALF
+- **PR #184**: refactor: collapse the three hand-copied mismatch-MC request blocks into mc_request()
+- **PR #182**: docs: aggregate both partitions' spec-row verdicts into T1 item-8 reports
+- **PR #180**: fix(power): grade active cells on the #8 oscillation rule, not a local 8-edge literal
+- **PR #176**: feat: parameterise the counter gate in analyze.py and record the osc_subth gate sizing
 - **Issue #175** (closed): Collapse the duplicated sibling-module loaders in sim/ to one mechanism
 
 ### 2026-11-14
