@@ -168,26 +168,30 @@ def cold_sf_requests():
             "mc_offnom_osc_subth_sf_1.98V_-40C.json": m_sub}
 
 
-if __name__ == "__main__":
-    out = os.path.join(HERE, "requests")
-    os.makedirs(out, exist_ok=True)
-    for name, req in list(hd_5p_requests().items()) + list(cold_sf_requests().items()):
-        with open(os.path.join(out, name), "w") as f:
-            json.dump(req, f, indent=2)
-            f.write("\n")
+def all_requests():
+    """name -> request for the full generated set (22 files; the two hand-written probe_*.json are not ours)."""
+    out = {}
+    out.update(hd_5p_requests())
+    out.update(cold_sf_requests())
     for osc, (tran, cap) in OSCS.items():
-        for kind, fn in (("grid", grid), ("mc", mc)):
-            with open(os.path.join(out, "%s_%s.json" % (kind, osc)), "w") as f:
-                json.dump(fn(osc, tran, cap), f, indent=2)
-                f.write("\n")
+        out["grid_%s.json" % osc] = grid(osc, tran, cap)
+        out["mc_%s.json" % osc] = mc(osc, tran, cap)
         # off-nominal MC requests (issue #48)
         if osc == "osc_subth":
             for cell in OFFNOM_VT:
-                name = "mc_offnom_%s_%gV_%dC.json" % (osc, cell[0], cell[1])
-                with open(os.path.join(out, name), "w") as f:
-                    json.dump(mc_offnom(osc, tran, cap, subth_cell=cell), f, indent=2)
-                    f.write("\n")
+                out["mc_offnom_%s_%gV_%dC.json" % (osc, cell[0], cell[1])] = mc_offnom(osc, tran, cap, subth_cell=cell)
         else:
-            with open(os.path.join(out, "mc_offnom_%s.json" % osc), "w") as f:
-                json.dump(mc_offnom(osc, tran, cap), f, indent=2)
-                f.write("\n")
+            out["mc_offnom_%s.json" % osc] = mc_offnom(osc, tran, cap)
+    return out
+
+
+def write_requests(d):
+    """Write the generated request set into directory `d` (created if needed)."""
+    os.makedirs(d, exist_ok=True)
+    for name, req in all_requests().items():
+        with open(os.path.join(d, name), "w") as f:
+            f.write(json.dumps(req, indent=2) + "\n")
+
+
+if __name__ == "__main__":
+    write_requests(os.path.join(HERE, "requests"))
