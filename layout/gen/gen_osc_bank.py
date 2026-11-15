@@ -24,7 +24,6 @@ import argparse
 import hashlib
 import json
 import os
-import sys
 
 import klayout.db as db
 
@@ -36,7 +35,7 @@ LAYERS = dict(
     li1=(67, 20), mcon=(67, 44), met1=(68, 20), via=(68, 44), met2=(69, 20),
     nsdm=(93, 44), psdm=(94, 44), npc=(95, 20), lvtn=(125, 44),
     polyres=(66, 13), rpm=(86, 20), psdm_r=(94, 20),     # poly-resistor marker, resistor-protect, p+ implant (LVS deck layers)
-    li1_lbl=(67, 5), met1_lbl=(68, 5), met1_pin=(68, 16),
+    met1_lbl=(68, 5), met1_pin=(68, 16),
 )
 
 R = 290            # source/drain column width
@@ -111,7 +110,7 @@ class Ctx:
 
 def polyres_serp(ctx, cell, x0, y0, L_um, N):
     """One res_high_po_0p35 serpentine. Runs start at x0 (head side), first run centred y0, N even so both heads
-    are on the left. Returns (S, head_a, head_b) with head centres (x, y)."""
+    are on the left. Returns (head_a, head_b) with head centres (x, y)."""
     assert N % 2 == 0
     S = round((L_um * 1000 - (N - 1) * (RB_PITCH - RB_W)) / N / 5) * 5
     h = RB_W // 2
@@ -131,7 +130,7 @@ def polyres_serp(ctx, cell, x0, y0, L_um, N):
     ctx.rect(cell, "polyres", x0, ys[0] - h, x0 + S, ys[-1] + h)
     ctx.rect(cell, "rpm", x0, ys[0] - h, x0 + S, ys[-1] + h)
     ctx.rect(cell, "psdm_r", x0 - 500 - 125, ys[0] - h - 125, x0 + S + 125, ys[-1] + h + 125)
-    return S, heads[0], heads[1]
+    return heads[0], heads[1]
 
 
 def contact_ys(W):
@@ -182,9 +181,9 @@ def draw_divider(ctx, cell, xmax, YRV, vbp_pad):
     xb, xs, xh = xd + 700, xd + 1400, xd + 2300
     X0 = xh + 250
     Y1 = 1000
-    S1, a1, b1 = polyres_serp(ctx, cell, X0, Y1, RB["Rb1"]["L_um"], RB["Rb1"]["N"])
+    a1, b1 = polyres_serp(ctx, cell, X0, Y1, RB["Rb1"]["L_um"], RB["Rb1"]["N"])
     yA0 = b1[1] + 1500
-    S0, a0, b0 = polyres_serp(ctx, cell, X0, yA0, RB["Rb0"]["L_um"], RB["Rb0"]["N"])
+    a0, b0 = polyres_serp(ctx, cell, X0, yA0, RB["Rb0"]["L_um"], RB["Rb0"]["N"])
     for (x, y) in (a1, b1, a0, b0):
         ctx.mcon_pad(cell, xh, y)
     ctx.m1_v(cell, xh, b1[1], a0[1])                    # Rb1 top head and Rb0 bottom head are both vbp
@@ -386,7 +385,7 @@ def build_custom(ctx, name, sts, wire=False, vbp=False):
 
 
 # ------------------------------- osc_hd (PDK cells) --------------------------------
-def build_hd(ctx, pdk):
+def build_hd(ctx):
     ly = ctx.ly
     cell = ly.create_cell("osc_hd")
     nm = lambda n: ly.cell("sky130_fd_sc_hd__" + n).cell_index()
@@ -453,7 +452,7 @@ def main():
     ly.read(pdk_gds())
     ctx = Ctx(ly)
     built = {}
-    built["osc_hd"] = build_hd(ctx, None)
+    built["osc_hd"] = build_hd(ctx)
     for kind in ("osc_nmos", "osc_pmos", "osc_wire", "osc_subth"):
         built[kind] = build_custom(ctx, kind, stages_for(kind), wire=(kind == "osc_wire"),
                                    vbp=(kind == "osc_subth"))
