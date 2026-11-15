@@ -90,14 +90,17 @@ def write_sized(d):
             f.write(serialise(req))
 
 
+def write_all(d):
+    """Write the binding request set into directory `d` (created if needed)."""
+    os.makedirs(d, exist_ok=True)
+    for name, req in all_requests().items():
+        with open(os.path.join(d, name), "w") as f:
+            f.write(serialise(req))
+
+
 if __name__ == "__main__" and "--sized" in sys.argv:
     write_sized(os.path.join(HERE, "mc", "requests-sized"))
     sys.exit(0)
 
 if __name__ == "__main__":
-    d = os.path.join(HERE, "mc", "requests")
-    os.makedirs(d, exist_ok=True)
-    for name, req in all_requests().items():
-        with open(os.path.join(d, name), "w") as f:
-            json.dump(req, f, indent=2)
-            f.write("\n")
+    write_all(os.path.join(HERE, "mc", "requests"))
