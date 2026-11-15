@@ -3,14 +3,14 @@
   "kind": "generic",
   "status": "pass",
   "t1_item": 9,
-  "summary": "T1 item 9 (Testbenches shipped): 482/482 attestation checks passed (klt signoff --attest)",
+  "summary": "T1 item 9 (Testbenches shipped): 485/485 attestation checks passed (klt signoff --attest)",
   "source": "attest/item9_analog.json",
   "attestation": {
     "producer": "klt signoff --attest",
     "inventory_schema_version": 1,
     "hash_algorithm": "sha256-raw-bytes",
-    "check_count": 482,
-    "passed_count": 482,
+    "check_count": 485,
+    "passed_count": 485,
     "checks": [
       {
         "check": "present",
@@ -18,6 +18,13 @@
         "path": "sim/check_env.sh",
         "passed": true,
         "content_hash": "sha256:a69a48da591f132dc0823754fb61e252e0278541f1d650af84ed61c3bd0b43b2"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/corner_box.json",
+        "passed": true,
+        "content_hash": "sha256:8d8887c67171905e51f0d6f0917867c51daaa9d838fd48750ef731b4b08e400c"
       },
       {
         "check": "present",
@@ -60,6 +67,13 @@
         "path": "sim/osc_bank/run.sh",
         "passed": true,
         "content_hash": "sha256:b5fb16d045d31037516609553965883d4734e575c4678282d6dbdc2f9ed7c3fd"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/pdk.json",
+        "passed": true,
+        "content_hash": "sha256:6b228a94b9021ed8b0c004749321d1ea2e2304e85bd016844515b67e3daf53cd"
       },
       {
         "check": "present",
@@ -549,7 +563,7 @@
         "role": "testbench",
         "path": "sim/sensitivity/test_analyze.py",
         "passed": true,
-        "content_hash": "sha256:b97889183ed1ad061e1a0be4162126bea42945b7be15226630a4e4b9c8484c56"
+        "content_hash": "sha256:111fb17e026470330d499a52f5672baf37957828906a16f93b0865aa05d47c5e"
       },
       {
         "check": "present",
@@ -1817,6 +1831,13 @@
         "path": "sim/subthreshold/probe_tb.spice",
         "passed": true,
         "content_hash": "sha256:0ffbdbdf5f8bd1d572c72ef946ad63969311b049d26957334229ce244af64240"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/toolchain.json",
+        "passed": true,
+        "content_hash": "sha256:6fe1d94491c703fde06ae95d4d7538794e032f0aeb59585c11ba2b98676681a5"
       },
       {
         "check": "command",
@@ -5164,7 +5185,7 @@
         "path": "attest/item9_analog.json",
         "scope": "repo"
       },
-      "content_hash": "sha256:f9894bc4d7f8b300f37a0ad96b497c32ed2e651d3d158de9653dc21d4ac6b066"
+      "content_hash": "sha256:a32c213d3cc5069ef1bc3e2da20b9b7ed6c62edf04810e4dd1e030f98280c972"
     }
   }
 }

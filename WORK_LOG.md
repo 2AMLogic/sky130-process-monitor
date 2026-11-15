@@ -5,6 +5,16 @@ role. Newest first.
 
 ### 2026-11-15
 
+- **PR #207**: refactor: collapse six hand-rolled sibling-module loaders in sim/ into one shared by-path helper
+- **PR #199**: refactor: read osc_subth divider geometry from one owner JSON both generators share
+- **PR #197**: feat: item-9 re-attest guardrails - regen-item9.sh, shared pin lib, gate remedy
+- **PR #196**: docs: list all 17 cited evidence keys in manifest Files section
+- **PR #187**: refactor(layout): drop four dead declarations from gen_osc_bank.py
+- **PR #185**: refactor: single-owner PVT corner box (sim/corner_box.json) with derived V_HALF/T_HALF
+- **PR #184**: refactor: collapse the three hand-copied mismatch-MC request blocks into mc_request()
+- **PR #182**: docs: aggregate both partitions' spec-row verdicts into T1 item-8 reports
+- **PR #180**: fix(power): grade active cells on the #8 oscillation rule, not a local 8-edge literal
+- **PR #176**: feat: parameterise the counter gate in analyze.py and record the osc_subth gate sizing
 - **Issue #175** (closed): Collapse the duplicated sibling-module loaders in sim/ to one mechanism
 
 ### 2026-11-14

@@ -146,11 +146,12 @@ any change.
 Two inventories, one per partition (item 9 is graded per partition):
 
 - `attest/item9_analog.json` -> `evidence/item9_analog.json`, cited as `9.analog`. It pins every
-  committed analog SPICE deck, every committed `klt sim` request that drives one, and the solve
-  procedure's own Python bench under `sim/solve/` (258 files: 91 decks and per-bench requests, plus
-  158 `sim/solve/mc/` requests, the 6 `sim/solve/` drivers and unittest suites, and the 3
-  `sim/sensitivity/` Python modules the solve bench imports at run time — `analyze.py`,
-  `gen_requests.py` and `test_analyze.py`).
+  committed analog SPICE deck, every committed `klt sim` request that drives one, the solve
+  procedure's own Python bench under `sim/solve/`, and the owner data files those benches load
+  (261 files: 91 decks and per-bench requests, plus 158 `sim/solve/mc/` requests, the 6
+  `sim/solve/` drivers and unittest suites, the 3 `sim/sensitivity/` Python modules the solve
+  bench imports at run time — `analyze.py`, `gen_requests.py` and `test_analyze.py` — and the 3
+  owner files `sim/corner_box.json`, `sim/pdk.json` and `sim/toolchain.json`).
 - `attest/item9_digital.json` -> `evidence/item9_digital.json`, cited as `9.digital`. It pins the
   readout cocotb bench and its two `klt functional-verification` requests.
 
