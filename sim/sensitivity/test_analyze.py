@@ -142,6 +142,56 @@ class Tests(unittest.TestCase):
         self.assertEqual(A.V_HALF, (A.VDD[-1] - A.VDD[0]) / 2)
         self.assertEqual(A.T_HALF, (A.TEMP[-1] - A.TEMP[0]) / 2)
 
+    def test_corner_box_lists_are_not_restated_in_any_tracked_py(self):
+        """Repo-wide guard (issue #191): the corner box's three lists exist as literals in no
+        tracked *.py outside the allowlisted exception, so a re-statement anywhere -- including
+        a module that cannot be imported to assert on, like sim/subthreshold/analyze.py -- fails
+        here. The patterns are derived from a fresh load of sim/corner_box.json rather than
+        hard-coded: a guard that restated the lists would itself be the duplication issue #174
+        removed. Walked via git ls-files, so untracked trees (e.g. .loom/worktrees/) are never
+        seen. Known limit of a literal-grep guard: a reordered-but-equal list does not match a
+        sequential pattern."""
+        import json
+        import re
+        import subprocess
+        here = os.path.dirname(os.path.abspath(__file__))
+        with open(os.path.join(here, "..", "corner_box.json")) as f:
+            box = json.load(f)
+
+        def literal_pattern(values):
+            # tolerant of optional spaces after the commas and of a trailing zero on floats
+            # (json reads 1.80 as 1.8, but a restated literal may spell it either way)
+            parts = []
+            for v in values:
+                if isinstance(v, str):
+                    parts.append('"' + re.escape(v) + '"')
+                else:
+                    parts.append(re.escape(str(v)) + ("0?" if isinstance(v, float) else ""))
+            return ", *".join(parts)
+
+        patterns = {name: literal_pattern(box[name]) for name in ("process", "vdd", "temp_c")}
+        # sim/solve/yield_samples.py restates the process list as the "corner_matrix" field of
+        # every solution record -- record metadata, not a load path; removing that metadata was
+        # ruled out of scope by issue #174, so it is the single allowlisted exception.
+        allowlist = {"sim/solve/yield_samples.py"}
+        root = subprocess.run(["git", "rev-parse", "--show-toplevel"], cwd=here,
+                              capture_output=True, text=True, check=True).stdout.strip()
+        tracked = subprocess.run(["git", "ls-files", "*.py"], cwd=root,
+                                 capture_output=True, text=True, check=True).stdout.split()
+        offenders = []
+        for rel in tracked:
+            if rel in allowlist:
+                continue
+            with open(os.path.join(root, rel)) as f:
+                text = f.read()
+            for name, pat in patterns.items():
+                if re.search(pat, text):
+                    offenders.append(f"{rel}: restates the corner-box {name} list")
+        self.assertFalse(
+            offenders,
+            "corner-box lists restated in tracked *.py; the single source is sim/corner_box.json:\n  "
+            + "\n  ".join(offenders))
+
     # ------------------------------------------------------------ gate parameter (issue #170)
 
     def test_default_gate_is_the_spec_default_and_sigma_quant_default_is_unchanged(self):
