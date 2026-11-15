@@ -24,7 +24,7 @@ of the gap to T1: #5.
 | 5 Corner verification | **unmet**, `check_failed` | met |
 | 6 Monte Carlo | **unmet**, `check_failed` (#31) | not applicable |
 | 7 Post-layout | **unmet**, `check_failed` (#32, #117) | met |
-| 8 Characterization report | **unmet**, `no_evidence` | **unmet**, `no_evidence` |
+| 8 Characterization report | **unmet**, `check_failed` | **unmet**, `check_failed` |
 | 9 Testbenches shipped | met | met |
 | 10 Repo hygiene | met | met |
 | 11 Power delivery | **unmet**, `no_evidence` (#33) | **unmet**, `no_evidence` (#33) |
