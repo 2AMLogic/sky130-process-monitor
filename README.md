@@ -158,8 +158,9 @@ section quotes an estimate accuracy, because none has been established.
 | Layout DRC / LVS (`drc/`, `lvs/`) | **command 6** — freshness-checks all eight committed DRC and LVS reports |
 | T1 tier verdict of record | **command 7** |
 | Post-layout re-verification, analog (`sim/pex/`) | **command 8** — re-grades the committed `klt pex` reports; reproduces the recorded extracted-side row-1 verdict and ratio-space layout shift |
+| Characterization reports, both partitions (`characterization/`) | **command 9** — checks that every record path the two hand-assembled T1 item-8 reports cite still exists |
 
-Commands 1, 3, 4 and 8 need only `python3` (the scripts are standard-library
+Commands 1, 3, 4, 8 and 9 need only `python3` (the scripts are standard-library
 only); 2 needs `ngspice` and the pinned PDK; 5 needs Icarus, Verilator and a
 `cocotb` virtualenv; 6 and 7 need `uv`. Tool pins are in
 [`sim/toolchain.json`](sim/toolchain.json) and
@@ -317,6 +318,29 @@ grid themselves is a batch-fleet submission, named in
 there for completeness, not re-run here. The caveats that keep `7.analog`
 unmet, including the `osc_wire` extraction not being like-for-like, are in
 that file.
+
+**9 — characterization reports, both partitions.** The two T1 item-8 reports are
+**hand-assembled** aggregations of the records above, so no command regenerates
+them — item 8 is the one T1 item that names no `klt` verb, because no
+aggregation command exists ([`manifests/design-evidence-tiers.md`](manifests/design-evidence-tiers.md)
+item 8; upstream tracker klayout-tools#309). What *is* checked mechanically is
+that every record path they cite still resolves:
+
+```console
+python3 -I characterization/test_citations.py
+```
+
+Standard-library `unittest`, no simulator and no PDK: it reads
+[`characterization/analog.md`](characterization/analog.md) and
+[`characterization/digital.md`](characterization/digital.md), extracts the
+backtick-quoted repository paths, and fails if any does not exist — so a record
+renamed or deleted elsewhere reds CI instead of leaving a dangling citation
+behind a verdict. It also fails rather than passing vacuously if a report's
+citations are all removed. `npm test` runs it as the sixth suite. The reports'
+own verdicts are the verdicts the cited records already carry; both envelopes
+([`evidence/item8_analog.json`](evidence/item8_analog.json),
+[`evidence/item8_digital.json`](evidence/item8_digital.json)) read `fail`, so
+`8.analog` and `8.digital` grade `unmet` / `check_failed` in command 7's record.
 
 ## Tool flow
 
