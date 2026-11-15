@@ -82,9 +82,9 @@ def draws(tab, mc, oscs, p, v, t, rng, defect=0.0):
     return out, sg, n
 
 
-def usable(mc, tab, p, v, t, need_all_proc=False):
+def usable(mc, tab, p, v, t):
     return [o for o in A.OSCS if len(cell_samples(mc, o, p, v, t)) >= 3
-            and all(tab.get((o, q, v, t)) for q in (A.PROCESS if need_all_proc else [p]))]
+            and tab.get((o, p, v, t))]
 
 
 def row3_samples(tab, mc, seed, defect=0.0):
