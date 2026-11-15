@@ -117,6 +117,31 @@ class Tests(unittest.TestCase):
         # 1 MHz over 102.4 us = 102.4 counts -> 1/(102.4*sqrt(12))
         self.assertAlmostEqual(A.sigma_quant(1e6), 1 / (102.4 * math.sqrt(12)), places=9)
 
+    def test_corner_box_is_single_source(self):
+        """The PVT corner box is defined once, in sim/corner_box.json: the generator and this analyzer
+        (and the subthreshold probe generator) all load it, and V_HALF/T_HALF are its half-spans.
+        Compared against a fresh load of the file, not against A.*, so a module that re-states the
+        lists instead of loading them fails here (issue #174)."""
+        import importlib.util
+        import json
+        here = os.path.dirname(os.path.abspath(__file__))
+        with open(os.path.join(here, "..", "corner_box.json")) as f:
+            box = json.load(f)
+        import gen_requests as G
+        for name, mod in (("analyze", A), ("gen_requests", G)):
+            self.assertEqual(mod.PROCESS, box["process"], name)
+            self.assertEqual(mod.VDD, box["vdd"], name)
+            self.assertEqual(mod.TEMP, box["temp_c"], name)
+        spec = importlib.util.spec_from_file_location(
+            "sub_gen_probe", os.path.join(here, "..", "subthreshold", "gen_probe.py"))
+        sub = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(sub)
+        self.assertEqual(sub.PROCESS, box["process"])
+        self.assertEqual(sub.TEMP, box["temp_c"])
+        # the half-spans are derived from the loaded lists, never restated as literals
+        self.assertEqual(A.V_HALF, (A.VDD[-1] - A.VDD[0]) / 2)
+        self.assertEqual(A.T_HALF, (A.TEMP[-1] - A.TEMP[0]) / 2)
+
     # ------------------------------------------------------------ gate parameter (issue #170)
 
     def test_default_gate_is_the_spec_default_and_sigma_quant_default_is_unchanged(self):

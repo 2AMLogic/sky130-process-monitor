@@ -17,7 +17,8 @@ Conventions (stated again in every report):
   * Process coordinates (Pn, Pp) in {-1,0,+1}: tt=(0,0) ff=(+1,+1) ss=(-1,-1); and from the recorded
     sf/fs probe (record 2026-11-05): sf = NMOS fast / PMOS slow = (+1,-1), fs = (-1,+1).
   * Columns are scaled by the box half-range so singular values are comparable:
-      V: d ln f/dV * 0.18 V    T: d ln f/dT * 82.5 C    Pn, Pp: d ln f/dP * 1 (corner extent)
+      V: d ln f/dV * V_HALF    T: d ln f/dT * T_HALF    Pn, Pp: d ln f/dP * 1 (corner extent)
+    (V_HALF / T_HALF are derived at import as the half-spans of the VDD / TEMP lists)
     V and T derivatives are finite differences of the tt surface across the box (central at the
     middle point, one-sided at the edges); P derivatives are corner contrasts at that (V,T):
       dPn = (ff + sf - ss - fs)/4,  dPp = (ff + fs - ss - sf)/4   (of ln f).
@@ -25,16 +26,20 @@ Conventions (stated again in every report):
 import gzip
 import json
 import math
+import os
 import sys
 
+HERE = os.path.dirname(os.path.abspath(__file__))
 OSCS = ["osc_hd", "osc_nmos", "osc_pmos", "osc_wire", "osc_subth"]
 BASELINE = "osc_hd"
-PROCESS = ["tt", "ff", "ss", "sf", "fs"]
-VDD = [1.62, 1.80, 1.98]
-TEMP = [-40, 27, 125]
+# The corner box lives once, in sim/corner_box.json — the same file gen_requests.py writes the grid
+# requests from — so this index of the results cannot drift from the grid it indexes.
+with open(os.path.join(HERE, "..", "corner_box.json")) as _f:
+    _BOX = json.load(_f)
+PROCESS, VDD, TEMP = _BOX["process"], _BOX["vdd"], _BOX["temp_c"]
 PCOORD = {"tt": (0, 0), "ff": (1, 1), "ss": (-1, -1), "sf": (1, -1), "fs": (-1, 1)}
-V_HALF = 0.18
-T_HALF = 82.5
+V_HALF = (VDD[-1] - VDD[0]) / 2   # the half-span of the VDD list above, not an independent constant
+T_HALF = (TEMP[-1] - TEMP[0]) / 2
 SKIP_EDGES = 3
 MIN_CYCLES = 5
 REF_HZ = 10e6                 # spec section 5: reference clock is an INPUT, target 10 MHz
@@ -363,7 +368,7 @@ def report(freq, mc=None, out=sys.stdout, gate_s=None):
         P("# GATE: %s = %s (spec default is %s); counts and quantization sigma below use it"
           % (gate_desc(gate), fmt_time(gate), gate_desc(GATE_S)))
     P("# Sensitivity report (SIMULATED, schematic-level, tt/ff/ss/sf/fs x 3 V x 3 T; nothing measured)")
-    P("# columns scaled by box half-range: V*0.18, T*82.5, Pn/Pp = corner extent (+-1)")
+    P("# columns scaled by box half-range: V*%g, T*%g, Pn/Pp = corner extent (+-1)" % (V_HALF, T_HALF))
     missing = [(r["osc"], r["process"], r["vdd"], r["temp_c"]) for r in freq["rows"] if not r["f_hz"]]
     P("# cells: %d, missing (no/short oscillation): %d" % (len(freq["rows"]), len(missing)))
     for m in missing:

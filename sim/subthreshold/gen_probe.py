@@ -7,7 +7,13 @@ Devices: the oscillator's own devices (nfet/pfet L=0.15 W=0.42 and 0.84; pfet_lv
 plus width neighbours straddling (pfet models have no bin below W=0.42, so 0.42 is the model's lower limit there) the model's W-bin edges at 0.42 and 0.84 um, so a jump in
 Id/W across a bin edge shows up as a continuity failure. Reads no result; run via `klt sim`.
 """
-import json, sys
+import json, os, sys
+HERE = os.path.dirname(os.path.abspath(__file__))
+# The PVT corner box lives once, in sim/corner_box.json (the process and temperature lists below).
+# "vdd": [1.80] stays a literal on purpose: this probe is a single-supply bench, not the 3-point box.
+with open(os.path.join(HERE, "..", "corner_box.json")) as _f:
+    _BOX = json.load(_f)
+PROCESS, TEMP = _BOX["process"], _BOX["temp_c"]
 VDS = 0.9
 VG_POINTS = [0.0, 0.05, 0.15, 0.30]          # |Vgs| at which Id is recorded (V)
 DEVS = []                               # (name, kind, model, L, W)
@@ -51,8 +57,8 @@ def request(gmin=1e-15, abstol=None):
                    "spice": ".meas dc s_%s param='150/log10(abs(i300_%s)/abs(i150_%s))'" % (name, name, name)})
     return {"netlist": "probe_tb.spice", "engine": "ngspice",
             "models": {"pdk": "sky130A", "lib": "libs.tech/ngspice/sky130.lib.spice"},
-            "corners": {"process": ["tt", "ff", "ss", "sf", "fs"], "supply_v": {"vdd": [1.80]},
-                        "temperature_c": [-40, 27, 125]},
+            "corners": {"process": PROCESS, "supply_v": {"vdd": [1.80]},
+                        "temperature_c": TEMP},
             "analysis": {"kind": "dc", "args": "Vg 0 0.6 0.01"},
             "measurements": ms, "options": {"timeout_s": 200, "keep_artifacts": False, "ngspice_options": opts}}
 
