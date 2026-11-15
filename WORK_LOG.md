@@ -3,8 +3,17 @@
 Chronological record of merged PRs and closed issues, maintained by the Guide
 role. Newest first.
 
+### 2026-11-15
+
+- **Issue #175** (closed): Collapse the duplicated sibling-module loaders in sim/ to one mechanism
+
 ### 2026-11-14
 
+- **PR #186**: erc: cite the readout supply-spec run as T1 11.digital evidence
+- **PR #181**: feat: add attest/regen-item10.sh for pinned item-10 re-attestation
+- **PR #167**: docs: roadmap as of 2026-11-13
+- **Issue #168** (closed): T1 item 11 (digital): klt erc supply spec and report for the routed readout
+- **Issue #172** (closed): Guide docs PRs that touch README.md red the klt signoff gate: README is an inventoried item-10 hygiene input
 - **PR #164**: refactor: read the open_pdks pin from sim/pdk.json in the subthreshold analyzer
 - **Issue #163** (closed): Read the open_pdks pin from sim/pdk.json in sim/subthreshold/analyze.py instead of two hardcoded copies
 
