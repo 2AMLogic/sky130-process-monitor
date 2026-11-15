@@ -47,11 +47,13 @@ YN0 = 600          # nfet diff bottom
 GAP = 1900         # reference nfet top -> pfet bottom
 Y_BUS, Y_PADB, Y_OUT, Y_IN = 300, 400, 800, 1400   # gap levels above the reference nfet top
 SERP_N, SERP_PITCH = 12, 300      # runs per serpentine; centre pitch (met1 space 160 nm vs 140 nm rule)
-# osc_subth bias divider: res_high_po_0p35 serpentines (poly W 0.35 um, pitch 0.60 um). Run lengths are chosen so the
-# area-derived length L = N*S + (N-1)*(PITCH-W) hits RB_L; RB_L values were set against the PDK model at tt/27C
-# (Rb0 ~300 kohm, Rb1 ~1.50 Mohm across a 1.8 V divider; see lvs/README.md).
-RB_W, RB_PITCH = 350, 600
-RB = {"Rb0": dict(L_um=270, N=8), "Rb1": dict(L_um=1360, N=34)}
+# osc_subth bias divider: res_high_po_0p35 serpentines. Run lengths are chosen so the area-derived
+# length L = N*S + (N-1)*(PITCH-W) hits L_um; the lengths were set against the PDK model at tt/27C
+# (Rb0 ~300 kohm, Rb1 ~1.50 Mohm across a 1.8 V divider; see lvs/README.md). The geometry lives in
+# osc_subth_divider.json, which lvs/make_reduced_refs.py also reads -- it is not restated here.
+_divider = json.load(open(os.path.join(HERE, "osc_subth_divider.json")))
+RB_W, RB_PITCH = _divider["poly_w_nm"], _divider["pitch_nm"]
+RB = _divider["resistors"]
 SERP_GAP = 700                    # clear gap between one serpentine's last run and the next row's feed
 
 
