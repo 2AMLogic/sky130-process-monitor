@@ -6,7 +6,7 @@
     "worktree:return": "./.loom/scripts/worktree-return.sh",
     "check:ci": "npm run test",
     "check:all": "npm run test",
-    "test": "python3 -I sim/sensitivity/test_analyze.py && python3 -I sim/power/test_analyze_power.py && python3 -I sim/solve/test_gen_binding_mc.py && python3 -I sim/solve/test_solve.py && python3 -I sim/pex/test_gen_requests.py && python3 -I sim/solve/test_records_reproduce.py && python3 -I characterization/test_citations.py",
+    "test": "python3 -I sim/sensitivity/test_analyze.py && python3 -I sim/power/test_analyze_power.py && python3 -I sim/solve/test_gen_binding_mc.py && python3 -I lvs/test_make_reduced_refs.py && python3 -I sim/solve/test_solve.py && python3 -I sim/pex/test_gen_requests.py && python3 -I sim/solve/test_records_reproduce.py && python3 -I characterization/test_citations.py",
     "lint": "git ls-files '*.sh' | grep -vE '^(\\.loom|\\.claude/skills)/' | xargs -t shellcheck -x"
   }
 }

@@ -40,8 +40,12 @@ import os
 import random
 import sys
 
-sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "sensitivity"))
-import analyze as A  # noqa: E402
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), ".."))
+import _siblings  # noqa: E402
+
+# `python3 -I` drops the script directory from sys.path, and the bare name `analyze` is ambiguous in
+# the tree, so the cross-directory sibling is loaded by path via the shared sim/ helper.
+A = _siblings.load("sensitivity", "analyze")
 
 OSCS, BASE, PROC, VDD, TEMP = A.OSCS, A.BASELINE, A.PROCESS, A.VDD, A.TEMP
 FALLBACK_BANK = ["osc_hd", "osc_nmos", "osc_pmos"]
