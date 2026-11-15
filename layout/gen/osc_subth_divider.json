@@ -1,5 +1,5 @@
 {
-  "note": "osc_subth bias-divider geometry, owned here and read by layout/gen/gen_osc_bank.py (draws the serpentines) and lvs/make_reduced_refs.py (writes the LVS reference) -- no script restates these values. res_high_po_0p35 serpentines: run lengths are chosen so the area-derived length L = N*S + (N-1)*(pitch_nm - poly_w_nm) hits L_um; the lengths were set against the PDK model at tt/27C (Rb0 ~300 kohm, Rb1 ~1.50 Mohm across a 1.8 V divider; see lvs/README.md).",
+  "note": "osc_subth bias-divider geometry, owned here and read by layout/gen/gen_osc_bank.py (draws the serpentines) and lvs/make_reduced_refs.py (writes the LVS reference) -- no script restates these values. res_high_po serpentines (the PDK width variant is derived from poly_w_nm by lvs/make_reduced_refs.py): run lengths are chosen so the area-derived length L = N*S + (N-1)*(pitch_nm - poly_w_nm) hits L_um; the lengths were set against the PDK model at tt/27C (Rb0 ~300 kohm, Rb1 ~1.50 Mohm across a 1.8 V divider; see lvs/README.md).",
   "poly_w_nm": 350,
   "pitch_nm": 600,
   "resistors": {
