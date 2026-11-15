@@ -16,6 +16,9 @@
       "path": "sim/check_env.sh"
     },
     {
+      "path": "sim/corner_box.json"
+    },
+    {
       "path": "sim/osc_bank/bench_osc_hd.spice",
       "cold_start": {
         "argv": [
@@ -82,6 +85,9 @@
     },
     {
       "path": "sim/osc_bank/run.sh"
+    },
+    {
+      "path": "sim/pdk.json"
     },
     {
       "path": "sim/pex/osc/osc_hd_dut.spice"
@@ -3206,6 +3212,9 @@
     },
     {
       "path": "sim/subthreshold/probe_tb.spice"
+    },
+    {
+      "path": "sim/toolchain.json"
     }
   ],
   "pins": {
