@@ -8,14 +8,30 @@ checklist: the `klt signoff` input and its committed output.
 - **`sky130-process-monitor.json`** — the block manifest. `kind` is
   `mixed-signal`; `partition_boundary` states the intended analog/digital
   split as the top-level README describes it today (the grader reports it and
-  does not grade it; refine it once the spec issue #2 ratifies). `evidence`
-  cites T1 item 10 (repo hygiene): `evidence/item10.json`, the
-  `klt signoff --attest 10` envelope over `attest/item10.json`, pinned by that
-  inventory's `content_hash`; and T1 item 2 analog (layout): `evidence/item2_analog.json`,
-  the `klt signoff --attest 2 --input layout/osc_bank.gds` envelope over
-  `attest/item2_analog.json`, pinned by the stream's `content_hash` under `2.analog`.
-  No other design artifact is cited yet.
-  The bare key `"10"` covers both the analog and digital partitions.
+  does not grade it; the target spec is ratified — decision 0001, 2026-10-17 —
+  and the split mirrors that README). Its `evidence` block cites seventeen
+  keys today. Most are single-envelope pass citations; three are lists and
+  one is a `not_applicable` block, marked as such:
+
+  | keys | evidence directory | form |
+  |------|--------------------|------|
+  | `1.analog`, `1.digital`, `2.analog`, `2.digital`, `5.analog`, `9.analog`, `9.digital`, `10` | `evidence/` | one `klt signoff --attest` envelope each |
+  | `3.analog`, `3.digital` | `drc/` | DRC report each |
+  | `4.digital` | `lvs/` | LVS report |
+  | `5.digital` | `sta/`, `verification/readout/` | **list** — STA report plus pre-layout functional report |
+  | `6.analog` | `sim/solve/mc/` | Monte-Carlo yield report |
+  | `6.digital` | `spec/`, `verification/readout/` | **`not_applicable` block** — a spec citation plus a statement, not a pass |
+  | `7.analog` | `sim/pex/records/` | **list** — the four `2026-11-10-osc_*.pex.report.json` |
+  | `7.digital` | `verification/readout/` | SDF-annotated functional report |
+  | `11.digital` | `erc/`, `lvs/`, `layout/readout/` | **list** — ERC, LVS and layout reports |
+
+  Four rows remain uncited, matching the record's `no_evidence` rows:
+  `4.analog`, `8.analog`, `8.digital` and `11.analog`.
+  The bare key `"10"` covers both the analog and digital partitions. The
+  per-item sections below (`## Item 10 attestation`, `## Item 1 attestations`,
+  `## Item 2 attestations`, `## Item 3 (DRC)`, `## Item 5 (digital)`,
+  `## Item 9 (testbenches shipped)`) carry the per-key envelopes, checks and
+  regeneration recipes.
 - **`design-evidence-tiers.md`** — the checklist the grader parses. Vendored
   **byte-identical** from
   [`2AMLogic/klayout-tools@31a3e3c`](https://github.com/2AMLogic/klayout-tools/blob/31a3e3c41c08bbd58719e0b99a3b6d19beb9be63/docs/design-evidence-tiers.md)
