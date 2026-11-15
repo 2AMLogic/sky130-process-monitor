@@ -16,7 +16,9 @@ def val(c, n):
     for m in c["measurements"]:
         if m["name"] == n:
             return m.get("value")
-PROC = ["tt", "ff", "ss", "sf", "fs"]; TS = [-40, 27, 125]
+CORNER_BOX = os.path.join(REPO, "sim", "corner_box.json")   # the PVT corner box lives once, in sim/corner_box.json
+with open(CORNER_BOX) as fh: _BOX = json.load(fh)
+PROC, VDD, TS = _BOX["process"], _BOX["vdd"], _BOX["temp_c"]
 
 grid = load("runs/osc_grid.report.json.gz")[0]
 longs = load("runs/long_shards/*.gz")
@@ -53,7 +55,7 @@ print("== grid: %d/45 cells resolved; unresolved (no 11 rising edges within 400 
 for k in unres: print("   ", k)
 print("== f_osc [kHz] (window us)")
 for p in PROC:
-    for v in (1.62, 1.8, 1.98):
+    for v in VDD:
         row = []
         for t in TS:
             f = F.get((p, v, t)); row.append("%9s(%s)" % (("%.1f" % (f / 1e3)) if f else "none", STEP[(p, v, t)]))
@@ -62,14 +64,14 @@ for p in PROC:
 print("== check 1: f_osc increasing with T at each (corner, V) [resolved pairs only]")
 bad = []; nchk = 0
 for p in PROC:
-    for v in (1.62, 1.8, 1.98):
+    for v in VDD:
         s = [(t, F[(p, v, t)]) for t in TS if F.get((p, v, t))]
         for (t0, f0), (t1, f1) in zip(s, s[1:]):
             nchk += 1
             if f1 <= f0: bad.append((p, v, t0, t1, f0, f1))
 print("   pairs checked %d, violations %d  -> %s" % (nchk, len(bad), "PASS" if not bad else "FAIL"), bad)
 # T and V sensitivity summary (tt)
-for v in (1.62, 1.8, 1.98):
+for v in VDD:
     f27, f125 = F.get(("tt", v, 27)), F.get(("tt", v, 125))
     print("   tt %.2fV f(125)/f(27) = %.2f" % (v, f125 / f27))
 print("   tt 27C f(1.98)/f(1.62) = %.2f" % (F[("tt", 1.98, 27)] / F[("tt", 1.62, 27)]))
