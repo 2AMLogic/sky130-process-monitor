@@ -26,12 +26,8 @@ SUBTH_TRAN = {"warm": ("10n 500u", 300), "cold": ("10n 4m", 1800)}
 
 def request(osc, cells, tran=None, timeout=None):
     tran0, cap = G.OSCS[osc]
-    r = G.base(osc, tran or G.MC_TRAN.get(osc, tran0), cap)
+    r = G.mc_request(osc, tran or G.MC_TRAN.get(osc, tran0), cap, cells, N[osc], timeout_s=timeout)
     r["netlist"] = "../../../sensitivity/osc/tb_%s.spice" % osc  # requests live in sim/solve/mc/requests/
-    if timeout:
-        r["options"]["timeout_s"] = timeout
-    r["corners"] = {"units": [{"process": p, "temperature_c": t, "supply_v": {"vdd": v}} for p, v, t in cells]}
-    r["monte_carlo"] = {"n": N[osc], "seed": G.MC_SEED, "vary": "mismatch", "mismatch_scale": 1, "seed_scope": "point"}
     return r
 
 

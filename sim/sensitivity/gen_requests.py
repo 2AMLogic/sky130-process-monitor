@@ -58,6 +58,27 @@ def base(osc, tran, cap):
     }
 
 
+def mc_request(osc, tran, cap, cells, n, seed=MC_SEED, timeout_s=None):
+    """One mismatch-MC request on explicit (process, vdd, temperature_c) cells.
+
+    The monte_carlo settings (seed, vary="mismatch", mismatch_scale=1, seed_scope="point") and the
+    corners.units shape are defined here once; every MC generator (sim/solve/gen_binding_mc.py
+    imports this module) builds its requests through this helper, because sim/solve/solve.py pools
+    one sigma(ln f) across all the request sets — pooling is only valid if every set was drawn
+    under identical mismatch settings.
+    """
+    r = base(osc, tran, cap)
+    if timeout_s is not None:
+        r["options"]["timeout_s"] = timeout_s
+    r["corners"] = {"units": [
+        {"process": p, "temperature_c": t, "supply_v": {"vdd": v}}
+        for p, v, t in cells]}
+    # mismatch_scale=1 writes `.param mc_mm_switch=1` after the .lib (nominal sigma), per the spec.
+    r["monte_carlo"] = {"n": n, "seed": seed, "vary": "mismatch", "mismatch_scale": 1,
+                        "seed_scope": "point"}
+    return r
+
+
 def grid(osc, tran, cap):
     r = base(osc, tran, cap)
     r["corners"] = {
@@ -78,15 +99,8 @@ def mc(osc, tran, cap):
     ov = MC_OVERRIDE.get(osc, {})
     tran = ov.get("tran", MC_TRAN.get(osc, tran))
     n = ov.get("n", MC_N)
-    r = base(osc, tran, cap)
-    r["options"]["timeout_s"] = ov.get("timeout_s", r["options"]["timeout_s"])
-    r["corners"] = {"units": [
-        {"process": p, "temperature_c": t, "supply_v": {"vdd": v}}
-        for p in PROCESS for (v, t) in MC_VT]}
-    # mismatch_scale=1 writes `.param mc_mm_switch=1` after the .lib (nominal sigma), per the spec.
-    r["monte_carlo"] = {"n": n, "seed": MC_SEED, "vary": "mismatch", "mismatch_scale": 1,
-                        "seed_scope": "point"}
-    return r
+    cells = [(p, v, t) for p in PROCESS for (v, t) in MC_VT]
+    return mc_request(osc, tran, cap, cells, n, timeout_s=ov.get("timeout_s"))
 
 
 # Off-nominal MC (issue #48): the 1.62 V/125 C and 1.98 V/-40 C cells, 5 corners each. 500 units per
@@ -101,18 +115,12 @@ def mc_offnom(osc, tran, cap, vt_cells=OFFNOM_VT, subth_cell=None):
     """Same request shape as mc() (same seed, mismatch_scale=1) on the off-nominal (V,T) cells."""
     tran = MC_TRAN.get(osc, tran)
     n = OFFNOM_N[osc]
-    timeout = 3000
+    timeout_s = None  # base()'s default stands (so base() stays the only place that number lives)
     if osc == "osc_subth":
-        tran, timeout = OFFNOM_SUBTH[subth_cell]
+        tran, timeout_s = OFFNOM_SUBTH[subth_cell]
         vt_cells = [subth_cell]
-    r = base(osc, tran, cap)
-    r["options"]["timeout_s"] = timeout
-    r["corners"] = {"units": [
-        {"process": p, "temperature_c": t, "supply_v": {"vdd": v}}
-        for p in PROCESS for (v, t) in vt_cells]}
-    r["monte_carlo"] = {"n": n, "seed": MC_SEED, "vary": "mismatch", "mismatch_scale": 1,
-                        "seed_scope": "point"}
-    return r
+    cells = [(p, v, t) for p in PROCESS for (v, t) in vt_cells]
+    return mc_request(osc, tran, cap, cells, n, timeout_s=timeout_s)
 
 
 # Step-refined osc_hd (issue #54): the 20 ps (MC) / 10 ps (grid) tran step biases osc_hd and locks the
