@@ -8,21 +8,32 @@ The pex scalar is the `t_rise` crossings measurement (rising edges of v(out) at 
 it is a quantised edge COUNT, not a frequency, and the report carries no crossing times, so #29's
 f_osc = (n-1)/(t_last - t_first) (analyze.freq_from_crossings) cannot be reproduced from it.
 What this script can state exactly is:
-  * row 1 (oscillates): analyze.py drops SKIP_EDGES=3 start-up edges and needs MIN_CYCLES=5 cycles, i.e. at least
-    SKIP_EDGES + MIN_CYCLES + 1 = 9 rising edges. A cell passes iff its extracted-side count is >= 9.
+  * row 1 (oscillates): analyze.py drops SKIP_EDGES start-up edges and needs MIN_CYCLES cycles, i.e. at least
+    SKIP_EDGES + MIN_CYCLES + 1 rising edges (9 at the committed values). Both constants are read from
+    sim/sensitivity/analyze.py below, not restated here. A cell passes iff its extracted-side count is >= that.
   * a frequency proxy f ~ count / 800 ns, with relative bias bounded by (SKIP_EDGES + 1) / count (start-up edges
     included, +/- 1 count quantisation). Reported as a proxy, never as an f_osc.
   * ratio-space shift: #29 row 2 classifies on ln f_i - ln f_osc_hd. The extracted-vs-schematic change of that
     coordinate is ln(ext_i/ext_hd) - ln(sch_i/sch_hd), computed from the counts where both legs exist.
 No threshold is applied or changed: rows 2-4 are NOT re-graded (see sim/pex/README.md).
 """
+import importlib.util
 import json
 import math
+import os
 import statistics
 import sys
 
-SKIP_EDGES, MIN_CYCLES, WINDOW_S = 3, 5, 800e-9
+HERE = os.path.dirname(os.path.abspath(__file__))
+# The oscillation rule lives once, in sensitivity/analyze.py (as sim/pex/gen_requests.py already does for
+# the oscillator list). `python3 -I` drops the script directory from sys.path, so load it by path.
+_spec = importlib.util.spec_from_file_location(
+    "sens_analyze", os.path.join(HERE, "..", "sensitivity", "analyze.py"))
+_SENS = importlib.util.module_from_spec(_spec)
+_spec.loader.exec_module(_SENS)
+SKIP_EDGES, MIN_CYCLES = _SENS.SKIP_EDGES, _SENS.MIN_CYCLES
 MIN_EDGES = SKIP_EDGES + MIN_CYCLES + 1
+WINDOW_S = 800e-9             # the pex bench's .tran window; a pex-side quantity, not a #8 constant
 
 
 def load(path):

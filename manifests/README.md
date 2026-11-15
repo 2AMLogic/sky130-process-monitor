@@ -23,10 +23,11 @@ checklist: the `klt signoff` input and its committed output.
   repo's `LICENSE` does not relicense the vendored copy. When upstream moves,
   re-vendor and regenerate the record in the same PR.
 - **`sky130-process-monitor.signoff.json`** — the **verdict of record**,
-  graded with `klayout-tools==0.9.1`. Today 13 of the 22 T1 rows read `met`
-  (items 1, 2, 3, 9 and 10 on both partitions, plus 4.digital, 5.digital and 7.digital); 6.digital
+  graded with `klayout-tools==0.9.1`. Today 14 of the 22 T1 rows read `met`
+  (items 1, 2, 3, 9 and 10 on both partitions, plus 4.digital, 5.digital, 7.digital and
+  11.digital); 6.digital
   reads `not_applicable`; 5.analog, 6.analog and 7.analog read `unmet` / `check_failed` (their
-  cited envelopes grade, and fail their targets); and 4.analog, 8 and 11 on both partitions read
+  cited envelopes grade, and fail their targets); and 4.analog, 8 and 11.analog read
   `unmet` / `no_evidence`. The T2-T4 tier rows read `unmet` / `tier_not_supported` (the grader does
   not grade those tiers). Never hand-edit it.
 
@@ -47,12 +48,39 @@ a version-pin bump — regenerates and commits the record in the same PR.
 
 `attest/item10.json` lists the hygiene files (README, LICENSE, spec, CI
 workflow) and one check: that the committed record above still reproduces.
-Regenerate the envelope with `klt signoff --attest 10 --inventory
-attest/item10.json -o evidence/item10.json` (needs `klt` on `PATH`), and do so
-whenever an inventoried file changes. The check is circular by construction
-(the record cites the envelope that vouches for the record); bootstrap or
-repair it by regenerating the envelope, then the record, then confirming both
-`--check` commands report `match`.
+**The hygiene files' bytes are hashed into the envelope**, so a
+documentation-only edit to any of them turns the item stale and reds CI until
+the envelope is regenerated in the same commit (issue #172). `CLAUDE.md`
+carries that obligation; the one-line way to meet it is:
+
+```console
+attest/regen-item10.sh
+```
+
+It reads the pinned `klayout-tools` version out of
+`.github/workflows/signoff.yml` (the version CI byte-compares against — an
+unpinned `klt` writes a different `provenance.klt_version` and a
+non-reproducing envelope), regenerates only `evidence/item10.json`, then
+re-runs both checks CI asserts and prints their verdicts. It exits `3`,
+without writing a verdict change, in the rarer case that the signoff record
+has to move too. The raw command it wraps is:
+
+```console
+uvx --from "klayout-tools==0.9.1" klt signoff --attest 10 \
+    --inventory attest/item10.json -o evidence/item10.json
+```
+
+**Why it is not a single command.** The check is circular by construction: the
+record cites the envelope, and the envelope's one check re-renders the record.
+While the envelope is stale that check fails, and `klt` writes no output file
+for a failing attestation — so one pass cannot refresh it. Bootstrap or repair
+it by regenerating the record against the stale envelope, re-attesting against
+that, then re-rendering the record, and confirming both `--check` commands
+report `match`. `attest/regen-item10.sh` does exactly that and restores the
+record to its committed bytes afterwards, which for a content-only edit is
+where it started. If a hygiene file is genuinely **missing**, no envelope can
+be produced at all: restore the file, or change what item 10 attests through a
+`spec/` decision record — never by narrowing the inventory to quiet the gate.
 
 ## CI
 
@@ -141,7 +169,7 @@ the command reproduces the measurement it is attached to (the tier doc says so f
 | `sim/solve/` drivers — `solve.py`, `gen_binding_mc.py`, `yield_samples.py`, `make_envelope.py` | none of their own (pinned by hash; exercised by the two suites below) | **Partly, and unevenly.** These are the testbench behind the rows 1–4 estimate (`5.analog`) and the item-6 yield figures (`6.analog`): pure post-processing on the committed `mc/samples-*.json` inputs, no simulation. `solve.py` and `yield_samples.py` are exercised by `test_solve.py` on synthetic fixtures with negative controls, and `gen_binding_mc.py`'s `--sized` path by `test_gen_binding_mc.py`; **`make_envelope.py` is covered by no suite** (it builds `evidence/item5_analog.json`, and only its output is pinned, by the `5.analog` citation). In every case regrading the *recorded* rows is the explicit `python3 -I sim/solve/solve.py grade …` / `yield_samples.py build …` command in each `RECORD-*.md`, which the attestation does not run. |
 | `sim/solve/test_solve.py`, `sim/solve/test_gen_binding_mc.py` | `python3 -I sim/solve/<test>.py` | **Yes**, in full: both are stdlib `unittest` suites that run for real at attestation time (8 and 6 tests), including `test_solve.py`'s synthetic negative controls and `test_gen_binding_mc.py`'s request-drift check against the committed `requests-sized/` bytes. |
 | `sim/sensitivity/analyze.py`, `gen_requests.py` | none of their own (pinned by hash; `analyze.py` is exercised by the suite below) | **No simulation.** `analyze.py` turns the committed fleet reports into the frequency and Monte-Carlo tables that `sim/solve/solve.py` grades, and `solve.py` imports it at run time; `gen_binding_mc.py` imports `gen_requests.py`. `analyze.py extract` / `extract-mc` is the **first step** of the reproduce chain in `sim/solve/records/2026-11-05-rows1-4.md` and `sim/solve/mc/RECORD-2026-11-06-item6-sized-bank.md`, neither of which the attestation runs. Inventoried because they are on the `5.analog` / `6.analog` measurement path. |
-| `sim/sensitivity/test_analyze.py` | `python3 -I sim/sensitivity/test_analyze.py` | **Yes**, in full: a stdlib `unittest` suite that runs for real at attestation time (10 tests). It covers `analyze.py`; `gen_requests.py` has no suite of its own, and is pinned by hash only. |
+| `sim/sensitivity/test_analyze.py` | `python3 -I sim/sensitivity/test_analyze.py` | **Yes**, in full: a stdlib `unittest` suite that runs for real at attestation time (19 tests). It covers `analyze.py`; `gen_requests.py` has no suite of its own, and is pinned by hash only. |
 | `sim/pex/probe/osc_subth_vbp_probe.cir` | none (pinned by hash only) | **No.** One `ngspice -b`, but minutes on the extracted `osc_subth` netlist; it is a vh-split diagnosis probe (#117), not a spec-row measurement. |
 | `verification/readout/` | `make -C verification/readout` | **Yes** for the pre-layout run cited as `5.digital`: check-env, Verilator lint `-Wall`, then the full cocotb suite on Icarus (9/9). |
 | `verification/readout/request-sdf.json` | none (pinned by hash only) | **No.** The SDF-annotated re-run cited as `7.digital` names host-absolute PDK timing-model and SDF paths (`verification/README.md`); a third party adjusts them for their own install. |

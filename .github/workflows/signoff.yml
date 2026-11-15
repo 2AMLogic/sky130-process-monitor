@@ -54,10 +54,17 @@ jobs:
           fi
           if ! cmp -s "$RUNNER_TEMP/fresh-signoff.json" manifests/sky130-process-monitor.signoff.json; then
             echo "::error::Fresh klt signoff output differs from the committed record manifests/sky130-process-monitor.signoff.json - the committed tier verdict is stale."
-            echo "Regenerate and commit the record in this same PR:"
+            echo "If the drift below is T1 item 10 reading unmet/stale_evidence, the cause is"
+            echo "an edited hygiene file, not the record: attest/item10.json hashes"
+            echo "  README.md  LICENSE  spec/target-spec.md  .github/workflows/signoff.yml"
+            echo "into evidence/item10.json. Regenerate the envelope and commit it in this"
+            echo "same PR - the record usually needs no change at all:"
+            echo "  attest/regen-item10.sh"
+            echo "Otherwise the verdict itself moved; regenerate and commit the record:"
             echo "  klt signoff --manifest manifests/sky130-process-monitor.json \\"
             echo "      --tiers-doc manifests/design-evidence-tiers.md \\"
             echo "      --format json > manifests/sky130-process-monitor.signoff.json"
+            echo "(attest/regen-item10.sh reports which of the two you are in.)"
             echo "---- diff (fresh vs committed), pretty-printed ----"
             diff <(python3 -m json.tool "$RUNNER_TEMP/fresh-signoff.json") \
                  <(python3 -m json.tool manifests/sky130-process-monitor.signoff.json) || true
@@ -68,8 +75,22 @@ jobs:
 
       - name: Re-attest T1 item 10 and compare against the committed envelope
         run: |
+          set -uo pipefail
+          rc=0
           klt signoff --attest 10 --inventory attest/item10.json \
-                      --check evidence/item10.json
+                      --check evidence/item10.json || rc=$?
+          if [ "$rc" -ne 0 ]; then
+            echo "::error::The committed T1 item 10 envelope evidence/item10.json is stale - an inventoried hygiene file changed without a re-attest."
+            echo "attest/item10.json hashes the bytes of:"
+            echo "  README.md  LICENSE  spec/target-spec.md  .github/workflows/signoff.yml"
+            echo "so a documentation-only edit to any of them reds this gate. Regenerate the"
+            echo "envelope and commit it in the same PR as the edit:"
+            echo "  attest/regen-item10.sh"
+            echo "It reads the klayout-tools pin from this workflow, handles the circular"
+            echo "bootstrap, and says whether the signoff record has to move too. Do not"
+            echo "re-attest with an unpinned klt: it writes a non-reproducing envelope."
+            exit "$rc"
+          fi
 
       # The freshness commands in these inventories need the pinned PDK, xschem
       # and Yosys, which this runner lacks: they are marked local_only, so

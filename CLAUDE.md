@@ -33,6 +33,17 @@ path with a counter readout — designed and verified by AI agents.
   on every recorded analog result; recorded results are append-only evidence.
   Every simulated figure is labelled as simulated, with its corner and
   testbench — nothing here is measured until silicon exists.
+- **Four ordinary-looking files are hashed T1 evidence.** `attest/item10.json`
+  inventories `README.md`, `LICENSE`, `spec/target-spec.md` and
+  `.github/workflows/signoff.yml`, hashing their bytes into
+  `evidence/item10.json` — so editing any of them, even a documentation-only
+  edit, turns T1 item 10 stale and reds the `klt signoff` gate. A PR that
+  touches one of the four runs `attest/regen-item10.sh` and commits the
+  regenerated `evidence/item10.json` **in the same commit** as the edit. The
+  script reads the `klayout-tools` pin from `.github/workflows/signoff.yml`;
+  never re-attest with the host's `klt`, which writes a non-reproducing
+  envelope. Dropping a file from the inventory to quiet the gate is a
+  `spec/` decision record, not a CI fix.
 - Spec changes go through `spec/` with a decision record; agents do not relax
   the ratified spec to make results pass.
 - **The five-corner target is the target.** Separating slow from fast is the
