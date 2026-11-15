@@ -12,7 +12,7 @@ of the gap to T1: #5.
 
 ## Where it stands
 
-`klt signoff` (`klayout-tools==0.9.1`) grades 13 of the 22 T1 rows `met`, one `not_applicable`, eight
+`klt signoff` (`klayout-tools==0.9.1`) grades 14 of the 22 T1 rows `met`, one `not_applicable`, seven
 `unmet`. Checklist: [`manifests/design-evidence-tiers.md`](manifests/design-evidence-tiers.md).
 
 | T1 item | Analog (oscillator bank) | Digital (readout) |
@@ -27,7 +27,7 @@ of the gap to T1: #5.
 | 8 Characterization report | **unmet**, `no_evidence` | **unmet**, `no_evidence` |
 | 9 Testbenches shipped | met | met |
 | 10 Repo hygiene | met | met |
-| 11 Power delivery | **unmet**, `no_evidence` (#33) | **unmet**, `no_evidence` (#33) |
+| 11 Power delivery | **unmet**, `no_evidence` (#33) | met (`erc/readout.report.json` + `lvs/readout.report.json` + `layout/readout/report.json`) |
 
 What sits behind the unmet rows, each from a committed record:
 
