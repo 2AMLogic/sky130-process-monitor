@@ -5,7 +5,9 @@ name: unit tests
 # local gate and this job cannot drift apart (issue #127).
 #
 # Stdlib-only `unittest`, no simulator and no PDK: sim/sensitivity/test_analyze.py
-# (sensitivity matrix + conditioning), sim/solve/test_gen_binding_mc.py (sized
+# (sensitivity matrix + conditioning), sim/power/test_analyze_power.py (the row-7
+# power grader admits exactly the active cells the #8 frequency surface resolves,
+# issue #173), sim/solve/test_gen_binding_mc.py (sized
 # MC request drift), sim/solve/test_solve.py (synthetic negative controls for
 # the row 1-4 solve), sim/pex/test_gen_requests.py (the pex benches still
 # equal what sim/pex/gen_requests.py derives from the #29 sensitivity benches,
@@ -41,5 +43,5 @@ jobs:
         with:
           python-version: "3.12"
 
-      - name: npm test (sensitivity, sized-request drift, solve negative controls, pex bench derivation, record reproduction)
+      - name: npm test (sensitivity, power gradability, sized-request drift, solve negative controls, pex bench derivation, record reproduction)
         run: npm test

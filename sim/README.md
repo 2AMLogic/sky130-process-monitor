@@ -91,7 +91,8 @@ produces the envelope must not share that venv.
     python3 -I sim/solve/test_solve.py                         # synthetic negative controls
     python3 -I sim/power/gen_requests.py                       # power testbenches + klt sim requests
     python3 -I sim/power/analyze_power.py extract|grade ...
+    python3 -I sim/power/test_analyze_power.py                 # active-cell gradability is the #8 rule
 
 `sim/solve/` post-processes #8's surfaces (no re-simulation); records in `sim/solve/records/`. `sim/power/` holds
 the active/idle supply-current benches (oscillator bank only; counter power is NOT covered); records in
-`sim/power/records/`. Power coverage: idle 45/45, active 219/225 cells (`records/2026-11-05-power-complete.md`; the earlier `-partial` record is kept). Every row is recorded failing. `sim/solve/make_envelope.py` builds `evidence/item5_analog.json`, the `model-run` citation for `5.analog` (`klt signoff` grades it `check_failed`, not `no_evidence`).
+`sim/power/records/`. Power coverage: idle 45/45, active 219/225 cells (`records/2026-11-05-power-complete.md`; the earlier `-partial` record is kept). Which active cells are gradable is the #8 rule, read from `sim/sensitivity/analyze.py` (9 rising crossings: `SKIP_EDGES` dropped, then `MIN_CYCLES + 1`) and never restated locally — `records/2026-11-14-grader-threshold-correction.md` records the off-by-one that held until 2026-11-14 and why no recorded verdict moves. Every row is recorded failing. `sim/solve/make_envelope.py` builds `evidence/item5_analog.json`, the `model-run` citation for `5.analog` (`klt signoff` grades it `check_failed`, not `no_evidence`).
