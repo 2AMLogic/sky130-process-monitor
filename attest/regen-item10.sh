@@ -116,7 +116,7 @@ restore_record() {
     fi
 }
 
-# shellcheck disable=SC2317  # reached through `trap cleanup EXIT` below
+# shellcheck disable=SC2317,SC2329  # reached through `trap cleanup EXIT` below
 cleanup() {
     # Never exit from here: that would mask the script's real status.
     restore_record || :
