@@ -153,7 +153,9 @@ Two inventories, one per partition (item 9 is graded per partition):
   bench imports at run time — `analyze.py`, `gen_requests.py` and `test_analyze.py` — and the 3
   owner files `sim/corner_box.json`, `sim/pdk.json` and `sim/toolchain.json`).
 - `attest/item9_digital.json` -> `evidence/item9_digital.json`, cited as `9.digital`. It pins the
-  readout cocotb bench and its two `klt functional-verification` requests.
+  readout cocotb bench, its two `klt functional-verification` requests, and the 3 environment
+  files the bench's cold start reads through `sim/check_env.sh` (`sim/check_env.sh` itself, plus
+  `sim/pdk.json` and `sim/toolchain.json`).
 
 Regenerate either with `attest/regen-item9.sh <partition>` (`analog`, `digital`, or `both`; issue
 #190): it reads the `klayout-tools` pin from `.github/workflows/signoff.yml`, pre-flights the
