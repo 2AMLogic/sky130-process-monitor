@@ -17,20 +17,21 @@ the committed files byte for byte. If a run leaves `git status --porcelain sim/p
 finding to report, not a file to commit. (requests/osc_nmos_coldcell.json and requests/osc_wire_coldcell.json
 are hand-written and deliberately not emitted here - see README.md "Cold-cell follow-up".)
 """
-import importlib.util
 import json
 import os
+import sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 SIM = os.path.dirname(HERE)
 SENS = os.path.join(SIM, "sensitivity", "requests")
 SENS_OSC = os.path.join(SIM, "sensitivity", "osc")
 DESIGN = os.path.join(os.path.dirname(SIM), "design", "osc_bank")
-# `python3 -I` drops the script directory from sys.path, so load the sensitivity generator by path.
-_spec = importlib.util.spec_from_file_location(
-    "sens_gen_requests", os.path.join(SIM, "sensitivity", "gen_requests.py"))
-_SENS_GEN = importlib.util.module_from_spec(_spec)
-_spec.loader.exec_module(_SENS_GEN)
+# `python3 -I` drops the script directory from sys.path, so the sensitivity generator is loaded
+# by path via the shared sim/ helper (the bare name `gen_requests` is ambiguous in the tree).
+sys.path.insert(0, SIM)
+import _siblings  # noqa: E402
+
+_SENS_GEN = _siblings.load("sensitivity", "gen_requests")
 OSCS = list(_SENS_GEN.OSCS)  # the oscillator list lives once, in the sensitivity generator
 
 # Line 2 of a sensitivity bench states what the netlist is. On the pex side the same body is run against

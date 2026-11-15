@@ -17,7 +17,6 @@ What this script can state exactly is:
     coordinate is ln(ext_i/ext_hd) - ln(sch_i/sch_hd), computed from the counts where both legs exist.
 No threshold is applied or changed: rows 2-4 are NOT re-graded (see sim/pex/README.md).
 """
-import importlib.util
 import json
 import math
 import os
@@ -26,11 +25,12 @@ import sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 # The oscillation rule lives once, in sensitivity/analyze.py (as sim/pex/gen_requests.py already does for
-# the oscillator list). `python3 -I` drops the script directory from sys.path, so load it by path.
-_spec = importlib.util.spec_from_file_location(
-    "sens_analyze", os.path.join(HERE, "..", "sensitivity", "analyze.py"))
-_SENS = importlib.util.module_from_spec(_spec)
-_spec.loader.exec_module(_SENS)
+# the oscillator list). `python3 -I` drops the script directory from sys.path, so the module is loaded
+# by path via the shared sim/ helper (the bare name `analyze` is ambiguous in the tree).
+sys.path.insert(0, os.path.join(HERE, ".."))
+import _siblings  # noqa: E402
+
+_SENS = _siblings.load("sensitivity", "analyze")
 SKIP_EDGES, MIN_CYCLES = _SENS.SKIP_EDGES, _SENS.MIN_CYCLES
 MIN_EDGES = SKIP_EDGES + MIN_CYCLES + 1
 WINDOW_S = 800e-9             # the pex bench's .tran window; a pex-side quantity, not a #8 constant

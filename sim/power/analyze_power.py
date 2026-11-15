@@ -18,25 +18,18 @@ and no counter number is folded into any pass/fail here.
   * Spec row 7: active target < 100 uW, fallback < 500 uW, stretch < 20 uW; idle < 1 uW, < 10 uW, < 100 nW.
     Cells not gradable make the row INCOMPLETE; the row is never reported PASS with ungraded cells.
 """
-import importlib.util
 import json
 import os
 import sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 
+# Report loading and the oscillator list are defined once, in sensitivity/analyze.py. `python3 -I` drops
+# the script directory from sys.path, so the module is loaded by path via the shared sim/ helper.
+sys.path.insert(0, os.path.join(HERE, ".."))
+import _siblings  # noqa: E402
 
-def _load_sensitivity():
-    """Report loading and the oscillator list are defined once, in sensitivity/analyze.py. `python3 -I` drops
-    the script directory from sys.path, so load it by path."""
-    spec = importlib.util.spec_from_file_location(
-        "sens_analyze", os.path.join(HERE, "..", "sensitivity", "analyze.py"))
-    mod = importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(mod)
-    return mod
-
-
-_SENS = _load_sensitivity()
+_SENS = _siblings.load("sensitivity", "analyze")
 OSCS, _load, _remote = _SENS.OSCS, _SENS._load, _SENS._remote
 BOUNDS_UW = {"active": (100.0, 500.0, 20.0), "idle": (1.0, 10.0, 0.1)}
 # Gradability is the #8 rule, not a power-side threshold: freq_from_crossings drops SKIP_EDGES start-up

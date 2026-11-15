@@ -10,25 +10,20 @@ Per oscillator, over the 45-cell box (5 corners x 3 V x 3 T):
 The testbench bodies are derived from the committed sensitivity benches (same oscillator netlists,
 same enable convention) so no second copy of the circuit exists. Multi-unit => batch fleet via `klt sim`.
 """
-import importlib.util
 import json
 import os
 import re
+import sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 SENS = os.path.join(HERE, "..", "sensitivity")
 
+# The corner box and windows are defined once, in the sensitivity generator. `python3 -I` drops the
+# script directory from sys.path, so the module is loaded by path via the shared sim/ helper.
+sys.path.insert(0, os.path.join(HERE, ".."))
+import _siblings  # noqa: E402
 
-def _load_sensitivity():
-    """The corner box and windows are defined once, in the sensitivity generator. `python3 -I` drops the
-    script directory from sys.path, so load it by path."""
-    spec = importlib.util.spec_from_file_location("sens_gen_requests", os.path.join(SENS, "gen_requests.py"))
-    mod = importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(mod)
-    return mod
-
-
-_SENS_GEN = _load_sensitivity()
+_SENS_GEN = _siblings.load("sensitivity", "gen_requests")
 PROCESS, VDD, TEMP = _SENS_GEN.PROCESS, _SENS_GEN.VDD, _SENS_GEN.TEMP
 _UNIT_NS = {"p": 1e-3, "n": 1.0, "u": 1e3, "m": 1e6}
 
