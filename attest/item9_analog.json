@@ -13,6 +13,9 @@
   },
   "testbenches": [
     {
+      "path": "sim/_siblings.py"
+    },
+    {
       "path": "sim/check_env.sh"
     },
     {
