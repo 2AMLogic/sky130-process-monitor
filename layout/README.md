@@ -13,6 +13,11 @@ here is measured; every area below is a **simulated/derived** figure from the co
   byte-for-byte (verified: two runs give the same sha256). Needs `klayout` (`gen/requirements.txt`,
   tested 0.30.10) and the sky130A PDK of `sim/pdk.json`; `gen/pdk_cells.json` pins the sha256 of the
   `sky130_fd_sc_hd.gds` it reads and the generator refuses a different file.
+- `gen/osc_subth_divider.json` — the single owner of the `osc_subth` bias-divider geometry
+  (`poly_w_nm`, `pitch_nm`, and per-resistor `L_um`/`N` under `resistors`), read by both
+  `gen_osc_bank.py` and `lvs/make_reduced_refs.py`; no script restates these values. Retuning the
+  divider means editing this file and regenerating the stream and LVS reference, not editing a
+  constant in a script.
 - `gen/check_connectivity.py` — net-connectivity sanity check (not LVS): labelled nets distinct,
   and the number of S/D-driven gate nets equals the #17 stage count (31 / 31 / 31 / 31 / 15), i.e.
   every stage output reaches the next stage's gate and the last output feeds back to the NAND.
