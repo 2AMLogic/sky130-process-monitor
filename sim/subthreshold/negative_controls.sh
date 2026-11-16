@@ -12,6 +12,8 @@ HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 cd "$HERE" || exit 1
 T="$(mktemp -d "$HERE/.nc.XXXXXX")"; trap 'rm -rf "$T"' EXIT
 mk() {  # $1 = python expression mutating request r; $2 = where to write it (inside $T)
+  # The python source is single-quoted on purpose: the shell must not expand it.
+  # shellcheck disable=SC2016
   python3 -I -c '
 import json,sys
 r=json.load(open("osc_grid.request.json")); exec(sys.argv[1])

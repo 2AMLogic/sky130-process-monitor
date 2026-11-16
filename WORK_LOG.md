@@ -5,6 +5,10 @@ role. Newest first.
 
 ### 2026-11-16
 
+- **PR #214**: docs: drop ROADMAP's completed Now list and cite the sized osc_subth gate
+- **PR #202**: docs: add erc/ to the README tree; bring ROADMAP up to the 14-met record
+- **Issue #203** (closed): ROADMAP.md '## Now' list is stale: all 4 of its items are closed, completed work
+- **Issue #194** (closed): README Repo layout tree omits erc/, the one remaining tracked content directory
 - **PR #227**: docs: name the four shell entrypoints and owner data files in the item-9 hazard clause
 - **Issue #206** (closed): Item-9 hazard docs name "the four sim/**/run*.sh entrypoints", but sim/check_env.sh is the fourth and matches no named class
 

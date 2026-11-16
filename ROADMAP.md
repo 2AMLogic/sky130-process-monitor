@@ -12,7 +12,7 @@ of the gap to T1: #5.
 
 ## Where it stands
 
-`klt signoff` (`klayout-tools==0.9.1`) grades 13 of the 22 T1 rows `met`, one `not_applicable`, eight
+`klt signoff` (`klayout-tools==0.9.1`) grades 14 of the 22 T1 rows `met`, one `not_applicable`, seven
 `unmet`. Checklist: [`manifests/design-evidence-tiers.md`](manifests/design-evidence-tiers.md).
 
 | T1 item | Analog (oscillator bank) | Digital (readout) |
@@ -27,7 +27,7 @@ of the gap to T1: #5.
 | 8 Characterization report | **unmet**, `check_failed` | **unmet**, `check_failed` |
 | 9 Testbenches shipped | met | met |
 | 10 Repo hygiene | met | met |
-| 11 Power delivery | **unmet**, `no_evidence` (#33) | **unmet**, `no_evidence` (#33) |
+| 11 Power delivery | **unmet**, `no_evidence` (#33) | met (`erc/readout.report.json` + `lvs/readout.report.json` + `layout/readout/report.json`) |
 
 What sits behind the unmet rows, each from a committed record:
 
@@ -38,7 +38,10 @@ What sits behind the unmet rows, each from a committed record:
 - **The cold-cell margin is set by counter quantisation, not mismatch.** At 1.98 V / −40 °C `osc_subth`
   gets under one count in the default gate at the ss and sf corners
   ([`2026-11-06-mc-offnominal-cold-margin.md`](sim/sensitivity/records/2026-11-06-mc-offnominal-cold-margin.md)
-  §3). That record names a longer `osc_subth` gate as the lever and does not size it.
+  §3); a follow-up record sizes the lever: gate exponent k = 14 (a 1.638 ms `osc_subth` gate) puts the
+  margin on its MC-limited plateau, absolute 2.194 against 0.759 at the default gate, inside the
+  24-bit counter bound
+  ([`2026-11-14-osc-subth-gate-sizing.md`](sim/sensitivity/records/2026-11-14-osc-subth-gate-sizing.md)).
 - **The counter does not cover `osc_hd`.** Setup-limited counter fmax is about half the `osc_hd`
   frequency in all three timed corners ([decision
   0003](spec/decisions/0003-counter-max-input-frequency.md), draft).
@@ -56,29 +59,10 @@ What sits behind the unmet rows, each from a committed record:
 
 ## Now
 
-Startable today on `main`; each is one pull request. None needs a batch submission, a spec change or a
-tool release. Each is now filed and awaiting curation: #168, #169, #170 and #171, in the order
-below.
-
-1. **T1 item 11, digital slice.** Write the `klt erc` supply spec for the routed readout and commit its
-   report. The inputs are already recorded: `layout/readout/report.json` has `power.pdn: true` with a
-   tapcell, and `lvs/readout.report.json` has `power_connectivity.status: match`. *Done when* the
-   manifest cites `11.digital` and the regenerated signoff record grades that row (met, or a recorded
-   failure with the finding named). Part of #33, whose block (#26) concerns the analog partition only.
-2. **T1 item 8, characterization report.** One aggregated record per partition, summarising every spec
-   row's recorded verdict with the evidence file behind it; the digital one includes fmax, area and
-   power across the corner set. *Done when* both are committed, each wrapped in the generic evidence
-   envelope the checklist allows for item 8 with a `status` that matches the records (analog: `fail`),
-   cited as `8.analog` / `8.digital`, and the signoff record is regenerated. The tracker (#5) deferred
-   this until items 5–7 had evidence; they now do.
-3. **Size the `osc_subth` gate.** Post-process the committed reports into counts and discrimination
-   margin at 1.98 V / −40 °C for each gate exponent `k`, set against the conversion-time row. *Done
-   when* a dated, append-only record under `sim/sensitivity/records/` gives the table and states the
-   smallest `k` at which quantisation stops setting the margin, or that none inside the conversion-time
-   fallback does. No spec edit.
-4. **Correct `manifests/README.md`.** Its Files section still says no design artifact beyond items 10
-   and 2.analog is cited; the manifest cites sixteen evidence keys. *Done when* the paragraph lists what
-   `manifests/sky130-process-monitor.json` cites today and `npm test` passes.
+Startable today on `main`; each is one pull request, none needing a batch submission, a spec change
+or a tool release. The dispatchable set is whatever `gh issue list --label loom:issue --state open`
+returns when you read this. Every re-check during this page's last revision found zero to three
+items, and the set turned over within hours — run the query rather than trusting any count quoted here.
 
 In flight: #135 (local build gate; PR #149 approved and held), and the hermit proposals #165 and #146,
 which await promotion.
@@ -123,9 +107,9 @@ which await promotion.
 - **#117 and #32** — wait on 2AMLogic/klayout-tools#5311 reaching a release.
 - **Decisions 0002 and 0003** — proposed, not ratified.
 
-The tracker has no `loom:issue` item today: every open T1 issue is blocked or awaiting a decision. The
-four Now items above (#168-#171, filed `loom:triage`) are the dispatchable work once curated and
-promoted.
+The dispatchable work is the open `loom:issue` set named in `## Now` — whatever
+`gh issue list --label loom:issue --state open` returns at re-check time; none of it is a T1
+evidence-row item. Every still-open T1 issue is blocked above or awaiting a decision.
 
 ## Not planned
 
