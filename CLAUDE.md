@@ -50,7 +50,8 @@ path with a counter readout — designed and verified by AI agents.
   those benches load — `sim/corner_box.json`, `sim/pdk.json` and
   `sim/toolchain.json` — and the four shell entrypoints, `sim/check_env.sh`
   plus the three `sim/**/run*.sh` runners) and `attest/item9_digital.json` (the
-  `verification/readout/` bench files) hash their bytes into
+  `verification/readout/` bench files plus the `sim/` environment files its
+  cold start reads) hash their bytes into
   `evidence/item9_*.json` — so editing any of them, even a refactor or a
   test-only edit, turns T1 item 9 stale and reds the `klt signoff` gate. A PR
   that touches an inventoried source file runs `attest/regen-item9.sh analog`
