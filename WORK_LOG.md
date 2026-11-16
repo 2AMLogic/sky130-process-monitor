@@ -5,6 +5,20 @@ role. Newest first.
 
 ### 2026-11-16
 
+- **PR #234**: docs: scope ROADMAP blocked-work claim to the page, not the live query
+- **PR #233**: fix: pin the shared sibling-module loader in the item-9 analog attestation inventory
+- **PR #228**: ci: chain npm run lint into the check:ci and check:all aggregate gates
+- **PR #225**: docs: document the osc_subth divider owner JSON in layout and lvs READMEs
+- **PR #224**: fix: pin the sim environment files in the item-9 digital attestation inventory
+- **PR #220**: fix: derive osc_subth res_high_po device variant from poly_w_nm
+- **PR #205**: ci: run shellcheck as the npm run lint gate and in CI, clearing 6 pre-existing findings
+- **Issue #226** (closed): npm run check:ci / check:all do not include the new shellcheck lint gate
+- **Issue #223** (closed): ROADMAP 'Blocked and waiting' still asserts a static property of the live loom:issue set
+- **Issue #221** (closed): sim/_siblings.py is neither inventoried in attest/item9_analog.json nor named in manifests/README.md's omission list
+- **Issue #218** (closed): attest/item9_digital.json does not pin sim/check_env.sh, sim/pdk.json or sim/toolchain.json, which its own cold start depends on
+- **Issue #208** (closed): osc_subth_divider.json owns poly_w_nm, but the res_high_po_0p35 device variant it must agree with is still a literal
+- **Issue #204** (closed): layout/README.md enumerates layout/gen/ file by file and omits the new owner file osc_subth_divider.json
+- **Issue #188** (closed): No shellcheck gate in CI: 15 tracked shell scripts, several driving simulations, are unlinted
 - **PR #214**: docs: drop ROADMAP's completed Now list and cite the sized osc_subth gate
 - **PR #202**: docs: add erc/ to the README tree; bring ROADMAP up to the 14-met record
 - **Issue #203** (closed): ROADMAP.md '## Now' list is stale: all 4 of its items are closed, completed work
