@@ -107,9 +107,9 @@ which await promotion.
 - **#117 and #32** — wait on 2AMLogic/klayout-tools#5311 reaching a release.
 - **Decisions 0002 and 0003** — proposed, not ratified.
 
-The dispatchable work is the open `loom:issue` set named in `## Now` — whatever
-`gh issue list --label loom:issue --state open` returns at re-check time; none of it is a T1
-evidence-row item. Every still-open T1 issue is blocked above or awaiting a decision.
+The T1 issues listed above are the ones blocked or awaiting a decision; for what is dispatchable
+right now, run the `gh issue list --label loom:issue --state open` query from `## Now` — this page
+does not track the answer.
 
 ## Not planned
 
