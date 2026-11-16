@@ -3,15 +3,36 @@
   "kind": "generic",
   "status": "pass",
   "t1_item": 9,
-  "summary": "T1 item 9 (Testbenches shipped): 8/8 attestation checks passed (klt signoff --attest)",
+  "summary": "T1 item 9 (Testbenches shipped): 11/11 attestation checks passed (klt signoff --attest)",
   "source": "attest/item9_digital.json",
   "attestation": {
     "producer": "klt signoff --attest",
     "inventory_schema_version": 1,
     "hash_algorithm": "sha256-raw-bytes",
-    "check_count": 8,
-    "passed_count": 8,
+    "check_count": 11,
+    "passed_count": 11,
     "checks": [
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/check_env.sh",
+        "passed": true,
+        "content_hash": "sha256:a69a48da591f132dc0823754fb61e252e0278541f1d650af84ed61c3bd0b43b2"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/pdk.json",
+        "passed": true,
+        "content_hash": "sha256:6b228a94b9021ed8b0c004749321d1ea2e2304e85bd016844515b67e3daf53cd"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/toolchain.json",
+        "passed": true,
+        "content_hash": "sha256:6fe1d94491c703fde06ae95d4d7538794e032f0aeb59585c11ba2b98676681a5"
+      },
       {
         "check": "present",
         "role": "testbench",
@@ -93,7 +114,7 @@
         "path": "attest/item9_digital.json",
         "scope": "repo"
       },
-      "content_hash": "sha256:d04c8aeaa4c1e9551082409ae6bf645b42167637a16dde373146f97877e90a93"
+      "content_hash": "sha256:26212095d5e2bc1cab6af91382a0ec588ff94d4117e803a7b9a799519aa08164"
     }
   }
 }

@@ -87,7 +87,7 @@ command -v uvx >/dev/null 2>&1 ||
 REGEN_NAME=regen-item10.sh
 # shellcheck disable=SC2034
 REGEN_WORKFLOW="$REL_WORKFLOW"
-# shellcheck source=lib/regen-common.sh
+# shellcheck source=attest/lib/regen-common.sh
 source "$ROOT/attest/lib/regen-common.sh"
 
 regen_require_pin "$REL_WORKFLOW"
@@ -119,7 +119,7 @@ restore_record() {
     fi
 }
 
-# shellcheck disable=SC2317  # reached through `trap cleanup EXIT` below
+# shellcheck disable=SC2317,SC2329  # reached through `trap cleanup EXIT` below
 cleanup() {
     # Never exit from here: that would mask the script's real status.
     restore_record || :

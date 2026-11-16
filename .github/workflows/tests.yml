@@ -37,3 +37,20 @@ jobs:
 
       - name: npm test (all stdlib suites)
         run: npm test
+
+  # The same lint gate agents run locally before a PR: `npm run lint` from
+  # package.json, over every tracked *.sh outside .loom/ and .claude/skills/
+  # (both installed-and-overwritten trees), at default severity so SC2086-class
+  # word-splitting bugs in the sim/ runners are caught, with -x to follow the
+  # `# shellcheck source=` directives (issue #188).
+  shellcheck:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: shellcheck version
+        run: shellcheck --version
+
+      - name: npm run lint (shellcheck over tracked scripts)
+        run: npm run lint

@@ -12,7 +12,7 @@ PDK `sky130A`. **Simulated-flow results; nothing here is measured.** Each `*.rep
 | `osc_pmos` | same | `design/osc_bank/osc_pmos.spice` (item 1) | **match** | 35/35, 64/64 |
 | `osc_hd` | same | item-1 `osc_hd.spice` + PDK cell bodies (`make_osc_hd_ref.py`), flattened | **match** (warning `topology.flattened`) | 35/35, 64/64 |
 | `osc_wire` | same | **reduced** `osc_wire.ref.spice` (`make_reduced_refs.py`) | match, *not item-1* | 35/36, 64/64 |
-| `osc_subth` | same | `osc_subth.ref.spice` (`make_reduced_refs.py`): item-1 netlist with `Rb0`/`Rb1` realised as PDK `res_high_po_0p35` | match, *not item-1* (ideal R replaced) | 34/34, 48/48 |
+| `osc_subth` | same | `osc_subth.ref.spice` (`make_reduced_refs.py`): item-1 netlist with `Rb0`/`Rb1` realised as PDK `res_high_po_0p35` at the geometry owned by `layout/gen/osc_subth_divider.json` | match, *not item-1* (ideal R replaced) | 34/34, 48/48 |
 
 ## What is and is not claimed
 
@@ -22,11 +22,14 @@ PDK `sky130A`. **Simulated-flow results; nothing here is measured.** Each `*.rep
   - `osc_wire`: the 31 ideal 100 fF shunt caps are dropped and each wire resistor is shorted (the met1 serpentine
     is plain metal to the extractor, so both ends are one net).
   - `osc_subth` (issue #109): the divider is now drawn. The reference keeps `Rb0`/`Rb1` but swaps each ideal R for a
-    `sky130_fd_pr__res_high_po_0p35` at L = 270 / 1360 µm, W 0.35 µm (layout: 269.99 / 1359.92 µm by `klt extract`).
+    `sky130_fd_pr__res_high_po_0p35` at the geometry owned by `layout/gen/osc_subth_divider.json`
+    (per-resistor `L_um`/`N` and `poly_w_nm`; layout lengths: 269.99 / 1359.92 µm by `klt extract`).
     The item-1 schematic still has ideal 300k / 1500k, so this is still not LVS against item 1; closing it needs the
     schematic to carry the PDK resistor (a `spec/` decision), not done here. **`klt lvs` does not compare resistor
     L/W** (`device.geometry_not_compared`; `R` is a placeholder 0 on the reference side), so the L agreement above is
     checked by hand from the extract, not by LVS. Topology (which net each resistor joins) is compared and matches.
+    `lvs/test_make_reduced_refs.py` is the committed drift check (issue #177) that the committed `osc_subth.ref.spice`
+    bytes still equal what `make_reduced_refs.py` emits, byte-for-byte (it guards `osc_wire.ref.spice` the same way).
   Against the unreduced item-1 netlists `osc_wire` cannot match (no capacitor or wire resistor is drawn).
   Closing it needs either those devices drawn or a ratified schematic/netlist change; neither is done here.
 - The pin-count line for `osc_hd` (34 layout pins vs 4) is the flattened reference; see the report.

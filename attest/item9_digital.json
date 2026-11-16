@@ -2,7 +2,7 @@
   "schema_version": 1,
   "kind": "t1-attestation-inventory",
   "t1_item": 9,
-  "description": "Digital partition testbenches: the readout cocotb bench (rtl/readout/, spec rows 5 and 6) and the two klt functional-verification requests that drive it -- the pre-layout run cited as 5.digital and the SDF-annotated post-route re-run cited as 7.digital. The cold start is the documented entry point `make -C verification/readout` (check_env, Verilator lint -Wall, then the full cocotb suite on Icarus); it reproduces the pre-layout run in full. The SDF re-run is NOT re-executed: request-sdf.json names host-absolute PDK timing-model and SDF paths (verification/README.md), so a third party adjusts them for their own install.",
+  "description": "Digital partition testbenches: the readout cocotb bench (rtl/readout/, spec rows 5 and 6) and the two klt functional-verification requests that drive it -- the pre-layout run cited as 5.digital and the SDF-annotated post-route re-run cited as 7.digital. The cold start is the documented entry point `make -C verification/readout` (check_env, Verilator lint -Wall, then the full cocotb suite on Icarus); it reproduces the pre-layout run in full, and it does not stand alone: its first target runs `sim/check_env.sh`, which loads `sim/pdk.json` and `sim/toolchain.json` on every invocation, so those three environment files are inventoried here as inputs of the attested run rather than left unpinned (issue #218). The SDF re-run is NOT re-executed: request-sdf.json names host-absolute PDK timing-model and SDF paths (verification/README.md), so a third party adjusts them for their own install.",
   "cold_start": {
     "argv": ["make", "-C", "verification/readout"],
     "cwd": ".",
@@ -10,6 +10,9 @@
     "timeout_s": 1800
   },
   "testbenches": [
+    "sim/check_env.sh",
+    "sim/pdk.json",
+    "sim/toolchain.json",
     "verification/readout/Makefile",
     "verification/readout/cocotb.mk",
     "verification/readout/functional-verification.json",

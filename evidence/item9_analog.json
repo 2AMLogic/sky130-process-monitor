@@ -3,15 +3,22 @@
   "kind": "generic",
   "status": "pass",
   "t1_item": 9,
-  "summary": "T1 item 9 (Testbenches shipped): 485/485 attestation checks passed (klt signoff --attest)",
+  "summary": "T1 item 9 (Testbenches shipped): 486/486 attestation checks passed (klt signoff --attest)",
   "source": "attest/item9_analog.json",
   "attestation": {
     "producer": "klt signoff --attest",
     "inventory_schema_version": 1,
     "hash_algorithm": "sha256-raw-bytes",
-    "check_count": 485,
-    "passed_count": 485,
+    "check_count": 486,
+    "passed_count": 486,
     "checks": [
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/_siblings.py",
+        "passed": true,
+        "content_hash": "sha256:6d46268fdfca06135759893f75013bf4717c0aa81072b4dc8b1ee52a8afcd7d9"
+      },
       {
         "check": "present",
         "role": "testbench",
@@ -5185,7 +5192,7 @@
         "path": "attest/item9_analog.json",
         "scope": "repo"
       },
-      "content_hash": "sha256:a32c213d3cc5069ef1bc3e2da20b9b7ed6c62edf04810e4dd1e030f98280c972"
+      "content_hash": "sha256:781c50b9c3be0710fddac12bbe5771dccabbab07021d68f55ee2b76119d717cf"
     }
   }
 }

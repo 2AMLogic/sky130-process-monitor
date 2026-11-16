@@ -3,8 +3,23 @@
 Chronological record of merged PRs and closed issues, maintained by the Guide
 role. Newest first.
 
+### 2026-11-16
+
+- **PR #214**: docs: drop ROADMAP's completed Now list and cite the sized osc_subth gate
+- **PR #202**: docs: add erc/ to the README tree; bring ROADMAP up to the 14-met record
+- **Issue #203** (closed): ROADMAP.md '## Now' list is stale: all 4 of its items are closed, completed work
+- **Issue #194** (closed): README Repo layout tree omits erc/, the one remaining tracked content directory
+- **PR #227**: docs: name the four shell entrypoints and owner data files in the item-9 hazard clause
+- **Issue #206** (closed): Item-9 hazard docs name "the four sim/**/run*.sh entrypoints", but sim/check_env.sh is the fourth and matches no named class
+
 ### 2026-11-15
 
+- **PR #219**: docs: correct ROADMAP item-8 reason token from no_evidence to check_failed
+- **PR #210**: refactor: drop dead need_all_proc policy from yield_samples usable()
+- **PR #200**: test(sim): byte-drift suites for the sensitivity and binding request sets; re-attest item-9 analog
+- **Issue #212** (closed): ROADMAP:27 item-8 reason token is stale: no_evidence should be check_failed in both columns
+- **Issue #193** (closed): Remove the dead need_all_proc parameter in sim/solve/yield_samples.py: its A.PROCESS branch is unreachable
+- **Issue #183** (closed): Add byte-drift suites for sim/sensitivity/requests/ and sim/solve/mc/requests/ (pattern exists only for requests-sized/)
 - **PR #217**: docs: add characterization/ to README repo-layout tree, re-pad to col 20
 - **PR #216**: test: guard all three corner-box lists against literal re-statement in tracked *.py
 - **PR #215**: fix: pin the sim owner data files in the item-9 analog attestation inventory

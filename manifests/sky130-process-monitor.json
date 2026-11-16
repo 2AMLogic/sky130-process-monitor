@@ -99,11 +99,11 @@
     },
     "9.analog": {
       "file": "evidence/item9_analog.json",
-      "content_hash": "sha256:a32c213d3cc5069ef1bc3e2da20b9b7ed6c62edf04810e4dd1e030f98280c972"
+      "content_hash": "sha256:781c50b9c3be0710fddac12bbe5771dccabbab07021d68f55ee2b76119d717cf"
     },
     "9.digital": {
       "file": "evidence/item9_digital.json",
-      "content_hash": "sha256:d04c8aeaa4c1e9551082409ae6bf645b42167637a16dde373146f97877e90a93"
+      "content_hash": "sha256:26212095d5e2bc1cab6af91382a0ec588ff94d4117e803a7b9a799519aa08164"
     },
     "8.analog": {
       "file": "evidence/item8_analog.json"

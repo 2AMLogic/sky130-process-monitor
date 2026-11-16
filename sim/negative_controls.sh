@@ -11,9 +11,11 @@ REC="$(dirname "$SIM")/measurements/inv_smoke_records.jsonl"
 before="$(wc -l < "$REC" 2>/dev/null || echo 0)"
 # run.sh's own message only says the delay was not measured; the cause (missing
 # library) is in the ngspice log, so print it after the failure.
+# Invoked indirectly by name via expect_fail, so shellcheck cannot see the call.
+# shellcheck disable=SC2317,SC2329
 model_path_control() {
   SMOKE_MODEL_LIB=/nonexistent/sky130.lib.spice "$SIM/smoke/run.sh"; local r=$?
-  grep -h 'library file' "$SIM/build/smoke/inv_smoke.log"; return $r
+  grep -h 'library file' "$SIM/build/smoke/inv_smoke.log"; return "$r"
 }
 expect_fail "wrong model path" 'library file .* not found' model_path_control
 after="$(wc -l < "$REC" 2>/dev/null || echo 0)"
