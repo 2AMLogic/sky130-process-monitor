@@ -67,7 +67,7 @@ REL_TIERS="manifests/design-evidence-tiers.md"
 
 # The pin parser and the pinned-klt wrapper are shared with
 # attest/regen-item10.sh (pin-copy consolidation, #163).
-# shellcheck source=lib/regen-common.sh
+# shellcheck source=attest/lib/regen-common.sh
 source "$ROOT/attest/lib/regen-common.sh"
 
 # Every path below is relative to $ROOT on purpose: the envelope records its
