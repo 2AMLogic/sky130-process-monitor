@@ -52,15 +52,6 @@ for name, t in tc["tools"].items():
     elif got != t["expect"]:
         errs.append(f"{name}: version {got} != pinned {t['expect']} (resolved {where}; {hint})")
 
-x = tc["xschem"]
-try:
-    out = subprocess.run(["dpkg-query", "-W", "-f=${Version}", x["dpkg_package"]],
-                         capture_output=True, text=True, timeout=30)
-    if out.stdout != x["expect"]:
-        errs.append(f"xschem: package version {out.stdout or None} != pinned {x['expect']}")
-except (OSError, subprocess.TimeoutExpired) as e:
-    errs.append(f"xschem: dpkg-query failed: {e}")
-
 if errs:
     for e in errs:
         print(f"check_env: FAIL: {e}", file=sys.stderr)

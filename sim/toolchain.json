@@ -5,11 +5,8 @@
     "iverilog":  {"cmd": ["iverilog", "-V"],         "regex": "Icarus Verilog version ([0-9.]+)", "expect": "13.0"},
     "yosys":     {"cmd": ["yosys", "-V"],            "regex": "Yosys ([0-9.]+)",           "expect": "0.67"},
     "verilator": {"cmd": ["verilator", "--version"], "regex": "Verilator ([0-9.]+)",       "expect": "5.050"},
-    "cocotb":    {"cmd": ["cocotb-config", "--version"], "regex": "([0-9.]+)",             "expect": "2.1.0"}
-  },
-  "xschem": {
-    "dpkg_package": "xschem",
-    "expect": "3.4.4-1",
-    "note": "Checked via dpkg only: raw xschem is never invoked (use klt netlist). Not used by the analog smoke or the readout flow."
+    "cocotb":    {"cmd": ["cocotb-config", "--version"], "regex": "([0-9.]+)",             "expect": "2.1.0"},
+    "xschem":    {"cmd": ["xschem", "-v"],            "regex": "XSCHEM V([0-9.]+)",         "expect": "3.4.7",
+                  "note": "Fleet pin 3.4.7 / 92dd8fe5f4d5c1057489710d8a22f18fdc9d7ed0 (2AMLogic/klayout-tools docker/eda-sim/pdk-versions.json, 2am#7275); the binary on PATH is checked, not the dpkg package. -v is a throwaway version query with a hard timeout (check_env.sh), never a raw xschem run: use klt netlist."}
   }
 }
