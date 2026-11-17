@@ -8,9 +8,11 @@
 # Item 9 is graded per partition, and both inventories hash testbench sources
 # by content: `attest/item9_analog.json` pins every committed deck and
 # `klt sim` request, the `sim/solve/` and `sim/sensitivity/` Python modules,
-# the owner data files those benches load (`sim/corner_box.json`,
-# `sim/pdk.json`, `sim/toolchain.json`), and the four shell entrypoints
-# (`sim/check_env.sh` plus the three `sim/**/run*.sh` runners);
+# the shared sibling-module loader those benches import at run time
+# (`sim/_siblings.py`), the owner data files those benches load
+# (`sim/corner_box.json`, `sim/pdk.json`, `sim/toolchain.json`), and the four
+# shell entrypoints (`sim/check_env.sh` plus the three `sim/**/run*.sh`
+# runners);
 # `attest/item9_digital.json` pins the five `verification/readout/` bench files
 # plus the three `sim/` environment files its cold start reads (`check_env.sh`,
 # `pdk.json`, `toolchain.json`). An edit to any of them without a
