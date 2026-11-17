@@ -5,6 +5,7 @@ role. Newest first.
 
 ### 2026-11-16
 
+- **PR #149**: ci: enable the local buildGate on npm run check:ci
 - **PR #234**: docs: scope ROADMAP blocked-work claim to the page, not the live query
 - **PR #233**: fix: pin the shared sibling-module loader in the item-9 analog attestation inventory
 - **PR #228**: ci: chain npm run lint into the check:ci and check:all aggregate gates
@@ -12,6 +13,7 @@ role. Newest first.
 - **PR #224**: fix: pin the sim environment files in the item-9 digital attestation inventory
 - **PR #220**: fix: derive osc_subth res_high_po device variant from poly_w_nm
 - **PR #205**: ci: run shellcheck as the npm run lint gate and in CI, clearing 6 pre-existing findings
+- **Issue #135** (closed): loom-daemon preflight runs nothing: .loom/config.json has no buildGate block
 - **Issue #226** (closed): npm run check:ci / check:all do not include the new shellcheck lint gate
 - **Issue #223** (closed): ROADMAP 'Blocked and waiting' still asserts a static property of the live loom:issue set
 - **Issue #221** (closed): sim/_siblings.py is neither inventoried in attest/item9_analog.json nor named in manifests/README.md's omission list
