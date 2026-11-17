@@ -5,6 +5,8 @@ role. Newest first.
 
 ### 2026-11-17
 
+- **PR #245**: fix: name sim/_siblings.py in the item-9 analog gate message
+- **Issue #244** (closed): signoff.yml / regen-item9.sh / CLAUDE.md analog item-9 descriptions omit sim/_siblings.py (post-#221)
 - **PR #243**: fix: name the sim/ env files in the item-9 digital gate message
 - **PR #242**: fix: check xschem via the binary on PATH, pin fleet 3.4.7
 - **PR #239**: chore(loom): resync installed Loom to v0.19.1306
