@@ -46,10 +46,12 @@ path with a counter readout — designed and verified by AI agents.
   `spec/` decision record, not a CI fix.
 - **Item 9 hash-pins the sim/ and verification/readout/ testbench sources.**
   `attest/item9_analog.json` (every committed deck and `klt sim` request, the
-  `sim/solve/` and `sim/sensitivity/` Python modules, the owner data files
-  those benches load — `sim/corner_box.json`, `sim/pdk.json` and
-  `sim/toolchain.json` — and the four shell entrypoints, `sim/check_env.sh`
-  plus the three `sim/**/run*.sh` runners) and `attest/item9_digital.json` (the
+  `sim/solve/` and `sim/sensitivity/` Python modules, the shared
+  sibling-module loader those benches import at run time (`sim/_siblings.py`),
+  the owner data files those benches load — `sim/corner_box.json`,
+  `sim/pdk.json` and `sim/toolchain.json` — and the four shell entrypoints,
+  `sim/check_env.sh` plus the three `sim/**/run*.sh` runners) and
+  `attest/item9_digital.json` (the
   `verification/readout/` bench files plus the `sim/` environment files its
   cold start reads) hash their bytes into
   `evidence/item9_*.json` — so editing any of them, even a refactor or a
