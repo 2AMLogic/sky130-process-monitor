@@ -3,6 +3,14 @@
 Chronological record of merged PRs and closed issues, maintained by the Guide
 role. Newest first.
 
+### 2026-11-17
+
+- **PR #243**: fix: name the sim/ env files in the item-9 digital gate message
+- **PR #242**: fix: check xschem via the binary on PATH, pin fleet 3.4.7
+- **PR #239**: chore(loom): resync installed Loom to v0.19.1306
+- **Issue #241** (closed): xschem pin migration: migrate sky130-process-monitor to the fleet 3.4.7
+- **Issue #230** (closed): signoff.yml CI error echo describes the item-9 digital inventory incompletely (post-#224)
+
 ### 2026-11-16
 
 - **PR #149**: ci: enable the local buildGate on npm run check:ci
