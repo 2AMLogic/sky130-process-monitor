@@ -17,7 +17,7 @@
         "role": "testbench",
         "path": "sim/check_env.sh",
         "passed": true,
-        "content_hash": "sha256:a69a48da591f132dc0823754fb61e252e0278541f1d650af84ed61c3bd0b43b2"
+        "content_hash": "sha256:8bc12e7687c81e15110e88e6f9ceca32d4b7cc5fa7e55c2eeac96a40d8018b5f"
       },
       {
         "check": "present",
@@ -31,7 +31,7 @@
         "role": "testbench",
         "path": "sim/toolchain.json",
         "passed": true,
-        "content_hash": "sha256:6fe1d94491c703fde06ae95d4d7538794e032f0aeb59585c11ba2b98676681a5"
+        "content_hash": "sha256:269ce1978debb86c9e64cff396ee99bee7330ad7e008f68c4eb813f78c8b1491"
       },
       {
         "check": "present",
