@@ -5,6 +5,8 @@ role. Newest first.
 
 ### 2026-11-18
 
+- **PR #259**: fix: check every pull_request filter key and refuse sequence/quoted on: shapes in the trigger guard
+- **Issue #257** (closed): attest/test_workflow_triggers.py: pull_request filter check misses the *-ignore forms; two on:-shapes error instead of failing cleanly
 - **PR #256**: ci: declare merge_group triggers on all workflows and guard them
 - **Issue #254** (closed): Merge queue: add the merge_group trigger to the required-check workflow(s)
 - **PR #251**: test: guard WORK_PLAN.md generated region against hand-written bullet suffixes
