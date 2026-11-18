@@ -3,7 +3,7 @@
 Prioritized roadmap from current GitHub label state, maintained by the Guide role.
 
 <!-- guide:plan-body:start -->
-_Generated: 2026-11-18T14:53:04Z (snapshot; compare against live labels)_
+_Generated: 2026-11-18T23:44:52Z (snapshot; compare against live labels)_
 ## Operator Attention: Merge-Risk-Hold Pileup
 
 Judge-approved PRs under a hold (`loom:blocked` or `loom:operator`) — only a human merge decision is missing.
@@ -58,7 +58,6 @@ Issues carrying `loom:curated`.
 - **#26**: T1 item 4 (LVS clean): klt lvs for the oscillator bank (vs schematics) and the readout (vs gate-level netlist) *(curated)*
 - **#117**: osc_subth: 14 series-header nets (vh1..vh14) are split in the extraction, ring stage PFET sources float *(curated)*
 - **#190**: klt signoff gate: item 9 pins sim/ source modules, but has no CLAUDE.md warning and no regen script (the item-10 guardrails from #172 have no item-9 sibling) *(curated)*
-- **#257**: attest/test_workflow_triggers.py: pull_request filter check misses the *-ignore forms; two on:-shapes error instead of failing cleanly *(curated)*
 
 ## Proposed (Architect / Hermit)
 
@@ -80,7 +79,7 @@ _None._
 | In Progress (`loom:building`) | 0 |
 | PRs awaiting review | 0 |
 | Approved PRs awaiting merge | 0 |
-| Curated | 5 |
+| Curated | 4 |
 | Architect / Hermit proposals | 2 |
 | Active epics | 0 |
 <!-- guide:plan-body:end -->
