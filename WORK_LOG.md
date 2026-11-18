@@ -3,6 +3,11 @@
 Chronological record of merged PRs and closed issues, maintained by the Guide
 role. Newest first.
 
+### 2026-11-18
+
+- **PR #251**: test: guard WORK_PLAN.md generated region against hand-written bullet suffixes
+- **Issue #250** (closed): WORK_PLAN.md generated region keeps re-acquiring hand-written tokens the Guide generator cannot emit — no guard catches it
+
 ### 2026-11-17
 
 - **PR #245**: fix: name sim/_siblings.py in the item-9 analog gate message
