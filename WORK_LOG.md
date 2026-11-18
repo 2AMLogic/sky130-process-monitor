@@ -5,6 +5,8 @@ role. Newest first.
 
 ### 2026-11-18
 
+- **PR #256**: ci: declare merge_group triggers on all workflows and guard them
+- **Issue #254** (closed): Merge queue: add the merge_group trigger to the required-check workflow(s)
 - **PR #251**: test: guard WORK_PLAN.md generated region against hand-written bullet suffixes
 - **Issue #250** (closed): WORK_PLAN.md generated region keeps re-acquiring hand-written tokens the Guide generator cannot emit — no guard catches it
 
