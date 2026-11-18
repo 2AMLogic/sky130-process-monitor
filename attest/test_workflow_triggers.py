@@ -15,7 +15,7 @@ queue. A workflow that does not declare `merge_group:` never runs there, so
 its required context goes green-by-absence in the queue and the queue can
 never start (the operator's `repo-ruleset-policy.py --merge-queue-repo` refuses
 while the trigger is missing). Nothing else in this repo sees the `on:` blocks:
-a workflow could silently lose the trigger -- or grow a path/branch filter that
+a workflow could silently lose the trigger -- or grow a filter that
 narrows which pull requests its checks cover -- and only a live queue refusal
 would surface it, one operator round-trip later.
 
@@ -29,13 +29,22 @@ For every workflow file under `.github/workflows/`:
 2. `merge_group` is declared -- bare, with no sub-key filters, so the workflow
    fires for every queued merge group (the sibling adaptation
    sky130-comparator#332 added the same trigger unfiltered).
-3. `pull_request` carries no `paths:`/`branches:` filters, locking in the
-   trigger-only shape this change ships: a filtered `pull_request` narrows
-   which pull requests get the check before the queue ever sees them.
+3. `pull_request` carries no filter sub-keys (`paths`, `paths-ignore`,
+   `branches`, `branches-ignore`, `types`), locking in the trigger-only
+   shape this change ships: a filtered `pull_request` narrows which pull
+   requests get the check before the queue ever sees them.
 
 Trigger parsing is a minimal indentation scanner, not a YAML parser: top-level
 `on:`, then the deeper-indented block, skipping comment lines. Anything this
-scanner cannot understand is a failure, never an assumption.
+scanner cannot understand is a failure, never an assumption -- including the
+block-sequence `on:` form (`on:` followed by `- push` entries) and a quoted
+trigger key (`"on":`), which are refused with their own errors rather than
+read or misreported as missing.
+
+Scoping: the blanket rule is deliberate. `TestCurrentWorkflows` applies these
+checks to every file under `.github/workflows/`, not just a required-context
+allowlist; no cron-only or release-only workflow exists today, so add an
+allowlist only when one appears.
 """
 import glob
 import os
@@ -57,13 +66,25 @@ class FlowStyleOnError(ValueError):
     """The `on:` block is flow-style, which this scanner refuses to guess at."""
 
 
+class SequenceOnError(ValueError):
+    """An `on:` block entry is not a `key:` mapping (e.g. the YAML
+    block-sequence form, `on:` followed by `- push` entries)."""
+
+
+class QuotedOnKeyError(ValueError):
+    """The trigger key is written quoted (`"on":` / `'on':`), a shape this
+    scanner refuses to guess at rather than misreport as missing."""
+
+
 def parse_on_triggers(text):
     """Trigger names declared in a workflow's `on:` block -> {name: sub_keys}.
 
     `sub_keys` is the list of filter keys indented under the trigger (empty
     for a bare `trigger:` line). Raises MissingOnError when no top-level
-    `on:` line exists and FlowStyleOnError when the `on:` line carries an
-    inline value (`on: push`, `on: [push]`) instead of opening a block.
+    `on:` line exists, FlowStyleOnError when the `on:` line or a trigger
+    carries an inline value (`on: push`, `on: [push]`, `push: [main]`),
+    SequenceOnError when an `on:` block entry is not a `key:` mapping, and
+    QuotedOnKeyError when the trigger key is written quoted (`"on":`).
     """
     lines = text.splitlines()
     on_idx = None
@@ -81,6 +102,13 @@ def parse_on_triggers(text):
                 "line %d is %r: `on:` must open a block-style mapping"
                 % (i + 1, stripped)
             )
+        if stripped in ('"on":', "'on':"):
+            # Quoted trigger key: the literal-`on:` match cannot see it, and
+            # reporting it as missing would be wrong -- refuse it instead.
+            raise QuotedOnKeyError(
+                "line %d is %r: the trigger key must be written unquoted "
+                "(`on:`)" % (i + 1, stripped)
+            )
         # Any other top-level key (name:, permissions:, jobs:, ...) or a
         # deeper-indented line of an earlier block: keep scanning.
         continue
@@ -89,7 +117,7 @@ def parse_on_triggers(text):
 
     triggers = {}
     current = None
-    for line in lines[on_idx + 1:]:
+    for offset, line in enumerate(lines[on_idx + 1:]):
         stripped = line.strip()
         if not stripped or stripped.startswith("#"):
             continue
@@ -99,8 +127,16 @@ def parse_on_triggers(text):
         if current is not None and indent <= current[1]:
             current = None
         if current is None:
-            name = stripped.split(":", 1)[0]
-            inline = stripped.split(":", 1)[1].strip()
+            parts = stripped.split(":", 1)
+            if len(parts) != 2 or parts[0].startswith("-"):
+                # Sequence item (`- push`) or bare value: refuse loudly
+                # instead of crashing on the missing-colon split.
+                raise SequenceOnError(
+                    "line %d is %r: `on:` block entries must be `key:` "
+                    "mappings; sequence items and bare values are refused, "
+                    "not guessed at" % (on_idx + 2 + offset, stripped)
+                )
+            name, inline = parts[0], parts[1].strip()
             if inline:
                 raise FlowStyleOnError(
                     "trigger %r uses flow style (%r): filters must be a "
@@ -113,10 +149,14 @@ def parse_on_triggers(text):
     return triggers
 
 
+PR_FILTER_KEYS = ("paths", "paths-ignore", "branches", "branches-ignore", "types")
+
+
 def check_text(text):
     """Violations (human-readable strings) for one workflow file's content.
 
-    Raises MissingOnError / FlowStyleOnError so an unparseable `on:` block
+    Raises the module's parse errors (MissingOnError / FlowStyleOnError /
+    SequenceOnError / QuotedOnKeyError) so an unparseable `on:` block
     fails loudly instead of silently disabling the guard.
     """
     triggers = parse_on_triggers(text)
@@ -132,12 +172,14 @@ def check_text(text):
             "`merge_group:` must be bare (no %s filter) so every queued "
             "merge group runs the check" % "/".join(triggers["merge_group"])
         )
-    if "paths" in triggers.get("pull_request", []) or "branches" in triggers.get(
-        "pull_request", []
-    ):
+    pr_filters = [
+        key for key in PR_FILTER_KEYS if key in triggers.get("pull_request", [])
+    ]
+    if pr_filters:
         violations.append(
-            "`pull_request:` carries a paths/branches filter: the trigger-only "
-            "shape this repo ships keeps it firing for every pull request"
+            "`pull_request:` carries a %s filter: the trigger-only shape "
+            "this repo ships keeps it firing for every pull request"
+            % "/".join(pr_filters)
         )
     return violations
 
@@ -175,7 +217,30 @@ class TestGuardSelfcases(unittest.TestCase):
 
     def test_path_filtered_pull_request_fails(self):
         text = "on:\n  pull_request:\n    paths:\n      - 'sim/**'\n  merge_group:\n"
-        self.assertIn("paths/branches filter", "\n".join(check_text(text)))
+        self.assertIn("carries a paths filter", "\n".join(check_text(text)))
+
+    def test_paths_ignore_filtered_pull_request_fails(self):
+        text = "on:\n  pull_request:\n    paths-ignore:\n      - '**.md'\n  merge_group:\n"
+        self.assertIn("carries a paths-ignore filter", "\n".join(check_text(text)))
+
+    def test_branches_ignore_filtered_pull_request_fails(self):
+        text = "on:\n  pull_request:\n    branches-ignore:\n      - develop\n  merge_group:\n"
+        self.assertIn("carries a branches-ignore filter", "\n".join(check_text(text)))
+
+    def test_types_filtered_pull_request_fails(self):
+        text = "on:\n  pull_request:\n    types:\n      - opened\n  merge_group:\n"
+        self.assertIn("carries a types filter", "\n".join(check_text(text)))
+
+    def test_block_sequence_on_is_a_clear_failure(self):
+        with self.assertRaises(SequenceOnError) as ctx:
+            parse_on_triggers("on:\n  - push\n  - pull_request\n")
+        self.assertIn("- push", str(ctx.exception))
+
+    def test_quoted_on_key_is_a_clear_failure(self):
+        with self.assertRaises(QuotedOnKeyError):
+            parse_on_triggers('"on":\n  push:\n')
+        with self.assertRaises(QuotedOnKeyError):
+            parse_on_triggers("'on':\n  push:\n")
 
     def test_missing_on_block_is_a_clear_failure(self):
         with self.assertRaises(MissingOnError):
