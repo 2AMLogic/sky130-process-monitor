@@ -35,13 +35,13 @@ _None._
 
 Issues currently being built (`loom:building`).
 
-- **#244**: signoff.yml / regen-item9.sh / CLAUDE.md analog item-9 descriptions omit sim/_siblings.py (post-#221)
+_None._
 
 ## PRs Awaiting Review
 
 PRs waiting on Judge (`loom:review-requested`).
 
-- **#245**: fix: name sim/_siblings.py in the item-9 analog gate message
+_None._
 
 ## Approved (Awaiting Merge)
 
@@ -57,7 +57,6 @@ Issues carrying `loom:curated`.
 - **#26**: T1 item 4 (LVS clean): klt lvs for the oscillator bank (vs schematics) and the readout (vs gate-level netlist) *(curated)*
 - **#117**: osc_subth: 14 series-header nets (vh1..vh14) are split in the extraction, ring stage PFET sources float *(curated)*
 - **#190**: klt signoff gate: item 9 pins sim/ source modules, but has no CLAUDE.md warning and no regen script (the item-10 guardrails from #172 have no item-9 sibling) *(curated)*
-- **#244**: signoff.yml / regen-item9.sh / CLAUDE.md analog item-9 descriptions omit sim/_siblings.py (post-#221) *(curated)*
 
 ## Proposed (Architect / Hermit)
 
@@ -76,10 +75,10 @@ _None._
 | Very important | 1 |
 | Important | 5 |
 | Ready (`loom:issue`) | 0 |
-| In Progress (`loom:building`) | 1 |
-| PRs awaiting review | 1 |
+| In Progress (`loom:building`) | 0 |
+| PRs awaiting review | 0 |
 | Approved PRs awaiting merge | 0 |
-| Curated | 5 |
+| Curated | 4 |
 | Architect / Hermit proposals | 2 |
 | Active epics | 0 |
 <!-- guide:plan-body:end -->
