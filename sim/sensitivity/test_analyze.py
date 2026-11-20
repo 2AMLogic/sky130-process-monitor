@@ -1,8 +1,12 @@
 """Unit tests with synthetic data (no simulator). Run: python3 -I sim/sensitivity/test_analyze.py"""
+import filecmp
 import io
+import json
 import math
 import os
+import subprocess
 import sys
+import tempfile
 import unittest
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
@@ -307,6 +311,138 @@ class Tests(unittest.TestCase):
                                A.margin(A.table(freq["rows"]), A.VDD.index(1.8), A.TEMP.index(27),
                                         None, False, gate_s=A.GATE_S)[0],
                                places=12)
+
+
+# ------------------------------------------------------------ command line (issue #285)
+#
+# The CLI layer is exercised end-to-end, exactly as documented (`python3 -I
+# sim/sensitivity/analyze.py ...` from the repo root), because the bug these tests regress lived
+# in the option parsing itself: the hand-written parser took `paths = args[:i]` around the first
+# `-o`, so a report named after `-o OUT` was silently dropped while the command exited 0 -- half
+# of a combined extraction (#277) could vanish with no error. The tests use the committed fleet
+# reports the issue reproduced with, and synthetic tables written to a temp dir.
+
+CLI_HERE = os.path.dirname(os.path.abspath(__file__))
+CLI_REPO = os.path.dirname(os.path.dirname(CLI_HERE))
+
+
+def _run_cli(*args):
+    """Run analyze.py the documented way (python3 -I, repo root); return (exit status, output)."""
+    p = subprocess.run([sys.executable, "-I", os.path.join(CLI_HERE, "analyze.py")] + list(args),
+                       cwd=CLI_REPO, stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
+                       universal_newlines=True)
+    return p.returncode, p.stdout
+
+
+class CommandLineTests(unittest.TestCase):
+    """Regression tests for the command-line layer (issue #285)."""
+
+    @classmethod
+    def setUpClass(cls):
+        cls._tmp = tempfile.TemporaryDirectory(prefix="analyze-cli-")
+
+    @classmethod
+    def tearDownClass(cls):
+        cls._tmp.cleanup()
+
+    def _out(self, name):
+        return os.path.join(self._tmp.name, name)
+
+    def _committed(self, name):
+        return os.path.join(CLI_REPO, "sim", "sensitivity", "records", "reports", name)
+
+    def test_report_after_the_output_option_contributes(self):
+        a = self._committed("grid_osc_hd.json.gz")
+        b = self._committed("grid_osc_hd_5p.json.gz")
+        rc, out = _run_cli("extract", a, "-o", self._out("after.json"), b)
+        self.assertEqual(rc, 0, out)
+        rc, out = _run_cli("extract", a, b, "-o", self._out("before.json"))
+        self.assertEqual(rc, 0, out)
+        self.assertTrue(filecmp.cmp(self._out("after.json"), self._out("before.json"), shallow=False),
+                        "the output must not depend on where -o sits among the reports")
+        with open(self._out("after.json")) as f:
+            combined = json.load(f)
+        self.assertEqual([e["report"] for e in combined["environment"]], [a, b],
+                         "every supplied report must contribute, in the order supplied")
+        rc, out = _run_cli("extract", a, "-o", self._out("a_only.json"))
+        self.assertEqual(rc, 0, out)
+        rc, out = _run_cli("extract", b, "-o", self._out("b_only.json"))
+        self.assertEqual(rc, 0, out)
+        with open(self._out("a_only.json")) as f:
+            rows_a = json.load(f)["rows"]
+        with open(self._out("b_only.json")) as f:
+            rows_b = json.load(f)["rows"]
+        self.assertEqual(len(combined["rows"]), len(rows_a) + len(rows_b))
+
+    def test_extract_mc_report_after_the_output_option_contributes(self):
+        a = self._committed("mc_osc_hd.json.gz")
+        b = self._committed("mc_osc_hd_5p.json.gz")
+        rc, out = _run_cli("extract-mc", a, "-o", self._out("mc_after.json"), b)
+        self.assertEqual(rc, 0, out)
+        with open(self._out("mc_after.json")) as f:
+            combined = json.load(f)
+        self.assertEqual([e["report"] for e in combined["environment"]], [a, b],
+                         "every supplied report must contribute, in the order supplied"
+                         " (same-cell MC samples pool by concatenation, so order is the pin)")
+
+    def test_a_missing_option_value_is_a_usage_error(self):
+        a = self._committed("grid_osc_hd.json.gz")
+        for argv in (("extract", a, "-o"), ("report", os.path.join(CLI_REPO, "nope.json"), "--without")):
+            rc, out = _run_cli(*argv)
+            self.assertNotEqual(rc, 0, "%r exited 0" % (argv,))
+            self.assertNotIn("Traceback", out)   # a usage error, not an IndexError crash
+            self.assertIn("usage:", out)
+
+    def test_extraction_requires_at_least_one_report(self):
+        rc, out = _run_cli("extract", "-o", self._out("empty.json"))
+        self.assertNotEqual(rc, 0, out)
+        self.assertFalse(os.path.exists(self._out("empty.json")),
+                         "zero reports must be a usage error, not a silently empty table")
+
+    def test_extraction_rejects_gate_exp(self):
+        a = self._committed("grid_osc_hd.json.gz")
+        rc, out = _run_cli("extract", a, "--gate-exp", "10", "-o", self._out("g.json"))
+        self.assertNotEqual(rc, 0, out)
+        self.assertIn("--gate-exp is not accepted", out)
+        self.assertFalse(os.path.exists(self._out("g.json")))
+
+    def _tables(self):
+        """A synthetic freq/mc pair covering the whole box, written where the CLI can read them."""
+        rows = [{"osc": o, "process": p, "vdd": v, "temp_c": t,
+                 "f_hz": math.exp(linear(COEF_WELL)(o, p, v, t))}
+                for o in A.OSCS for p in A.PROCESS for v in A.VDD for t in A.TEMP]
+        freq = self._out("freq.json")
+        with open(freq, "w") as f:
+            json.dump({"rows": rows}, f)
+        mc = self._out("mc.json")
+        samples = {"%s|%s|%.2f|%d" % (o, p, 1.80, 27):
+                   [math.exp(linear(COEF_WELL)(o, p, 1.80, 27)) * (1 + 0.001 * i) for i in range(5)]
+                   for o in A.OSCS for p in A.PROCESS}
+        with open(mc, "w") as f:
+            json.dump({"samples": samples}, f)
+        return freq, mc
+
+    def test_report_cli_flags(self):
+        freq, mc = self._tables()
+        rc, out = _run_cli("report", freq, mc, "--without", "osc_subth")
+        self.assertEqual(rc, 0, out)
+        self.assertIn("# SUBSET: oscillators dropped from the analysis: osc_subth", out)
+        rc, out = _run_cli("report", freq, "--gate-exp", "12")
+        self.assertEqual(rc, 0, out)
+        self.assertIn("# GATE: 2^12 ref cycles", out)
+        rc, out = _run_cli("report", freq, "--gate-exp", "41")   # the 0..40 bounds are kept
+        self.assertNotEqual(rc, 0, out)
+
+    def test_gate_sweep_cli_accepts_a_negative_temperature(self):
+        # records/2026-11-14-osc-subth-gate-sizing.md invokes `--temp -40`: the parser must keep
+        # consuming -40 as the value of --temp, not mistake it for an option
+        freq, mc = self._tables()
+        rc, out = _run_cli("gate-sweep", freq, mc, "--vdd", "1.98", "--temp", "-40")
+        self.assertEqual(rc, 0, out)
+        self.assertIn("SIMULATED", out)
+        rc, out = _run_cli("gate-sweep", freq, mc, "--vdd", "2.5", "--temp", "27")
+        self.assertNotEqual(rc, 0, out)     # the corner-box check is kept
+        self.assertIn("outside the box", out)
 
 
 if __name__ == "__main__":

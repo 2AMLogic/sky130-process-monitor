@@ -23,6 +23,7 @@ Conventions (stated again in every report):
     middle point, one-sided at the edges); P derivatives are corner contrasts at that (V,T):
       dPn = (ff + sf - ss - fs)/4,  dPp = (ff + fs - ss - sf)/4   (of ln f).
 """
+import argparse
 import gzip
 import json
 import math
@@ -524,85 +525,98 @@ def gate_sweep(freq, mc, vdd, temp_c, osc="osc_subth", kmin=GATE_EXP, kmax=None,
     return rows
 
 
-def _gate_exp(args, flag="--gate-exp"):
-    """Pull `--gate-exp K` out of args -> (args without it, gate seconds or None). Validates K."""
-    if flag not in args:
-        return args, None
-    i = args.index(flag)
-    if i + 1 >= len(args):
-        sys.exit("%s needs an integer exponent k (gate = 2^k reference cycles)" % flag)
+def _gate_seconds(text):
+    """argparse type for `--gate-exp K`: gate seconds (2^k reference cycles); k an integer 0..40."""
     try:
-        k = int(args[i + 1])
+        k = int(text)
     except ValueError:
-        sys.exit("%s: %r is not an integer exponent" % (flag, args[i + 1]))
+        raise argparse.ArgumentTypeError("%r is not an integer exponent" % text)
     if not 0 <= k <= 40:
-        sys.exit("%s: k=%d is outside 0..40" % (flag, k))
-    return args[:i] + args[i + 2:], 2 ** k / REF_HZ
+        raise argparse.ArgumentTypeError("k=%d is outside 0..40" % k)
+    return 2 ** k / REF_HZ
 
 
-def _opt(args, flag, cast, default=None):
-    """Pull `flag VALUE` out of args -> (args without it, cast(VALUE) or default)."""
-    if flag not in args:
-        return args, default
-    i = args.index(flag)
-    if i + 1 >= len(args):
-        sys.exit("%s needs a value" % flag)
-    try:
-        v = cast(args[i + 1])
-    except ValueError:
-        sys.exit("%s: %r is not valid" % (flag, args[i + 1]))
-    return args[:i] + args[i + 2:], v
+def _command_parsers():
+    """One argparse parser per subcommand, keyed by name (issue #285).
+
+    Standalone parsers rather than add_subparsers on purpose: `extract` / `extract-mc` must take
+    reports on BOTH sides of `-o OUT` (combining reports, #277), and an argparse subparser cannot
+    intermix a nargs='+' positional with optionals -- a report after `-o OUT` comes back as
+    "unrecognized arguments", and parse_intermixed_args() refuses subparsers outright. Standalone
+    parsers parse_intermixed_args() handles fine, so every supplied report reaches the extraction
+    in the order it was named.
+    """
+    ps = {}
+    for name, desc in (("extract", "klt sim grid reports -> frequency table"),
+                       ("extract-mc", "klt sim MC reports -> per-cell samples")):
+        p = argparse.ArgumentParser(prog="analyze.py %s" % name, allow_abbrev=False,
+                                    description="%s: %s." % (name, desc))
+        p.add_argument("reports", nargs="+", metavar="REPORT.json[.gz]",
+                       help="klt sim report(s) to pool, in order")
+        p.add_argument("-o", dest="out", metavar="OUT.json", required=True,
+                       help="output table (JSON)")
+        # recognized but rejected in main(): extraction records f_osc, not counts, so no gate applies
+        p.add_argument("--gate-exp", type=int, help=argparse.SUPPRESS)
+        ps[name] = p
+    r = argparse.ArgumentParser(prog="analyze.py report", allow_abbrev=False,
+                                description="report: sensitivity matrix, conditioning and margin.")
+    r.add_argument("freq", metavar="freq_table.json", help="analyze.py extract output")
+    r.add_argument("mc", nargs="?", metavar="mc_table.json", help="analyze.py extract-mc output")
+    r.add_argument("--without", metavar="osc_a,osc_b", default=None,
+                   help="comma-separated oscillators to drop (subset analysis)")
+    r.add_argument("--gate-exp", type=_gate_seconds, metavar="K", default=None,
+                   help="re-run at gate 2^K reference cycles (default: the spec 2^%d)" % GATE_EXP)
+    ps["report"] = r
+    g = argparse.ArgumentParser(prog="analyze.py gate-sweep", allow_abbrev=False,
+                                description="gate-sweep: counts and margin vs gate exponent 2^k.")
+    g.add_argument("freq", metavar="freq_table.json", help="analyze.py extract output")
+    g.add_argument("mc", metavar="mc_table.json", help="analyze.py extract-mc output")
+    g.add_argument("--vdd", type=float, required=True, help="cell supply [V], a corner-box value")
+    g.add_argument("--temp", type=int, required=True, help="cell temperature [C], a corner-box value")
+    g.add_argument("--osc", default="osc_subth", help="the oscillator the longer gate reads")
+    g.add_argument("--kmin", type=int, default=GATE_EXP,
+                   help="first gate exponent (default %d)" % GATE_EXP)
+    g.add_argument("--kmax", type=int, default=None,
+                   help="last gate exponent (default: the counter limit for --osc)")
+    g.add_argument("--quant-only", action="store_true",
+                   help="drop the MC mismatch term from the margin")
+    ps["gate-sweep"] = g
+    return ps
 
 
 def main(argv):
-    if len(argv) >= 3 and argv[1] in ("extract", "extract-mc"):
-        args = argv[2:]
-        if "-o" not in args:
-            sys.exit("usage: analyze.py %s REPORT... -o OUT.json" % argv[1])
-        if "--gate-exp" in args:   # meaningless here: extraction records frequencies, not counts
+    parsers = _command_parsers()
+    command = argv[1] if len(argv) > 1 else None
+    if command not in parsers:
+        sys.exit(__doc__)
+    args = parsers[command].parse_intermixed_args(argv[2:])
+    if command in ("extract", "extract-mc"):
+        if args.gate_exp is not None:   # meaningless here: extraction records frequencies, not counts
             sys.exit("analyze.py %s: --gate-exp is not accepted (the gate applies to `report`"
-                     " and `gate-sweep`, which compute counts; extraction records f_osc)" % argv[1])
-        i = args.index("-o")
-        out, paths = args[i + 1], args[:i]
-        data = (extract if argv[1] == "extract" else extract_mc)(paths)
-        with open(out, "w") as f:
+                     " and `gate-sweep`, which compute counts; extraction records f_osc)" % command)
+        data = (extract if command == "extract" else extract_mc)(args.reports)
+        with open(args.out, "w") as f:
             json.dump(data, f, indent=1, sort_keys=True)
             f.write("\n")
         return 0
-    if len(argv) >= 3 and argv[1] == "report":
-        args, gate_s = _gate_exp(argv[2:])
+    if command == "report":
         global OSCS
-        if "--without" in args:   # subset analysis, e.g. --without osc_subth
-            i = args.index("--without")
-            drop = args[i + 1].split(",")
-            args = args[:i] + args[i + 2:]
+        if args.without is not None:   # subset analysis, e.g. --without osc_subth
+            drop = args.without.split(",")
             OSCS = [o for o in OSCS if o not in drop]
             print("# SUBSET: oscillators dropped from the analysis: %s" % ", ".join(drop))
-        freq = json.load(open(args[0]))
-        mc = json.load(open(args[1])) if len(args) > 1 else None
-        report(freq, mc, gate_s=gate_s)
+        freq = json.load(open(args.freq))
+        mc = json.load(open(args.mc)) if args.mc is not None else None
+        report(freq, mc, gate_s=args.gate_exp)
         return 0
-    if len(argv) >= 4 and argv[1] == "gate-sweep":
-        args = argv[2:]
-        args, vdd = _opt(args, "--vdd", float)
-        args, temp = _opt(args, "--temp", int)
-        args, osc = _opt(args, "--osc", str, "osc_subth")
-        args, kmin = _opt(args, "--kmin", int, GATE_EXP)
-        args, kmax = _opt(args, "--kmax", int)
-        quant_only = "--quant-only" in args
-        args = [a for a in args if a != "--quant-only"]
-        if vdd is None or temp is None or len(args) != 2:
-            sys.exit("usage: analyze.py gate-sweep FREQ.json MC.json --vdd V --temp T"
-                     " [--osc OSC] [--kmin K] [--kmax K] [--quant-only]")
-        if vdd not in VDD or temp not in TEMP:
-            sys.exit("gate-sweep: cell V=%s T=%s is outside the box (V in %s, T in %s)"
-                     % (vdd, temp, VDD, TEMP))
-        if osc not in OSCS:
-            sys.exit("gate-sweep: --osc %s is not one of %s" % (osc, OSCS))
-        gate_sweep(json.load(open(args[0])), json.load(open(args[1])), vdd, temp,
-                   osc=osc, kmin=kmin, kmax=kmax, quant_only=quant_only)
-        return 0
-    sys.exit(__doc__)
+    if args.vdd not in VDD or args.temp not in TEMP:
+        sys.exit("gate-sweep: cell V=%s T=%s is outside the box (V in %s, T in %s)"
+                 % (args.vdd, args.temp, VDD, TEMP))
+    if args.osc not in OSCS:
+        sys.exit("gate-sweep: --osc %s is not one of %s" % (args.osc, OSCS))
+    gate_sweep(json.load(open(args.freq)), json.load(open(args.mc)), args.vdd, args.temp,
+               osc=args.osc, kmin=args.kmin, kmax=args.kmax, quant_only=args.quant_only)
+    return 0
 
 
 if __name__ == "__main__":
