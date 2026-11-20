@@ -46,7 +46,8 @@ path with a counter readout — designed and verified by AI agents.
   `spec/` decision record, not a CI fix.
 - **Item 9 hash-pins the sim/ and verification/readout/ testbench sources.**
   `attest/item9_analog.json` (every committed deck and `klt sim` request, the
-  `sim/solve/` and `sim/sensitivity/` Python modules, the shared
+  `sim/solve/` and `sim/sensitivity/` Python modules, the PEX grader
+  `sim/pex/grade_pex.py` (issue #267, the item-8 measurement path), the shared
   sibling-module loader those benches import at run time (`sim/_siblings.py`),
   the owner data files those benches load — `sim/corner_box.json`,
   `sim/pdk.json` and `sim/toolchain.json` — and the four shell entrypoints,

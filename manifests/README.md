@@ -147,11 +147,13 @@ Two inventories, one per partition (item 9 is graded per partition):
 
 - `attest/item9_analog.json` -> `evidence/item9_analog.json`, cited as `9.analog`. It pins every
   committed analog SPICE deck, every committed `klt sim` request that drives one, the solve
-  procedure's own Python bench under `sim/solve/`, the shared sibling-module loader those benches
-  import at run time, and the owner data files those benches load
-  (262 files: 91 decks and per-bench requests, plus 158 `sim/solve/mc/` requests, the 6
+  procedure's own Python bench under `sim/solve/`, the PEX grader behind the item-8 derived grade,
+  the shared sibling-module loader those benches import at run time, and the owner data files
+  those benches load
+  (263 files: 91 decks and per-bench requests, plus 158 `sim/solve/mc/` requests, the 6
   `sim/solve/` drivers and unittest suites, the 3 `sim/sensitivity/` Python modules the solve
-  bench imports at run time — `analyze.py`, `gen_requests.py` and `test_analyze.py` — the 3
+  bench imports at run time — `analyze.py`, `gen_requests.py` and `test_analyze.py` — the PEX
+  grader `sim/pex/grade_pex.py`, the 3
   owner files `sim/corner_box.json`, `sim/pdk.json` and `sim/toolchain.json`, and the shared
   loader `sim/_siblings.py`).
 - `attest/item9_digital.json` -> `evidence/item9_digital.json`, cited as `9.digital`. It pins the
@@ -198,6 +200,7 @@ the command reproduces the measurement it is attached to (the tier doc says so f
 | `sim/solve/test_solve.py`, `sim/solve/test_gen_binding_mc.py` | `python3 -I sim/solve/<test>.py` | **Yes**, in full: both are stdlib `unittest` suites that run for real at attestation time (13 and 12 tests; the row previously said 8 and 6 — `test_solve.py` grew via `9ce74a9`/`63392bd` before the `test_gen_binding_mc.py` binding-set class landed in issue #183), including `test_solve.py`'s synthetic negative controls and `test_gen_binding_mc.py`'s request-drift check against the committed `requests-sized/` and `mc/requests/` bytes (issue #183). |
 | `sim/sensitivity/analyze.py`, `gen_requests.py` | none of their own (pinned by hash; `analyze.py` is exercised by the suite below) | **No simulation.** `analyze.py` turns the committed fleet reports into the frequency and Monte-Carlo tables that `sim/solve/solve.py` grades, and `solve.py` imports it at run time; `gen_binding_mc.py` imports `gen_requests.py`. `analyze.py extract` / `extract-mc` is the **first step** of the reproduce chain in `sim/solve/records/2026-11-05-rows1-4.md` and `sim/solve/mc/RECORD-2026-11-06-item6-sized-bank.md`, neither of which the attestation runs. Inventoried because they are on the `5.analog` / `6.analog` measurement path. |
 | `sim/sensitivity/test_analyze.py` | `python3 -I sim/sensitivity/test_analyze.py` | **Yes**, in full: a stdlib `unittest` suite that runs for real at attestation time (20 tests). It covers `analyze.py`; `gen_requests.py` is pinned by hash only — its request bytes are drift-checked by the uninventoried `sim/sensitivity/test_gen_requests.py` (issue #183), which carries no declared cold start. |
+| `sim/pex/grade_pex.py` | none of its own (pinned by hash only) | **No simulation, and no value comparison.** `grade_pex.py` post-processes the committed `klt pex` reports into the derived grade `sim/pex/records/*grade-extracted-values*.json`: `characterization/analog.md` cites it for the row-1 and row-2 post-layout statements, and `evidence/item8_analog.json`'s method names it for the item-8 spec-row-9 analog share — so it sits on the item-8 measurement path and is inventoried like the `sim/sensitivity/` post-processors rather than left an unpinned helper (issue #267: a grader edit could otherwise silently stop reproducing that record, item 9 staying green). No `7.analog` citation names the grade record — the manifest cites the `klt pex` reports — so the item-7 verdict does not depend on it. The reproduce entry point is the documented four-report `python3 -I sim/pex/grade_pex.py` invocation (README §8, `sim/pex/README.md`), which the attestation does not run; the hash pin is what flags a grader edit, and re-grading the committed reports against the historical record is a separate, revision-specific check (the #265 window change moves the `f_proxy` values while preserving the edge grades). Its regression suite is the uninventoried `sim/pex/test_grade_pex.py`, which carries no declared cold start. |
 | `sim/pex/probe/osc_subth_vbp_probe.cir` | none (pinned by hash only) | **No.** One `ngspice -b`, but minutes on the extracted `osc_subth` netlist; it is a vh-split diagnosis probe (#117), not a spec-row measurement. |
 | `verification/readout/` | `make -C verification/readout` | **Yes** for the pre-layout run cited as `5.digital`: check-env, Verilator lint `-Wall`, then the full cocotb suite on Icarus (9/9). |
 | `verification/readout/request-sdf.json` | none (pinned by hash only) | **No.** The SDF-annotated re-run cited as `7.digital` names host-absolute PDK timing-model and SDF paths (`verification/README.md`); a third party adjusts them for their own install. |
@@ -218,7 +221,7 @@ meaning (a testbench or the request that drives one):
   hash-pinned and the extraction is regenerable, but the extracted netlist's own bytes are pinned
   by nothing. Stated here rather than left to inference.
 - The per-bench helper scripts that back no cited row — `sim/power/analyze_power.py`,
-  `sim/power/gen_requests.py`, `sim/pex/grade_pex.py`, `sim/subthreshold/analyze.py` and
+  `sim/power/gen_requests.py`, `sim/subthreshold/analyze.py` and
   `sim/subthreshold/gen_probe.py`, `sim/pex/diag/vh_split.py`, `sim/sensitivity/probe_skew.sh`
   (which generates its deck inline and backs the sf/fs mapping in
   `sim/sensitivity/records/2026-11-05-grid-sensitivity-partial.md`, a record no manifest row cites),
@@ -235,6 +238,12 @@ meaning (a testbench or the request that drives one):
   the first step of the reproduce chain in `sim/solve/records/2026-11-05-rows1-4.md` and
   `sim/solve/mc/RECORD-2026-11-06-item6-sized-bank.md`. They are on the measurement path for
   `5.analog` / `6.analog`, not convenience wrappers, so they are pinned with the rest of that path.
+  **`sim/pex/grade_pex.py` was moved out of this class into the inventory (issue #267)** — it backs
+  no `7.analog` citation (the manifest cites the `klt pex` reports, not the derived grade), but it
+  is on the measurement path for `8.analog`: `evidence/item8_analog.json`'s method names the grade
+  record it produces and `characterization/analog.md` cites it for the row-1 and row-2 post-layout
+  statements, and a grader edit could otherwise silently stop reproducing that record with item 9
+  green. See its table row above.
 - `sim/*/negative_controls.sh`, the top-level `sim/negative_controls.sh` (which that glob does
   not match) and `sim/neg_control_common.sh` (the pass rule and `check_env.sh` baseline all three
   source) — control runs that assert a bench fails when it should; they back no recorded
