@@ -305,8 +305,10 @@ python3 -I sim/pex/grade_pex.py /tmp/pexgrade.json \
     sim/pex/records/2026-11-10-osc_{hd,nmos,pmos,wire}.pex.report.json
 ```
 
-Reproduces [`sim/pex/records/2026-11-11-grade-extracted-values.json`](sim/pex/records/2026-11-11-grade-extracted-values.json):
-all four oscillators pass the row-1 "oscillates" criterion on the extracted
+Reproduces the edge-count grades and ratio shifts in the
+[2026-11-11 grading record](sim/pex/records/2026-11-11-grade-extracted-values.json).
+The current grader uses each request’s verified duration for frequency proxies.
+All four oscillators pass the row-1 "oscillates" criterion on the extracted
 side, and the row-2 ratio-space coordinate shifts by a median −7.8 %
 (`osc_nmos`), −10.9 % (`osc_pmos`) and −1.6 % (`osc_wire`). `osc_subth` is
 **not** in this record — its extracted side does not oscillate in the
