@@ -317,3 +317,52 @@ The drawn diffusion at each of the 14 header/stage junctions is one merged polyg
 stage-PFET source are different nets in 14/14 stages; with `lvtn` deleted from a scratch copy they are one net in 14/14. Moving the
 marker edge to the gate edge or removing the diffusion step does not change it. Upstream: 2AMLogic/klayout-tools#5311 (generic repro added).
 No layout, netlist or threshold change; the one-corner ring-start check waits for the tool fix.
+
+## Re-run 2026-11-20 (issue #32): `osc_subth` full box on the net-split-fixed extractor — the extracted ring oscillates
+
+SIMULATED only (ngspice on the batch fleet; `klt 0.9.3.dev2493+g032b17fd9dc4`, first host build carrying the
+klayout-tools#5311 fix (klayout-tools#5315, `593dd38d1`); layout `layout/osc_bank.gds` sha256 `625c8ff9…`, the #109
+divider-bearing GDS, unchanged). Nothing earlier was edited; no threshold was changed; no local ngspice grid was run.
+Records (new, dated): `records/2026-11-20-osc_subth-dev2493.pex.report.json` (the fleet report),
+`records/2026-11-20-osc_subth-probe-dev2493.json` (one-corner ring-start re-check),
+`records/2026-11-20-grade-extracted-values-osc_subth-dev2493.json` (grading); extraction
+`extracted/osc_subth.dev2493.spice` (sha256 `a13f74ea…`).
+
+1. **Extraction check before any fleet spend.** `klt pex --extract-only` (client `--pdk-root` pinned to the repo's
+   open_pdks `c6d73a35…` install; the extracted bytes are identical when klt's own PDK search resolves instead) gives
+   16 `nfet_01v8`, 16 `pfet_01v8`, 14 `pfet_01v8_lvt` plus 2 `res_high_po` (the `Rb0`/`Rb1` divider), as on dev661.
+   The `vh1`..`vh14` split is **gone**: pairing as in `diag/vh_split.py`, 14/14 LVT-header S/D nets are the same net as
+   a stage-PFET terminal (dev661: 0/14). One local single-corner probe (`probe/run_probe.sh`, tt / 1.80 V / 27 C, one
+   `ngspice -b`) then shows the extracted ring oscillating unmodified: **111 rising edges / 100 us** against the
+   schematic's 169 (split extraction: 0; +14 tie resistors: 126; both from the #116 diagnosis record).
+2. **Run.** One clean sharded run, `--backend batch --hosts 45 --wait-for-capacity 600`, one `--hosts` value,
+   foreground, no `--resume` (~47 min, no lost shards):
+
+       klt pex layout/osc_bank.gds sim/pex/requests/osc_subth.json --deck sky130 --pdk sky130A \
+           --pdk-root <pinned sky130A> --top osc_subth --pins en,out,vdd,vss --backend batch --hosts 45 \
+           --wait-for-capacity 600 -o <dir>/osc_subth.spice --outdir <dir> \
+           --envelope-out <report.json> --format json
+
+3. **Result: report status `pass`, 45/45 cells compared, both legs `pass` everywhere.** The extracted `osc_subth`
+   oscillates in 40/45 cells (counts 0..77523 in the 2 ms window; schematic 0..357080). `delta_pct` over the 44
+   computable cells (sf/1.62 V/−40 C is 0-vs-0, no ratio): min −100 % (sf/1.80 V/−40 C, sch 2 → ext 0 edges),
+   median −42.4 %, max +15.1 % (ff/1.98 V/27 C). `model_mismatch` stays the expected `model_set`
+   (`extracted_only: [res_high_po]`, ideal `Rb0`/`Rb1` in the schematic); `body_bias.status = biased`;
+   `extraction.model` is the same lumped-RC model as the 2026-11-10 reports.
+4. **Grading (row 1, as in `grade_pex.py`, >= 9 rising edges): 40/45 extracted cells pass.** The 5 below are
+   ss/1.62 V/−40 C (ext 1), ss/1.80 V/−40 C (3), sf/1.62 V/−40 C (0), sf/1.80 V/−40 C (0), sf/1.98 V/−40 C (1) —
+   the same cold ss/sf corners where the schematic leg itself is marginal (2, 6, 0, 2 and 2 edges: a subthreshold
+   ring barely starting in 2 ms at −40 C on both legs). Recorded as the result; no threshold changed. Rows 2-4 stay
+   not re-gradable from edge counts (as before). Ratio-space shift (43 cells): median −34.4 %, min −83.4 %
+   (sf/1.80 V/125 C), max +37.6 % (ff/1.98 V/27 C). Caveat: `grade_pex.py`'s `f_proxy` divides by its fixed 800 ns
+   window constant while `osc_subth`'s bench window is 2 ms, so that column is not to scale for this oscillator;
+   the row-1 edge-count grading is window-independent.
+5. **`klt signoff` (klt `0.9.1`, the CI pin, via uvx): the new report's item-7 citation grades `met`.**
+   `T1 #7 [analog]` overall stays `unmet` (`check_failed`) — now solely because the 2026-11-10 `osc_nmos` and
+   `osc_wire` reports are status `error` (one `timestep_too_small` schematic cell each; the #102 supplementary
+   converged cold-cell records do not flip those reports' status). That gap is the only remaining cause;
+   earlier sections' "remaining for 7.analog" prose named only `osc_subth` and missed it. Follow-up: the
+   `osc_nmos`/`osc_wire` full-box closure is tracked in #264. `T1 #7 [digital]` stays met. The manifest's
+   `7.analog` list now cites this report as a fifth entry, and the committed signoff record
+   (`manifests/sky130-process-monitor.signoff.json`) was regenerated with the pinned klt; the only diff is the new
+   `met` citation.

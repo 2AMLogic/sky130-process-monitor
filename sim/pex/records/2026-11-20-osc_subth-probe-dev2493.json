@@ -1,0 +1,45 @@
+{
+ "record": "osc_subth ring-start re-check on the net-split-fixed extraction (issue #32; follow-up to the #116/#117 diagnosis)",
+ "date": "2026-11-20",
+ "label": "SIMULATED (ngspice-47, one local `ngspice -b`, no grid); nothing measured",
+ "corner": {
+  "process": "tt",
+  "vdd_V": 1.8,
+  "temp_C": 27
+ },
+ "testbench": "sim/pex/probe/osc_subth_vbp_probe.cir via sim/pex/probe/run_probe.sh; en ramps 0->1.8 V at 1 ns; .tran 20n 100u; rising edges counted at 0.9 V",
+ "model_lib": "open_pdks c6d73a35f524070e85faff4a6a9eef49553ebc2b sky130A libs.tech/ngspice/sky130.lib.spice, section tt",
+ "tools": "ngspice-47; the extracted input netlist was produced this session by klt 0.9.3.dev2493+g032b17fd9dc4 (`klt pex --extract-only`, first klt build on this host after the klayout-tools#5311 fix #5315, 593dd38d1)",
+ "extraction_input": {
+  "layout": {
+   "path": "layout/osc_bank.gds",
+   "sha256": "625c8ff90f34c6fac7a88339d2c10ad5925da02e118eb6a15a6539c11e05bf29"
+  },
+  "extracted": {
+   "path": "sim/pex/extracted/osc_subth.dev2493.spice",
+   "sha256": "a13f74eaf0532d37986d5cac027cfefa4c7ca9227665ad2e957a232a570ab069"
+  }
+ },
+ "net_split_check": {
+  "method": "as in sim/pex/diag/vh_split.py pairing: each pfet_01v8_lvt header's (L=0.5) non-vdd S/D net must equal a stage pfet_01v8 (L=0.15) terminal",
+  "result": "14/14 headers share their net with a stage-PFET terminal (dev661 extraction: 0/14, records/2026-11-11-vh-split-diagnosis-osc_subth.json)"
+ },
+ "cases": [
+  {
+   "case": "extracted (dev2493, nets joined), free vbp",
+   "vbp_settled_V": 1.5,
+   "rising_edges_100us": 111,
+   "out_range_V": [
+    -0.001,
+    1.817
+   ]
+  }
+ ],
+ "reference_cases_from_2026-11-11_diagnosis": {
+  "record": "sim/pex/records/2026-11-11-osc_subth-diagnosis.json",
+  "schematic": 169,
+  "extracted_dev661_split_nets": 0,
+  "extracted_dev661_plus_14_tie_resistors": 126
+ },
+ "conclusion": "With the klayout-tools#5311 fix, the extracted osc_subth oscillates unmodified (111 rising edges / 100 us at tt/1.80 V/27 C against the schematic's 169), so the full-box re-run was submitted to the fleet (records/2026-11-20-osc_subth-dev2493.pex.report.json)."
+}
