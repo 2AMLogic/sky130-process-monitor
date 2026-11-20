@@ -25,12 +25,13 @@
    "cells_with_extracted_value": 45,
    "cells_without_extracted_value": [],
    "f_proxy_hz_min_max": [
-    103750000.0,
-    325000000.0
+    276666666.6666667,
+    866666666.6666667
    ],
    "max_count": 260,
    "max_startup_bias_rel": 0.04819277108433735,
-   "min_count": 83
+   "min_count": 83,
+   "window_s": 3e-07
   },
   "osc_subth": {
    "cells_below_min_edges": [
@@ -44,12 +45,12 @@
    "cells_without_extracted_value": [],
    "f_proxy_hz_min_max": [
     0.0,
-    96903750000.0
+    38761500.0
    ],
    "max_count": 77523,
    "max_startup_bias_rel": null,
-   "min_count": 0
+   "min_count": 0,
+   "window_s": 0.002
   }
- },
- "window_s": 8e-07
+ }
 }

@@ -129,11 +129,12 @@ touched and no local ngspice grid was run (two single-corner `klt pex` probes ra
   The criterion needs at least 9 rising edges (3 dropped start-up edges + 5 cycles + 1); the smallest extracted
   count is 65 (`osc_pmos`, ss/1.620V/-40C; `osc_nmos` is next at 70). This is the extracted leg only. `osc_subth` has no valid extraction (finding 6).
 - **The #29 frequency limits cannot be applied to the pex values, so rows 2-4 are NOT re-graded.** The pex scalar is a quantised
-  rising-edge count in an 800 ns window and the report carries no crossing times, so #29's
+  rising-edge count over the request window and the report carries no crossing times, so #29's
   `f_osc = (n-1)/(t_last - t_first)` cannot be reproduced. #29 has no per-cell frequency window either: its limits are
   row 1 (oscillates), row 2 (five-corner identification in ln-ratio space), row 3 (V, ±20/50 mV) and row 4 (T, ±5/10 C).
   Rows 2-4 need all five oscillators' frequencies, and `osc_subth` has none. The record gives a count-based frequency
-  proxy (counts/800 ns, 81-334 MHz across the four, start-up bias up to ~6 %) labelled as a proxy only.
+  proxy using 800 ns for all four oscillators. Only `osc_nmos` ran for 800 ns. The historical proxy range
+  (81–334 MHz) should be disregarded. The current grader reads the window from each verified request.
 - **What the layout does to the row-2 coordinate** (ln f_i − ln f_osc_hd, extracted vs schematic, from counts; percent
   change in f_i/f_osc_hd): `osc_nmos` median −7.8 % (−17.6 … +0.7), `osc_pmos` median −10.9 % (−19.8 … −0.2),
   `osc_wire` median −1.6 % (−21.5 … +32.2; not like-for-like, finding 3). These are shifts of the classifier inputs;
@@ -354,9 +355,12 @@ Records (new, dated): `records/2026-11-20-osc_subth-dev2493.pex.report.json` (th
    the same cold ss/sf corners where the schematic leg itself is marginal (2, 6, 0, 2 and 2 edges: a subthreshold
    ring barely starting in 2 ms at −40 C on both legs). Recorded as the result; no threshold changed. Rows 2-4 stay
    not re-gradable from edge counts (as before). Ratio-space shift (43 cells): median −34.4 %, min −83.4 %
-   (sf/1.80 V/125 C), max +37.6 % (ff/1.98 V/27 C). Caveat: `grade_pex.py`'s `f_proxy` divides by its fixed 800 ns
-   window constant while `osc_subth`'s bench window is 2 ms, so that column is not to scale for this oscillator;
-   the row-1 edge-count grading is window-independent.
+   (sf/1.80 V/125 C), max +37.6 % (ff/1.98 V/27 C). The grader verifies each request against the SHA-256 in its
+   report before dividing the extracted edge count by the observation window. For `osc_hd`, 83–260 edges in
+   300 ns give **276.67–866.67 MHz**. For `osc_subth`, 0–77,523 edges in 2 ms give **0–38.7615 MHz**. Both
+   ranges are count-based proxies that include start-up. The reports lack the crossing times needed for
+   `f_osc`. An unverifiable window yields JSON `null` for both `window_s` and `f_proxy_hz_min_max`. Row 1
+   uses the edge count directly.
 5. **`klt signoff` (klt `0.9.1`, the CI pin, via uvx): the new report's item-7 citation grades `met`.**
    `T1 #7 [analog]` overall stays `unmet` (`check_failed`) — now solely because the 2026-11-10 `osc_nmos` and
    `osc_wire` reports are status `error` (one `timestep_too_small` schematic cell each; the #102 supplementary
