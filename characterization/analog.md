@@ -82,13 +82,19 @@ ngspice-46, sky130A from open_pdks `c6d73a35` (`sim/pdk.json`).
   window-too-short rather than dead; the grid run did not separate the two.
 
 **Post-layout (extracted) side**, from
-`sim/pex/records/2026-11-11-grade-extracted-values.json`: `osc_hd`, `osc_nmos`,
-`osc_pmos` and `osc_wire` meet the row-1 "oscillates" criterion (≥ 9 rising
-edges in the 0.8 µs window) at **45 of 45 cells each**. `osc_subth` is **not**
-in that record — its extracted netlist does not start in either re-run
-(`sim/pex/records/2026-11-11-grade-extracted-values-osc_subth-dev661.json`,
-`sim/pex/records/2026-11-11-grade-extracted-values-osc_subth-gds109.json`), and
-the extracted `osc_wire` is not a like-for-like netlist. See
+`sim/pex/records/2026-11-11-grade-extracted-values.json` and
+`sim/pex/records/2026-11-20-grade-extracted-values-osc_subth-dev2493.json`:
+`osc_hd`, `osc_nmos`, `osc_pmos` and `osc_wire` meet the row-1 "oscillates"
+criterion (≥ 9 rising edges per cell, counted over each request's own
+observation window — 300 ns for `osc_hd`, 800 ns for `osc_nmos`, 2.5 µs for
+`osc_pmos` and `osc_wire`) at **45 of 45 cells each**. The extracted
+`osc_subth` starts on the net-split-fixed extractor (klayout-tools#5311): its
+2026-11-20 dev2493 report
+(`sim/pex/records/2026-11-20-osc_subth-dev2493.pex.report.json`) has status
+`pass` with 45/45 cells compared, and in the 2 ms window **40 of 45** extracted
+cells meet the nine-edge minimum. The five below (ss and sf corners at −40 °C,
+where the schematic leg is marginal too) are the remaining §1 failures on the
+extracted side. The extracted `osc_wire` is not a like-for-like netlist. See
 `sim/pex/README.md`. The extracted side therefore does not close this row
 either.
 
@@ -343,12 +349,17 @@ hand check against `klt extract`, not by LVS.
 **Post-layout re-verification (T1 item 7) — `7.analog` is NOT met**
 (`unmet` / `check_failed` in `manifests/sky130-process-monitor.signoff.json`).
 Per `sim/pex/README.md`: the extracted side meets the §1 "oscillates" criterion
-for four oscillators at 45/45 cells, and the §2 ratio-space coordinate shifts by
-a median −7.8 % (`osc_nmos`), −10.9 % (`osc_pmos`) and −1.6 % (`osc_wire`)
+for four oscillators at 45/45 cells and for `osc_subth` at 40/45 (2026-11-20
+dev2493 grade), and the §2 ratio-space coordinate shifts by a median −7.8 %
+(`osc_nmos`), −10.9 % (`osc_pmos`) and −1.6 % (`osc_wire`)
 (`sim/pex/records/2026-11-11-grade-extracted-values.json`, **SIMULATED**,
 `klt pex` reports under `sim/pex/records/`) — but **spec rows 2–4 are not
-re-graded on extracted values**, `osc_subth` has no valid extraction, and the
-`osc_wire` extraction is not like-for-like.
+re-graded on extracted values**, and the `osc_wire` extraction is not
+like-for-like. The item-7 citation for `osc_subth`
+(`sim/pex/records/2026-11-20-osc_subth-dev2493.pex.report.json`) grades `met`;
+the overall `unmet` / `check_failed` verdict is now solely the 2026-11-10
+`osc_nmos` and `osc_wire` reports at status `error` — one schematic-side cold
+cell each (tracked in #264).
 
 **Body bias, stated because item 7 requires the claimant to state it.**
 `manifests/design-evidence-tiers.md` item 7 says `klt signoff` surfaces a
