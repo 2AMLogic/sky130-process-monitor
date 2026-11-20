@@ -350,6 +350,17 @@ Records (new, dated): `records/2026-11-20-osc_subth-dev2493.pex.report.json` (th
    median −42.4 %, max +15.1 % (ff/1.98 V/27 C). `model_mismatch` stays the expected `model_set`
    (`extracted_only: [res_high_po]`, ideal `Rb0`/`Rb1` in the schematic); `body_bias.status = biased`;
    `extraction.model` is the same lumped-RC model as the 2026-11-10 reports.
+   **PDK provenance disclosure:** `provenance.pdk` names the client-side extraction PDK as
+   `open_pdks c6d73a35…` (the `--pdk-root` install — exactly the repo's `sim/pdk.json` pin), while
+   the deck (package `open_pdks-sky130`) declares it expects `open_pdks f6eeac7d…` and the report
+   records the literal `compatibility.status = "mismatch"` — the first committed report carrying the
+   field (the 2026-11-10 reports predate it; their compatibility status is unknown). On the run
+   itself, all 45 worker entries on each leg (schematic and extracted alike) executed PDK
+   `f6eeac7d…` with `models_staged = false`: the extraction baseline used the repo pin, and both
+   compared legs ran the deck's expected revision. The pin stays at `c6d73a35…`: retaining the
+   repository pin preserves the recorded extraction baseline, and moving it would be a `spec/`
+   decision with a re-run, not a drive-by edit. The effect of switching PDK revisions on these
+   measured results is open; none is quantified here.
 4. **Grading (row 1, as in `grade_pex.py`, >= 9 rising edges): 40/45 extracted cells pass.** The 5 below are
    ss/1.62 V/−40 C (ext 1), ss/1.80 V/−40 C (3), sf/1.62 V/−40 C (0), sf/1.80 V/−40 C (0), sf/1.98 V/−40 C (1) —
    the same cold ss/sf corners where the schematic leg itself is marginal (2, 6, 0, 2 and 2 edges: a subthreshold
