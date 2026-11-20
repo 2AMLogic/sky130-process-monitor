@@ -3,7 +3,6 @@
 Prioritized roadmap from current GitHub label state, maintained by the Guide role.
 
 <!-- guide:plan-body:start -->
-_Generated: 2026-11-18T23:44:52Z (snapshot; compare against live labels)_
 ## Operator Attention: Merge-Risk-Hold Pileup
 
 Judge-approved PRs under a hold (`loom:blocked` or `loom:operator`) — only a human merge decision is missing.
