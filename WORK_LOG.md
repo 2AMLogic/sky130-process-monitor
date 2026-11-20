@@ -3,6 +3,10 @@
 Chronological record of merged PRs and closed issues, maintained by the Guide
 role. Newest first.
 
+### 2026-11-20
+
+- **PR #265**: docs(pex): record osc_subth full-box pex run on the net-split-fixed extractor; cite it under 7.analog
+
 ### 2026-11-18
 
 - **PR #259**: fix: check every pull_request filter key and refuse sequence/quoted on: shapes in the trigger guard

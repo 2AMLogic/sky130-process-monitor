@@ -3,6 +3,7 @@
 Prioritized roadmap from current GitHub label state, maintained by the Guide role.
 
 <!-- guide:plan-body:start -->
+_Generated: 2026-11-20T11:22:32Z (snapshot; compare against live labels)_
 ## Operator Attention: Merge-Risk-Hold Pileup
 
 Judge-approved PRs under a hold (`loom:blocked` or `loom:operator`) — only a human merge decision is missing.
@@ -27,15 +28,15 @@ _None._
 
 ## Ready
 
-Human-approved issues ready for implementation (`loom:issue`).
+Human-approved issues (`loom:issue`) ready for implementation — excluding held (`loom:blocked`/`loom:operator`/`loom:frozen`), `loom:building`, and issues closed by an open `loom:pr` PR (listed under Approved).
 
-_None._
+- **#32**: T1 item 7 (post-layout verification): klt pex re-run of the oscillator benches and SDF-annotated readout re-run
 
 ## In Progress
 
 Issues currently being built (`loom:building`).
 
-_None._
+- **#267**: sim/pex/grade_pex.py is not in the item 9 inventory, so a grader change can silently stop reproducing a committed record
 
 ## PRs Awaiting Review
 
@@ -57,6 +58,7 @@ Issues carrying `loom:curated`.
 - **#26**: T1 item 4 (LVS clean): klt lvs for the oscillator bank (vs schematics) and the readout (vs gate-level netlist) *(curated)*
 - **#117**: osc_subth: 14 series-header nets (vh1..vh14) are split in the extraction, ring stage PFET sources float *(curated)*
 - **#190**: klt signoff gate: item 9 pins sim/ source modules, but has no CLAUDE.md warning and no regen script (the item-10 guardrails from #172 have no item-9 sibling) *(curated)*
+- **#267**: sim/pex/grade_pex.py is not in the item 9 inventory, so a grader change can silently stop reproducing a committed record *(curated)*
 
 ## Proposed (Architect / Hermit)
 
@@ -74,11 +76,11 @@ _None._
 | Operator merge-risk holds | 0 |
 | Very important | 1 |
 | Important | 5 |
-| Ready (`loom:issue`) | 0 |
-| In Progress (`loom:building`) | 0 |
+| Ready (`loom:issue`, net of holds/building/merge-pending) | 1 |
+| In Progress (`loom:building`) | 1 |
 | PRs awaiting review | 0 |
 | Approved PRs awaiting merge | 0 |
-| Curated | 4 |
+| Curated | 5 |
 | Architect / Hermit proposals | 2 |
 | Active epics | 0 |
 <!-- guide:plan-body:end -->
