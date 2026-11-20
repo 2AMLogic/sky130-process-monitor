@@ -8,7 +8,8 @@
 # Item 9 is graded per partition, and both inventories hash testbench sources
 # by content: `attest/item9_analog.json` pins every committed deck and
 # `klt sim` request, the `sim/solve/` and `sim/sensitivity/` Python modules,
-# the shared sibling-module loader those benches import at run time
+# the PEX grader `sim/pex/grade_pex.py` (issue #267, the item-8 measurement
+# path), the shared sibling-module loader those benches import at run time
 # (`sim/_siblings.py`), the owner data files those benches load
 # (`sim/corner_box.json`, `sim/pdk.json`, `sim/toolchain.json`), and the four
 # shell entrypoints (`sim/check_env.sh` plus the three `sim/**/run*.sh`

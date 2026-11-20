@@ -102,7 +102,7 @@
     },
     "9.analog": {
       "file": "evidence/item9_analog.json",
-      "content_hash": "sha256:781c50b9c3be0710fddac12bbe5771dccabbab07021d68f55ee2b76119d717cf"
+      "content_hash": "sha256:4e20cadbd0aaa428cd5cd5a38a06c395e4256c41be49d8d64b23ec4e8a851607"
     },
     "9.digital": {
       "file": "evidence/item9_digital.json",
