@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
-"""Build the `model-run` evidence envelope for T1 item 5 (analog) from the committed row records (issue #29).
+"""Build the `model-run` evidence envelope for T1 item 5 (analog) from the committed row records (issues #29, #279).
 
     python3 -I sim/solve/make_envelope.py -o evidence/item5_analog.json
 
-Reads sim/solve/records/2026-11-05-rows1-4.json and sim/power/records/2026-11-05-power-grade.json. SIMULATED.
+Reads sim/solve/records/2026-11-05-rows1-4.json and sim/power/records/2026-11-21-power-grade.json. SIMULATED.
 Limits are the ratified TARGET bounds from spec/target-spec.md, copied unchanged; nothing is relaxed. Each measurement is
 the worst graded value, so a row that misses its target is recorded failing and the item grades unmet.
 """
@@ -14,7 +14,7 @@ import os
 
 ROOT = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..")
 R14 = "sim/solve/records/2026-11-05-rows1-4.json"
-PWR = "sim/power/records/2026-11-05-power-grade-complete.json"
+PWR = "sim/power/records/2026-11-21-power-grade.json"
 
 
 def sha(p):
@@ -44,8 +44,8 @@ def build():
         meas("row7_active_power_osc_only", "uW", p["active"]["worst_uW"], 100.0, p["active"]["binding_cell"],
              "oscillator only; COUNTER POWER NOT COVERED; %d of %d cells graded" % (p["active"]["cells_graded"], p["active"]["cells_expected"])),
         meas("row7_idle_power_osc_bank", "uW", p["idle"]["worst_uW"], 1.0, p["idle"]["binding_cell"],
-             "oscillator bank only; counter power NOT covered; the binding figure is a suspect osc_nmos DC point (see record); "
-             "the verdict holds without it (osc_subth ungated bias alone is 1.8 uW at tt/1.80 V/27 C)"),
+             "oscillator bank only; counter power NOT covered; transient-settle re-bench (issue #279): no suspect DC point "
+             "remains, the figure is the min-L pfet OFF leakage of the un-gated osc_wire/osc_nmos stages at 125 C"),
     ]
     return {
         "schema_version": 1, "kind": "model-run", "status": "fail",

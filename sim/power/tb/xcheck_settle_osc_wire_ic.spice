@@ -1,0 +1,16 @@
+* Power bench (IDLE, settle): osc_wire with the enable held at vss for the whole window; transient
+* from t=0 (caps at 0, a defined powered-up-gated-off state); mean supply current over the final
+* half-window (request .meas). Replaces the op-form idle bench, whose DC solve on the gated-off
+* ring is non-unique (issue #279; records/2026-11-21-idle-settle.md). SIMULATION, schematic-level.
+* Sensitivity-grade testbench body for osc_wire (circuit body only: klt sim owns .control/.end).
+* SIMULATION: schematic-level netlist design/osc_bank/osc_wire.spice, no layout, no parasitics.
+* Enable is a behavioural source that follows v(vdd), so it swings rail to rail at every swept
+* supply (an explicit PULSE could not be swept with the supply in a Monte Carlo `units` request).
+* It is off for 1 ns and then ramps to v(vdd) over 100 ps.
+.options rshunt=1e12
+.include "../../../design/osc_bank/osc_wire.spice"
+Vdd vdd 0 1.8
+Vss vss 0 0
+Ven en 0 0
+Xdut en out vdd vss osc_wire
+.ic v(xdut.s0)=1.8 v(xdut.s1)=1.8 v(xdut.s2)=1.8 v(xdut.s3)=1.8 v(xdut.s4)=1.8 v(xdut.s5)=1.8 v(xdut.s6)=1.8 v(xdut.s7)=1.8 v(xdut.s8)=1.8 v(xdut.s9)=1.8 v(xdut.s10)=1.8 v(xdut.s11)=1.8 v(xdut.s12)=1.8 v(xdut.s13)=1.8 v(xdut.s14)=1.8 v(xdut.s15)=1.8 v(xdut.s16)=1.8 v(xdut.s17)=1.8 v(xdut.s18)=1.8 v(xdut.s19)=1.8 v(xdut.s20)=1.8 v(xdut.s21)=1.8 v(xdut.s22)=1.8 v(xdut.s23)=1.8 v(xdut.s24)=1.8 v(xdut.s25)=1.8 v(xdut.s26)=1.8 v(xdut.s27)=1.8 v(xdut.s28)=1.8 v(xdut.s29)=1.8 v(xdut.s30)=1.8 v(xdut.n0)=1.8 v(xdut.n1)=1.8 v(xdut.n2)=1.8 v(xdut.n3)=1.8 v(xdut.n4)=1.8 v(xdut.n5)=1.8 v(xdut.n6)=1.8 v(xdut.n7)=1.8 v(xdut.n8)=1.8 v(xdut.n9)=1.8 v(xdut.n10)=1.8 v(xdut.n11)=1.8 v(xdut.n12)=1.8 v(xdut.n13)=1.8 v(xdut.n14)=1.8 v(xdut.n15)=1.8 v(xdut.n16)=1.8 v(xdut.n17)=1.8 v(xdut.n18)=1.8 v(xdut.n19)=1.8 v(xdut.n20)=1.8 v(xdut.n21)=1.8 v(xdut.n22)=1.8 v(xdut.n23)=1.8 v(xdut.n24)=1.8 v(xdut.n25)=1.8 v(xdut.n26)=1.8 v(xdut.n27)=1.8 v(xdut.n28)=1.8 v(xdut.n29)=1.8 v(out)=1.8

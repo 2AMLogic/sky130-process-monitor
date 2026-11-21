@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Row 7 (active and idle power) grading from `klt sim` reports (issue #29). Pure stdlib. SIMULATED.
 
-    analyze_power.py extract REPORT.json[.gz]... -o power_table.json
+    analyze_power.py extract REPORT.json[.gz]... [-o power_table.json] [--carry-active PRIOR_TABLE.json]
     analyze_power.py grade power_table.json [--json OUT]
 
 Scope, stated with every verdict: the OSCILLATOR BANK ONLY. The counter has no SPICE-level netlist, so COUNTER
@@ -38,13 +38,19 @@ BOUNDS_UW = {"active": (100.0, 500.0, 20.0), "idle": (1.0, 10.0, 0.1)}
 MIN_EDGES = _SENS.SKIP_EDGES + _SENS.MIN_CYCLES + 1
 
 
-def extract(paths):
+def extract(paths, carry_active=None):
     rows, envs = [], []
     for p in paths:
         rep = _load(p)
         path = rep["netlist"]["path"]
         kind = "idle" if "idle_" in path else "active"
-        osc = next(o for o in OSCS if o in path)
+        osc = next((o for o in OSCS if o in path), None)
+        if osc is None:
+            # A bench this grader does not grade (issue #279 adds candidate/cross-check decks whose
+            # reports may sit in the same -o tree). Recorded as environment, never as a row.
+            envs.append({"report": p, "kind": kind, "oscillator": None, "job_id": None, "job_ids": None,
+                         "runner_pdk": None})
+            continue
         rem, runner_pdk = _remote(rep)
         envs.append({"report": p, "kind": kind, "oscillator": osc, "job_id": rem.get("job_id"),
                      "job_ids": rem.get("job_ids"), "runner_pdk": runner_pdk})
@@ -62,6 +68,12 @@ def extract(paths):
                 cur = abs(v_i) if v_i is not None else None
             rows.append({"kind": kind, "osc": osc, "process": c["process"], "vdd": round(v, 2), "temp_c": c["temperature_c"],
                          "i_a": cur, "unit_status": c["status"]})
+    if carry_active is not None:
+        # Issue #279: the idle half alone is re-run (active benches unchanged), so the new table
+        # carries the prior committed table's active rows verbatim -- never re-simulated, never
+        # re-derived; the record names the carried file and its own record.
+        prior = json.load(open(carry_active))
+        rows.extend(r for r in prior["rows"] if r["kind"] == "active")
     return {"kind": "SIMULATED", "rows": rows, "environment": envs}
 
 
@@ -101,7 +113,9 @@ def grade(tab):
 def main(a):
     if len(a) >= 3 and a[1] == "extract" and "-o" in a:
         i = a.index("-o")
-        json.dump(extract(a[2:i]), open(a[i + 1], "w"), indent=1, sort_keys=True)
+        carry = a[a.index("--carry-active") + 1] if "--carry-active" in a else None
+        paths = [x for x in a[2:i] if x != "--carry-active" and x != carry]
+        json.dump(extract(paths, carry), open(a[i + 1], "w"), indent=1, sort_keys=True)
         return 0
     if len(a) >= 3 and a[1] == "grade":
         r = grade(json.load(open(a[2])))

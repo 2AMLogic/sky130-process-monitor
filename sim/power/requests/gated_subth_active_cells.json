@@ -1,0 +1,176 @@
+{
+  "netlist": "../tb/gated_subth_active.spice",
+  "engine": "ngspice",
+  "models": {
+    "pdk": "sky130A",
+    "lib": "libs.tech/ngspice/sky130.lib.spice"
+  },
+  "options": {
+    "timeout_s": 3000,
+    "retry_on_convergence_error": true
+  },
+  "batch": {
+    "job_ceiling_check": "warn"
+  },
+  "backend": "batch",
+  "corners": {
+    "units": [
+      {
+        "process": "tt",
+        "temperature_c": 27,
+        "supply_v": {
+          "vdd": 1.8
+        }
+      },
+      {
+        "process": "tt",
+        "temperature_c": -40,
+        "supply_v": {
+          "vdd": 1.62
+        }
+      },
+      {
+        "process": "tt",
+        "temperature_c": -40,
+        "supply_v": {
+          "vdd": 1.8
+        }
+      },
+      {
+        "process": "tt",
+        "temperature_c": -40,
+        "supply_v": {
+          "vdd": 1.98
+        }
+      },
+      {
+        "process": "ff",
+        "temperature_c": -40,
+        "supply_v": {
+          "vdd": 1.62
+        }
+      },
+      {
+        "process": "ff",
+        "temperature_c": -40,
+        "supply_v": {
+          "vdd": 1.8
+        }
+      },
+      {
+        "process": "ff",
+        "temperature_c": -40,
+        "supply_v": {
+          "vdd": 1.98
+        }
+      },
+      {
+        "process": "ss",
+        "temperature_c": -40,
+        "supply_v": {
+          "vdd": 1.62
+        }
+      },
+      {
+        "process": "ss",
+        "temperature_c": -40,
+        "supply_v": {
+          "vdd": 1.8
+        }
+      },
+      {
+        "process": "ss",
+        "temperature_c": -40,
+        "supply_v": {
+          "vdd": 1.98
+        }
+      },
+      {
+        "process": "sf",
+        "temperature_c": -40,
+        "supply_v": {
+          "vdd": 1.62
+        }
+      },
+      {
+        "process": "sf",
+        "temperature_c": -40,
+        "supply_v": {
+          "vdd": 1.8
+        }
+      },
+      {
+        "process": "sf",
+        "temperature_c": -40,
+        "supply_v": {
+          "vdd": 1.98
+        }
+      },
+      {
+        "process": "fs",
+        "temperature_c": -40,
+        "supply_v": {
+          "vdd": 1.62
+        }
+      },
+      {
+        "process": "fs",
+        "temperature_c": -40,
+        "supply_v": {
+          "vdd": 1.8
+        }
+      },
+      {
+        "process": "fs",
+        "temperature_c": -40,
+        "supply_v": {
+          "vdd": 1.98
+        }
+      }
+    ]
+  },
+  "analysis": {
+    "kind": "tran",
+    "args": "20n 2000000n"
+  },
+  "measurements": [
+    {
+      "name": "i_avg",
+      "spice": ".meas tran i_avg avg i(Vdd) from=1000000n to=2000000n",
+      "unit": "A"
+    },
+    {
+      "name": "t_rise",
+      "unit": "s",
+      "crossings": {
+        "signal": "v(out)",
+        "level": {
+          "frac_of": "vdd",
+          "fraction": 0.5
+        },
+        "edge": "rise",
+        "max": 400
+      }
+    },
+    {
+      "name": "vbp_avg",
+      "spice": ".meas tran vbp_avg avg v(xdut.vbp) from=1000000n to=2000000n",
+      "unit": "V"
+    },
+    {
+      "name": "vbp_10n",
+      "spice": ".meas tran vbp_10n find v(xdut.vbp) at=10n",
+      "unit": "V"
+    },
+    {
+      "name": "vbp_100n",
+      "spice": ".meas tran vbp_100n find v(xdut.vbp) at=100n",
+      "unit": "V"
+    },
+    {
+      "name": "vbp_1u",
+      "spice": ".meas tran vbp_1u find v(xdut.vbp) at=1u",
+      "unit": "V"
+    }
+  ]
+}

@@ -1,0 +1,8 @@
+* Power bench (ACTIVE, candidate): osc_subth_gated enabled; mean supply current, vbp bias and
+* start-up after en rises. SIMULATION, schematic-level, candidate netlist (issue #279).
+* Enable is the sensitivity benches' behavioural source (off for 1 ns, ramp 100 ps).
+.include "../cand/osc_subth_gated.spice"
+Vdd vdd 0 1.8
+Vss vss 0 0
+Ben en 0 V='v(vdd)*min(max((time-1n)/100p,0),1)'
+Xdut en out vdd vss osc_subth_gated

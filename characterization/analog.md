@@ -45,8 +45,8 @@ conditioning are shown (spec §2) before any of those rows is discussed.
 | §2 Process discrimination | **FAIL** (8 of 9 (V,T) cells) | **PASS** (slow/fast, 9 of 9) | not recorded | 1.98 V / 27 °C | `sim/solve/records/2026-11-05-rows1-4.md` |
 | §3 Supply estimate | **FAIL** | **FAIL** | not recorded | tt / 1.62 V / −40 °C | `sim/solve/records/2026-11-05-rows1-4.md` |
 | §4 Temperature estimate | **FAIL** | **FAIL** | not recorded | ff / 1.62 V / 27 °C | `sim/solve/records/2026-11-05-rows1-4.md` |
-| §7 Active power | **FAIL** | **FAIL** | **FAIL** | osc_wire / ff / 1.98 V / −40 °C | `sim/power/records/2026-11-05-power-complete.md` |
-| §7 Idle power | **FAIL** | **FAIL** | **FAIL** | sf / 1.62 V / 27 °C (figure SUSPECT; verdict holds without it) | `sim/power/records/2026-11-05-power-complete.md` |
+| §7 Active power | **FAIL** | **FAIL** | **FAIL** | osc_wire / ff / 1.98 V / −40 °C | `sim/power/records/2026-11-05-power-complete.md` (idle half superseded by `2026-11-21-idle-settle.md`) |
+| §7 Idle power | **FAIL** | **FAIL** | **FAIL** | fs / 1.98 V / 125 °C = 125.9 µW (settled, no suspect point) | `sim/power/records/2026-11-21-idle-settle.md` |
 | §8 Area (analog share) | **not recorded** | **not recorded** | **not recorded** | — | `layout/README.md` |
 | §9 Signoff (analog share) | **FAIL** | **FAIL** | — | — | `lvs/README.md`, `sim/pex/README.md` |
 
@@ -229,26 +229,31 @@ states the row-4 joint V+T solve was not run.
 
 **Verdict: active FAIL at target, fallback and stretch; idle FAIL at target,
 fallback and stretch.** Recorded in
-`sim/power/records/2026-11-05-power-complete.md` (tables
-`sim/power/records/2026-11-05-power-table-complete.json` and
-`sim/power/records/2026-11-05-power-grade-complete.json`; also carried in the
-`5.analog` envelope `evidence/item5_analog.json`).
+`sim/power/records/2026-11-21-idle-settle.md` (tables
+`sim/power/records/2026-11-21-power-table.json` and
+`sim/power/records/2026-11-21-power-grade.json`; also carried in the
+`5.analog` envelope `evidence/item5_analog.json`). The 2026-11-05 record's
+active half is carried forward verbatim; its idle half is superseded (kept;
+records are append-only).
 
 **SIMULATED**, oscillator bank only, schematic-level, no layout. Testbenches
-under `sim/power/`, run as `klt sim --batch-set` on the batch fleet; ngspice-46,
+under `sim/power/`, run as `klt sim --batch-set` on the batch fleet; ngspice-47,
 sky130A. Graded by `sim/power/analyze_power.py`.
 
 | | Target | Fallback | Stretch | Binding cell, recorded value |
 |---|---|---|---|---|
-| Active (oscillator only) | < 100 µW **FAIL** | < 500 µW **FAIL** | < 20 µW **FAIL** | `osc_wire` / ff / 1.98 V / −40 °C = **1740 µW** |
-| Idle (bank sum) | < 1 µW **FAIL** | < 10 µW **FAIL** | < 100 nW **FAIL** | sf / 1.62 V / 27 °C = **490 µW**, SUSPECT (below) |
+| Active (oscillator only) | < 100 µW **FAIL** | < 500 µW **FAIL** | < 20 µW **FAIL** | `osc_wire` / ff / 1.98 V / −40 °C = **1740 µW** (carried, 219/225 cells) |
+| Idle (bank sum) | < 1 µW **FAIL** | < 10 µW **FAIL** | < 100 nW **FAIL** | fs / 1.98 V / 125 °C = **125.9 µW** (45/45 cells) |
 
-**Coverage, as the record discloses it:** idle 45 of 45 cells, all five
-oscillators at every cell; active **219 of 225** oscillator cells. The six not
-graded and never filled: `osc_subth` ss / 1.62 V, ss / 1.80 V, sf / 1.62 V,
-sf / 1.80 V, sf / 1.98 V at −40 °C (fewer than 8 rising edges in the window —
-the same cells §1 could not resolve) and `osc_wire` sf / 1.62 V / −40 °C
-(`timestep too small` transient abort).
+**Coverage:** idle 45 of 45 cells, all five oscillators at every cell —
+`osc_hd`/`osc_pmos`/`osc_subth` re-run as `op`; `osc_nmos` and `osc_wire`
+re-benched as **transient-settle** decks (`en` held low from t = 0, mean supply
+current over the final half-window), which settle the gated-off ring from a
+defined initial state instead of a DC solve. Active 219 of 225 oscillator
+cells, unchanged: the six not graded and never filled are
+`osc_subth` ss / 1.62 V, ss / 1.80 V, sf / 1.62 V, sf / 1.80 V, sf / 1.98 V at
+−40 °C (fewer than 8 rising edges in the window) and `osc_wire`
+sf / 1.62 V / −40 °C (`timestep too small` transient abort).
 
 **The counter's power is NOT covered** by this row's evidence — there is no
 SPICE-level counter netlist. Spec §7 binds "one oscillator running plus
@@ -257,22 +262,38 @@ counter"; only the oscillator half is recorded, so the recorded figures are a
 in `characterization/digital.md`, and it is a different basis that cannot be
 added to these numbers to form a block figure; this report forms none.
 
-**The idle binding figure is flagged SUSPECT in its own record and is quoted
-with that flag.** The 490 µW is dominated by one `osc_nmos` DC operating point
-(489 µW at sf / 1.62 V / 27 °C) about 30 000× its tt value and not monotonic in
-its V or T neighbours; the record's author judged it a metastable/crowbar `op`
-solution rather than leakage and did not investigate further. **The idle verdict
-does not depend on it**: `osc_subth`'s ungated ~1 µA bias divider alone gives
-1.8 µW at tt / 1.80 V / 27 °C (over the 1 µW target), and the
-ff / 1.98 V / 125 °C bank sum is ~53 µW without that point (over the 10 µW
-fallback). Treat 490 µW as an upper-bound artifact until a better `op` is shown.
+**The idle figure is no longer suspect.** The 2026-11-05 idle binding figure
+(490 µW at sf / 1.62 V / 27 °C) was an `op` artifact of a non-unique DC solve
+on the gated-off ring: all nine flagged cells move to nA-scale leakage under
+the settle bench (0.36 nA at that cell, ~850 000× down), from every defined
+initial state tried (zero-IC, all-nodes-1.8 V `.ic`), with and without the
+rshunt option, and no other cell in either grid moves by more than 10×. The
+graded 125.9 µW binding figure is the physical leakage of the gated-off bank at
+125 °C: in the settled forced logic state, the OFF pull-up pfet of every
+alternate un-gated stage conducts min-channel-length subthreshold current —
+`osc_wire`'s W = 8 µm / L = 0.15 µm pfets at 2.38 µA each (fs / 1.98 V / 125 °C)
+× 15 stages ≈ 35.7 µW of its 70.6 µW, `osc_nmos`'s W = 3 µm / L = 0.15 µm pfets
+× 15 ≈ 23 µW of its 45 µW (isolated-device probes close both to ~2%), and
+`osc_subth` contributes ~10 µW of which ~2.2 µW is its ungated bias divider.
+The named next design iteration (recorded, not adopted): lengthen or gate the
+pull-ups of the un-gated stages, and adopt the `en`-gated divider candidate.
 
-Two further disclosures carried from the record: a bench option
-`.options rshunt=1e12` was added on the `osc_nmos` and `osc_wire` benches to
-make the gated-off idle `op` converge (a bench option, not a model change;
-below the nA-scale idle currents but not zero), and active mean current is taken
-over the second half of each transient window, not an integer number of cycles
-(error ≤ 1 cycle per window).
+**`osc_subth`'s divider is ungated in the ratified design and an `en`-gated
+candidate exists.** The candidate (`sim/power/cand/osc_subth_gated.spice`, one
+edit: the divider return through an en-gated nfet) cuts the nominal-cell idle
+current from 1.004 µA to 0.478 nA (~2100×), keeps `vbp` within ~1 mV of the
+design tap, leaves the oscillation frequency unchanged within 1 % everywhere
+both rings resolve, and starts up in under 10 ns after `en` rises. It is **not
+adopted**: `design/osc_bank/` is item-1 / LVS / pex evidence; adoption would
+invalidate the `osc_subth` rows 1-4, Monte Carlo, layout, LVS and pex evidence
+and is a follow-up issue.
+
+Disclosures carried from the record: `.options rshunt=1e12` stays on the two
+settle benches (it fails to converge without it on two ss / −40 °C `osc_wire`
+cells; at the nA scale of the −40 °C cells it contributes ~0.3–0.4 nA, six
+orders below the binding figure); active mean current is taken over the second
+half of each transient window, not an integer number of cycles (error ≤ 1 cycle
+per window).
 
 ---
 

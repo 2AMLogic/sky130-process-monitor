@@ -1,0 +1,53 @@
+{
+  "netlist": "../tb/idle_osc_nmos_settle.spice",
+  "engine": "ngspice",
+  "models": {
+    "pdk": "sky130A",
+    "lib": "libs.tech/ngspice/sky130.lib.spice"
+  },
+  "options": {
+    "timeout_s": 3000,
+    "retry_on_convergence_error": true
+  },
+  "batch": {
+    "job_ceiling_check": "warn"
+  },
+  "backend": "batch",
+  "corners": {
+    "process": [
+      "tt",
+      "ff",
+      "ss",
+      "sf",
+      "fs"
+    ],
+    "supply_v": {
+      "vdd": [
+        1.62,
+        1.8,
+        1.98
+      ]
+    },
+    "temperature_c": [
+      -40,
+      27,
+      125
+    ]
+  },
+  "analysis": {
+    "kind": "tran",
+    "args": "10n 1000n"
+  },
+  "measurements": [
+    {
+      "name": "i_vdd",
+      "spice": ".meas tran i_vdd avg i(Vdd) from=500n to=1000n",
+      "unit": "A"
+    },
+    {
+      "name": "i_vdd_early",
+      "spice": ".meas tran i_vdd_early avg i(Vdd) from=250n to=500n",
+      "unit": "A"
+    }
+  ]
+}

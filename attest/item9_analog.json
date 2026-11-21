@@ -224,6 +224,9 @@
       }
     },
     {
+      "path": "sim/power/cand/osc_subth_gated.spice"
+    },
+    {
       "path": "sim/power/requests/active_osc_hd.json",
       "cold_start": {
         "argv": [
@@ -280,12 +283,68 @@
       }
     },
     {
+      "path": "sim/power/requests/active_osc_subth_cells.json",
+      "cold_start": {
+        "argv": [
+          "klt",
+          "sim",
+          "active_osc_subth_cells.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/power/requests",
+        "local_only": true,
+        "timeout_s": 600
+      }
+    },
+    {
       "path": "sim/power/requests/active_osc_wire.json",
       "cold_start": {
         "argv": [
           "klt",
           "sim",
           "active_osc_wire.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/power/requests",
+        "local_only": true,
+        "timeout_s": 600
+      }
+    },
+    {
+      "path": "sim/power/requests/gated_subth_active_cells.json",
+      "cold_start": {
+        "argv": [
+          "klt",
+          "sim",
+          "gated_subth_active_cells.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/power/requests",
+        "local_only": true,
+        "timeout_s": 600
+      }
+    },
+    {
+      "path": "sim/power/requests/gated_subth_idle.json",
+      "cold_start": {
+        "argv": [
+          "klt",
+          "sim",
+          "gated_subth_idle.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/power/requests",
+        "local_only": true,
+        "timeout_s": 600
+      }
+    },
+    {
+      "path": "sim/power/requests/gated_subth_idle_tran_xcheck.json",
+      "cold_start": {
+        "argv": [
+          "klt",
+          "sim",
+          "gated_subth_idle_tran_xcheck.json",
           "--dry-run"
         ],
         "cwd": "sim/power/requests",
@@ -314,6 +373,20 @@
           "klt",
           "sim",
           "idle_osc_nmos.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/power/requests",
+        "local_only": true,
+        "timeout_s": 600
+      }
+    },
+    {
+      "path": "sim/power/requests/idle_osc_nmos_settle.json",
+      "cold_start": {
+        "argv": [
+          "klt",
+          "sim",
+          "idle_osc_nmos_settle.json",
           "--dry-run"
         ],
         "cwd": "sim/power/requests",
@@ -364,6 +437,76 @@
       }
     },
     {
+      "path": "sim/power/requests/idle_osc_wire_settle.json",
+      "cold_start": {
+        "argv": [
+          "klt",
+          "sim",
+          "idle_osc_wire_settle.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/power/requests",
+        "local_only": true,
+        "timeout_s": 600
+      }
+    },
+    {
+      "path": "sim/power/requests/xcheck_settle_osc_nmos_ic.json",
+      "cold_start": {
+        "argv": [
+          "klt",
+          "sim",
+          "xcheck_settle_osc_nmos_ic.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/power/requests",
+        "local_only": true,
+        "timeout_s": 600
+      }
+    },
+    {
+      "path": "sim/power/requests/xcheck_settle_osc_nmos_norshunt.json",
+      "cold_start": {
+        "argv": [
+          "klt",
+          "sim",
+          "xcheck_settle_osc_nmos_norshunt.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/power/requests",
+        "local_only": true,
+        "timeout_s": 600
+      }
+    },
+    {
+      "path": "sim/power/requests/xcheck_settle_osc_wire_ic.json",
+      "cold_start": {
+        "argv": [
+          "klt",
+          "sim",
+          "xcheck_settle_osc_wire_ic.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/power/requests",
+        "local_only": true,
+        "timeout_s": 600
+      }
+    },
+    {
+      "path": "sim/power/requests/xcheck_settle_osc_wire_norshunt.json",
+      "cold_start": {
+        "argv": [
+          "klt",
+          "sim",
+          "xcheck_settle_osc_wire_norshunt.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/power/requests",
+        "local_only": true,
+        "timeout_s": 600
+      }
+    },
+    {
       "path": "sim/power/tb/active_osc_hd.spice"
     },
     {
@@ -379,10 +522,22 @@
       "path": "sim/power/tb/active_osc_wire.spice"
     },
     {
+      "path": "sim/power/tb/gated_subth_active.spice"
+    },
+    {
+      "path": "sim/power/tb/gated_subth_idle.spice"
+    },
+    {
+      "path": "sim/power/tb/gated_subth_idle_tran.spice"
+    },
+    {
       "path": "sim/power/tb/idle_osc_hd.spice"
     },
     {
       "path": "sim/power/tb/idle_osc_nmos.spice"
+    },
+    {
+      "path": "sim/power/tb/idle_osc_nmos_settle.spice"
     },
     {
       "path": "sim/power/tb/idle_osc_pmos.spice"
@@ -392,6 +547,21 @@
     },
     {
       "path": "sim/power/tb/idle_osc_wire.spice"
+    },
+    {
+      "path": "sim/power/tb/idle_osc_wire_settle.spice"
+    },
+    {
+      "path": "sim/power/tb/xcheck_settle_osc_nmos_ic.spice"
+    },
+    {
+      "path": "sim/power/tb/xcheck_settle_osc_nmos_norshunt.spice"
+    },
+    {
+      "path": "sim/power/tb/xcheck_settle_osc_wire_ic.spice"
+    },
+    {
+      "path": "sim/power/tb/xcheck_settle_osc_wire_norshunt.spice"
     },
     {
       "path": "sim/sensitivity/analyze.py"
