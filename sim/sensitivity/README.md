@@ -18,7 +18,7 @@ quoted**: the margin below is a discrimination statistic, not an accuracy.
 | `requests/*_osc_hd_5p.json` | osc_hd re-run with a 5 ps max step (grid, nominal MC, off-nominal MC); results in `records/2026-11-05-osc-hd-step-refined.md` |
 | `analyze.py` | frequency extraction, sensitivity matrix, SVD / κ / rank, margin, counter-gate sweep (stdlib only) |
 | `test_analyze.py` | unit tests on synthetic data: `python3 -I sim/sensitivity/test_analyze.py` |
-| `records/` | dated, append-only result records (never edited; a re-run is a new dated file). `2026-11-14-osc-subth-gate-sizing.md` sizes the `osc_subth` counter gate: counts and cold-cell (1.98 V / −40 °C) margin versus gate exponent `k`, and the result against spec §6 conversion time |
+| `records/` | dated, append-only result records (never edited; a re-run is a new dated file). `2026-11-14-osc-subth-gate-sizing.md` sizes the `osc_subth` counter gate: counts and cold-cell (1.98 V / −40 °C) margin versus gate exponent `k`, and the result against spec §6 conversion time. `2026-11-21-osc-subth-cold-iteration.md` (issue #278) sweeps the oscillator-side levers (divider ratio, header W/L, stage count) against the five cold cells, using the variant decks under `sim/subthreshold/variants/` |
 
 ## Running
 

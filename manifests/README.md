@@ -150,7 +150,10 @@ Two inventories, one per partition (item 9 is graded per partition):
   procedure's own Python bench under `sim/solve/`, the PEX grader behind the item-8 derived grade,
   the shared sibling-module loader those benches import at run time, and the owner data files
   those benches load
-  (263 files: 91 decks and per-bench requests, plus 158 `sim/solve/mc/` requests, the 6
+  (297 files: 125 decks and per-bench requests — including the 34-file `sim/subthreshold/variants/`
+  cold-iteration bench of issue #278 (5 variant decks + 5 testbench bodies + the header probe deck,
+  11 grid/MC/probe requests, 10 single-cell cold fills, and its `gen_variants.py` / `compare.py`
+  post-processors) — plus 158 `sim/solve/mc/` requests, the 6
   `sim/solve/` drivers and unittest suites, the 3 `sim/sensitivity/` Python modules the solve
   bench imports at run time — `analyze.py`, `gen_requests.py` and `test_analyze.py` — the PEX
   grader `sim/pex/grade_pex.py`, the 3
