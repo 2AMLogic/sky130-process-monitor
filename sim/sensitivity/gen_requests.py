@@ -171,15 +171,22 @@ def cold_sf_requests():
 # Cold-cell completion, second round (issue #277): the four osc_subth cells the 2 ms grid window
 # could not resolve (ss/{1.62,1.80} V, sf/{1.62,1.80} V, all -40 C). Windows are sized from the #44
 # 2 ms edge-spacing runs (records in sim/subthreshold/README.md: ss 1.80 V ~3.0 kHz, ss 1.62 V
-# ~1.25 kHz, sf 1.80 V one edge in 2 ms, sf 1.62 V no edge in 2 ms) with >=2x margin over the
-# "first edge + 8 periods" the analyze.py estimator needs (9 rising edges), and the sf 1.62 V cell
-# gets the longest window because its period is the longest unknown. New names; nothing is rewritten.
+# ~1.25 kHz, sf 1.80 V one edge at 1.94 ms, sf 1.62 V no edge in 2 ms) with >=2x margin over the
+# "first edge + 8 periods" the analyze.py estimator needs (9 rising edges); the sf 1.62 V cell
+# gets the longest window because its period is the longest unknown. The max step (the tran first
+# arg caps ngspice's internal step) is set per window so every job is ~1M internal steps:
+# grid_osc_subth_sf_cold measured ~1.2 us/step on the fleet (2 ms at 20 ns = 100k steps, 117 s),
+# so ~1M steps lands near 1200 s, inside the 3480 s per-unit timeout with ~2.9x margin -- a flat
+# 10 ns step would need 4M/8M steps at the two sf windows and hit the fleet's 3600 s whole-job
+# ceiling. The coarsest step (80 ns) still samples the slowest expected period (>=1 ms) more than
+# 12,000 times, so edge-time quantisation stays <= 0.008 % of one period. New names; nothing is
+# rewritten.
 COLD2_SUBTH = [
-    # (process, vdd, tran window, why this window)
+    # (process, vdd, tran "tstep tstop", why this window)
     ("ss", 1.80, "10n 10m"),   # ~328 us period: 9 edges by ~3 ms; 10 ms >= 3x margin (the sf_cold shape)
-    ("ss", 1.62, "10n 20m"),   # ~800 us period: 9 edges by ~7.2 ms; 20 ms ~ 2.8x margin
-    ("sf", 1.80, "10n 40m"),   # one edge at 1.94 ms in 2 ms; period ~2-3 ms by the sf 1.98 V fill scaled
-    ("sf", 1.62, "10n 80m"),   # no edge in 2 ms; longest unknown, may still record no oscillation
+    ("ss", 1.62, "20n 20m"),   # ~800 us period: 9 edges by ~7.2 ms; 20 ms ~ 2.8x margin
+    ("sf", 1.80, "40n 40m"),   # one edge at 1.94 ms in 2 ms; period ~2-3 ms by the sf 1.98 V fill scaled
+    ("sf", 1.62, "80n 80m"),   # no edge in 2 ms; longest unknown, may still record no oscillation
 ]
 
 

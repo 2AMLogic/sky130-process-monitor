@@ -7,7 +7,7 @@
   },
   "analysis": {
     "kind": "tran",
-    "args": "10n 40m"
+    "args": "40n 40m"
   },
   "measurements": [
     {
