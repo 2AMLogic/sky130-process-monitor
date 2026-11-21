@@ -15,8 +15,12 @@ Conventions (grading choices made here; none relaxes the spec, no limit is edite
     oscillators used. A draw missing any needed oscillator reading is NOT imputed: it is reported as a null
     (counted `errored` by klt yield) so the shortfall is visible.
   * Reading noise = the MC sample itself (mismatch) plus counter quantization (analyze.sigma_quant), seeded.
-    Estimator weights = per-oscillator sqrt(sigma_quant^2 + sigma_mc_cell^2), sigma_mc_cell from that cell's
-    own samples (not the pooled value solve.py uses).
+    Estimator weights = per-oscillator sqrt(sigma_quant^2 + sigma_mc_cell^2), sigma_mc_cell the per-cell
+    estimate analyze.mc_sigmas already computes from that cell's own samples (not the pooled value
+    solve.py uses). A cell is weightable only when that estimate exists -- a zero mismatch sigma counts
+    as existing -- so eligibility is the estimate's availability, never a raw slot count: a cell with
+    too few usable draws is excluded up front instead of passing selection and failing the weighting
+    with a None sigma (#288).
   * Row 3 (V solve, T known, corner unknown): `solve.solve_v` over `solve.VGRID` -- literally the estimator and
     grid solve.row3 grades -- with every model in-sample (the binding cell is the 1.62 V edge, which solve.py
     also treats as in-sample). Sample = V_est - V_true [V].
@@ -53,21 +57,25 @@ def cell_samples(mc, osc, p, v, t):
     return mc["samples"].get("%s|%s|%.2f|%d" % (osc, p, v, t), [])
 
 
-def sigma_cell(vals):
-    xs = [math.log(x) for x in vals if x]
-    if len(xs) < 3:
-        return None
-    mu = sum(xs) / len(xs)
-    return math.sqrt(sum((x - mu) ** 2 for x in xs) / (len(xs) - 1))
+def _cell_sigma(per, osc, p, v, t):
+    """The sensitivity analyzer's per-cell mismatch sigma (analyze.mc_sigmas `per` map); None if absent.
+
+    analyze.mc_sigmas skips cells with fewer than three usable draws, so availability of the estimate
+    -- not a raw slot count -- is what makes a cell weightable (#288). A zero sigma (no observed
+    spread) is a real estimate and counts as available.
+    """
+    e = per.get(osc, {}).get((p, float(v), int(t)))
+    return None if e is None else e[0]
 
 
 def draws(tab, mc, oscs, p, v, t, rng, defect=0.0):
     """-> (list of {osc: ln f reading} or None per draw k, {osc: weight sigma}, n)."""
     sam = {o: cell_samples(mc, o, p, v, t) for o in oscs}
     n = min(len(s) for s in sam.values()) if sam else 0
+    per, _ = A.mc_sigmas(mc)
     sg = {}
     for o in oscs:
-        sm = sigma_cell(sam[o])
+        sm = _cell_sigma(per, o, p, v, t)
         sg[o] = None if sm is None else math.sqrt(A.sigma_quant(tab[(o, p, v, t)]) ** 2 + sm ** 2)
     out = []
     for k in range(n):
@@ -83,7 +91,8 @@ def draws(tab, mc, oscs, p, v, t, rng, defect=0.0):
 
 
 def usable(mc, tab, p, v, t):
-    return [o for o in A.OSCS if len(cell_samples(mc, o, p, v, t)) >= 3
+    per, _ = A.mc_sigmas(mc)
+    return [o for o in A.OSCS if _cell_sigma(per, o, p, v, t) is not None
             and tab.get((o, p, v, t))]
 
 
@@ -107,9 +116,10 @@ def row3_samples(tab, mc, seed, defect=0.0):
 
 def row4_samples(tab, mc, mc_nom, seed, defect=0.0):
     p0, v0, t0 = CELLS["row4"]
+    per_nom, _ = A.mc_sigmas(mc_nom)
     oscs = [o for o in usable(mc, tab, p0, v0, t0)
             if all(tab.get((o, "tt", v, t)) for v in A.VDD for t in A.TEMP)
-            and len(cell_samples(mc_nom, o, p0, 1.8, 27)) >= 3]
+            and _cell_sigma(per_nom, o, p0, 1.8, 27) is not None]
     if len(oscs) < 2:
         return None, oscs
     rng = random.Random("%s|y4|%s" % (seed, defect))
@@ -130,7 +140,9 @@ def row4_samples(tab, mc, mc_nom, seed, defect=0.0):
 
 def row2_samples(tab, mc, seed, defect=0.0):
     v0, t0 = CELLS["row2"]
-    oscs = [o for o in A.OSCS if all(len(cell_samples(mc, o, p, v0, t0)) >= 3 and tab.get((o, p, v0, t0))
+    per, _ = A.mc_sigmas(mc)
+    oscs = [o for o in A.OSCS if all(_cell_sigma(per, o, p, v0, t0) is not None
+                                    and tab.get((o, p, v0, t0))
                                     for p in A.PROCESS)]
     if A.BASELINE not in oscs or len(oscs) < 2:
         return None, oscs
