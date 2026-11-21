@@ -23,7 +23,7 @@ of the gap to T1: #5.
 | 4 LVS clean | **unmet**, `no_evidence` (#26) | met |
 | 5 Corner verification | **unmet**, `check_failed` | met |
 | 6 Monte Carlo | **unmet**, `check_failed` (#31) | not applicable |
-| 7 Post-layout | **unmet**, `check_failed` (#32, #117) | met |
+| 7 Post-layout | **unmet**, `check_failed` (#32, #264) | met |
 | 8 Characterization report | **unmet**, `check_failed` | **unmet**, `check_failed` |
 | 9 Testbenches shipped | met | met |
 | 10 Repo hygiene | met | met |
@@ -83,7 +83,7 @@ which await promotion.
 - **Re-grade spec rows 2–4 on extracted frequencies.** After #32; needs a frequency, not the quantised
   edge count `klt pex` reports today. *Done when* a record under `sim/pex/records/` gives the row 2–4
   verdicts on extracted values. No issue yet.
-- **Native-deck DRC on the analog stream.** After #117, because the layout must stay unchanged for that
+- **Native-deck DRC on the analog stream.** After #32 (#264), because the layout must stay unchanged for that
   re-check. Rework the generator's li1 / licon geometry. *Done when* `klt drc --engine klayout` reports
   no `ct.4` / `li.5` on `osc_bank` and DRC, LVS and the item-2 attestation are re-run. No issue yet.
 - **11.analog** (#33), after 4.analog is met (#26).
