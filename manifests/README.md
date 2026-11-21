@@ -9,8 +9,8 @@ checklist: the `klt signoff` input and its committed output.
   `mixed-signal`; `partition_boundary` states the intended analog/digital
   split as the top-level README describes it today (the grader reports it and
   does not grade it; the target spec is ratified — decision 0001, 2026-10-17 —
-  and the split mirrors that README). Its `evidence` block cites seventeen
-  keys today. Most are single-envelope pass citations; three are lists and
+  and the split mirrors that README). Its `evidence` block cites twenty
+  keys today. Most are single-envelope citations; four are lists and
   one is a `not_applicable` block, marked as such:
 
   | keys | evidence directory | form |
@@ -23,10 +23,12 @@ checklist: the `klt signoff` input and its committed output.
   | `6.digital` | `spec/`, `verification/readout/` | **`not_applicable` block** — a spec citation plus a statement, not a pass |
   | `7.analog` | `sim/pex/records/` | **list** — the four `2026-11-10-osc_*.pex.report.json` |
   | `7.digital` | `verification/readout/` | SDF-annotated functional report |
+  | `8.analog`, `8.digital` | `evidence/` | one hand-assembled `generic` envelope each (no klt aggregation verb, klayout-tools#309), grading `check_failed` today |
   | `11.digital` | `erc/`, `lvs/`, `layout/readout/` | **list** — ERC, LVS and layout reports |
+  | `11.analog` | `erc/` | **list** — the five per-oscillator ERC reports (`11.analog` stays `unmet`: the LVS half, #26/#33, is not cited yet) |
 
-  Four rows remain uncited, matching the record's `no_evidence` rows:
-  `4.analog`, `8.analog`, `8.digital` and `11.analog`.
+  One row remains uncited, matching the record's `no_evidence` row:
+  `4.analog` (#26).
   The bare key `"10"` covers both the analog and digital partitions. The
   per-item sections below (`## Item 10 attestation`, `## Item 1 attestations`,
   `## Item 2 attestations`, `## Item 3 (DRC)`, `## Item 5 (digital)`,
@@ -43,8 +45,10 @@ checklist: the `klt signoff` input and its committed output.
   (items 1, 2, 3, 9 and 10 on both partitions, plus 4.digital, 5.digital, 7.digital and
   11.digital); 6.digital
   reads `not_applicable`; 5.analog, 6.analog, 7.analog and item 8 on both partitions read
-  `unmet` / `check_failed` (their cited envelopes grade, and fail their targets); and 4.analog and
-  11.analog read `unmet` / `no_evidence`. The T2-T4 tier rows read `unmet` / `tier_not_supported` (the grader does
+  `unmet` / `check_failed` (their cited envelopes grade, and fail their targets); 4.analog reads
+  `unmet` / `no_evidence`; and 11.analog reads `unmet` / `power_delivery_parts_missing` — its ERC
+  half is cited (`erc/osc_*.report.json`, #276) and the missing part is the LVS half (#26/#33).
+  The T2-T4 tier rows read `unmet` / `tier_not_supported` (the grader does
   not grade those tiers). Never hand-edit it.
 
 ## Regenerate
