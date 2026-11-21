@@ -3,14 +3,14 @@
   "kind": "generic",
   "status": "pass",
   "t1_item": 9,
-  "summary": "T1 item 9 (Testbenches shipped): 487/487 attestation checks passed (klt signoff --attest)",
+  "summary": "T1 item 9 (Testbenches shipped): 544/544 attestation checks passed (klt signoff --attest)",
   "source": "attest/item9_analog.json",
   "attestation": {
     "producer": "klt signoff --attest",
     "inventory_schema_version": 1,
     "hash_algorithm": "sha256-raw-bytes",
-    "check_count": 487,
-    "passed_count": 487,
+    "check_count": 544,
+    "passed_count": 544,
     "checks": [
       {
         "check": "present",
@@ -1845,6 +1845,244 @@
         "path": "sim/subthreshold/probe_tb.spice",
         "passed": true,
         "content_hash": "sha256:0ffbdbdf5f8bd1d572c72ef946ad63969311b049d26957334229ce244af64240"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/subthreshold/variants/compare.py",
+        "passed": true,
+        "content_hash": "sha256:a055c2158aece4e0aa81c67fa721d14db9ecbd65abcbfef81e4563244c460a35"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/subthreshold/variants/gen_variants.py",
+        "passed": true,
+        "content_hash": "sha256:3edd4d6fc83638e9bdc0d06c19b86de2cf9320dd27b6f76852f4bcd3963d79b6"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/subthreshold/variants/osc_subth_hl35.spice",
+        "passed": true,
+        "content_hash": "sha256:cf5de9be333d6bdcf98d41887480e90efdaef46ad2cf45df08fcd7ed88fb6c50"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/subthreshold/variants/osc_subth_hw3.spice",
+        "passed": true,
+        "content_hash": "sha256:9535f46c4ac52b0ba375819251bbc506a96dba9d73e8889963f66d9a40c7ce78"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/subthreshold/variants/osc_subth_st11.spice",
+        "passed": true,
+        "content_hash": "sha256:b181d6ad5eaf389908caf9c1a86d4aeab888d432afadb5913d99ceb72e537434"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/subthreshold/variants/osc_subth_vbp_1_2.spice",
+        "passed": true,
+        "content_hash": "sha256:27016b247e2d65208d145408bec2b39ce68c4679c1116f22efdfc8ff3ddb6c22"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/subthreshold/variants/osc_subth_vbp_2_3.spice",
+        "passed": true,
+        "content_hash": "sha256:925641068ffb2d40f3cb3f5cd949b9fac3644d44a9f4a28b8910ebdf8f9f2836"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/subthreshold/variants/probe_hdr_tb.spice",
+        "passed": true,
+        "content_hash": "sha256:bd4c3f964f68e9bd31f9d0992e2023bbe92136d9eb7a4b777b68cb4b235c5c8b"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/subthreshold/variants/requests/cold_osc_subth_hw3_sf_1.62V_-40C.json",
+        "passed": true,
+        "content_hash": "sha256:300dc439e8e72c2f936352532646aae457447c9ec6daf7824341bd4e6045614e"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/subthreshold/variants/requests/cold_osc_subth_hw3_sf_1.8V_-40C.json",
+        "passed": true,
+        "content_hash": "sha256:3498c97270f81c7b4d726686465e829f04f4e245c4181bc79d2230820ae4c9af"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/subthreshold/variants/requests/cold_osc_subth_hw3_sf_1.98V_-40C.json",
+        "passed": true,
+        "content_hash": "sha256:03edceda99ec3812a02b28be60c282ebed011ccb7cb5fae0aa4c1e04f32fdde6"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/subthreshold/variants/requests/cold_osc_subth_hw3_ss_1.62V_-40C.json",
+        "passed": true,
+        "content_hash": "sha256:c9c62a942b3f6617944107f1585e4a1d0d02b2a9a9a21671028bf64518140890"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/subthreshold/variants/requests/cold_osc_subth_hw3_ss_1.8V_-40C.json",
+        "passed": true,
+        "content_hash": "sha256:d6baf929d458bc8d8ed0b5ba3991804e1719f032e9ea9a0edf061c2d0c6759aa"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/subthreshold/variants/requests/cold_osc_subth_st11_sf_1.62V_-40C.json",
+        "passed": true,
+        "content_hash": "sha256:aca4b09b57258a69cb0cdc44dec8f3326df4de628717eab239c1d9c3a8d89c37"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/subthreshold/variants/requests/cold_osc_subth_st11_sf_1.8V_-40C.json",
+        "passed": true,
+        "content_hash": "sha256:96a03232fbb0d105e4d318b786f5cf02781ce813c8700796b34f22813819a6da"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/subthreshold/variants/requests/cold_osc_subth_st11_sf_1.98V_-40C.json",
+        "passed": true,
+        "content_hash": "sha256:4912d8de612a8a6b07c816fd0c75a3f56d13da66912789c841ca5cd4a4021f2d"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/subthreshold/variants/requests/cold_osc_subth_st11_ss_1.62V_-40C.json",
+        "passed": true,
+        "content_hash": "sha256:8fa791d8fc4dbd7f8785c907b48f70f8735465ab0c9160a85217c08eea76dd54"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/subthreshold/variants/requests/cold_osc_subth_st11_ss_1.8V_-40C.json",
+        "passed": true,
+        "content_hash": "sha256:718ab028d0141284ef09ed62f331e1db70337efe4c4497255a9ec6f04a8fe943"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/subthreshold/variants/requests/grid_osc_subth_hl35.json",
+        "passed": true,
+        "content_hash": "sha256:ab5b80dfec06df8e93341ef0535e3178a818bbecddc56aa057e7c1e9e735c7b0"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/subthreshold/variants/requests/grid_osc_subth_hw3.json",
+        "passed": true,
+        "content_hash": "sha256:df4d49dbea4e43552e85ddcd1f4d09cb65d5f6f902bd97e426d7dc7d2d8f1384"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/subthreshold/variants/requests/grid_osc_subth_st11.json",
+        "passed": true,
+        "content_hash": "sha256:65d18fe476b8c0f62ead4659bbc55c4312769cf5c0b69f2f8298decb435acc11"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/subthreshold/variants/requests/grid_osc_subth_vbp_1_2.json",
+        "passed": true,
+        "content_hash": "sha256:8f85568e4159acf7a6f989492530b8e575b97cb982ee20f3a0959a2758221e4b"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/subthreshold/variants/requests/grid_osc_subth_vbp_2_3.json",
+        "passed": true,
+        "content_hash": "sha256:65a00f3821741a68995b5bae26a47671cafc024a7d4436db6913bbdca6f6ec26"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/subthreshold/variants/requests/mc_osc_subth_hl35.json",
+        "passed": true,
+        "content_hash": "sha256:ff3c14bcd7f5ce43539b00976fc0271a31e8b714a77573d4efccd331e2941076"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/subthreshold/variants/requests/mc_osc_subth_hw3.json",
+        "passed": true,
+        "content_hash": "sha256:07b190e1db0d06ed991bc90981bf284f7bac8f99807764221c6155ba706d4df2"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/subthreshold/variants/requests/mc_osc_subth_st11.json",
+        "passed": true,
+        "content_hash": "sha256:a458dc8d236e266496a70e68d5e5e3e23f74d387e416bb7145cfa15501877848"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/subthreshold/variants/requests/mc_osc_subth_vbp_1_2.json",
+        "passed": true,
+        "content_hash": "sha256:b0b81265b41ee25091e1e056f7a1a5a21f4b274648f815ee0362385fb5c225d0"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/subthreshold/variants/requests/mc_osc_subth_vbp_2_3.json",
+        "passed": true,
+        "content_hash": "sha256:90152ed55edabc6774d5df9f3c402ffa486401c7ac5e6c1c934f6dc0b039f307"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/subthreshold/variants/requests/probe_hdr.json",
+        "passed": true,
+        "content_hash": "sha256:e6df99a8675ba25d20a62b8e7d6781aeb1c934409f0be29e62208b08fa5866c8"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/subthreshold/variants/tb_osc_subth_hl35.spice",
+        "passed": true,
+        "content_hash": "sha256:e3acdca54becb21a78e2c3319513f99b948f5f2bc144ba50d83ff249002837fd"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/subthreshold/variants/tb_osc_subth_hw3.spice",
+        "passed": true,
+        "content_hash": "sha256:9833ae1730146cbffa3da2c4ca42d1e07f902d578e41539cde191fd0e4fb2735"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/subthreshold/variants/tb_osc_subth_st11.spice",
+        "passed": true,
+        "content_hash": "sha256:85a755b8202a7172af05475c3be04827627e23fe97109c4a31d95ced7fa78a04"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/subthreshold/variants/tb_osc_subth_vbp_1_2.spice",
+        "passed": true,
+        "content_hash": "sha256:76b65b7388b466e59f6c0d73fef881752f694ae018bb09a2f55dea2c775412e1"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/subthreshold/variants/tb_osc_subth_vbp_2_3.spice",
+        "passed": true,
+        "content_hash": "sha256:84510b4f935abf3deadb481500a89fd81ffec0492d2e63d6889e078860cfd7aa"
       },
       {
         "check": "present",
@@ -5170,6 +5408,351 @@
         "local_only": true
       },
       {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/subthreshold/variants/compare.py",
+        "argv": [
+          "python3",
+          "-I",
+          "sim/subthreshold/variants/compare.py",
+          "--selftest"
+        ],
+        "cwd": ".",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/subthreshold/variants/gen_variants.py",
+        "argv": [
+          "python3",
+          "-I",
+          "sim/subthreshold/variants/gen_variants.py",
+          "--check"
+        ],
+        "cwd": ".",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/subthreshold/variants/requests/cold_osc_subth_hw3_sf_1.62V_-40C.json",
+        "argv": [
+          "klt",
+          "sim",
+          "cold_osc_subth_hw3_sf_1.62V_-40C.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/subthreshold/variants/requests",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/subthreshold/variants/requests/cold_osc_subth_hw3_sf_1.8V_-40C.json",
+        "argv": [
+          "klt",
+          "sim",
+          "cold_osc_subth_hw3_sf_1.8V_-40C.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/subthreshold/variants/requests",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/subthreshold/variants/requests/cold_osc_subth_hw3_sf_1.98V_-40C.json",
+        "argv": [
+          "klt",
+          "sim",
+          "cold_osc_subth_hw3_sf_1.98V_-40C.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/subthreshold/variants/requests",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/subthreshold/variants/requests/cold_osc_subth_hw3_ss_1.62V_-40C.json",
+        "argv": [
+          "klt",
+          "sim",
+          "cold_osc_subth_hw3_ss_1.62V_-40C.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/subthreshold/variants/requests",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/subthreshold/variants/requests/cold_osc_subth_hw3_ss_1.8V_-40C.json",
+        "argv": [
+          "klt",
+          "sim",
+          "cold_osc_subth_hw3_ss_1.8V_-40C.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/subthreshold/variants/requests",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/subthreshold/variants/requests/cold_osc_subth_st11_sf_1.62V_-40C.json",
+        "argv": [
+          "klt",
+          "sim",
+          "cold_osc_subth_st11_sf_1.62V_-40C.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/subthreshold/variants/requests",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/subthreshold/variants/requests/cold_osc_subth_st11_sf_1.8V_-40C.json",
+        "argv": [
+          "klt",
+          "sim",
+          "cold_osc_subth_st11_sf_1.8V_-40C.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/subthreshold/variants/requests",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/subthreshold/variants/requests/cold_osc_subth_st11_sf_1.98V_-40C.json",
+        "argv": [
+          "klt",
+          "sim",
+          "cold_osc_subth_st11_sf_1.98V_-40C.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/subthreshold/variants/requests",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/subthreshold/variants/requests/cold_osc_subth_st11_ss_1.62V_-40C.json",
+        "argv": [
+          "klt",
+          "sim",
+          "cold_osc_subth_st11_ss_1.62V_-40C.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/subthreshold/variants/requests",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/subthreshold/variants/requests/cold_osc_subth_st11_ss_1.8V_-40C.json",
+        "argv": [
+          "klt",
+          "sim",
+          "cold_osc_subth_st11_ss_1.8V_-40C.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/subthreshold/variants/requests",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/subthreshold/variants/requests/grid_osc_subth_hl35.json",
+        "argv": [
+          "klt",
+          "sim",
+          "grid_osc_subth_hl35.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/subthreshold/variants/requests",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/subthreshold/variants/requests/grid_osc_subth_hw3.json",
+        "argv": [
+          "klt",
+          "sim",
+          "grid_osc_subth_hw3.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/subthreshold/variants/requests",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/subthreshold/variants/requests/grid_osc_subth_st11.json",
+        "argv": [
+          "klt",
+          "sim",
+          "grid_osc_subth_st11.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/subthreshold/variants/requests",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/subthreshold/variants/requests/grid_osc_subth_vbp_1_2.json",
+        "argv": [
+          "klt",
+          "sim",
+          "grid_osc_subth_vbp_1_2.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/subthreshold/variants/requests",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/subthreshold/variants/requests/grid_osc_subth_vbp_2_3.json",
+        "argv": [
+          "klt",
+          "sim",
+          "grid_osc_subth_vbp_2_3.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/subthreshold/variants/requests",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/subthreshold/variants/requests/mc_osc_subth_hl35.json",
+        "argv": [
+          "klt",
+          "sim",
+          "mc_osc_subth_hl35.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/subthreshold/variants/requests",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/subthreshold/variants/requests/mc_osc_subth_hw3.json",
+        "argv": [
+          "klt",
+          "sim",
+          "mc_osc_subth_hw3.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/subthreshold/variants/requests",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/subthreshold/variants/requests/mc_osc_subth_st11.json",
+        "argv": [
+          "klt",
+          "sim",
+          "mc_osc_subth_st11.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/subthreshold/variants/requests",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/subthreshold/variants/requests/mc_osc_subth_vbp_1_2.json",
+        "argv": [
+          "klt",
+          "sim",
+          "mc_osc_subth_vbp_1_2.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/subthreshold/variants/requests",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/subthreshold/variants/requests/mc_osc_subth_vbp_2_3.json",
+        "argv": [
+          "klt",
+          "sim",
+          "mc_osc_subth_vbp_2_3.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/subthreshold/variants/requests",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/subthreshold/variants/requests/probe_hdr.json",
+        "argv": [
+          "klt",
+          "sim",
+          "probe_hdr.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/subthreshold/variants/requests",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
         "check": "pin",
         "role": "pdk",
         "passed": true,
@@ -5199,7 +5782,7 @@
         "path": "attest/item9_analog.json",
         "scope": "repo"
       },
-      "content_hash": "sha256:4e20cadbd0aaa428cd5cd5a38a06c395e4256c41be49d8d64b23ec4e8a851607"
+      "content_hash": "sha256:69afa964b035a8cc01dd58714bd15d6ec94aa1d5591f52a2f186ad9e581a6c64"
     }
   }
 }
