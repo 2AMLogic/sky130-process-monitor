@@ -5,6 +5,15 @@ role. Newest first.
 
 ### 2026-11-20
 
+- **PR #284**: fix: name the PEX grader in the item-9 analog gate message
+- **PR #274**: docs: align extracted-side §1 and item-7 paragraphs with dev2493 osc_subth records
+- **PR #273**: docs(pex): disclose the 2026-11-20 osc_subth report's PDK compatibility mismatch
+- **PR #271**: fix: pin sim/pex/grade_pex.py in the item-9 analog attestation inventory
+- **Issue #272** (closed): signoff.yml's item-9 failure message still enumerates the analog inventory without the PEX grader
+- **Issue #268** (closed): Disclose the osc_subth PEX report’s PDK compatibility mismatch
+- **Issue #267** (closed): sim/pex/grade_pex.py is not in the item 9 inventory, so a grader change can silently stop reproducing a committed record
+- **Issue #266** (closed): characterization/analog.md still says osc_subth has no valid extraction and attributes a 0.8 us window to all four oscillators
+- **Issue #117** (closed): osc_subth: 14 series-header nets (vh1..vh14) are split in the extraction, ring stage PFET sources float
 - **PR #265**: docs(pex): record osc_subth full-box pex run on the net-split-fixed extractor; cite it under 7.analog
 
 ### 2026-11-18
