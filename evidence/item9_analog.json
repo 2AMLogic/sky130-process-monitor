@@ -3,14 +3,14 @@
   "kind": "generic",
   "status": "pass",
   "t1_item": 9,
-  "summary": "T1 item 9 (Testbenches shipped): 487/487 attestation checks passed (klt signoff --attest)",
+  "summary": "T1 item 9 (Testbenches shipped): 498/498 attestation checks passed (klt signoff --attest)",
   "source": "attest/item9_analog.json",
   "attestation": {
     "producer": "klt signoff --attest",
     "inventory_schema_version": 1,
     "hash_algorithm": "sha256-raw-bytes",
-    "check_count": 487,
-    "passed_count": 487,
+    "check_count": 498,
+    "passed_count": 498,
     "checks": [
       {
         "check": "present",
@@ -360,7 +360,7 @@
         "role": "testbench",
         "path": "sim/sensitivity/gen_requests.py",
         "passed": true,
-        "content_hash": "sha256:96337c330f7841caee919b05f2ce9d904cba72c16c5adeb76913dd7414e48587"
+        "content_hash": "sha256:6557b87d75f9a6c5169d4a03028eb39adc455c7a375727bcb5e178ac9d702692"
       },
       {
         "check": "present",
@@ -375,6 +375,13 @@
         "path": "sim/sensitivity/osc/tb_osc_nmos.spice",
         "passed": true,
         "content_hash": "sha256:4a6470f54e67a9e9e1cb492b5b98c9dd7e47efddd891ad96936b2ac64e7d2a37"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/sensitivity/osc/tb_osc_nmos_probe.spice",
+        "passed": true,
+        "content_hash": "sha256:b2859c30c021029ba3795172d2afc54eaee4a7215423198feece0f7a380449f0"
       },
       {
         "check": "present",
@@ -442,9 +449,37 @@
       {
         "check": "present",
         "role": "testbench",
+        "path": "sim/sensitivity/requests/grid_osc_subth_sf_1.62V_-40C.json",
+        "passed": true,
+        "content_hash": "sha256:3c264bff53a6f3c091e736a356c69db02cb29c072237fa9e0c7a0dd6f76cdc92"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/sensitivity/requests/grid_osc_subth_sf_1.8V_-40C.json",
+        "passed": true,
+        "content_hash": "sha256:8d45aced7d9f9583b5c6916a9e20d3e63e4fa3375cdbe85888d74a855bc9ff87"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
         "path": "sim/sensitivity/requests/grid_osc_subth_sf_cold.json",
         "passed": true,
         "content_hash": "sha256:d235ba0eb41b1babc160f0543b97af131bcfc042f43cac8cdc9fe28fd1b3f001"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/sensitivity/requests/grid_osc_subth_ss_1.62V_-40C.json",
+        "passed": true,
+        "content_hash": "sha256:db264047009852f3b823ec7bf97516700a8278960784383312927a9279fc89d2"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/sensitivity/requests/grid_osc_subth_ss_1.8V_-40C.json",
+        "passed": true,
+        "content_hash": "sha256:fe09b8cd721431a48a1be4a2e74eb06619945dbe87157e53994acb018723d8a1"
       },
       {
         "check": "present",
@@ -561,6 +596,13 @@
       {
         "check": "present",
         "role": "testbench",
+        "path": "sim/sensitivity/requests/probe_nmos_tt_1.8V_-40C.json",
+        "passed": true,
+        "content_hash": "sha256:17d8411e06d115a0285fe155eae68f5f745532d0e8d346331642a61c80ffbf34"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
         "path": "sim/sensitivity/requests/probe_wire_sf.json",
         "passed": true,
         "content_hash": "sha256:41cfe60becc78dc5276018258850f0de5a9dd32d432ce76cb9614f3614ec4cf4"
@@ -605,7 +647,7 @@
         "role": "testbench",
         "path": "sim/solve/make_envelope.py",
         "passed": true,
-        "content_hash": "sha256:f36d97679e258886317e3e9f89877d01484960f939c6bebc3eb6217c65f560bc"
+        "content_hash": "sha256:c31a1beb51c601c75b25552d14baccf1169b039b9660aa1f257117c9c1931527"
       },
       {
         "check": "present",
@@ -2267,11 +2309,71 @@
       {
         "check": "command",
         "role": "cold_start",
+        "testbench": "sim/sensitivity/requests/grid_osc_subth_sf_1.62V_-40C.json",
+        "argv": [
+          "klt",
+          "sim",
+          "grid_osc_subth_sf_1.62V_-40C.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/sensitivity/requests",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/sensitivity/requests/grid_osc_subth_sf_1.8V_-40C.json",
+        "argv": [
+          "klt",
+          "sim",
+          "grid_osc_subth_sf_1.8V_-40C.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/sensitivity/requests",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
         "testbench": "sim/sensitivity/requests/grid_osc_subth_sf_cold.json",
         "argv": [
           "klt",
           "sim",
           "grid_osc_subth_sf_cold.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/sensitivity/requests",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/sensitivity/requests/grid_osc_subth_ss_1.62V_-40C.json",
+        "argv": [
+          "klt",
+          "sim",
+          "grid_osc_subth_ss_1.62V_-40C.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/sensitivity/requests",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/sensitivity/requests/grid_osc_subth_ss_1.8V_-40C.json",
+        "argv": [
+          "klt",
+          "sim",
+          "grid_osc_subth_ss_1.8V_-40C.json",
           "--dry-run"
         ],
         "cwd": "sim/sensitivity/requests",
@@ -2512,6 +2614,21 @@
           "klt",
           "sim",
           "mc_osc_wire.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/sensitivity/requests",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/sensitivity/requests/probe_nmos_tt_1.8V_-40C.json",
+        "argv": [
+          "klt",
+          "sim",
+          "probe_nmos_tt_1.8V_-40C.json",
           "--dry-run"
         ],
         "cwd": "sim/sensitivity/requests",
@@ -5199,7 +5316,7 @@
         "path": "attest/item9_analog.json",
         "scope": "repo"
       },
-      "content_hash": "sha256:4e20cadbd0aaa428cd5cd5a38a06c395e4256c41be49d8d64b23ec4e8a851607"
+      "content_hash": "sha256:0fdec4f5f8221b4e5767ac0de6c3339f3036395750c746d81fa84bbfe2331c00"
     }
   }
 }
