@@ -14,7 +14,16 @@ and pin negative controls are in `sim/negative_controls.sh`.
 several (f_osc, k) pairs within the ±2 CDC tolerance, saturation and overflow, select switching, busy/done
 sequencing, `start` while busy, `CAL` read-back, reset values and reset mid-gate. Saturation preloads the counter
 through a hierarchical deposit because reaching 2^24 organically costs minutes of simulation. The log reports the
-five-oscillator read at 10 MHz, k = 10 as a simulated figure (RTL simulation, Icarus). `negative-control` runs with
+five-oscillator read at 10 MHz, k = 10 as a simulated figure (RTL simulation, Icarus). `conversion_time_surfaces`
+(spec §6, issue #281) drives the five oscillators at periods taken from the committed frequency surfaces
+(`sim/sensitivity/records/reports/`) at the nominal cell and the slowest-`osc_subth` cell (sf, 1.98 V, −40 °C),
+reads the bank at three gate settings (spec default 2^10; 2^14 on the whole bank; 2^14 on `osc_subth` only — the
+two k = 14 readings of `sim/sensitivity/records/2026-11-14-osc-subth-gate-sizing.md`), and writes
+`verification/readout/conversion-time.json` itself: per-oscillator and full-read conversion time in clk_ref cycles
+and seconds at 10 MHz, every oscillator period traced to a named surface report and grid cell, reads that do not
+complete recorded as such with gate and period, and each completed full read graded against the spec §6
+target / fallback / stretch bounds exactly as it comes out (the SDF-annotated run of the same test writes
+`conversion-time-sdf.json`, nominal cell only — see the post-layout section). `negative-control` runs with
 `READOUT_BREAK=1` (every expected count offset) and must fail with an `AssertionError`. cocotb is not provisioned on
 workers: use a venv inside the worktree (`sim/README.md`).
 
@@ -45,7 +54,12 @@ SIMULATED (Icarus 13.0, cocotb 2.1.0, `klt 0.9.2.dev460+g1c0ae85debd3`); nothing
 - Run: `request-sdf.json` re-runs `test_readout.py` unchanged on the routed `layout/readout/out/readout.v`
   with the PDK timing models (`primitives.v`, `sky130_fd_sc_hd.v`, no `FUNCTIONAL`), SDF corner `typ`.
   The three source/SDF paths are `~/.ciel` absolute PDK paths on this host; adjust for another install.
-  `functional-verification-sdf.report.json`: 8/8 passed, `environment.sdf.annotated: true`.
+  `functional-verification-sdf.report.json`: 9/9 passed, `environment.sdf.annotated: true` (regenerated at
+  `klayout-tools==0.9.1`, the CI pin, for issue #281: `conversion_time_surfaces` joined the selected tests and
+  writes `conversion-time-sdf.json` — nominal cell only, since the SDF is the `tt_025C_1v80` session). At the
+  pinned 0.9.1 the report's `environment.sdf.file` is the run's absolute SDF path by that version's contract
+  (the earlier `0.9.2.dev` build that produced the previous report relativized it); the committable reference
+  for the SDF is the request's own relative `options.sdf.file`.
   cocotb is not provisioned on workers, so the run used a throwaway
   `uvx --from "klayout-tools[functional-verification] @ git+https://github.com/2AMLogic/klayout-tools.git@1c0ae85d…" klt functional-verification request-sdf.json -o verification/readout/.fv-sdf --format json`.
 - Cited as `7.digital`; `klt signoff --manifest` grades it **met**.
@@ -53,7 +67,7 @@ SIMULATED (Icarus 13.0, cocotb 2.1.0, `klt 0.9.2.dev460+g1c0ae85debd3`); nothing
 Disclosed limits (not relaxed):
 
 1. **`saturation_overflow` is not run.** It deposits into `u_cnt.count` / reads `u_cnt.running`, hierarchy
-   that the flat routed netlist does not have. Selected tests (`testbench.testcase`): the other 8 of 9.
+   that the flat routed netlist does not have. Selected tests (`testbench.testcase`): the other 9 of 10.
 2. **Partial annotation.** `environment.sdf.partial: true`: 323 `TIMINGCHECK` entries are dropped (Icarus does
    not implement them, so setup/hold run against the cell library's placeholder checks, not the SDF's
    limits) and 164 zero-delay `INTERCONNECT` entries are removed. SPEF net coverage is 1254 of 1255

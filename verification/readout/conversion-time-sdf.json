@@ -1,0 +1,542 @@
+{
+ "schema": "sky130-process-monitor.conversion-time/1",
+ "kind": "SIMULATED",
+ "description": "Spec section 6 conversion time (full read of all five oscillators) at oscillator periods taken from the committed frequency surfaces, measured by the bench itself and graded against the spec bounds exactly as they come out. No spec bound is changed and no gate is picked by this record; reads that do not complete are recorded as such. Every oscillator period names its source surface report and grid cell. Count correctness is NOT graded here (other tests in this module do that); count_observed values are recorded unasserted.",
+ "bench": {
+  "test": "verification/readout/test_readout.py::conversion_time_surfaces",
+  "engine": "icarus via cocotb",
+  "reference_clock_hz": 10000000.0,
+  "read_sequence": "five host-sequenced reads in the fixed order osc_hd, osc_nmos, osc_pmos, osc_wire, osc_subth (CTRL sel 0..4); each oscillator's driver runs only during its own read (unselected osc inputs are ignored by the RTL clock mux, which switches only while not busy)",
+  "osc_assignment_note": "osc[i] / CTRL sel i is this bench's convention; neither rtl/ nor spec/ fixes an osc[i]-to-oscillator assignment (sta/run_osc_sta.py records the same gap)",
+  "phase_convention": "the oscillator's first rising edge is half an oscillator period after the clk_ref edge that samples the CTRL start write -- a fixed, reproducible mid-phase. When the gate window is shorter than one oscillator period, completion is phase-dependent (test_readout.py::k0_phase_sweep: a read hangs iff no rising edge lands inside the window), so this convention is part of the recorded result."
+ },
+ "leg": {
+  "id": "sdf-annotated-gate-level",
+  "sources": "layout/readout/out/readout.v + sky130_fd_sc_hd verilog + layout/readout/out_sdf/readout_route.sdf at corner typ (verification/readout/request-sdf.json)",
+  "detected_by": "dut.u_cnt hierarchy absent (flat routed netlist)",
+  "limits": [
+   "typ corner only: the SDF is the tt_025C_1v80 post-route session, so only the nominal cell is run; the sf_1v98_n40C cell is a corner mismatch and is not",
+   "partial annotation (Icarus drops SDF TIMINGCHECK and the zero-delay INTERCONNECT entries; see verification/README.md disclosed limits)",
+   "counter timing at osc_hd's surface frequency is a recorded spec section 5 FAIL (sta/readout.osc-corner.sta.report.json: the counter does not cover osc_hd in any liberty corner, its Fmax below f_osc at every corner). Icarus drops SDF TIMINGCHECK sections, so neither a completion nor a non-completion here is timing-certified: this entry records what the gate-level simulation did, not that the counter meets timing at this frequency. spec/decisions/0003-counter-max-input-frequency.md (draft) proposes the resolution.",
+   "osc inputs are ideal bench-driven clocks; the routed netlist's input-to-flop delay is not exercised at the real oscillator frequencies (verification/README.md limit 4)"
+  ]
+ },
+ "spec_section_6_bounds_s": {
+  "target": 0.001,
+  "fallback": 0.01,
+  "stretch": 0.0001
+ },
+ "surface_extraction": "f_hz values are the last-row-wins winners of sim/sensitivity/analyze.py extract over the nine reports in the order fixed by sim/sensitivity/records/2026-11-14-osc-subth-gate-sizing.md section 1",
+ "cells": {
+  "nominal": {
+   "grid_cell": {
+    "process": "tt",
+    "vdd_V": 1.8,
+    "temp_C": 27
+   },
+   "why": "nominal cell",
+   "osc": {
+    "osc_hd": {
+     "f_hz": 641025642.5249137,
+     "period_ps": 1560,
+     "source_report": "sim/sensitivity/records/reports/grid_osc_hd.json.gz"
+    },
+    "osc_nmos": {
+     "f_hz": 221971285.92119876,
+     "period_ps": 4505,
+     "source_report": "sim/sensitivity/records/reports/grid_osc_nmos.json.gz"
+    },
+    "osc_pmos": {
+     "f_hz": 79365062.28017792,
+     "period_ps": 12600,
+     "source_report": "sim/sensitivity/records/reports/grid_osc_pmos.json.gz"
+    },
+    "osc_wire": {
+     "f_hz": 75669245.54416709,
+     "period_ps": 13215,
+     "source_report": "sim/sensitivity/records/reports/grid_osc_wire.json.gz"
+    },
+    "osc_subth": {
+     "f_hz": 2840955.9890419813,
+     "period_ps": 351994,
+     "source_report": "sim/sensitivity/records/reports/grid_osc_subth.json.gz"
+    }
+   }
+  },
+  "sf_1v98_n40C": {
+   "grid_cell": {
+    "process": "sf",
+    "vdd_V": 1.98,
+    "temp_C": -40
+   },
+   "why": "the cell with the slowest osc_subth on the committed surfaces (sim/sensitivity/records/2026-11-14-osc-subth-gate-sizing.md section 5)",
+   "osc": {
+    "osc_hd": {
+     "f_hz": 687286213.5010563,
+     "period_ps": 1455,
+     "source_report": "sim/sensitivity/records/reports/grid_osc_hd.json.gz"
+    },
+    "osc_nmos": {
+     "f_hz": 272349986.45454586,
+     "period_ps": 3672,
+     "source_report": "sim/sensitivity/records/reports/grid_osc_nmos.json.gz"
+    },
+    "osc_pmos": {
+     "f_hz": 105125516.7644808,
+     "period_ps": 9512,
+     "source_report": "sim/sensitivity/records/reports/grid_osc_pmos.json.gz"
+    },
+    "osc_wire": {
+     "f_hz": 84985845.34411676,
+     "period_ps": 11767,
+     "source_report": "sim/sensitivity/records/reports/probe_wire_sf_relaxed.json.gz",
+     "caveat": "osc_wire at this cell is MISSING in both committed grid reports (timestep_too_small under default solver options); the value is the relaxed-options debug probe (reltol=0.01 gmin=1e-10 method=gear), whose bias check measured up to +0.2 percent at three cells that did converge under default options and does not bound the bias at this cell (sim/sensitivity/records/2026-11-06-mc-offnominal-cold-margin.md section 1)."
+    },
+    "osc_subth": {
+     "f_hz": 1057.366320595822,
+     "period_ps": 945746030,
+     "source_report": "sim/sensitivity/records/reports/grid_osc_subth_sf_cold.json.gz"
+    }
+   }
+  }
+ },
+ "gate_settings": [
+  {
+   "name": "spec_default_k10_all",
+   "k_per_osc": {
+    "osc_hd": 10,
+    "osc_nmos": 10,
+    "osc_pmos": 10,
+    "osc_wire": 10,
+    "osc_subth": 10
+   },
+   "why": "spec section 5 default gate (2^10 clk_ref cycles)"
+  },
+  {
+   "name": "k14_all_five",
+   "k_per_osc": {
+    "osc_hd": 14,
+    "osc_nmos": 14,
+    "osc_pmos": 14,
+    "osc_wire": 14,
+    "osc_subth": 14
+   },
+   "why": "gate-sizing record section 5 k = 14, whole bank"
+  },
+  {
+   "name": "k14_osc_subth_only",
+   "k_per_osc": {
+    "osc_hd": 10,
+    "osc_nmos": 10,
+    "osc_pmos": 10,
+    "osc_wire": 10,
+    "osc_subth": 14
+   },
+   "why": "gate-sizing record section 5 k = 14 on osc_subth only, others default"
+  }
+ ],
+ "cells_run": [
+  "nominal"
+ ],
+ "results": [
+  {
+   "cell": "nominal",
+   "gate_setting": "spec_default_k10_all",
+   "k_per_osc": {
+    "osc_hd": 10,
+    "osc_nmos": 10,
+    "osc_pmos": 10,
+    "osc_wire": 10,
+    "osc_subth": 10
+   },
+   "oscillators": [
+    {
+     "sel": 0,
+     "osc": "osc_hd",
+     "k": 10,
+     "gate_cycles": 1024,
+     "gate_ps": 102400000,
+     "f_hz_surface": 641025642.5249137,
+     "period_ps": 1560,
+     "source_report": "sim/sensitivity/records/reports/grid_osc_hd.json.gz",
+     "phase_evidence": {
+      "first_osc_edge_after_gate_rise_ps": 780.0,
+      "gate_window_ps": 102400000,
+      "gate_window_over_osc_period": 65641.025641
+     },
+     "completed": false,
+     "did_not_complete": {
+      "poll_bound_cycles": 1125,
+      "status_polls": 1125,
+      "recovered_by": "asynchronous rst_n pulse in the bench (the only recovery)",
+      "why": "the gate window spans 65641.026 oscillator periods, so oscillator rising edges landed inside it and the read still did not complete -- at gate level with SDF delays this is the recorded spec section 5 counter timing FAIL made visible (sta/readout.osc-corner.sta.report.json: the counter does not cover this oscillator's surface frequency in any liberty corner)"
+     },
+     "gate_level_timing_trust": "counter timing at osc_hd's surface frequency is a recorded spec section 5 FAIL (sta/readout.osc-corner.sta.report.json: the counter does not cover osc_hd in any liberty corner, its Fmax below f_osc at every corner). Icarus drops SDF TIMINGCHECK sections, so neither a completion nor a non-completion here is timing-certified: this entry records what the gate-level simulation did, not that the counter meets timing at this frequency. spec/decisions/0003-counter-max-input-frequency.md (draft) proposes the resolution."
+    },
+    {
+     "sel": 1,
+     "osc": "osc_nmos",
+     "k": 10,
+     "gate_cycles": 1024,
+     "gate_ps": 102400000,
+     "f_hz_surface": 221971285.92119876,
+     "period_ps": 4505,
+     "source_report": "sim/sensitivity/records/reports/grid_osc_nmos.json.gz",
+     "phase_evidence": {
+      "first_osc_edge_after_gate_rise_ps": 2252.0,
+      "gate_window_ps": 102400000,
+      "gate_window_over_osc_period": 22730.299667
+     },
+     "completed": true,
+     "cycles_write_to_done": 1028,
+     "seconds_at_10MHz": 0.0001028,
+     "status_polls": 1028,
+     "count_observed": 22730,
+     "overflow": false
+    },
+    {
+     "sel": 2,
+     "osc": "osc_pmos",
+     "k": 10,
+     "gate_cycles": 1024,
+     "gate_ps": 102400000,
+     "f_hz_surface": 79365062.28017792,
+     "period_ps": 12600,
+     "source_report": "sim/sensitivity/records/reports/grid_osc_pmos.json.gz",
+     "phase_evidence": {
+      "first_osc_edge_after_gate_rise_ps": 6300.0,
+      "gate_window_ps": 102400000,
+      "gate_window_over_osc_period": 8126.984127
+     },
+     "completed": true,
+     "cycles_write_to_done": 1028,
+     "seconds_at_10MHz": 0.0001028,
+     "status_polls": 1028,
+     "count_observed": 8127,
+     "overflow": false
+    },
+    {
+     "sel": 3,
+     "osc": "osc_wire",
+     "k": 10,
+     "gate_cycles": 1024,
+     "gate_ps": 102400000,
+     "f_hz_surface": 75669245.54416709,
+     "period_ps": 13215,
+     "source_report": "sim/sensitivity/records/reports/grid_osc_wire.json.gz",
+     "phase_evidence": {
+      "first_osc_edge_after_gate_rise_ps": 6607.0,
+      "gate_window_ps": 102400000,
+      "gate_window_over_osc_period": 7748.770337
+     },
+     "completed": true,
+     "cycles_write_to_done": 1028,
+     "seconds_at_10MHz": 0.0001028,
+     "status_polls": 1028,
+     "count_observed": 7749,
+     "overflow": false
+    },
+    {
+     "sel": 4,
+     "osc": "osc_subth",
+     "k": 10,
+     "gate_cycles": 1024,
+     "gate_ps": 102400000,
+     "f_hz_surface": 2840955.9890419813,
+     "period_ps": 351994,
+     "source_report": "sim/sensitivity/records/reports/grid_osc_subth.json.gz",
+     "phase_evidence": {
+      "first_osc_edge_after_gate_rise_ps": 175997.0,
+      "gate_window_ps": 102400000,
+      "gate_window_over_osc_period": 290.91405
+     },
+     "completed": true,
+     "cycles_write_to_done": 1037,
+     "seconds_at_10MHz": 0.0001037,
+     "status_polls": 1037,
+     "count_observed": 291,
+     "overflow": false
+    }
+   ],
+   "full_read": {
+    "definition": "clk_ref rising edges from the edge that samples the first CTRL start write to the edge that first samples STATUS.done on the fifth oscillator; COUNT reads excluded (recorded separately as with_count_reads_cycles)",
+    "completed": false,
+    "gate_only_cycles": 5120,
+    "did_not_complete": {
+     "oscillators": [
+      "osc_hd"
+     ],
+     "spec6_verdict": "did not complete: no full-read conversion time exists at this cell and gate setting, so no spec section 6 bound is graded for it"
+    }
+   }
+  },
+  {
+   "cell": "nominal",
+   "gate_setting": "k14_all_five",
+   "k_per_osc": {
+    "osc_hd": 14,
+    "osc_nmos": 14,
+    "osc_pmos": 14,
+    "osc_wire": 14,
+    "osc_subth": 14
+   },
+   "oscillators": [
+    {
+     "sel": 0,
+     "osc": "osc_hd",
+     "k": 14,
+     "gate_cycles": 16384,
+     "gate_ps": 1638400000,
+     "f_hz_surface": 641025642.5249137,
+     "period_ps": 1560,
+     "source_report": "sim/sensitivity/records/reports/grid_osc_hd.json.gz",
+     "phase_evidence": {
+      "first_osc_edge_after_gate_rise_ps": 780.0,
+      "gate_window_ps": 1638400000,
+      "gate_window_over_osc_period": 1050256.410256
+     },
+     "completed": false,
+     "did_not_complete": {
+      "poll_bound_cycles": 16485,
+      "status_polls": 16485,
+      "recovered_by": "asynchronous rst_n pulse in the bench (the only recovery)",
+      "why": "the gate window spans 1050256.41 oscillator periods, so oscillator rising edges landed inside it and the read still did not complete -- at gate level with SDF delays this is the recorded spec section 5 counter timing FAIL made visible (sta/readout.osc-corner.sta.report.json: the counter does not cover this oscillator's surface frequency in any liberty corner)"
+     },
+     "gate_level_timing_trust": "counter timing at osc_hd's surface frequency is a recorded spec section 5 FAIL (sta/readout.osc-corner.sta.report.json: the counter does not cover osc_hd in any liberty corner, its Fmax below f_osc at every corner). Icarus drops SDF TIMINGCHECK sections, so neither a completion nor a non-completion here is timing-certified: this entry records what the gate-level simulation did, not that the counter meets timing at this frequency. spec/decisions/0003-counter-max-input-frequency.md (draft) proposes the resolution."
+    },
+    {
+     "sel": 1,
+     "osc": "osc_nmos",
+     "k": 14,
+     "gate_cycles": 16384,
+     "gate_ps": 1638400000,
+     "f_hz_surface": 221971285.92119876,
+     "period_ps": 4505,
+     "source_report": "sim/sensitivity/records/reports/grid_osc_nmos.json.gz",
+     "phase_evidence": {
+      "first_osc_edge_after_gate_rise_ps": 2252.0,
+      "gate_window_ps": 1638400000,
+      "gate_window_over_osc_period": 363684.794673
+     },
+     "completed": true,
+     "cycles_write_to_done": 16388,
+     "seconds_at_10MHz": 0.0016388,
+     "status_polls": 16388,
+     "count_observed": 363685,
+     "overflow": false
+    },
+    {
+     "sel": 2,
+     "osc": "osc_pmos",
+     "k": 14,
+     "gate_cycles": 16384,
+     "gate_ps": 1638400000,
+     "f_hz_surface": 79365062.28017792,
+     "period_ps": 12600,
+     "source_report": "sim/sensitivity/records/reports/grid_osc_pmos.json.gz",
+     "phase_evidence": {
+      "first_osc_edge_after_gate_rise_ps": 6300.0,
+      "gate_window_ps": 1638400000,
+      "gate_window_over_osc_period": 130031.746032
+     },
+     "completed": true,
+     "cycles_write_to_done": 16388,
+     "seconds_at_10MHz": 0.0016388,
+     "status_polls": 16388,
+     "count_observed": 130032,
+     "overflow": false
+    },
+    {
+     "sel": 3,
+     "osc": "osc_wire",
+     "k": 14,
+     "gate_cycles": 16384,
+     "gate_ps": 1638400000,
+     "f_hz_surface": 75669245.54416709,
+     "period_ps": 13215,
+     "source_report": "sim/sensitivity/records/reports/grid_osc_wire.json.gz",
+     "phase_evidence": {
+      "first_osc_edge_after_gate_rise_ps": 6607.0,
+      "gate_window_ps": 1638400000,
+      "gate_window_over_osc_period": 123980.325388
+     },
+     "completed": true,
+     "cycles_write_to_done": 16388,
+     "seconds_at_10MHz": 0.0016388,
+     "status_polls": 16388,
+     "count_observed": 123980,
+     "overflow": false
+    },
+    {
+     "sel": 4,
+     "osc": "osc_subth",
+     "k": 14,
+     "gate_cycles": 16384,
+     "gate_ps": 1638400000,
+     "f_hz_surface": 2840955.9890419813,
+     "period_ps": 351994,
+     "source_report": "sim/sensitivity/records/reports/grid_osc_subth.json.gz",
+     "phase_evidence": {
+      "first_osc_edge_after_gate_rise_ps": 175997.0,
+      "gate_window_ps": 1638400000,
+      "gate_window_over_osc_period": 4654.624795
+     },
+     "completed": true,
+     "cycles_write_to_done": 16398,
+     "seconds_at_10MHz": 0.0016398,
+     "status_polls": 16398,
+     "count_observed": 4655,
+     "overflow": false
+    }
+   ],
+   "full_read": {
+    "definition": "clk_ref rising edges from the edge that samples the first CTRL start write to the edge that first samples STATUS.done on the fifth oscillator; COUNT reads excluded (recorded separately as with_count_reads_cycles)",
+    "completed": false,
+    "gate_only_cycles": 81920,
+    "did_not_complete": {
+     "oscillators": [
+      "osc_hd"
+     ],
+     "spec6_verdict": "did not complete: no full-read conversion time exists at this cell and gate setting, so no spec section 6 bound is graded for it"
+    }
+   }
+  },
+  {
+   "cell": "nominal",
+   "gate_setting": "k14_osc_subth_only",
+   "k_per_osc": {
+    "osc_hd": 10,
+    "osc_nmos": 10,
+    "osc_pmos": 10,
+    "osc_wire": 10,
+    "osc_subth": 14
+   },
+   "oscillators": [
+    {
+     "sel": 0,
+     "osc": "osc_hd",
+     "k": 10,
+     "gate_cycles": 1024,
+     "gate_ps": 102400000,
+     "f_hz_surface": 641025642.5249137,
+     "period_ps": 1560,
+     "source_report": "sim/sensitivity/records/reports/grid_osc_hd.json.gz",
+     "phase_evidence": {
+      "first_osc_edge_after_gate_rise_ps": 780.0,
+      "gate_window_ps": 102400000,
+      "gate_window_over_osc_period": 65641.025641
+     },
+     "completed": false,
+     "did_not_complete": {
+      "poll_bound_cycles": 1125,
+      "status_polls": 1125,
+      "recovered_by": "asynchronous rst_n pulse in the bench (the only recovery)",
+      "why": "the gate window spans 65641.026 oscillator periods, so oscillator rising edges landed inside it and the read still did not complete -- at gate level with SDF delays this is the recorded spec section 5 counter timing FAIL made visible (sta/readout.osc-corner.sta.report.json: the counter does not cover this oscillator's surface frequency in any liberty corner)"
+     },
+     "gate_level_timing_trust": "counter timing at osc_hd's surface frequency is a recorded spec section 5 FAIL (sta/readout.osc-corner.sta.report.json: the counter does not cover osc_hd in any liberty corner, its Fmax below f_osc at every corner). Icarus drops SDF TIMINGCHECK sections, so neither a completion nor a non-completion here is timing-certified: this entry records what the gate-level simulation did, not that the counter meets timing at this frequency. spec/decisions/0003-counter-max-input-frequency.md (draft) proposes the resolution."
+    },
+    {
+     "sel": 1,
+     "osc": "osc_nmos",
+     "k": 10,
+     "gate_cycles": 1024,
+     "gate_ps": 102400000,
+     "f_hz_surface": 221971285.92119876,
+     "period_ps": 4505,
+     "source_report": "sim/sensitivity/records/reports/grid_osc_nmos.json.gz",
+     "phase_evidence": {
+      "first_osc_edge_after_gate_rise_ps": 2252.0,
+      "gate_window_ps": 102400000,
+      "gate_window_over_osc_period": 22730.299667
+     },
+     "completed": true,
+     "cycles_write_to_done": 1028,
+     "seconds_at_10MHz": 0.0001028,
+     "status_polls": 1028,
+     "count_observed": 22730,
+     "overflow": false
+    },
+    {
+     "sel": 2,
+     "osc": "osc_pmos",
+     "k": 10,
+     "gate_cycles": 1024,
+     "gate_ps": 102400000,
+     "f_hz_surface": 79365062.28017792,
+     "period_ps": 12600,
+     "source_report": "sim/sensitivity/records/reports/grid_osc_pmos.json.gz",
+     "phase_evidence": {
+      "first_osc_edge_after_gate_rise_ps": 6300.0,
+      "gate_window_ps": 102400000,
+      "gate_window_over_osc_period": 8126.984127
+     },
+     "completed": true,
+     "cycles_write_to_done": 1028,
+     "seconds_at_10MHz": 0.0001028,
+     "status_polls": 1028,
+     "count_observed": 8127,
+     "overflow": false
+    },
+    {
+     "sel": 3,
+     "osc": "osc_wire",
+     "k": 10,
+     "gate_cycles": 1024,
+     "gate_ps": 102400000,
+     "f_hz_surface": 75669245.54416709,
+     "period_ps": 13215,
+     "source_report": "sim/sensitivity/records/reports/grid_osc_wire.json.gz",
+     "phase_evidence": {
+      "first_osc_edge_after_gate_rise_ps": 6607.0,
+      "gate_window_ps": 102400000,
+      "gate_window_over_osc_period": 7748.770337
+     },
+     "completed": true,
+     "cycles_write_to_done": 1028,
+     "seconds_at_10MHz": 0.0001028,
+     "status_polls": 1028,
+     "count_observed": 7749,
+     "overflow": false
+    },
+    {
+     "sel": 4,
+     "osc": "osc_subth",
+     "k": 14,
+     "gate_cycles": 16384,
+     "gate_ps": 1638400000,
+     "f_hz_surface": 2840955.9890419813,
+     "period_ps": 351994,
+     "source_report": "sim/sensitivity/records/reports/grid_osc_subth.json.gz",
+     "phase_evidence": {
+      "first_osc_edge_after_gate_rise_ps": 175997.0,
+      "gate_window_ps": 1638400000,
+      "gate_window_over_osc_period": 4654.624795
+     },
+     "completed": true,
+     "cycles_write_to_done": 16398,
+     "seconds_at_10MHz": 0.0016398,
+     "status_polls": 16398,
+     "count_observed": 4655,
+     "overflow": false
+    }
+   ],
+   "full_read": {
+    "definition": "clk_ref rising edges from the edge that samples the first CTRL start write to the edge that first samples STATUS.done on the fifth oscillator; COUNT reads excluded (recorded separately as with_count_reads_cycles)",
+    "completed": false,
+    "gate_only_cycles": 20480,
+    "did_not_complete": {
+     "oscillators": [
+      "osc_hd"
+     ],
+     "spec6_verdict": "did not complete: no full-read conversion time exists at this cell and gate setting, so no spec section 6 bound is graded for it"
+    }
+   }
+  }
+ ],
+ "does_not_establish": [
+  "nothing here is measured; every figure is Icarus simulation at the leg named above",
+  "counter timing at osc_hd's surface frequency is a recorded spec section 5 FAIL (sta/readout.osc-corner.sta.report.json); this record measures conversion-time behaviour, not timing closure, and re-runs at the surface period rather than substituting a slower one",
+  "count correctness is not graded by this bench (test_readout.py count tests grade it)",
+  "the relaxed-solver osc_wire value at the sf cell carries the probe caveat recorded beside it and is not re-derived here"
+ ]
+}

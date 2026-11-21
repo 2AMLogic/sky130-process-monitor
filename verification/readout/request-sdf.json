@@ -9,7 +9,7 @@
   "hdl_toplevel": "readout",
   "testbench": {
     "module": "test_readout",
-    "testcase": ["reset_values", "count_correctness", "select_switching", "busy_done_sequencing", "cal_readback", "reset_mid_gate", "full_read_cycle_count", "k0_phase_sweep"]
+    "testcase": ["reset_values", "count_correctness", "select_switching", "busy_done_sequencing", "cal_readback", "reset_mid_gate", "full_read_cycle_count", "k0_phase_sweep", "conversion_time_surfaces"]
   },
   "options": {
     "coverage": false,
