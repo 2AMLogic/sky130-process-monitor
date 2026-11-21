@@ -131,6 +131,85 @@ class TY(unittest.TestCase):
         r3, _ = Y.row3_samples(tab, mc, 1)
         self.assertIsNone(r3[2])
 
+    # ---- issue #288: cell eligibility is the analyzer's per-cell sigma, not a raw slot count.
+    def _keep_two(self, mc, key):
+        """Leave a cell its first two draws and null the rest: 20 slots, 2 usable (#288 repro)."""
+        mc["samples"][key] = mc["samples"][key][:2] + [None] * 18
+
+    def test_two_usable_draws_exclude_the_cell_not_the_row(self):
+        # 20 slots with only 2 usable draws passed the raw slot-count check, then
+        # crashed the weight arithmetic with a TypeError (squaring/dividing by a
+        # missing sigma). Such a cell simply has no per-cell estimate, so the
+        # oscillator drops out of that row's set and the row still builds.
+        import yield_samples as Y
+        tab, mc = self.fake_mc(1e-4)
+        self._keep_two(mc, "osc_nmos|tt|1.62|-40")
+        r3, o3 = Y.row3_samples(tab, mc, 1)
+        self.assertIsNotNone(r3)
+        self.assertNotIn("osc_nmos", o3)
+        self._keep_two(mc, "osc_nmos|ff|1.62|27")
+        r4, o4 = Y.row4_samples(tab, mc, mc, 1)
+        self.assertIsNotNone(r4)
+        self.assertNotIn("osc_nmos", o4)
+        tab2, mc2 = self.fake_mc(1e-4)
+        self._keep_two(mc2, "osc_nmos|ff|1.80|27")   # the row 4 calibration cell
+        r4c, o4c = Y.row4_samples(tab2, mc2, mc2, 1)
+        self.assertIsNotNone(r4c)
+        self.assertNotIn("osc_nmos", o4c)
+        for p in A.PROCESS:
+            self._keep_two(mc, "osc_nmos|%s|1.98|27" % p)
+        r2, o2 = Y.row2_samples(tab, mc, 1)
+        self.assertIsNotNone(r2)
+        self.assertNotIn("osc_nmos", o2)
+
+    def test_build_survives_the_baseline_having_only_two_usable_draws(self):
+        # The exact #288 report: osc_hd keeps 2 of 20 draws and rows 2, 3 and 4
+        # all raised TypeError. The build must now complete: rows 3/4 drop
+        # osc_hd, and row 2, whose baseline is gone, reports no measurement.
+        import yield_samples as Y
+        tab, mc = self.fake_mc(1e-4)
+        for key in [k for k in mc["samples"] if k.startswith("osc_hd|")]:
+            self._keep_two(mc, key)
+        doc = Y.build(tab, mc, mc, 1, defect=0.5)
+        names = {m["name"] for m in doc["measurements"]}
+        self.assertIn("row3_dV", names)
+        self.assertIn("row4_dT", names)
+        self.assertFalse([n for n in names if n.startswith("row2_margin")])
+        self.assertNotIn("osc_hd", doc["cells"]["row3"]["oscillators"])
+        self.assertNotIn("osc_hd", doc["cells"]["row4"]["oscillators"])
+        self.assertNotIn("osc_hd", doc["cells"]["row2"]["oscillators"])
+
+    def test_zero_spread_cell_with_three_draws_is_eligible(self):
+        # A zero mismatch sigma is a real estimate, not a missing one: the cell
+        # stays weightable, and its 17 missing draws stay null at their indices.
+        import yield_samples as Y
+        tab, mc = self.fake_mc(1e-4)
+        key = "osc_nmos|tt|1.62|-40"
+        mc["samples"][key] = [mc["samples"][key][0]] * 3 + [None] * 17
+        r3, o3 = Y.row3_samples(tab, mc, 1)
+        self.assertIn("osc_nmos", o3)
+        self.assertEqual(len(r3), 20)
+        self.assertTrue(all(r3[k] is not None for k in range(3)))
+        self.assertTrue(all(r3[k] is None for k in range(3, 20)))
+
+    def test_missing_draw_in_eligible_cell_stays_null_rows_2_and_4(self):
+        # Draw indices are preserved: a null draw among otherwise usable ones
+        # yields a null sample at that index (measurement or calibration side),
+        # never an imputed reading. Row 3 is covered above; rows 2 and 4 here.
+        import yield_samples as Y
+        tab, mc = self.fake_mc(1e-4)
+        mc["samples"]["osc_nmos|ff|1.62|27"][2] = None      # row 4 measurement draw
+        r4, _ = Y.row4_samples(tab, mc, mc, 1)
+        self.assertIsNone(r4[2])
+        mc["samples"]["osc_nmos|ff|1.80|27"][5] = None      # row 4 calibration draw
+        r4, _ = Y.row4_samples(tab, mc, mc, 1)
+        self.assertIsNone(r4[5])
+        for p in A.PROCESS:
+            mc["samples"]["osc_nmos|%s|1.98|27" % p][7] = None   # one row 2 draw
+        r2, _ = Y.row2_samples(tab, mc, 1)
+        for p in A.PROCESS:
+            self.assertIsNone(r2[p][7])
+
     # ---- issue #136: the yield samples ARE the graded estimators, not a re-typed copy.
     # Both tests re-derive every sample by calling the shared estimator over the shared grid, so a
     # divergent search, residual or grid in either file breaks them. SIGMA is deliberately well above
