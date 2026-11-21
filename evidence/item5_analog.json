@@ -1,7 +1,7 @@
 {
  "inputs": {
   "sim/power/records/2026-11-05-power-grade-complete.json": "sha256:5b25245b903374714e9d5c2c3d9ddf318d15102592a6130c74cd1f181b14b1cd",
-  "sim/solve/records/2026-11-05-rows1-4.json": "sha256:5a2b9cebc25ec4e36b8f90e9b67b86d9ab04d1770f0e811e8216526d42d732b9"
+  "sim/solve/records/2026-11-21-rows1-4-fulltable.json": "sha256:d98e2c415715856c340ce3333b0593468f89dd71925b8b7adbf3fa766a350e43"
  },
  "kind": "model-run",
  "measurements": [
@@ -10,13 +10,13 @@
     "max": 0
    },
    "name": "row1_non_oscillating_cells",
-   "note": "spec row 1 target: oscillates at all 45 cells",
-   "status": "fail",
+   "note": "spec row 1 target: oscillates at all 45 cells; two of the fills rest on relaxed-solver values (see record)",
+   "status": "pass",
    "unit": "cells",
    "worst_case": {
-    "corner_id": "7 of 225 oscillator cells (see record)",
-    "margin": -7,
-    "value": 7
+    "corner_id": "225 of 225 cells resolve; lowest f 436.934 Hz at osc_subth 1.62 V/-40 C",
+    "margin": 0,
+    "value": 0
    }
   },
   {
@@ -38,13 +38,13 @@
     "max": 0.02
    },
    "name": "row3_p99_abs_dv",
-   "note": "spec row 3 target +-20 mV; fallback +-50 mV also fails",
+   "note": "spec row 3 target +-20 mV; fallback +-50 mV pass",
    "status": "fail",
    "unit": "V",
    "worst_case": {
-    "corner_id": "-40 C tt 1.62 V",
-    "margin": -0.04200000000000005,
-    "value": 0.062000000000000055
+    "corner_id": "125 C ff 1.80 V",
+    "margin": -0.01400000000000003,
+    "value": 0.03400000000000003
    }
   },
   {
@@ -52,13 +52,13 @@
     "max": 5.0
    },
    "name": "row4_p99_abs_dt",
-   "note": "spec row 4 target +-5 C; only 29 of 45 cells graded",
+   "note": "spec row 4 target +-5 C; 45 of 45 cells graded",
    "status": "fail",
    "unit": "C",
    "worst_case": {
-    "corner_id": "ff 1.62 V 27 C",
-    "margin": -14.0,
-    "value": 19.0
+    "corner_id": "sf 1.62 V 125 C",
+    "margin": -31.0,
+    "value": 36.0
    }
   },
   {
@@ -90,7 +90,7 @@
    }
   }
  ],
- "method": "post-processing of #8 frequency surfaces (rows 1-4) plus klt sim power benches (row 7); SIMULATED, schematic-level, ngspice-46, sky130A",
+ "method": "post-processing of the full-table rows 1-4 re-grade (#277; fleet grids plus five single-cell cold runs) plus klt sim power benches (row 7); SIMULATED, schematic-level, ngspice-46/47, sky130A",
  "schema_version": 1,
  "status": "fail",
  "t1_item": 5

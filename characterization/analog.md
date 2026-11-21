@@ -22,11 +22,12 @@ the subthreshold sensing path, per `manifests/sky130-process-monitor.json`'s
 **whole** block, so each appears in **both** reports stating only that
 partition's share; neither report claims a whole-block verdict for them.
 
-**Status of this report: `fail`** (`evidence/item8_analog.json`). Spec §1, §3
-and §4 fail both target and fallback; spec §2 fails its five-corner target and
-passes the slow/fast fallback; spec §7 fails at all three levels on both the
-active and the idle figure; the analog share of spec §9 fails target and
-fallback. No row here passes its target.
+**Status of this report: `fail`** (`evidence/item8_analog.json`). Spec §2 fails its five-corner target
+and passes the slow/fast fallback; spec §3 fails its target and passes its fallback; spec §1, §4 and §7
+fail at both levels (§7 on both the active and the idle figure); the analog share of spec §9 fails
+target and fallback. The §1–§4 verdicts are re-graded on the fullest frequency table `main` supports
+(all 225 oscillator cells resolved; the reduced-table grading remains recorded, unedited, in
+`sim/solve/records/2026-11-05-rows1-4.md`).
 
 **No estimate accuracy is quoted anywhere in this report.** The worst-case
 errors recorded for spec §3 and §4 below are the *graded failures* the solve
@@ -41,10 +42,10 @@ conditioning are shown (spec §2) before any of those rows is discussed.
 
 | Spec row | Target | Fallback | Stretch | Binding corner | Record |
 |---|---|---|---|---|---|
-| §1 Oscillator bank composition | **FAIL** | **FAIL** | not recorded | 7 of 225 oscillator cells, all at −40 °C | `sim/solve/records/2026-11-05-rows1-4.md` |
-| §2 Process discrimination | **FAIL** (8 of 9 (V,T) cells) | **PASS** (slow/fast, 9 of 9) | not recorded | 1.98 V / 27 °C | `sim/solve/records/2026-11-05-rows1-4.md` |
-| §3 Supply estimate | **FAIL** | **FAIL** | not recorded | tt / 1.62 V / −40 °C | `sim/solve/records/2026-11-05-rows1-4.md` |
-| §4 Temperature estimate | **FAIL** | **FAIL** | not recorded | ff / 1.62 V / 27 °C | `sim/solve/records/2026-11-05-rows1-4.md` |
+| §1 Oscillator bank composition | **PASS** (225 of 225 cells) | **PASS** | not recorded | two fills rest on relaxed-solver values | `sim/solve/records/2026-11-21-rows1-4-fulltable.md` |
+| §2 Process discrimination | **FAIL** (8 of 9 (V,T) cells) | **PASS** (slow/fast, 9 of 9) | not recorded | 1.98 V / 27 °C | `sim/solve/records/2026-11-21-rows1-4-fulltable.md` |
+| §3 Supply estimate | **FAIL** | **PASS** | not recorded | ff / 1.80 V / 125 °C | `sim/solve/records/2026-11-21-rows1-4-fulltable.md` |
+| §4 Temperature estimate | **FAIL** | **FAIL** | not recorded | sf / 1.62 V / 125 °C | `sim/solve/records/2026-11-21-rows1-4-fulltable.md` |
 | §7 Active power | **FAIL** | **FAIL** | **FAIL** | osc_wire / ff / 1.98 V / −40 °C | `sim/power/records/2026-11-05-power-complete.md` |
 | §7 Idle power | **FAIL** | **FAIL** | **FAIL** | sf / 1.62 V / 27 °C (figure SUSPECT; verdict holds without it) | `sim/power/records/2026-11-05-power-complete.md` |
 | §8 Area (analog share) | **not recorded** | **not recorded** | **not recorded** | — | `layout/README.md` |
@@ -58,28 +59,36 @@ ratified in `spec/digital-rows.json`.
 
 ## Spec §1 — Oscillator bank composition
 
-**Verdict: target FAIL, fallback FAIL.** Recorded in
-`sim/solve/records/2026-11-05-rows1-4.md` (per-cell output
-`sim/solve/records/2026-11-05-rows1-4.json`).
+**Verdict: target PASS, fallback PASS.** Recorded in
+`sim/solve/records/2026-11-21-rows1-4-fulltable.md` (per-cell output
+`sim/solve/records/2026-11-21-rows1-4-fulltable.json`). The reduced-table
+grading that failed this row with 7 of 225 cells missing remains recorded,
+unedited, in `sim/solve/records/2026-11-05-rows1-4.md`.
 
 The row binds all 45 cells of the PVT box (5 corners × 3 V × 3 T) for frequency
 surfaces, five oscillators, so 225 oscillator cells.
 
 **SIMULATED**, schematic-level netlists, no layout and no parasitics.
 Testbenches `sim/sensitivity/osc/` (reusing `design/osc_bank/`), requests
-`sim/sensitivity/requests/`, run as `klt sim --batch-set` on the batch fleet;
-ngspice-46, sky130A from open_pdks `c6d73a35` (`sim/pdk.json`).
+`sim/sensitivity/requests/`, run as `klt sim` batch jobs on the fleet;
+base grid ngspice-46 on sky130A open_pdks `c6d73a35` (`sim/pdk.json`),
+cold-cell fills ngspice-47 on open_pdks `f6eeac7`.
 
-- **7 of 225 oscillator cells have no oscillation or too few edges** — reported
-  missing, never interpolated
-  (`sim/sensitivity/records/2026-11-05-grid-sensitivity-partial.md`):
-  `osc_nmos` tt / 1.80 V / −40 °C; `osc_subth` ss / 1.62 V / −40 °C, ss /
-  1.80 V / −40 °C, sf / 1.62 V / −40 °C, sf / 1.80 V / −40 °C, sf / 1.98 V /
-  −40 °C; `osc_wire` sf / 1.98 V / −40 °C.
-- **Fallback bank** (`osc_hd`, `osc_nmos`, `osc_pmos`) fails on the `osc_nmos`
-  tt / 1.80 V / −40 °C cell, so the fallback does not rescue the row.
-- Disclosed in the record, not relaxed: some of the seven may be
-  window-too-short rather than dead; the grid run did not separate the two.
+- **All 225 oscillator cells resolve a frequency** on the full table. The seven
+  formerly missing cells (all at −40 °C) were filled by five new single-cell
+  fleet runs plus the two 2026-11-06 cold fills
+  (`sim/solve/records/2026-11-21-rows1-4-fulltable.md` tabulates which report
+  filled which cell). Lowest frequency on the table: `osc_subth` sf /
+  1.62 V / −40 °C, 436.93 Hz.
+- **Two of the fills rest on relaxed-solver values** (`osc_wire` sf /
+  1.98 V / −40 °C and `osc_nmos` tt / 1.80 V / −40 °C, options
+  `reltol=0.01 gmin=1e-10 method=gear`): the bias at those cells themselves is
+  not bounded (the 2026-11-06 cold-margin record's caveat, carried unchanged).
+  The other five fills are longer-window default-solver runs (10–80 ms,
+  23–30 rising edges plus the 10 ms `osc_subth` sf/1.98 V fill).
+- **Fallback bank** (`osc_hd`, `osc_nmos`, `osc_pmos`) also passes: the
+  formerly binding `osc_nmos` tt / 1.80 V / −40 °C cell now resolves (on the
+  relaxed-solver value, with the caveat above).
 
 **Post-layout (extracted) side**, from
 `sim/pex/records/2026-11-11-grade-extracted-values.json` and
@@ -93,7 +102,8 @@ observation window — 300 ns for `osc_hd`, 800 ns for `osc_nmos`, 2.5 µs for
 (`sim/pex/records/2026-11-20-osc_subth-dev2493.pex.report.json`) has status
 `pass` with 45/45 cells compared, and in the 2 ms window **40 of 45** extracted
 cells meet the nine-edge minimum. The five below (ss and sf corners at −40 °C,
-where the schematic leg is marginal too) are the remaining §1 failures on the
+where the schematic leg needed longer windows or relaxed solver options to
+resolve) are the remaining §1 failures on the
 extracted side. The extracted `osc_wire` is not a like-for-like netlist. See
 `sim/pex/README.md`. The extracted side therefore does not close this row
 either.
@@ -108,15 +118,15 @@ grades it.
 
 **Verdict: five-corner target FAIL (8 of 9 (V,T) cells identified); slow/fast
 fallback PASS (9 of 9).** Recorded in
-`sim/solve/records/2026-11-05-rows1-4.md`. This is a **split verdict** and is
+`sim/solve/records/2026-11-21-rows1-4-fulltable.md`. This is a **split verdict** and is
 rendered as such: the row is not a plain failure and it is not a pass.
 
 - **Binding cell for the target failure**: 1.98 V / 27 °C — one fs→tt
   misclassification in 2000 draws (**SIMULATED**, seed 20261105, post-processing
   of the committed grid and mismatch-MC reports by `sim/solve/solve.py`).
-- The three −40 °C (V,T) cells are graded on a **reduced bank** (3–4
-  oscillators) because of the §1 missing cells above; the other six use all
-  five.
+- On the full table **every (V,T) cell grades on the full five-oscillator
+  bank**; in the reduced-table grading the three −40 °C cells used 3–4
+  oscillators. The verdict is unchanged by the fuller bank.
 
 ### Sensitivity matrix and its conditioning (shown before any estimate is discussed)
 
@@ -135,8 +145,11 @@ scaled by box half-range V × 0.18, T × 82.5, Pn/Pp = corner extent ±1):
 | Rank | **4 / 4** in every formed cell |
 
 The four (V,T) cells that cannot be formed are the three −40 °C cells and
-1.80 V / 27 °C — exactly the cells with oscillators missing from §1; they are
-never interpolated. The record also resolves the spec's open sf/fs question from
+1.80 V / 27 °C — the cells with oscillators missing from the table that record
+graded (the §1 cells, since filled by
+`sim/solve/records/2026-11-21-rows1-4-fulltable.md`); they are
+never interpolated. The full-table sensitivity matrix has not been re-recorded;
+the matrix and κ above are the 2026-11-05 record's figures. The record also resolves the spec's open sf/fs question from
 a local single-corner DC operating-point probe (`probe_skew.sh`, tt/sf/fs,
 27 °C, |Vgs| = |Vds| = 0.9 V): **sf = NMOS-fast / PMOS-slow, fs = NMOS-slow /
 PMOS-fast.**
@@ -177,24 +190,28 @@ before the target closes.
 
 ## Spec §3 — Supply estimate
 
-**Verdict: target FAIL (±20 mV), fallback FAIL (±50 mV).** Recorded in
-`sim/solve/records/2026-11-05-rows1-4.md`.
+**Verdict: target FAIL (±20 mV), fallback PASS (±50 mV).** Recorded in
+`sim/solve/records/2026-11-21-rows1-4-fulltable.md`.
 
-- **Recorded worst-case graded error: p99 |ΔV| = 62 mV**, binding cell
-  **tt / 1.62 V / −40 °C** (**SIMULATED**; post-processing of the committed grid
-  and MC reports by `sim/solve/solve.py`; the bank at −40 °C is reduced per §1).
-  This is the failure the grader recorded against the row's limits, not a quoted
-  accuracy for the block.
+- **Recorded worst-case graded error: p99 |ΔV| = 34 mV**, binding cell
+  **ff / 1.80 V / 125 °C**, the held-out interior cell (systematic 28 mV)
+  (**SIMULATED**; post-processing of the committed grid and MC reports by
+  `sim/solve/solve.py`; 45/45 cells graded, five oscillators everywhere — the
+  reduced-table grading had 62 mV at tt / 1.62 V / −40 °C on a reduced −40 °C
+  bank). This is the failure the grader recorded against the row's limits, not
+  a quoted accuracy for the block.
 - Yield half, `sim/solve/mc/yield-sized-bank.json`: at tt / 1.62 V / −40 °C,
   n = 30, empirical yield 0.200 [0.077, 0.386], verdict **insufficient** (needs
   6147 draws). The record states the shortfall rather than imputing it; σ is not
-  pooled across cells.
+  pooled across cells. (That yield record predates the full table and grades
+  the reduced-bank binding cell of the 2026-11-05 record.)
 - Disclosed, not relaxed: only the 1.80 V cells are held out — the 1.62 V and
   1.98 V cells are in-sample (noise-only). Grading is on the 3×3 (V,T) grid
   points only; no off-grid truth was simulated, so **no accuracy between grid
   points is quoted** anywhere.
 - Conditioning that bears on this row is in §2 above (absolute κ 27.8–67.9,
-  rank 4/4, matrix formed in 5 of 9 (V,T) cells).
+  rank 4/4 as recorded in the 2026-11-05 sensitivity record, whose matrix
+  formed in 5 of 9 (V,T) cells on the then-available table).
 
 **Stretch** (±10 mV, and the joint P/V/T solve): **not recorded** — the record
 states the row-4 joint V+T solve was not run.
@@ -204,18 +221,24 @@ states the row-4 joint V+T solve was not run.
 ## Spec §4 — Temperature estimate
 
 **Verdict: target FAIL (±5 °C), fallback FAIL (±10 °C).** Recorded in
-`sim/solve/records/2026-11-05-rows1-4.md`.
+`sim/solve/records/2026-11-21-rows1-4-fulltable.md`.
 
-- **Recorded worst-case graded error: p99 |ΔT| = 19.0 °C**, binding cell
-  **ff / 1.62 V / 27 °C** (**SIMULATED**; one-point calibration at 27 °C /
-  1.80 V, V known; tt-model and corner-agnostic; `sim/solve/solve.py`).
-- Coverage disclosed in the record: `osc_nmos` is excluded (missing tt cell),
-  corners lacking a full four-oscillator surface are not graded, so **29 of 45
-  cells are graded**; the tt die is in-sample.
+- **Recorded worst-case graded error: p99 |ΔT| = 36.0 °C**, binding cell
+  **sf / 1.62 V / 125 °C** (systematic −31.5 °C) (**SIMULATED**; one-point
+  calibration at 27 °C / 1.80 V, V known; tt-model and corner-agnostic;
+  `sim/solve/solve.py`). This is **worse than the reduced-table 19.0 °C**
+  (binding ff / 1.62 V / 27 °C) because the full table grades **45 of 45 cells
+  with all five oscillators** — the reduced-table grading covered 29 of 45 and
+  excluded `osc_nmos`; the newly gradable cells fail harder than the old
+  binding cell. No spec bound is changed by the re-grade.
+- Coverage disclosed in the record: 45 of 45 cells graded, five oscillators
+  everywhere; the tt die is in-sample.
 - Yield half, `sim/solve/mc/yield-sized-bank.json`: at ff / 1.62 V / 27 °C,
   n = 210, empirical yield **0.000** [0.000, 0.017], verdict **sufficient**
-  (183) — i.e. the row fails its ±5 °C limit *with confidence*, which is the
+  (183) — i.e. that cell fails its ±5 °C limit *with confidence*, which is the
   one place in that record where the sample size is adequate to the conclusion.
+  (That yield record predates the full table and grades the reduced-table
+  binding cell.)
 - This estimate is **not** `sky130-temp-por`. Per `spec/target-spec.md` §4 and
   `CLAUDE.md`, the sibling block builds a PTAT/CTAT sensor; this row is an
   oscillator-frequency-derived estimate and nothing here is copied from or

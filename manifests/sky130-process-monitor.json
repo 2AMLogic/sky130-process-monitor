@@ -46,7 +46,7 @@
     ],
     "5.analog": {
       "file": "evidence/item5_analog.json",
-      "content_hash": "sha256:8103130d068c67ede6e552fcfc45f605d4ad8533d8392e4d73ce56218084ae45"
+      "content_hash": "sha256:fb63b7da58c32ac4c647a4a9576eb6f7e0aad868ac6b7a63b96f06e581aa56b4"
     },
     "5.digital": [
       {
@@ -102,7 +102,7 @@
     },
     "9.analog": {
       "file": "evidence/item9_analog.json",
-      "content_hash": "sha256:4e20cadbd0aaa428cd5cd5a38a06c395e4256c41be49d8d64b23ec4e8a851607"
+      "content_hash": "sha256:0fdec4f5f8221b4e5767ac0de6c3339f3036395750c746d81fa84bbfe2331c00"
     },
     "9.digital": {
       "file": "evidence/item9_digital.json",
