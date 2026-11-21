@@ -381,3 +381,36 @@ Records (new, dated): `records/2026-11-20-osc_subth-dev2493.pex.report.json` (th
    `7.analog` list now cites this report as a fifth entry, and the committed signoff record
    (`manifests/sky130-process-monitor.signoff.json`) was regenerated with the pinned klt; the only diff is the new
    `met` citation.
+
+## Release probe 2026-11-20 (issue #275): `osc_subth` LVS on released 0.9.1 / 0.9.2 — both streams `match`
+
+SIMULATED/extraction plus one local single-corner probe (`klt 0.9.1` git `4d0d29be…` and `klt 0.9.2` git `046ba74…`
+via `uvx`, engine klayout 0.30.13; ngspice-47; no grid). Record (new, dated):
+`records/2026-11-20-osc_subth-lvs-probe-0.9.2.json`. Nothing earlier was edited; no threshold was changed; the CI
+pin (`.github/workflows/signoff.yml`) stays `klayout-tools==0.9.1` — migrating the pin re-renders the signoff record
+and the attestations and is its own change.
+
+1. **LVS on the two input streams** (each stream's own GDS / request / reference taken from one commit; a fresh
+   scratch `klt extract --deck sky130` + `klt lvs` per run, per the request's relative `osc_subth.layout.spice`):
+
+   | stream | GDS sha256 | klt 0.9.1 | klt 0.9.2 |
+   |---|---|---|---|
+   | pre-divider, the original 2AMLogic/klayout-tools#5311 reporter inputs (`8edb3f4`) | `76c6a407…` | `match`, 34/34 nets, 46/46 devices | `match`, 34/34 nets, 46/46 devices |
+   | divider-bearing (`b9fc650`, current main) | `625c8ff9…` | `match`, 34/34 nets, 48/48 devices | `match`, 34/34 nets, 48/48 devices |
+
+   The historical dev661 observation on the original stream — 48 layout nets vs 34 reference nets
+   (2AMLogic/klayout-tools#5311, `0.9.2.dev661`) — does **not** reproduce on either release. The divider stream's
+   two mismatches are the known `res_high_po` parameter caveats of the committed `lvs/osc_subth.report.json`
+   (`geometry_not_compared` + `placeholder_value`), identical on both releases.
+2. **The `vh` split is gone on the release.** `diag/vh_split.py` with klt 0.9.2 (its own Python, 0.9.2 first on
+   PATH): 14/14 headers share their net with a stage-PFET terminal (dev661: 0/14); the no-`lvtn` scratch control
+   stays 14/14. All 14 headers extract as `pfet L=0.5U W=0.42U AS=0.2205P AD=0.1218P PS=1.54U`, identical on 0.9.1
+   and 0.9.2 (the #5315 apportioned shared-diffusion geometry).
+3. **One-corner ring-start on the released extraction** (`klt pex --extract-only`, `--pdk-root` pinned to the repo's
+   `c6d73a35…` sky130A; extracted sha256 `a13f74ea…`, **byte-identical** to `extracted/osc_subth.dev2493.spice`, so
+   the release and the dev2493 first-fix build extract the same bytes here): `probe/run_probe.sh`,
+   tt / 1.80 V / 27 C, free `vbp` → **111 rising edges / 100 µs** (schematic 169; split dev661 extraction 0;
+   dev2493 111), `vbp` settled at 1.5000 V.
+4. **Upstream:** the reporter result is posted on 2AMLogic/klayout-tools#5311
+   ([comment](https://github.com/2AMLogic/klayout-tools/issues/5311#issuecomment-7050857025)) — `match` with the
+   original-stream counts for the release and the 0.9.1 control; closure stays with the upstream owner.

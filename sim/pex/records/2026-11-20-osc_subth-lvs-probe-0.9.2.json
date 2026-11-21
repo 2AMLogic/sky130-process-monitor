@@ -1,0 +1,125 @@
+{
+ "record": "osc_subth release probe: released klayout-tools 0.9.1 vs 0.9.2 LVS on both input streams, plus the one-corner ring-start on the 0.9.2 extraction (issue #275; the 2AMLogic/klayout-tools#5311 reporter verification)",
+ "date": "2026-11-20",
+ "label": "SIMULATED (klt extract/lvs structural runs and one local single `ngspice -b` probe, no grid); nothing measured",
+ "tools": {
+  "klt_0.9.1": "klt 0.9.1, git 4d0d29be4fd991f499d59e783a908082d5e24c56, klt_reinstall_spec klayout-tools==0.9.1",
+  "klt_0.9.2": "klt 0.9.2, git 046ba74652fc096bd97071fc3237f7159dd40183, klt_reinstall_spec klayout-tools==0.9.2 (contains the #5311 fix #5315, 593dd38d1, per the GitHub compare cited in issue #275)",
+  "engine": "klayout 0.30.13 on both releases (report environment.engine_version)",
+  "invocation": "uvx --from klayout-tools==<version> klt ... (no host tool touched; the CI pin in .github/workflows/signoff.yml stays klayout-tools==0.9.1)",
+  "probe": "ngspice-47, one local `ngspice -b` via sim/pex/probe/run_probe.sh"
+ },
+ "procedure": "per stream, in a fresh scratch directory: the stream's own layout/osc_bank.gds, lvs/osc_subth.request.json and lvs/osc_subth.ref.spice (all three from the same commit); `klt extract osc_bank.gds --deck sky130 --top osc_subth --pins en,out,vdd,vss -o osc_subth.layout.spice` (the plain-element form klt lvs requires, matching the committed lvs/osc_subth.layout.spice header); then `klt lvs osc_subth.request.json --format json` against that freshly extracted netlist",
+ "streams": {
+  "pre_divider_original_reporter_inputs": {
+   "source_commit": "8edb3f4 (parent of 25c89ad, the commit that added the divider)",
+   "gds_sha256": "76c6a407061578bcf49baa7426b4b9714e343f879821a50043ff61c60dc18e1b",
+   "request_sha256": "99039dd05cc57aea711a5d2488cc7830f8d068274382d8c86011977e033ad313",
+   "reference_sha256": "24024c6021b7343ef237eae3600bb28148a410f05589eed1ea46eca104ed464f",
+   "lvs": {
+    "klt_0.9.1": {
+     "status": "match",
+     "nets_layout_reference_matched": [34, 34, 34],
+     "devices_layout_reference_matched": [46, 46, 46],
+     "mismatch_count": 0,
+     "extracted_netlist_sha256": "9dc4865755d2ee025493c2a146f674538fbf76b27c4477806dc550b1e26b2a4b"
+    },
+    "klt_0.9.2": {
+     "status": "match",
+     "nets_layout_reference_matched": [34, 34, 34],
+     "devices_layout_reference_matched": [46, 46, 46],
+     "mismatch_count": 0,
+     "extracted_netlist_sha256": "a051c649701cc1bcd1decb06ce56902f7ba35f657140b330ed890cd2fd788e2e"
+    }
+   },
+   "historical_dev661": "the upstream filing reports 48 layout nets vs 34 reference nets on klt 0.9.2.dev661+g1de5c0432aad for this input set (observation published in 2AMLogic/klayout-tools#5311; HISTORICAL, not re-run here). Neither release reproduces it: the 14 stepped-width shared source/drain junctions are one net again on 0.9.2."
+  },
+  "divider_bearing": {
+   "source_commit": "b9fc650 (main at the time of this record)",
+   "gds_sha256": "625c8ff90f34c6fac7a88339d2c10ad5925da02e118eb6a15a6539c11e05bf29",
+   "request_sha256": "baa6c1d7db1fc5fe304399100404e2fb6838a49b353d5c4c0dc185a84806957b",
+   "reference_sha256": "ef64cf9b5960655e11f3e0c77c5e844b8d4496c5bcdeceb13e71b8e3154a2f40",
+   "lvs": {
+    "klt_0.9.1": {
+     "status": "match",
+     "nets_layout_reference_matched": [34, 34, 34],
+     "devices_layout_reference_matched": [48, 48, 48],
+     "mismatch_count": 2,
+     "mismatch_categories": {
+      "device.geometry_not_compared": 1,
+      "device.placeholder_value": 1
+     },
+     "extracted_netlist_sha256": "80b7fd5a9c51c7eca2562d33c8d12262a5dd2289e84a361c90138e900e364a4e"
+    },
+    "klt_0.9.2": {
+     "status": "match",
+     "nets_layout_reference_matched": [34, 34, 34],
+     "devices_layout_reference_matched": [48, 48, 48],
+     "mismatch_count": 2,
+     "mismatch_categories": {
+      "device.geometry_not_compared": 1,
+      "device.placeholder_value": 1
+     },
+     "extracted_netlist_sha256": "abdce428729fc7210033b2137a10c56e25c445f8dd0e18604e643e756a8349c1"
+    }
+   },
+   "mismatch_note": "the 2 mismatches are the known res_high_po caveats of the committed lvs/osc_subth.report.json (klt lvs does not compare drawn-resistor L/W; R is a placeholder on the reference side), identical on both releases"
+  }
+ },
+ "vh_split_check_klt_0.9.2": {
+  "script": "sim/pex/diag/vh_split.py run with the 0.9.2 environment's own Python (klayout.db 0.30.13) and klt 0.9.2 first on PATH; divider-bearing GDS",
+  "marked_layout": {
+   "step_diff_merged_polygons": 14,
+   "headers": 14,
+   "headers_sharing_a_net_with_stage_pfet": 14
+  },
+  "control_no_lvtn_scratch_copy": {
+   "headers": 14,
+   "headers_sharing_a_net_with_stage_pfet": 14
+  },
+  "comparison": "dev661 (records/2026-11-11-vh-split-diagnosis-osc_subth.json): 0/14 marked, 14/14 control"
+ },
+ "header_device_klt_0.9.2": {
+  "lvs_plain_element_form": "pfet L=0.5U W=0.42U AS=0.2205P AD=0.1218P PS=1.54U — all 14 headers identical, and byte-identical parameter values on klt 0.9.1 (the apportioned shared-diffusion geometry of the #5315 fix)",
+  "pex_subckt_call_form": "sky130_fd_pr__pfet_01v8_lvt L=0.5 W=0.42 (X card; this form carries no AS/AD)",
+  "pex_device_counts": {
+   "sky130_fd_pr__nfet_01v8": 16,
+   "sky130_fd_pr__pfet_01v8": 16,
+   "sky130_fd_pr__pfet_01v8_lvt": 14,
+   "sky130_fd_pr__res_high_po": 2
+  },
+  "pex_device_counts_note": "the schematic's 16/16/14 plus the two drawn Rb0/Rb1 divider resistors, as on dev661-after-#5304 and dev2493"
+ },
+ "ring_start_probe_klt_0.9.2": {
+  "corner": {
+   "process": "tt",
+   "vdd_V": 1.8,
+   "temp_C": 27
+  },
+  "testbench": "sim/pex/probe/osc_subth_vbp_probe.cir via sim/pex/probe/run_probe.sh; en ramps 0->1.8 V at 1 ns; .tran 20n 100u; rising edges counted at 0.9 V; vbp free (no force)",
+  "model_lib": "open_pdks c6d73a35f524070e85faff4a6a9eef49553ebc2b sky130A libs.tech/ngspice/sky130.lib.spice, section tt (the repo's sim/pdk.json pin)",
+  "extraction": "klt pex layout/osc_bank.gds --deck sky130 --pdk sky130A --pdk-root <repo-pinned sky130A> --top osc_subth --pins en,out,vdd,vss --extract-only; status not_checked (exit 4, the documented --extract-only code), extraction devices=48 nets=34",
+  "extracted_netlist": {
+   "sha256": "a13f74eaf0532d37986d5cac027cfefa4c7ca9227665ad2e957a232a570ab069",
+   "note": "byte-identical to the committed sim/pex/extracted/osc_subth.dev2493.spice (records/2026-11-20-osc_subth-probe-dev2493.json), so the released 0.9.2 and the dev2493 first-fix build extract the same bytes here"
+  },
+  "result": {
+   "rising_edges_100us": 111,
+   "vbp_settled_V": 1.5,
+   "out_range_V": [-0.001, 1.817]
+  },
+  "comparison_rising_edges_100us": {
+   "schematic_2026-11-11_diagnosis": 169,
+   "extracted_dev661_split_nets": 0,
+   "extracted_dev2493_first_fix_build": 111,
+   "extracted_released_0.9.2_this_record": 111
+  }
+ },
+ "upstream": "reporter result posted on 2AMLogic/klayout-tools#5311 (match on the original inputs on 0.9.2, with the 0.9.1 control counts): https://github.com/2AMLogic/klayout-tools/issues/5311#issuecomment-7050857025 — closure stays with the upstream owner",
+ "not_done": [
+  "no pin migration: .github/workflows/signoff.yml keeps klayout-tools==0.9.1; moving the pin re-renders the signoff record and attestations and is its own change",
+  "no layout, extracted-netlist, request or reference edit; no spec threshold touched",
+  "no 45-cell re-run (dev2493 already recorded it; records/2026-11-20-osc_subth-dev2493.pex.report.json)"
+ ],
+ "conclusion": "Released klayout-tools 0.9.2 reproduces the original osc_subth LVS match on both input streams (0.9.1 control: match on both too), the dev661 48-vs-34 net split does not reproduce, the 14 vh headers are single nets (14/14, control 14/14), and the one-corner extracted ring-start is 111 rising edges / 100 us at tt/1.80 V/27 C — identical to the dev2493 first-fix build and against 169 schematic / 0 on the split dev661 extraction. The 2AMLogic/klayout-tools#5311 out-of-band acceptance criterion is met from the reporter side."
+}
