@@ -1,0 +1,66 @@
+* EXPERIMENT VARIANT subckt for the row-7 active-power iteration (issue #280).
+* Lever {"n": 61} from the committed design point (the empty lever is the base, which
+* reproduces design/osc_bank/osc_hd.spice; asserted by gen_candidates.py).
+.subckt osc_hd_n061 en out vdd vss
+x0 out en vss vss vdd vdd n0 sky130_fd_sc_hd__nand2_1
+x1 n0 vss vss vdd vdd n1 sky130_fd_sc_hd__inv_1
+x2 n1 vss vss vdd vdd n2 sky130_fd_sc_hd__inv_1
+x3 n2 vss vss vdd vdd n3 sky130_fd_sc_hd__inv_1
+x4 n3 vss vss vdd vdd n4 sky130_fd_sc_hd__inv_1
+x5 n4 vss vss vdd vdd n5 sky130_fd_sc_hd__inv_1
+x6 n5 vss vss vdd vdd n6 sky130_fd_sc_hd__inv_1
+x7 n6 vss vss vdd vdd n7 sky130_fd_sc_hd__inv_1
+x8 n7 vss vss vdd vdd n8 sky130_fd_sc_hd__inv_1
+x9 n8 vss vss vdd vdd n9 sky130_fd_sc_hd__inv_1
+x10 n9 vss vss vdd vdd n10 sky130_fd_sc_hd__inv_1
+x11 n10 vss vss vdd vdd n11 sky130_fd_sc_hd__inv_1
+x12 n11 vss vss vdd vdd n12 sky130_fd_sc_hd__inv_1
+x13 n12 vss vss vdd vdd n13 sky130_fd_sc_hd__inv_1
+x14 n13 vss vss vdd vdd n14 sky130_fd_sc_hd__inv_1
+x15 n14 vss vss vdd vdd n15 sky130_fd_sc_hd__inv_1
+x16 n15 vss vss vdd vdd n16 sky130_fd_sc_hd__inv_1
+x17 n16 vss vss vdd vdd n17 sky130_fd_sc_hd__inv_1
+x18 n17 vss vss vdd vdd n18 sky130_fd_sc_hd__inv_1
+x19 n18 vss vss vdd vdd n19 sky130_fd_sc_hd__inv_1
+x20 n19 vss vss vdd vdd n20 sky130_fd_sc_hd__inv_1
+x21 n20 vss vss vdd vdd n21 sky130_fd_sc_hd__inv_1
+x22 n21 vss vss vdd vdd n22 sky130_fd_sc_hd__inv_1
+x23 n22 vss vss vdd vdd n23 sky130_fd_sc_hd__inv_1
+x24 n23 vss vss vdd vdd n24 sky130_fd_sc_hd__inv_1
+x25 n24 vss vss vdd vdd n25 sky130_fd_sc_hd__inv_1
+x26 n25 vss vss vdd vdd n26 sky130_fd_sc_hd__inv_1
+x27 n26 vss vss vdd vdd n27 sky130_fd_sc_hd__inv_1
+x28 n27 vss vss vdd vdd n28 sky130_fd_sc_hd__inv_1
+x29 n28 vss vss vdd vdd n29 sky130_fd_sc_hd__inv_1
+x30 n29 vss vss vdd vdd n30 sky130_fd_sc_hd__inv_1
+x31 n30 vss vss vdd vdd n31 sky130_fd_sc_hd__inv_1
+x32 n31 vss vss vdd vdd n32 sky130_fd_sc_hd__inv_1
+x33 n32 vss vss vdd vdd n33 sky130_fd_sc_hd__inv_1
+x34 n33 vss vss vdd vdd n34 sky130_fd_sc_hd__inv_1
+x35 n34 vss vss vdd vdd n35 sky130_fd_sc_hd__inv_1
+x36 n35 vss vss vdd vdd n36 sky130_fd_sc_hd__inv_1
+x37 n36 vss vss vdd vdd n37 sky130_fd_sc_hd__inv_1
+x38 n37 vss vss vdd vdd n38 sky130_fd_sc_hd__inv_1
+x39 n38 vss vss vdd vdd n39 sky130_fd_sc_hd__inv_1
+x40 n39 vss vss vdd vdd n40 sky130_fd_sc_hd__inv_1
+x41 n40 vss vss vdd vdd n41 sky130_fd_sc_hd__inv_1
+x42 n41 vss vss vdd vdd n42 sky130_fd_sc_hd__inv_1
+x43 n42 vss vss vdd vdd n43 sky130_fd_sc_hd__inv_1
+x44 n43 vss vss vdd vdd n44 sky130_fd_sc_hd__inv_1
+x45 n44 vss vss vdd vdd n45 sky130_fd_sc_hd__inv_1
+x46 n45 vss vss vdd vdd n46 sky130_fd_sc_hd__inv_1
+x47 n46 vss vss vdd vdd n47 sky130_fd_sc_hd__inv_1
+x48 n47 vss vss vdd vdd n48 sky130_fd_sc_hd__inv_1
+x49 n48 vss vss vdd vdd n49 sky130_fd_sc_hd__inv_1
+x50 n49 vss vss vdd vdd n50 sky130_fd_sc_hd__inv_1
+x51 n50 vss vss vdd vdd n51 sky130_fd_sc_hd__inv_1
+x52 n51 vss vss vdd vdd n52 sky130_fd_sc_hd__inv_1
+x53 n52 vss vss vdd vdd n53 sky130_fd_sc_hd__inv_1
+x54 n53 vss vss vdd vdd n54 sky130_fd_sc_hd__inv_1
+x55 n54 vss vss vdd vdd n55 sky130_fd_sc_hd__inv_1
+x56 n55 vss vss vdd vdd n56 sky130_fd_sc_hd__inv_1
+x57 n56 vss vss vdd vdd n57 sky130_fd_sc_hd__inv_1
+x58 n57 vss vss vdd vdd n58 sky130_fd_sc_hd__inv_1
+x59 n58 vss vss vdd vdd n59 sky130_fd_sc_hd__inv_1
+x60 n59 vss vss vdd vdd out sky130_fd_sc_hd__inv_1
+.ends

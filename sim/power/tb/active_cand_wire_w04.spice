@@ -1,0 +1,9 @@
+* ACTIVE-power candidate bench: wire_w04 (EXPERIMENT VARIANT, not the committed design).
+* Same bench shape as tb/active_osc_wire.spice; the variant subckt differs from
+* design/osc_bank/osc_wire.spice by exactly the lever recorded in the iteration record.
+.options rshunt=1e12
+.include "cand/wire_w04.spice"
+Vdd vdd 0 1.8
+Vss vss 0 0
+Ben en 0 V='v(vdd)*min(max((time-1n)/100p,0),1)'
+Xdut en out vdd vss osc_wire_w04

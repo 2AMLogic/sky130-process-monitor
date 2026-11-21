@@ -1,0 +1,56 @@
+{
+ "binding": {
+  "osc_hd": {
+   "cell": [
+    "ff",
+    1.98,
+    125
+   ],
+   "cells_graded": 45,
+   "min_uW": 78.620058,
+   "uW": 396.40788
+  },
+  "osc_nmos": {
+   "cell": [
+    "ff",
+    1.98,
+    -40
+   ],
+   "cells_graded": 45,
+   "min_uW": 75.81891600000002,
+   "uW": 351.47375999999997
+  },
+  "osc_pmos": {
+   "cell": [
+    "ff",
+    1.98,
+    125
+   ],
+   "cells_graded": 45,
+   "min_uW": 25.875126,
+   "uW": 165.612348
+  },
+  "osc_subth": {
+   "cell": [
+    "ff",
+    1.98,
+    125
+   ],
+   "cells_graded": 40,
+   "min_uW": 1.7052606000000001,
+   "uW": 36.578717999999995
+  },
+  "osc_wire": {
+   "cell": [
+    "ff",
+    1.98,
+    -40
+   ],
+   "cells_graded": 44,
+   "min_uW": 543.23784,
+   "uW": 1740.22398
+  }
+ },
+ "kind": "SIMULATED",
+ "source": "2026-11-05-power-table-complete.json"
+}

@@ -1,0 +1,106 @@
+{
+  "netlist": "../tb/active_cand_wire_r004.spice",
+  "engine": "ngspice",
+  "models": {
+    "pdk": "sky130A",
+    "lib": "libs.tech/ngspice/sky130.lib.spice"
+  },
+  "options": {
+    "timeout_s": 3000,
+    "retry_on_convergence_error": true
+  },
+  "batch": {
+    "job_ceiling_check": "warn"
+  },
+  "backend": "batch",
+  "corners": {
+    "units": [
+      {
+        "process": "ff",
+        "temperature_c": -40,
+        "supply_v": {
+          "vdd": 1.98
+        }
+      }
+    ]
+  },
+  "analysis": {
+    "kind": "tran",
+    "args": "50p 2500n"
+  },
+  "measurements": [
+    {
+      "name": "e_vdd",
+      "energy": {
+        "source": "Vdd",
+        "voltage": "v(vdd)",
+        "from": "1250n",
+        "to": "2500n"
+      }
+    },
+    {
+      "name": "i_avg",
+      "spice": ".meas tran i_avg avg i(Vdd) from=1250n to=2500n",
+      "unit": "A"
+    },
+    {
+      "name": "t_rise",
+      "unit": "s",
+      "crossings": {
+        "signal": "v(out)",
+        "level": {
+          "frac_of": "vdd",
+          "fraction": 0.5
+        },
+        "edge": "rise",
+        "max": 400
+      }
+    },
+    {
+      "name": "t_n1",
+      "unit": "s",
+      "crossings": {
+        "signal": "v(xdut.n1)",
+        "level": {
+          "frac_of": "vdd",
+          "fraction": 0.5
+        },
+        "edge": "rise",
+        "max": 400
+      }
+    },
+    {
+      "name": "vhi_n1",
+      "spice": ".meas tran vhi_n1 max v(xdut.n1) from=1250n to=2500n",
+      "unit": "V"
+    },
+    {
+      "name": "vlo_n1",
+      "spice": ".meas tran vlo_n1 min v(xdut.n1) from=1250n to=2500n",
+      "unit": "V"
+    },
+    {
+      "name": "t_s1",
+      "unit": "s",
+      "crossings": {
+        "signal": "v(xdut.s1)",
+        "level": {
+          "frac_of": "vdd",
+          "fraction": 0.5
+        },
+        "edge": "rise",
+        "max": 400
+      }
+    },
+    {
+      "name": "vhi_s1",
+      "spice": ".meas tran vhi_s1 max v(xdut.s1) from=1250n to=2500n",
+      "unit": "V"
+    },
+    {
+      "name": "vlo_s1",
+      "spice": ".meas tran vlo_s1 min v(xdut.s1) from=1250n to=2500n",
+      "unit": "V"
+    }
+  ]
+}
