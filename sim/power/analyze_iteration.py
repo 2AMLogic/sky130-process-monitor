@@ -199,7 +199,9 @@ def _sens_rows(tab, osc):
 
 def candgrid(grid_report, baseline_reports):
     rep = _load(grid_report)
-    name = os.path.basename(grid_report)[len("candgrid_"):-len(".json")]
+    netlist = rep["netlist"]["path"]
+    stem = os.path.basename(netlist)  # active_cand_<name>.spice
+    name = stem[len("active_cand_"):-len(".spice")]
     fam, tag = name.split("_", 1)
     osc = _GEN.CANDIDATES[fam]["osc"]
     cells, fs, ps = [], [], {}

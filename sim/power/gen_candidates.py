@@ -324,12 +324,15 @@ def grid_requests(carried):
 # committed sensitivity surface (grid_osc_subth*.json.gz: the cold slow cells run at ~0.2-2.5 kHz;
 # the committed 2 ms window resolved at most 6 edges) with >=2x margin over 9 crossings at each
 # cell's measured or extrapolated frequency; tstep is coarser than the committed 20n because these
-# rings have ms-scale periods (>=90 samples/period). The wire cell re-runs the committed bench with
-# tmax capped at 20p -- the fix that resolved the same abort at sf/1.98 V/-40 C
-# (sim/sensitivity/gen_requests.py COLD_SF_WIRE_TRAN).
+# rings have ms-scale periods (>=90 samples/period). The wire cell is attempted twice, exactly as
+# the sensitivity flow did for the same abort at sf/1.98 V/-40 C: first tmax capped at 20p
+# (COLD_SF_WIRE_TRAN), then -- when that still aborts -- the committed relaxed probe bench
+# tb_osc_wire_probe.spice's option line (reltol/gmin/gear) on a power-side copy of the same body.
 GAPS = {
     "gap_osc_wire_sf_1.62V_-40C.json": ("../tb/active_osc_wire.spice", "50p 2500n 0 20p",
                                         [("sf", 1.62, -40)], 3000),
+    "gap_osc_wire_sf_1.62V_-40C_relaxed.json": ("../tb/active_osc_wire_probe.spice", "50p 2500n 0 20p",
+                                                [("sf", 1.62, -40)], 3000),
     "gap_osc_subth_ss_1.62V_-40C.json": ("../tb/active_osc_subth.spice", "10u 20m",
                                          [("ss", 1.62, -40)], 3480),
     "gap_osc_subth_ss_1.80V_-40C.json": ("../tb/active_osc_subth.spice", "10u 10m",
@@ -387,11 +390,31 @@ def deck_text(name, osc):
     return "\n".join(body) + "\n"
 
 
+def write_probe_deck():
+    """The relaxed power bench for the osc_wire sf/1.62 V/-40 C convergence cell: the committed
+    active_osc_wire.spice body plus exactly the option line of the sensitivity probe bench that
+    resolved the same abort at sf/1.98 V/-40 C (sim/sensitivity/osc/tb_osc_wire_probe.spice)."""
+    body = open(os.path.join(HERE, "tb", "active_osc_wire.spice")).read()
+    probe = open(os.path.join(HERE, "..", "sensitivity", "osc", "tb_osc_wire_probe.spice")).read()
+    opt = next(l for l in probe.splitlines() if l.startswith(".options"))
+    assert opt not in body
+    head = ("* Power bench (ACTIVE, relaxed probe): committed active_osc_wire.spice body plus the\n"
+            "* sensitivity probe bench's option line (%s), for the sf/1.62 V/-40 C\n"
+            "* `timestep too small` cell. SIMULATION, schematic-level; bench option, not a model change.\n" % opt.strip())
+    out = head + body.replace("* Power bench (ACTIVE)", "* Power bench (ACTIVE)", 1)
+    lines = out.splitlines()
+    idx = next(i for i, l in enumerate(lines) if l.startswith(".options rshunt"))
+    lines.insert(idx, opt)
+    with open(os.path.join(HERE, "tb", "active_osc_wire_probe.spice"), "w") as f:
+        f.write("\n".join(lines) + "\n")
+
+
 def write_all(carried=None):
     assert_parity()
     os.makedirs(os.path.join(HERE, "tb", "cand"), exist_ok=True)
     os.makedirs(os.path.join(HERE, "requests"), exist_ok=True)
-    written = []
+    write_probe_deck()
+    written = ["tb/active_osc_wire_probe.spice"]
     for fam, spec in CANDIDATES.items():
         for tag in spec["levers"]:
             name = "%s_%s" % (fam, tag)

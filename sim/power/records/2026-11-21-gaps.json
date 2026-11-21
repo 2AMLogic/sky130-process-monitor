@@ -1,0 +1,103 @@
+{
+ "gaps": [
+  {
+   "P_uW": 1.7021826,
+   "cell": [
+    "sf",
+    1.62,
+    -40
+   ],
+   "f_hz": 462.80167291835835,
+   "gradable": true,
+   "n_edges": 45,
+   "osc": "osc_subth",
+   "rule": ">= 9 rising crossings (the #8 rule via analyze_power.MIN_EDGES)",
+   "unit_status": "pass"
+  },
+  {
+   "P_uW": 2.820294,
+   "cell": [
+    "sf",
+    1.8,
+    -40
+   ],
+   "f_hz": 647.924854262509,
+   "gradable": true,
+   "n_edges": 25,
+   "osc": "osc_subth",
+   "rule": ">= 9 rising crossings (the #8 rule via analyze_power.MIN_EDGES)",
+   "unit_status": "pass"
+  },
+  {
+   "P_uW": 4.4340714,
+   "cell": [
+    "sf",
+    1.98,
+    -40
+   ],
+   "f_hz": 1089.3726758069436,
+   "gradable": true,
+   "n_edges": 21,
+   "osc": "osc_subth",
+   "rule": ">= 9 rising crossings (the #8 rule via analyze_power.MIN_EDGES)",
+   "unit_status": "pass"
+  },
+  {
+   "P_uW": 1.50019776,
+   "cell": [
+    "ss",
+    1.62,
+    -40
+   ],
+   "f_hz": 2267.2289490547805,
+   "gradable": true,
+   "n_edges": 42,
+   "osc": "osc_subth",
+   "rule": ">= 9 rising crossings (the #8 rule via analyze_power.MIN_EDGES)",
+   "unit_status": "pass"
+  },
+  {
+   "P_uW": 2.123748,
+   "cell": [
+    "ss",
+    1.8,
+    -40
+   ],
+   "f_hz": 5750.592268717997,
+   "gradable": true,
+   "n_edges": 57,
+   "osc": "osc_subth",
+   "rule": ">= 9 rising crossings (the #8 rule via analyze_power.MIN_EDGES)",
+   "unit_status": "pass"
+  },
+  {
+   "P_uW": null,
+   "cell": [
+    "sf",
+    1.62,
+    -40
+   ],
+   "f_hz": null,
+   "gradable": false,
+   "n_edges": 0,
+   "osc": "osc_wire",
+   "rule": ">= 9 rising crossings (the #8 rule via analyze_power.MIN_EDGES)",
+   "unit_status": "error"
+  },
+  {
+   "P_uW": 597.1109400000001,
+   "cell": [
+    "sf",
+    1.62,
+    -40
+   ],
+   "f_hz": 59097335.13449492,
+   "gradable": true,
+   "n_edges": 147,
+   "osc": "osc_wire",
+   "rule": ">= 9 rising crossings (the #8 rule via analyze_power.MIN_EDGES)",
+   "unit_status": "pass"
+  }
+ ],
+ "kind": "SIMULATED"
+}
