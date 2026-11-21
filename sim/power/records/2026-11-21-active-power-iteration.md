@@ -47,7 +47,16 @@ dominated by overlap current driven by the slow RC input slopes.
 | `osc_hd` ff/1.98/125 | 396.4 µW | 0 (no explicit caps) | 0.091 µW | 396.3 µW | 975.4 MHz | 2.186 V |
 | `osc_nmos` ff/1.98/−40 | 351.5 µW | 0 | 0.010 µW | 351.5 µW | 380.6 MHz | 2.213 V |
 | `osc_pmos` ff/1.98/125 | 165.6 µW | 0 | 0.037 µW | 165.6 µW | 142.9 MHz | 2.138 V |
-| `osc_subth` ff/1.98/125 | (§6 probe pending fleet) | 0 | includes the ~1 µA ungated divider | — | — | — |
+| `osc_subth` ff/1.98/125 | **not measured this pass** (below) | 0 | includes the ~1 µA ungated divider | — | — | — |
+
+The `osc_subth` probe (the one oscillator under every row-7 active bound) did not complete: the 2 ms
+window at its 151 MHz binding cell costs ~20+ min per unit, two fleet attempts were spot-reclaimed
+(`interrupted`), and the third was still capacity-queued when this record closed
+(`requests/probe_osc_subth.json` is committed; the queued job is collectable with
+`klt sim sim/power/requests/probe_osc_subth.json --backend batch --attach klt-sim-3bc0d769fb28`).
+No candidate and no verdict depends on it: the committed table bounds its worst graded cell at 36.6 µW
+(under the 100 µW target), §6 below grades its five cold cells at 1.5–4.4 µW, and its ungated-divider DC
+draw is already carried as the idle term of every idle figure it feeds.
 
 For the wire ring the probe also measures the stage-RC delay directly (crossings of the driver output
 `v(xdut.s1)` vs the post-RC node `v(xdut.n1)`, same mid-rail convention): RC = 100.4 ps of a 145.6 ps
