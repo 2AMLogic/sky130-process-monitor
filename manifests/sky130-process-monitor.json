@@ -44,6 +44,28 @@
         "content_hash": "sha256:8932b6a9c7630a04e1925c9e2e0bd8a5bd2dc8643b27b79453a7eee5ca539653"
       }
     ],
+    "11.analog": [
+      {
+        "file": "erc/osc_hd.report.json",
+        "content_hash": "sha256:625c8ff90f34c6fac7a88339d2c10ad5925da02e118eb6a15a6539c11e05bf29"
+      },
+      {
+        "file": "erc/osc_nmos.report.json",
+        "content_hash": "sha256:625c8ff90f34c6fac7a88339d2c10ad5925da02e118eb6a15a6539c11e05bf29"
+      },
+      {
+        "file": "erc/osc_pmos.report.json",
+        "content_hash": "sha256:625c8ff90f34c6fac7a88339d2c10ad5925da02e118eb6a15a6539c11e05bf29"
+      },
+      {
+        "file": "erc/osc_wire.report.json",
+        "content_hash": "sha256:625c8ff90f34c6fac7a88339d2c10ad5925da02e118eb6a15a6539c11e05bf29"
+      },
+      {
+        "file": "erc/osc_subth.report.json",
+        "content_hash": "sha256:625c8ff90f34c6fac7a88339d2c10ad5925da02e118eb6a15a6539c11e05bf29"
+      }
+    ],
     "5.analog": {
       "file": "evidence/item5_analog.json",
       "content_hash": "sha256:8103130d068c67ede6e552fcfc45f605d4ad8533d8392e4d73ce56218084ae45"
