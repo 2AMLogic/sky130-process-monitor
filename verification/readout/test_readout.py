@@ -9,12 +9,23 @@ window with an edge-phase uncertainty of up to +-1 osc edge per gate edge. Expec
 count = f_osc * 2^k * T_ref, accepted within +-2 (two gate edges x +-1).
 
 READOUT_BREAK=1 adds an offset to every expected count: the negative control (must fail).
+
+Spec section 6 (conversion time): `conversion_time_surfaces` drives the five oscillators at
+periods taken from the committed frequency surfaces (not stand-ins) at the nominal cell and
+the slowest-osc_subth cell, reads the bank at three gate settings, and writes a committed
+machine-readable record (verification/readout/conversion-time.json; the SDF-annotated leg
+writes conversion-time-sdf.json) grading each full read against the spec bounds. Reads that
+do not complete (gate shorter than one oscillator period) are recorded as such, never
+asserted away.
 """
+import json
+import math
 import os
 
 import cocotb
 from cocotb.clock import Clock
 from cocotb.triggers import RisingEdge, Timer
+from cocotb.utils import get_sim_time
 
 REF_PS = 100_000  # 10 MHz reference clock
 TOL = 2
@@ -329,3 +340,413 @@ async def k0_phase_sweep(dut):
                 f"SIMULATED (RTL, Icarus, test_readout.py::k0_phase_sweep): osc period {period_ps} ps, "
                 f"k={k}: busy never cleared at {len(hung)} phases {hung}"
             )
+
+
+# ----------------------------------------------------- spec section 6 conversion time (issue #281)
+#
+# Every period below is a committed surface value, extracted with
+# sim/sensitivity/analyze.py `extract` over the nine reports in the order fixed by
+# sim/sensitivity/records/2026-11-14-osc-subth-gate-sizing.md section 1 (later rows
+# overwrite earlier ones, so the order decides the winner); the f_hz written here is the
+# last-row-wins winner for that cell, and source_report names the report it came from.
+# Nothing in this bench re-derives a frequency from crossings.
+
+CONV_OSC_ORDER = ("osc_hd", "osc_nmos", "osc_pmos", "osc_wire", "osc_subth")
+_R = "sim/sensitivity/records/reports"
+_WIRE_PROBE_CAVEAT = (
+    "osc_wire at this cell is MISSING in both committed grid reports (timestep_too_small "
+    "under default solver options); the value is the relaxed-options debug probe "
+    "(reltol=0.01 gmin=1e-10 method=gear), whose bias check measured up to +0.2 percent at "
+    "three cells that did converge under default options and does not bound the bias at this "
+    "cell (sim/sensitivity/records/2026-11-06-mc-offnominal-cold-margin.md section 1)."
+)
+
+CONV_CELLS = {
+    "nominal": {
+        "grid_cell": {"process": "tt", "vdd_V": 1.80, "temp_C": 27},
+        "osc": {
+            "osc_hd": {"f_hz": 641025642.5249137, "source_report": f"{_R}/grid_osc_hd.json.gz"},
+            "osc_nmos": {"f_hz": 221971285.92119876, "source_report": f"{_R}/grid_osc_nmos.json.gz"},
+            "osc_pmos": {"f_hz": 79365062.28017792, "source_report": f"{_R}/grid_osc_pmos.json.gz"},
+            "osc_wire": {"f_hz": 75669245.54416709, "source_report": f"{_R}/grid_osc_wire.json.gz"},
+            "osc_subth": {"f_hz": 2840955.9890419813, "source_report": f"{_R}/grid_osc_subth.json.gz"},
+        },
+    },
+    # The cell with the slowest osc_subth on the committed surfaces (945.75 us period;
+    # gate-sizing record section 5). osc_wire here is the relaxed-solver probe value.
+    "sf_1v98_n40C": {
+        "grid_cell": {"process": "sf", "vdd_V": 1.98, "temp_C": -40},
+        "osc": {
+            "osc_hd": {"f_hz": 687286213.5010563, "source_report": f"{_R}/grid_osc_hd.json.gz"},
+            "osc_nmos": {"f_hz": 272349986.45454586, "source_report": f"{_R}/grid_osc_nmos.json.gz"},
+            "osc_pmos": {"f_hz": 105125516.7644808, "source_report": f"{_R}/grid_osc_pmos.json.gz"},
+            "osc_wire": {
+                "f_hz": 84985845.34411676,
+                "source_report": f"{_R}/probe_wire_sf_relaxed.json.gz",
+                "caveat": _WIRE_PROBE_CAVEAT,
+            },
+            "osc_subth": {
+                "f_hz": 1057.366320595822,
+                "source_report": f"{_R}/grid_osc_subth_sf_cold.json.gz",
+            },
+        },
+    },
+}
+
+# The three gate settings the gate-sizing record tabulates (sections 5-6): the spec
+# section 5 default, k = 14 on the whole bank, and k = 14 on osc_subth only.
+CONV_GATE_SETTINGS = (
+    {"name": "spec_default_k10_all", "k": {o: 10 for o in CONV_OSC_ORDER}},
+    {"name": "k14_all_five", "k": {o: 14 for o in CONV_OSC_ORDER}},
+    {"name": "k14_osc_subth_only", "k": {**{o: 10 for o in CONV_OSC_ORDER}, "osc_subth": 14}},
+)
+
+SPEC6_BOUNDS_S = {"target": 1e-3, "fallback": 1e-2, "stretch": 1e-4}
+
+_OSC_HD_TRUST = (
+    "counter timing at osc_hd's surface frequency is a recorded spec section 5 FAIL "
+    "(sta/readout.osc-corner.sta.report.json: the counter does not cover osc_hd in any liberty "
+    "corner, its Fmax below f_osc at every corner). Icarus drops SDF TIMINGCHECK sections, so "
+    "neither a completion nor a non-completion here is timing-certified: this entry records "
+    "what the gate-level simulation did, not that the counter meets timing at this frequency. "
+    "spec/decisions/0003-counter-max-input-frequency.md (draft) proposes the resolution."
+)
+
+
+def _conv_meta(cell):
+    metas = []
+    for name in CONV_OSC_ORDER:
+        src = cell["osc"][name]
+        m = dict(src)
+        m["name"] = name
+        m["period_ps"] = round(1e12 / src["f_hz"])
+        metas.append(m)
+    return metas
+
+
+async def _conv_osc(sig, period_ps, first_rise, delay_ps):
+    """50% duty oscillator at period_ps whose first rising edge is delay_ps after the
+    coroutine starts; the time (ps) of that first rise is recorded in first_rise[0]
+    before it happens."""
+    sig.value = 0
+    await Timer(max(delay_ps, 1), unit="ps")
+    first_rise[0] = get_sim_time("ps")
+    sig.value = 1
+    await Timer(period_ps // 2, unit="ps")
+    sig.value = 0
+    await Timer(period_ps - period_ps // 2, unit="ps")
+    while True:
+        sig.value = 1
+        await Timer(period_ps // 2, unit="ps")
+        sig.value = 0
+        await Timer(period_ps - period_ps // 2, unit="ps")
+
+
+_PHASE_CONVENTION = (
+    "the oscillator's first rising edge is half an oscillator period after the clk_ref edge "
+    "that samples the CTRL start write -- a fixed, reproducible mid-phase. When the gate "
+    "window is shorter than one oscillator period, completion is phase-dependent "
+    "(test_readout.py::k0_phase_sweep: a read hangs iff no rising edge lands inside the "
+    "window), so this convention is part of the recorded result."
+)
+
+
+async def _conv_read_one(dut, h, sel, k, meta, sdf_leg):
+    """One host-sequenced read of osc[sel] at gate 2^k, with cycle counts, phase evidence
+    and surface provenance. Completion is recorded, never assumed: a read whose window
+    holds no oscillator rising edge stays busy (test_readout.py::k0_phase_sweep) and is
+    recovered with an asynchronous reset, the only way out. Returns (result, done_at):
+    done_at is the host cycle counter at the STATUS poll that observed done (None if the
+    read did not complete); only relative quantities are serialised, so the record does
+    not depend on what ran earlier in the same simulation."""
+    d = dut
+    period_ps = meta["period_ps"]
+    bound = (2 ** k) + math.ceil(4.0 * period_ps / REF_PS) + 100
+    d.we.value, d.addr.value, d.wdata.value = 1, CTRL, ctrl(sel, k)
+    await RisingEdge(d.clk_ref)  # start sampled here; gate_en rises at this edge
+    c_write = h.cycles
+    t_write = get_sim_time("ps")
+    first_rise = [None]
+    drv = cocotb.start_soon(_conv_osc(d.osc[sel], period_ps, first_rise, period_ps // 2))
+    await Timer(1, unit="ns")
+    d.we.value = 0
+    completed, st, polls = False, 0, 0
+    done_at = None
+    for _ in range(bound):
+        st = await h.read(STATUS)
+        polls += 1
+        if st & DONE:
+            completed = True
+            done_at = h.cycles
+            break
+    res = {
+        "sel": sel,
+        "osc": meta["name"],
+        "k": k,
+        "gate_cycles": 2 ** k,
+        "gate_ps": (2 ** k) * REF_PS,
+        "f_hz_surface": meta["f_hz"],
+        "period_ps": period_ps,
+        "source_report": meta["source_report"],
+        "phase_evidence": {
+            "first_osc_edge_after_gate_rise_ps": (first_rise[0] or 0) - t_write,
+            "gate_window_ps": (2 ** k) * REF_PS,
+            "gate_window_over_osc_period": round(((2 ** k) * REF_PS) / period_ps, 6),
+        },
+        "completed": completed,
+    }
+    if "caveat" in meta:
+        res["surface_caveat"] = meta["caveat"]
+    if completed:
+        res["cycles_write_to_done"] = h.cycles - c_write
+        res["seconds_at_10MHz"] = (h.cycles - c_write) * REF_PS / 1e12
+        res["status_polls"] = polls
+        res["count_observed"] = await h.read(COUNT + sel)
+        res["overflow"] = bool(st & OVF)
+        assert res["cycles_write_to_done"] >= 2 ** k, "a completed read is never shorter than its gate"
+    else:
+        if (2 ** k) * REF_PS < period_ps:
+            why = (
+                f"gate window {2 ** k} clk_ref cycles ({(2 ** k) * REF_PS / 1e6} us) is shorter "
+                f"than one oscillator period ({period_ps / 1e6} us), and no oscillator rising "
+                "edge landed inside the window at the recorded phase (test_readout.py::"
+                "k0_phase_sweep: busy never clears in that case)"
+            )
+        else:
+            why = (
+                f"the gate window spans {round(((2 ** k) * REF_PS) / period_ps, 3)} oscillator "
+                "periods, so oscillator rising edges landed inside it and the read still did "
+                "not complete"
+            )
+            if sdf_leg:
+                why += (
+                    " -- at gate level with SDF delays this is the recorded spec section 5 "
+                    "counter timing FAIL made visible (sta/readout.osc-corner.sta.report.json: "
+                    "the counter does not cover this oscillator's surface frequency in any "
+                    "liberty corner)"
+                )
+        res["did_not_complete"] = {
+            "poll_bound_cycles": bound,
+            "status_polls": polls,
+            "recovered_by": "asynchronous rst_n pulse in the bench (the only recovery)",
+            "why": why,
+        }
+    # Park the oscillator before the next selection: the clock mux may only switch while
+    # not busy, and unselected osc inputs are ignored by the RTL.
+    drv.cancel()
+    d.osc[sel].value = 0
+    if not completed:
+        d.rst_n.value = 0
+        await Timer(3 * REF_PS, unit="ps")
+        d.rst_n.value = 1
+        await Timer(3 * REF_PS, unit="ps")
+    return res, done_at
+
+
+def _grade_spec6(seconds):
+    b = {
+        "target_lt_1ms": seconds < SPEC6_BOUNDS_S["target"],
+        "fallback_lt_10ms": seconds < SPEC6_BOUNDS_S["fallback"],
+        "stretch_lt_100us": seconds < SPEC6_BOUNDS_S["stretch"],
+    }
+    v = (
+        f"full read {seconds * 1e3:.4f} ms at 10 MHz: target (<1 ms) "
+        f"{'PASS' if b['target_lt_1ms'] else 'FAIL'}, fallback (<10 ms) "
+        f"{'PASS' if b['fallback_lt_10ms'] else 'FAIL'}, stretch (<100 us) "
+        f"{'PASS' if b['stretch_lt_100us'] else 'FAIL'}"
+    )
+    return b, v
+
+
+async def _conv_full_read(dut, h, cell_label, cell, setting, sdf_leg):
+    metas = _conv_meta(cell)
+    per = []
+    dones = []
+    c_first_write = h.cycles
+    for sel, meta in enumerate(metas):
+        r, done_at = await _conv_read_one(dut, h, sel, setting["k"][meta["name"]], meta, sdf_leg)
+        if sdf_leg and meta["name"] == "osc_hd":
+            r["gate_level_timing_trust"] = _OSC_HD_TRUST
+        per.append(r)
+        dones.append(done_at)
+    done = all(p["completed"] for p in per)
+    full = {
+        "cell": cell_label,
+        "gate_setting": setting["name"],
+        "k_per_osc": setting["k"],
+        "oscillators": per,
+        "full_read": {
+            "definition": (
+                "clk_ref rising edges from the edge that samples the first CTRL start write to "
+                "the edge that first samples STATUS.done on the fifth oscillator; COUNT reads "
+                "excluded (recorded separately as with_count_reads_cycles)"
+            ),
+            "completed": done,
+            "gate_only_cycles": sum(p["gate_cycles"] for p in per),
+        },
+    }
+    fr = full["full_read"]
+    hung = [p["osc"] for p in per if not p["completed"]]
+    if done:
+        cycles = dones[-1] - c_first_write
+        fr["cycles"] = cycles
+        fr["seconds_at_10MHz"] = cycles * REF_PS / 1e12
+        fr["with_count_reads_cycles"] = h.cycles - c_first_write
+        fr["overhead_cycles"] = cycles - fr["gate_only_cycles"]
+        b, v = _grade_spec6(fr["seconds_at_10MHz"])
+        fr["spec6_bounds"] = b
+        fr["spec6_verdict"] = v
+        assert cycles >= fr["gate_only_cycles"], "full read cannot beat its gate-only time"
+    else:
+        fr["did_not_complete"] = {
+            "oscillators": hung,
+            "spec6_verdict": (
+                "did not complete: no full-read conversion time exists at this cell and gate "
+                "setting, so no spec section 6 bound is graded for it"
+            ),
+        }
+    return full
+
+
+@cocotb.test()
+async def conversion_time_surfaces(dut):
+    """Spec section 6 conversion time: full five-oscillator reads at periods taken from the
+    committed frequency surfaces (nominal cell and the slowest-osc_subth cell), three gate
+    settings, graded against the spec bounds and written to a committed record by this bench.
+    SIMULATED (RTL or SDF-annotated gate level, Icarus); nothing measured. Reads that do not
+    complete are recorded as such. The SDF-annotated leg runs the nominal cell only (the SDF
+    is the tt_025C_1v80 post-route session at typ)."""
+    sdf_leg = not (hasattr(dut, "u_cnt") and hasattr(dut.u_cnt, "count"))
+    cells = list(CONV_CELLS.items()) if not sdf_leg else [("nominal", CONV_CELLS["nominal"])]
+    h = await setup(dut)  # reference clock + reset; oscillators start per read
+    results = []
+    for label, cell in cells:
+        for setting in CONV_GATE_SETTINGS:
+            full = await _conv_full_read(dut, h, label, cell, setting, sdf_leg)
+            results.append(full)
+            fr = full["full_read"]
+            if fr["completed"]:
+                dut._log.info(
+                    f"SIMULATED (Icarus, test_readout.py::conversion_time_surfaces): {label} / "
+                    f"{setting['name']}: {fr['spec6_verdict']}"
+                )
+            else:
+                hung = ", ".join(fr["did_not_complete"]["oscillators"])
+                dut._log.info(
+                    f"SIMULATED (Icarus, test_readout.py::conversion_time_surfaces): {label} / "
+                    f"{setting['name']}: did not complete ({hung}); no spec section 6 grade"
+                )
+    record = {
+        "schema": "sky130-process-monitor.conversion-time/1",
+        "kind": "SIMULATED",
+        "description": (
+            "Spec section 6 conversion time (full read of all five oscillators) at oscillator "
+            "periods taken from the committed frequency surfaces, measured by the bench itself "
+            "and graded against the spec bounds exactly as they come out. No spec bound is "
+            "changed and no gate is picked by this record; reads that do not complete are "
+            "recorded as such. Every oscillator period names its source surface report and grid "
+            "cell. Count correctness is NOT graded here (other tests in this module do that); "
+            "count_observed values are recorded unasserted."
+        ),
+        "bench": {
+            "test": "verification/readout/test_readout.py::conversion_time_surfaces",
+            "engine": "icarus via cocotb",
+            "reference_clock_hz": 1e7,
+            "read_sequence": (
+                "five host-sequenced reads in the fixed order osc_hd, osc_nmos, osc_pmos, "
+                "osc_wire, osc_subth (CTRL sel 0..4); each oscillator's driver runs only during "
+                "its own read (unselected osc inputs are ignored by the RTL clock mux, which "
+                "switches only while not busy)"
+            ),
+            "osc_assignment_note": (
+                "osc[i] / CTRL sel i is this bench's convention; neither rtl/ nor spec/ fixes "
+                "an osc[i]-to-oscillator assignment (sta/run_osc_sta.py records the same gap)"
+            ),
+            "phase_convention": _PHASE_CONVENTION,
+        },
+        "leg": {
+            "id": "sdf-annotated-gate-level" if sdf_leg else "pre-layout-rtl",
+            "sources": (
+                "layout/readout/out/readout.v + sky130_fd_sc_hd verilog + "
+                "layout/readout/out_sdf/readout_route.sdf at corner typ "
+                "(verification/readout/request-sdf.json)"
+            )
+            if sdf_leg
+            else "rtl/readout/readout.v + rtl/readout/readout_counter.v",
+            "detected_by": (
+                "dut.u_cnt hierarchy absent (flat routed netlist)"
+                if sdf_leg
+                else "dut.u_cnt hierarchy present (readout_counter instance)"
+            ),
+        },
+        "spec_section_6_bounds_s": SPEC6_BOUNDS_S,
+        "surface_extraction": (
+            "f_hz values are the last-row-wins winners of sim/sensitivity/analyze.py extract "
+            "over the nine reports in the order fixed by "
+            "sim/sensitivity/records/2026-11-14-osc-subth-gate-sizing.md section 1"
+        ),
+        "cells": {
+            label: {
+                "grid_cell": cell["grid_cell"],
+                "why": (
+                    "nominal cell"
+                    if label == "nominal"
+                    else "the cell with the slowest osc_subth on the committed surfaces "
+                    "(sim/sensitivity/records/2026-11-14-osc-subth-gate-sizing.md section 5)"
+                ),
+                "osc": {
+                    name: {
+                        "f_hz": src["f_hz"],
+                        "period_ps": round(1e12 / src["f_hz"]),
+                        "source_report": src["source_report"],
+                        **({"caveat": src["caveat"]} if "caveat" in src else {}),
+                    }
+                    for name, src in cell["osc"].items()
+                },
+            }
+            for label, cell in CONV_CELLS.items()
+        },
+        "gate_settings": [
+            {
+                "name": s["name"],
+                "k_per_osc": s["k"],
+                "why": (
+                    "spec section 5 default gate (2^10 clk_ref cycles)"
+                    if s["name"] == "spec_default_k10_all"
+                    else "gate-sizing record section 5 k = 14, whole bank"
+                    if s["name"] == "k14_all_five"
+                    else "gate-sizing record section 5 k = 14 on osc_subth only, others default"
+                ),
+            }
+            for s in CONV_GATE_SETTINGS
+        ],
+        "cells_run": [label for label, _ in cells],
+        "results": results,
+        "does_not_establish": [
+            "nothing here is measured; every figure is Icarus simulation at the leg named above",
+            "counter timing at osc_hd's surface frequency is a recorded spec section 5 FAIL "
+            "(sta/readout.osc-corner.sta.report.json); this record measures conversion-time "
+            "behaviour, not timing closure, and re-runs at the surface period rather than "
+            "substituting a slower one",
+            "count correctness is not graded by this bench (test_readout.py count tests grade it)",
+            "the relaxed-solver osc_wire value at the sf cell carries the probe caveat recorded "
+            "beside it and is not re-derived here",
+        ],
+    }
+    if sdf_leg:
+        record["leg"]["limits"] = [
+            "typ corner only: the SDF is the tt_025C_1v80 post-route session, so only the "
+            "nominal cell is run; the sf_1v98_n40C cell is a corner mismatch and is not",
+            "partial annotation (Icarus drops SDF TIMINGCHECK and the zero-delay INTERCONNECT "
+            "entries; see verification/README.md disclosed limits)",
+            _OSC_HD_TRUST,
+            "osc inputs are ideal bench-driven clocks; the routed netlist's input-to-flop delay "
+            "is not exercised at the real oscillator frequencies (verification/README.md limit 4)",
+        ]
+    out = "conversion-time-sdf.json" if sdf_leg else "conversion-time.json"
+    path = os.path.join(os.path.dirname(os.path.abspath(__file__)), out)
+    with open(path, "w") as f:
+        json.dump(record, f, indent=1)
+        f.write("\n")
+    assert os.path.getsize(path) > 0, "conversion-time record must not be empty"
+    dut._log.info(f"wrote {out} ({len(results)} cell x gate-setting results)")
