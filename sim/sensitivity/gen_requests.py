@@ -168,11 +168,39 @@ def cold_sf_requests():
             "mc_offnom_osc_subth_sf_1.98V_-40C.json": m_sub}
 
 
+# Cold-cell completion, second round (issue #277): the four osc_subth cells the 2 ms grid window
+# could not resolve (ss/{1.62,1.80} V, sf/{1.62,1.80} V, all -40 C). Windows are sized from the #44
+# 2 ms edge-spacing runs (records in sim/subthreshold/README.md: ss 1.80 V ~3.0 kHz, ss 1.62 V
+# ~1.25 kHz, sf 1.80 V one edge in 2 ms, sf 1.62 V no edge in 2 ms) with >=2x margin over the
+# "first edge + 8 periods" the analyze.py estimator needs (9 rising edges), and the sf 1.62 V cell
+# gets the longest window because its period is the longest unknown. New names; nothing is rewritten.
+COLD2_SUBTH = [
+    # (process, vdd, tran window, why this window)
+    ("ss", 1.80, "10n 10m"),   # ~328 us period: 9 edges by ~3 ms; 10 ms >= 3x margin (the sf_cold shape)
+    ("ss", 1.62, "10n 20m"),   # ~800 us period: 9 edges by ~7.2 ms; 20 ms ~ 2.8x margin
+    ("sf", 1.80, "10n 40m"),   # one edge at 1.94 ms in 2 ms; period ~2-3 ms by the sf 1.98 V fill scaled
+    ("sf", 1.62, "10n 80m"),   # no edge in 2 ms; longest unknown, may still record no oscillation
+]
+
+
+def cold2_subth_requests():
+    """name -> single-cell osc_subth grid request per still-missing cold cell (issue #277)."""
+    out = {}
+    for p, v, tran in COLD2_SUBTH:
+        r = base("osc_subth", tran, OSCS["osc_subth"][1])
+        r["options"]["timeout_s"] = 3480  # fleet whole-job ceiling is 3600 s
+        r["corners"] = {"units": [
+            {"process": p, "temperature_c": -40, "supply_v": {"vdd": v}}]}
+        out["grid_osc_subth_%s_%gV_-40C.json" % (p, v)] = r
+    return out
+
+
 def all_requests():
-    """name -> request for the full generated set (22 files; the two hand-written probe_*.json are not ours)."""
+    """name -> request for the full generated set (26 files; the hand-written probe_*.json are not ours)."""
     out = {}
     out.update(hd_5p_requests())
     out.update(cold_sf_requests())
+    out.update(cold2_subth_requests())
     for osc, (tran, cap) in OSCS.items():
         out["grid_%s.json" % osc] = grid(osc, tran, cap)
         out["mc_%s.json" % osc] = mc(osc, tran, cap)

@@ -16,9 +16,9 @@ sys.path.insert(0, HERE)
 import gen_requests as G  # noqa: E402
 
 COMMITTED = os.path.join(HERE, "requests")
-# Not generator output (they reference ../osc/tb_osc_wire_probe.spice); excluded by
-# explicit name so any *new* unexplained file still fails as an extra.
-HAND_WRITTEN = ("probe_wire_sf.json", "probe_wire_val.json")
+# Not generator output (they reference the probe benches ../osc/tb_osc_{wire,nmos}_probe.spice);
+# excluded by explicit name so any *new* unexplained file still fails as an extra.
+HAND_WRITTEN = ("probe_nmos_tt_1.8V_-40C.json", "probe_wire_sf.json", "probe_wire_val.json")
 
 
 def read_dir(d):
@@ -56,9 +56,9 @@ class SensitivityRequestsDrift(unittest.TestCase):
                          "regenerate with: python3 -I sim/sensitivity/gen_requests.py")
 
     def test_covers_full_generated_set(self):
-        # 22 generated files: the 6 import-reachable before issue #183 plus the 16 that
-        # were only written by __main__ (curator correction, verified against the committed dir).
-        self.assertEqual(len(self.fresh), 22)
+        # 26 generated files: the 22 through issue #48 plus the four single-cell osc_subth
+        # cold completions of issue #277 (COLD2_SUBTH in gen_requests.py).
+        self.assertEqual(len(self.fresh), 26)
 
     def test_nonempty(self):
         self.assertGreater(len(self.fresh), 0)
