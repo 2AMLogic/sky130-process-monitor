@@ -3,14 +3,14 @@
   "kind": "generic",
   "status": "pass",
   "t1_item": 9,
-  "summary": "T1 item 9 (Testbenches shipped): 487/487 attestation checks passed (klt signoff --attest)",
+  "summary": "T1 item 9 (Testbenches shipped): 517/517 attestation checks passed (klt signoff --attest)",
   "source": "attest/item9_analog.json",
   "attestation": {
     "producer": "klt signoff --attest",
     "inventory_schema_version": 1,
     "hash_algorithm": "sha256-raw-bytes",
-    "check_count": 487,
-    "passed_count": 487,
+    "check_count": 517,
+    "passed_count": 517,
     "checks": [
       {
         "check": "present",
@@ -211,6 +211,13 @@
       {
         "check": "present",
         "role": "testbench",
+        "path": "sim/power/cand/osc_subth_gated.spice",
+        "passed": true,
+        "content_hash": "sha256:4f7abcc7632b0050121079f311c6b8bcc800b2e6151073216979e6e6c59ec417"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
         "path": "sim/power/requests/active_osc_hd.json",
         "passed": true,
         "content_hash": "sha256:0b8390a95b66ed9cd00eddb0701c319e74cf9e31b723ab764004e7e92e8c1572"
@@ -239,9 +246,37 @@
       {
         "check": "present",
         "role": "testbench",
+        "path": "sim/power/requests/active_osc_subth_cells.json",
+        "passed": true,
+        "content_hash": "sha256:53895e1268c3c609e9523889c2198920bbb98b9629498b477501d58b073c10ad"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
         "path": "sim/power/requests/active_osc_wire.json",
         "passed": true,
         "content_hash": "sha256:00f443bcbe05b30969e97f75922d6501f1488f3402dd829aa3a06153e7d4c5a8"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/power/requests/gated_subth_active_cells.json",
+        "passed": true,
+        "content_hash": "sha256:85c283bd385c475fb1f5d3fe998171be78c7e9e93afb00e0904f2678196da73f"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/power/requests/gated_subth_idle.json",
+        "passed": true,
+        "content_hash": "sha256:80c1fd3ce2efc266e166a3d082275c61d85146070b15822e84fbe7cc5f819817"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/power/requests/gated_subth_idle_tran_xcheck.json",
+        "passed": true,
+        "content_hash": "sha256:3ac081b906fa997142350bb5800b3b4bdf43cebfb57d017b1dd5f667b143a3b2"
       },
       {
         "check": "present",
@@ -256,6 +291,13 @@
         "path": "sim/power/requests/idle_osc_nmos.json",
         "passed": true,
         "content_hash": "sha256:d1b0c81d9c5e9784a1c6217369da01eea0b6226eb304fd1c42d3e5504bdbaba9"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/power/requests/idle_osc_nmos_settle.json",
+        "passed": true,
+        "content_hash": "sha256:9599f72716a2d7a6e30b61661351eb86a6024191741bb7cd6b836ef63676a96d"
       },
       {
         "check": "present",
@@ -277,6 +319,41 @@
         "path": "sim/power/requests/idle_osc_wire.json",
         "passed": true,
         "content_hash": "sha256:35f447b1f21c27de153ac7a521e11e4f5c02613aa6d8090ba78cc2f303c17d93"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/power/requests/idle_osc_wire_settle.json",
+        "passed": true,
+        "content_hash": "sha256:4ff9b90ea53043f4793926be250c3d0512e8428af65f62be365932925266bae9"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/power/requests/xcheck_settle_osc_nmos_ic.json",
+        "passed": true,
+        "content_hash": "sha256:3d2e23c2319f0c2a3bc8b9de3342ef60ec27fdcf746121a29f2d4ed6466f41bd"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/power/requests/xcheck_settle_osc_nmos_norshunt.json",
+        "passed": true,
+        "content_hash": "sha256:259338a45395695121070109ea01c9ea67dc09fdd37ee07f6743d0d271579fbc"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/power/requests/xcheck_settle_osc_wire_ic.json",
+        "passed": true,
+        "content_hash": "sha256:b25b515795531b87038e3e73e64f026ed98f8980fc504fc314a7c2a07b9000a7"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/power/requests/xcheck_settle_osc_wire_norshunt.json",
+        "passed": true,
+        "content_hash": "sha256:a15ff359024b42daa35ce1e474fcc3b6018e29e32bf43805b4f264dec5248388"
       },
       {
         "check": "present",
@@ -316,6 +393,27 @@
       {
         "check": "present",
         "role": "testbench",
+        "path": "sim/power/tb/gated_subth_active.spice",
+        "passed": true,
+        "content_hash": "sha256:1a728e68873332783a11f3bdcc1d33b677aea8bf188e2a30465e734d68521024"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/power/tb/gated_subth_idle.spice",
+        "passed": true,
+        "content_hash": "sha256:4c80fe5ed36a0de9f44a132ca6fc77e38db25bb2bfd89460d259726cf31fc7e9"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/power/tb/gated_subth_idle_tran.spice",
+        "passed": true,
+        "content_hash": "sha256:31f792f3d0d106fbd358767d8d486ec4565bafa4b4543ffb537398fe6abd854f"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
         "path": "sim/power/tb/idle_osc_hd.spice",
         "passed": true,
         "content_hash": "sha256:df284bf7212b20d4d2c1609c835a240daee11cee634f9f46e953b2c4deec9558"
@@ -326,6 +424,13 @@
         "path": "sim/power/tb/idle_osc_nmos.spice",
         "passed": true,
         "content_hash": "sha256:c2468183e529e4060715add43d018af2335d96d07545f6afdd37c64f5069092f"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/power/tb/idle_osc_nmos_settle.spice",
+        "passed": true,
+        "content_hash": "sha256:d08de07c72cf3c71fc1b17f70006ea99e8661d20ea73ffff9028ef5df578aa75"
       },
       {
         "check": "present",
@@ -347,6 +452,41 @@
         "path": "sim/power/tb/idle_osc_wire.spice",
         "passed": true,
         "content_hash": "sha256:08eb104afe78530fb132794fa9ae0d216ed01f25b6001e7d3c31732d03ee97d6"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/power/tb/idle_osc_wire_settle.spice",
+        "passed": true,
+        "content_hash": "sha256:5e61467a49290c23153ceaaeda4155d0087e65886dc92ab102cd7159ae4f328e"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/power/tb/xcheck_settle_osc_nmos_ic.spice",
+        "passed": true,
+        "content_hash": "sha256:55f9edf29b6e588d2209ac73355378323353e913a334fc529bf5cbef7d0a6826"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/power/tb/xcheck_settle_osc_nmos_norshunt.spice",
+        "passed": true,
+        "content_hash": "sha256:9df66690c9ad3c810dac922a41367a44968f412eec8edd70e149f5d9bbaeafb9"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/power/tb/xcheck_settle_osc_wire_ic.spice",
+        "passed": true,
+        "content_hash": "sha256:a0417ad9b965b1a0fe5cc6e9fde864de8e631c82fc5931efea5eddde8d6d7e91"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/power/tb/xcheck_settle_osc_wire_norshunt.spice",
+        "passed": true,
+        "content_hash": "sha256:a5875cee662e2be881b6e5f44224a7b35e0796ae45be6ad757b2193cb85b0bed"
       },
       {
         "check": "present",
@@ -605,7 +745,7 @@
         "role": "testbench",
         "path": "sim/solve/make_envelope.py",
         "passed": true,
-        "content_hash": "sha256:f36d97679e258886317e3e9f89877d01484960f939c6bebc3eb6217c65f560bc"
+        "content_hash": "sha256:ce5d4140b1616761925690d578d728717237f74aba471d2b4ed78738bd392bb5"
       },
       {
         "check": "present",
@@ -2102,11 +2242,71 @@
       {
         "check": "command",
         "role": "cold_start",
+        "testbench": "sim/power/requests/active_osc_subth_cells.json",
+        "argv": [
+          "klt",
+          "sim",
+          "active_osc_subth_cells.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/power/requests",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
         "testbench": "sim/power/requests/active_osc_wire.json",
         "argv": [
           "klt",
           "sim",
           "active_osc_wire.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/power/requests",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/power/requests/gated_subth_active_cells.json",
+        "argv": [
+          "klt",
+          "sim",
+          "gated_subth_active_cells.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/power/requests",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/power/requests/gated_subth_idle.json",
+        "argv": [
+          "klt",
+          "sim",
+          "gated_subth_idle.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/power/requests",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/power/requests/gated_subth_idle_tran_xcheck.json",
+        "argv": [
+          "klt",
+          "sim",
+          "gated_subth_idle_tran_xcheck.json",
           "--dry-run"
         ],
         "cwd": "sim/power/requests",
@@ -2137,6 +2337,21 @@
           "klt",
           "sim",
           "idle_osc_nmos.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/power/requests",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/power/requests/idle_osc_nmos_settle.json",
+        "argv": [
+          "klt",
+          "sim",
+          "idle_osc_nmos_settle.json",
           "--dry-run"
         ],
         "cwd": "sim/power/requests",
@@ -2182,6 +2397,81 @@
           "klt",
           "sim",
           "idle_osc_wire.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/power/requests",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/power/requests/idle_osc_wire_settle.json",
+        "argv": [
+          "klt",
+          "sim",
+          "idle_osc_wire_settle.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/power/requests",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/power/requests/xcheck_settle_osc_nmos_ic.json",
+        "argv": [
+          "klt",
+          "sim",
+          "xcheck_settle_osc_nmos_ic.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/power/requests",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/power/requests/xcheck_settle_osc_nmos_norshunt.json",
+        "argv": [
+          "klt",
+          "sim",
+          "xcheck_settle_osc_nmos_norshunt.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/power/requests",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/power/requests/xcheck_settle_osc_wire_ic.json",
+        "argv": [
+          "klt",
+          "sim",
+          "xcheck_settle_osc_wire_ic.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/power/requests",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/power/requests/xcheck_settle_osc_wire_norshunt.json",
+        "argv": [
+          "klt",
+          "sim",
+          "xcheck_settle_osc_wire_norshunt.json",
           "--dry-run"
         ],
         "cwd": "sim/power/requests",
@@ -5199,7 +5489,7 @@
         "path": "attest/item9_analog.json",
         "scope": "repo"
       },
-      "content_hash": "sha256:4e20cadbd0aaa428cd5cd5a38a06c395e4256c41be49d8d64b23ec4e8a851607"
+      "content_hash": "sha256:bdc9b1e512e25c2cd9081ece8e8db88706b176d9a42ada4fb1a8921ffa8b0d7f"
     }
   }
 }

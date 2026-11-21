@@ -1,0 +1,9 @@
+* Power bench (IDLE, candidate): osc_subth_gated with the enable tied to vss; supply leakage current.
+* op + rshunt=1e12 (with the divider gated off, vbp has no DC path); tran cross-checked in
+* requests/gated_subth_idle_tran_xcheck.json. SIMULATION, schematic-level, candidate netlist.
+.options rshunt=1e12
+.include "../cand/osc_subth_gated.spice"
+Vdd vdd 0 1.8
+Vss vss 0 0
+Ven en 0 0
+Xdut en out vdd vss osc_subth_gated

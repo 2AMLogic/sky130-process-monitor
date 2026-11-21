@@ -1,6 +1,6 @@
 {
  "inputs": {
-  "sim/power/records/2026-11-05-power-grade-complete.json": "sha256:5b25245b903374714e9d5c2c3d9ddf318d15102592a6130c74cd1f181b14b1cd",
+  "sim/power/records/2026-11-21-power-grade.json": "sha256:23fdf4ec59fce908dfe3c1a5862a336206cfd86f954d87a860c204d4b5c7979c",
   "sim/solve/records/2026-11-05-rows1-4.json": "sha256:5a2b9cebc25ec4e36b8f90e9b67b86d9ab04d1770f0e811e8216526d42d732b9"
  },
  "kind": "model-run",
@@ -80,13 +80,13 @@
     "max": 1.0
    },
    "name": "row7_idle_power_osc_bank",
-   "note": "oscillator bank only; counter power NOT covered; the binding figure is a suspect osc_nmos DC point (see record); the verdict holds without it (osc_subth ungated bias alone is 1.8 uW at tt/1.80 V/27 C)",
+   "note": "oscillator bank only; counter power NOT covered; transient-settle re-bench (issue #279): no suspect DC point remains, the figure is the min-L pfet OFF leakage of the un-gated osc_wire/osc_nmos stages at 125 C",
    "status": "fail",
    "unit": "uW",
    "worst_case": {
-    "corner_id": "sf|1.62|27",
-    "margin": -489.3361139672,
-    "value": 490.3361139672
+    "corner_id": "fs|1.98|125",
+    "margin": -124.872397541,
+    "value": 125.872397541
    }
   }
  ],

@@ -143,5 +143,41 @@ class GradeDoesNotMoveTheRecordedVerdict(unittest.TestCase):
             self.assertEqual(json.loads(json.dumps(got, sort_keys=True)), json.load(f))
 
 
+class Issue279IdleRebench(unittest.TestCase):
+    """extract() must tolerate the candidate / cross-check reports (issue #279) sitting in the same
+    -o tree, and must be able to carry a prior table's active rows verbatim when only the idle half
+    is re-run."""
+
+    def test_unknown_bench_report_yields_no_rows(self):
+        rep = report(cells={("tt", 1.80, 27): 20})  # a graded active cell, to prove rows still flow
+        rep["netlist"]["path"] = "sim/power/tb/gated_subth_idle.spice"
+        with tempfile.TemporaryDirectory() as d:
+            path = os.path.join(d, "r.json")
+            with open(path, "w") as f:
+                json.dump(rep, f)
+            tab = P.extract([path])
+        self.assertEqual(tab["rows"], [])
+        self.assertEqual(len(tab["environment"]), 1)
+        self.assertIsNone(tab["environment"][0]["oscillator"])
+
+    def test_carry_active_appends_prior_active_rows_verbatim(self):
+        rep = report(cells={("tt", 1.80, 27): 20})
+        prior = {"kind": "SIMULATED",
+                 "rows": [{"kind": "active", "osc": "osc_hd", "process": "ff", "vdd": 1.98,
+                           "temp_c": -40, "i_a": 8.8e-4, "unit_status": "pass"}],
+                 "environment": []}
+        with tempfile.TemporaryDirectory() as d:
+            path = os.path.join(d, "r.json")
+            with open(path, "w") as f:
+                json.dump(rep, f)
+            prior_path = os.path.join(d, "prior.json")
+            with open(prior_path, "w") as f:
+                json.dump(prior, f)
+            tab = P.extract([path], carry_active=prior_path)
+        self.assertEqual([r for r in tab["rows"] if r["kind"] == "active" and r["process"] == "ff"],
+                         prior["rows"])
+        self.assertTrue(any(r["kind"] == "active" and r["process"] == "tt" for r in tab["rows"]))
+
+
 if __name__ == "__main__":
     unittest.main()
