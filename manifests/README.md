@@ -29,10 +29,13 @@ checklist: the `klt signoff` input and its committed output.
   Two rows remain uncited, matching the record's `no_evidence` rows:
   `4.analog` (#26) and `11.analog` (#33; the five per-oscillator ERC reports are
   committed in `erc/osc_*.report.json` under #276, with manifest citation
-  deferred under `klayout-tools==0.9.1` because `klt signoff` resolves only one
-  ERC report per key — last-wins in a list — so listing all five would let a
+  deferred because the released grader has no multi-member item-11 citation
+  shape: `klt signoff` resolves only one ERC report per key — last-wins in a
+  list (2AMLogic/klayout-tools#5597) — so listing all five would let a
   clean trailing cell mask the `osc_hd` finding #292, and no single per-cell
-  report covers the whole bank).
+  report covers the whole bank; `erc/README.md` § "What is not claimed" has the
+  dated probe, which shows the constraint holds on released `klayout-tools` 0.9.2
+  too, so it is not a property of the `0.9.1` pin).
   The bare key `"10"` covers both the analog and digital partitions. The
   per-item sections below (`## Item 10 attestation`, `## Item 1 attestations`,
   `## Item 2 attestations`, `## Item 3 (DRC)`, `## Item 5 (digital)`,
@@ -51,9 +54,9 @@ checklist: the `klt signoff` input and its committed output.
   reads `not_applicable`; 5.analog, 6.analog, 7.analog and item 8 on both partitions read
   `unmet` / `check_failed` (their cited envelopes grade, and fail their targets); and 4.analog and
   11.analog read `unmet` / `no_evidence` (the five per-oscillator ERC reports for 11.analog are
-  committed under `erc/osc_*.report.json`, #276, with manifest citation deferred under
-  `klayout-tools==0.9.1` pending #26/#33 and #292, since `0.9.1` resolves only one ERC report per
-  evidence key).
+  committed under `erc/osc_*.report.json`, #276, with manifest citation deferred pending #26/#33
+  and #292, since the released grader resolves only one ERC report per evidence key — it has no
+  multi-member item-11 citation shape, 2AMLogic/klayout-tools#5597).
   The T2-T4 tier rows read `unmet` / `tier_not_supported` (the grader does
   not grade those tiers). Never hand-edit it.
 
