@@ -67,10 +67,11 @@ by the 468 `sky130_fd_sc_hd__tapvpwrvgnd_1` instances and nothing else):
 - `skipped`: `[]` — no tie was reported degenerate, so the zero-`missing_tie` verdict is a
   checked pass, not `supply_spec_incomplete`.
 - `inapplicable`:
-  `[{"id": "erc.supply_short", "reason": "substrate_continuity_not_modelled"}]` — with two or
-  more supplies declared, the two-supply short rule is not computable (the substrate is not a
-  conductor in the model); the item's short condition is instead carried by the single-island
-  counts above.
+  `[{"id": "erc.supply_short", "reason": "substrate_continuity_not_modelled"}]` — substrate
+  continuity is not modeled, so supply-to-supply shorts through the substrate cannot be checked
+  here. Rail-to-rail shorts on the **modeled conductors** (`stackup`/`vias`) are still checked
+  and reported directly as `erc.supply_short` findings (zero here); the single-island counts
+  above establish per-supply continuity (no `erc.unconnected_net`), not rail isolation.
 - `missing_tie_checked`: `true` — both `erc.missing_tie:["nwell_tap"]` and
   `erc.missing_tie:["psub_tap"]` really ran.
 - `checked_by_assertion`: `[]` — no tie needed a caller-asserted tap region.
@@ -124,8 +125,9 @@ by the 468 `sky130_fd_sc_hd__tapvpwrvgnd_1` instances and nothing else):
   same report item 4 grades (`4.digital`).
 
 The verdict of record is in `manifests/sky130-process-monitor.signoff.json`:
-**11.digital `met`**, `t1_met_count` 13 → 14. **11.analog stays `unmet`** — issue #33's analog
-half, waiting on #26's `4.analog`; this run cites nothing for it (the analog run below does).
+**11.digital `met`**, `t1_met_count` 13 → 14. **11.analog stays `unmet` / `no_evidence`** — issue
+#33's analog half, waiting on #26's `4.analog`; the five per-oscillator ERC reports are committed
+below (#276), with manifest citation deferred under `klayout-tools==0.9.1`.
 
 ## Analog — oscillator bank (issue #276)
 
@@ -161,8 +163,8 @@ uvx --from "klayout-tools==0.9.1" klt erc --check erc/osc_hd.report.json   # che
 
 Shared: spec `erc/osc_bank.erc.json`; input `layout/osc_bank.gds`,
 `provenance.input.content_hash` `sha256:625c8ff90f34c6fac7a88339d2c10ad5925da02e118eb6a15a6539c11e05bf29`
-(the hash the manifest's `11.analog` citation pins for all five reports — it is the *input* hash
-the grader compares, not the report bytes). Measured label counts (`provenance.label_layers`):
+(the GDS input hash recorded in all five reports; manifest citation is deferred under
+`klayout-tools==0.9.1`, see "What is not claimed" below). Measured label counts (`provenance.label_layers`):
 `osc_hd` `li1` `67/5` = 95, `met1` `68/5` = 76 (the PDK cells' own labels ride along); the custom
 cells carry only the generator's 4 (5 on `osc_subth`: `en`, `out`, `vdd`, `vss`, `vbp`) on `68/5`.
 
@@ -198,7 +200,7 @@ checked ties, plus one recorded finding (below). Exit 4 on the clean cells is th
 `--findings-only` outcome (antenna scope `not_checked`), exactly as in the digital run; exit 3 on
 `osc_hd` is the finding.
 
-### The `osc_hd` finding and its disposition (#293)
+### The `osc_hd` finding and its disposition (#292)
 
 `erc.missing_tie`, net `vss`, tie `psub_tap`, region `(-190, 2910)–(45270, 2960)` dbu — checked
 against the stream's conductor, device and well geometry:
@@ -218,15 +220,22 @@ Disposition: **not a layout defect of this repo** — the sliver is inherent to 
 `sky130_fd_sc_hd` row and comes from the pinned PDK GDS (`layout/gen/pdk_cells.json`), not from
 `gen_osc_bank.py`; a generator "fix" would draw taps outside the site row in PDK territory and
 invalidate the DRC/LVS/item-2 baselines. The finding is recorded, not suppressed, and tracked in
-#293. Per the tier rule (zero `erc.missing_tie` from a checked tie) it blocks the ERC half of
-`11.analog` from `met` when #33 later adds the LVS half.
+#292. Per the tier rule (zero `erc.missing_tie` from a checked tie) it blocks the analog ERC half
+from `met` while the finding stands; because pinned `klayout-tools==0.9.1` resolves only one ERC
+report per manifest key (last-wins in a list), citing all five per-cell reports under `11.analog`
+would let a clean trailing cell mask this finding once LVS is added, so the manifest citation is
+deferred (see "What is not claimed" below).
 
 ### `erc_coverage` (connectivity scope), quoted per cell
 
 - `skipped`: `[]` on all five — no degenerate tie declaration, so every zero-`missing_tie`
   verdict is a checked pass, not `supply_spec_incomplete`.
 - `inapplicable`: `erc.supply_short` (`substrate_continuity_not_modelled`) — same as the digital
-  run; the two-supply short condition is carried by the single-island counts.
+  run: substrate continuity is not modeled, so supply-to-supply shorts through the substrate are
+  not checked here. Rail-to-rail shorts on the **modeled conductors** (`poly`–`met2` via stack)
+  are still checked and reported directly as `erc.supply_short` findings (zero on all five cells);
+  the single-island counts establish per-supply continuity (no `erc.unconnected_net`), not rail
+  isolation.
 - `missing_tie_checked`: `true`; `checked_by_well_assertion`:
   `erc.missing_tie:["psub_tap"]` (the complement-derived substrate region);
   `checked_by_assertion`: `[]`.
@@ -255,8 +264,12 @@ cite. Nothing about them is claimed here; their extraction split is #117 /
   `erc/osc_hd.report.json`: fresh `gate_count` 147 vs committed 32, five supply islands, status
   `drifted`, exit 3) — `--top` is not recorded in the report. Tracked as
   2AMLogic/klayout-tools#7022; full replay today = re-run the per-cell command above and diff.
-- **`11.analog` is not claimed.** The five reports are cited under `11.analog` in
-  `manifests/sky130-process-monitor.json` (input-hash convention above); the item stays `unmet`,
-  its reason moving `no_evidence` → `power_delivery_parts_missing` — the LVS half (#26/#33) is
-  the missing part, and every other signoff row is byte-identical. The recorded `osc_hd` finding
-  additionally blocks the ERC half itself from `met` (#293).
+- **`11.analog` is not claimed, and its manifest citation is deferred under `klayout-tools==0.9.1`.**
+  All five per-oscillator reports are committed under `erc/osc_*.report.json` as evidence, but
+  `manifests/sky130-process-monitor.json` does not cite them yet: pinned `klt signoff` (`0.9.1`)
+  resolves only one report per evidence kind (last-wins in a list), so citing all five per-cell
+  reports would let a clean trailing cell (`osc_subth`) mask the `osc_hd` `erc.missing_tie`
+  finding (#292) once an LVS report is added, and citing any single cell would cover only one of
+  the five oscillators. `11.analog` therefore stays `unmet` / `no_evidence` and the committed
+  signoff record is unchanged from `main` until #26/#33 supply partition-level LVS alongside
+  bank-level or multi-report ERC grading and #292 is resolved.

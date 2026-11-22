@@ -27,7 +27,7 @@ of the gap to T1: #5.
 | 8 Characterization report | **unmet**, `check_failed` | **unmet**, `check_failed` |
 | 9 Testbenches shipped | met | met |
 | 10 Repo hygiene | met | met |
-| 11 Power delivery | **unmet**, `power_delivery_parts_missing` (#33; ERC half committed — `erc/osc_*.report.json`, one recorded finding, #293) | met (`erc/readout.report.json` + `lvs/readout.report.json` + `layout/readout/report.json`) |
+| 11 Power delivery | **unmet**, `no_evidence` (#33; per-oscillator ERC reports committed — `erc/osc_*.report.json`, one recorded finding #292; manifest citation deferred under `klt 0.9.1`) | met (`erc/readout.report.json` + `lvs/readout.report.json` + `layout/readout/report.json`) |
 
 What sits behind the unmet rows, each from a committed record:
 
@@ -81,8 +81,10 @@ which await promotion.
 - **Native-deck DRC on the analog stream.** After #117, because the layout must stay unchanged for that
   re-check. Rework the generator's li1 / licon geometry. *Done when* `klt drc --engine klayout` reports
   no `ct.4` / `li.5` on `osc_bank` and DRC, LVS and the item-2 attestation are re-run. No issue yet.
-- **11.analog** (#33), after 4.analog is met (#26). The ERC half is committed (`erc/osc_*.report.json`,
-  #276): what remains is the LVS pairing plus the recorded `osc_hd` substrate-sliver finding (#293).
+- **11.analog** (#33), after 4.analog is met (#26). Per-oscillator ERC reports are committed
+  (`erc/osc_*.report.json`, #276), with manifest citation deferred under `klt 0.9.1` (one ERC
+  report per key) pending partition-level LVS (#26/#33) and the recorded `osc_hd` substrate-sliver
+  finding (#292).
 - **Readout change for `osc_hd`**, after decision 0003 is ratified: prescaler RTL, re-synthesis, P&R and
   re-verification if option 1 is taken.
 
