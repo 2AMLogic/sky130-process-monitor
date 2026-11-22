@@ -44,20 +44,48 @@ class CornerId(unittest.TestCase):
 
 
 class Bench(unittest.TestCase):
-    def test_single_include_repointed(self):
-        for osc in ("osc_nmos", "osc_subth"):
-            text = mf.bench_text(osc, "/tmp/handed.spice")
-            self.assertEqual([l for l in text.splitlines() if l.lstrip().startswith(".include")],
-                             ['.include "/tmp/handed.spice"'])
-            committed = (HERE / "osc" / ("tb_%s.spice" % osc)).read_text().splitlines()
-            self.assertEqual([l for l in text.splitlines() if not l.lstrip().startswith(".include")],
-                             [l for l in committed if not l.lstrip().startswith(".include")])
+    def dut(self, tmp, name="osc_x", pins=("en", "out", "vdd", "vss")):
+        p = Path(tmp) / ("dut_%s.spice" % "_".join(pins))
+        p.write_text("* fake DUT\n.SUBCKT %s %s\n.ends %s\n" % (name, " ".join(pins), name))
+        return str(p)
 
-    def test_osc_hd_keeps_extracted_pin_order(self):
-        text = mf.bench_text("osc_hd", "/tmp/handed.spice")
-        self.assertIn("Xdut out en vss vdd osc_hd\n", text)  # the extracted pin order, unchanged
-        self.assertEqual([l for l in text.splitlines() if l.lstrip().startswith(".include")],
-                         ['.include "/tmp/handed.spice"'])
+    def bench_lines(self, osc, dut):
+        return mf.bench_text(osc, dut).splitlines()
+
+    def test_single_include_repointed_and_body_unchanged(self):
+        for osc in ("osc_nmos", "osc_subth"):
+            with tempfile.TemporaryDirectory() as tmp:
+                dut = self.dut(tmp, osc)
+                lines = self.bench_lines(osc, dut)
+                self.assertEqual([l for l in lines if l.lstrip().startswith(".include")],
+                                 ['.include "%s"' % dut])
+                committed = (HERE / "osc" / ("tb_%s.spice" % osc)).read_text().splitlines()
+                self.assertEqual([l for l in lines if not l.lstrip().startswith(".include")],
+                                 [l for l in committed if not l.lstrip().startswith(".include")])
+
+    def test_xdut_follows_the_handed_subckt_pin_order(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            # the osc_hd committed bench wires the 2026-11-10 label order out en vss vdd ...
+            self.assertIn("Xdut out en vss vdd osc_hd",
+                          self.bench_lines("osc_hd", self.dut(tmp, "osc_hd", ("out", "en", "vss", "vdd"))))
+            # ... and re-wires itself for a DUT that declares the schematic order en out vdd vss
+            # (klt dev2746 --rename-declared-pins), keeping one bench body for both legs
+            self.assertIn("Xdut en out vdd vss osc_hd",
+                          self.bench_lines("osc_hd", self.dut(tmp, "osc_hd", ("en", "out", "vdd", "vss"))))
+            self.assertIn("Xdut en out vdd vss osc_nmos",
+                          self.bench_lines("osc_nmos", self.dut(tmp, "osc_nmos")))
+
+    def test_handed_pin_set_mismatch_refused(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            with self.assertRaises(SystemExit):
+                mf.bench_text("osc_nmos", self.dut(tmp, "osc_nmos", ("a", "b", "c", "d")))
+
+    def test_dut_without_subckt_refused(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            bare = Path(tmp) / "bare.spice"
+            bare.write_text("R1 a b 1k\n")
+            with self.assertRaises(SystemExit):
+                mf.bench_text("osc_nmos", str(bare))
 
     def test_two_includes_refused(self):
         with tempfile.TemporaryDirectory() as tmp:
@@ -66,7 +94,7 @@ class Bench(unittest.TestCase):
                 f.write(".include \"a.spice\"\n.include \"b.spice\"\n")
             with patch.object(mf, "HERE", tmp):
                 with self.assertRaises(SystemExit):
-                    mf.bench_text("bad", "/tmp/x.spice")
+                    mf.bench_text("bad", self.dut(tmp))
 
 
 class Request(unittest.TestCase):
@@ -142,12 +170,13 @@ class MeasurementDocument(unittest.TestCase):
 class Main(unittest.TestCase):
     def run_main(self, argv, report_rows):
         """main() with klt sim patched out; returns (doc, artifacts dir contents)."""
+        osc = argv[argv.index("--osc") + 1]
         with tempfile.TemporaryDirectory() as tmp:
             def fake_run_sim(req, out, backend, hosts, wait):
                 Path(out).write_text(json.dumps(sim_report(report_rows)))
                 return 0, ""
             env = {"KLT_PEX_SIDE": "schematic", "KLT_PEX_ARTIFACTS_DIR": tmp,
-                   "KLT_PEX_NETLIST": str(Path(HERE).parent.parent / "design/osc_bank/osc_nmos.spice")}
+                   "KLT_PEX_NETLIST": str(Path(HERE).parent.parent / "design/osc_bank" / ("%s.spice" % osc))}
             out = io.StringIO()
             with patch.object(mf, "run_sim", fake_run_sim), patch.dict(os.environ, env), \
                     contextlib.redirect_stdout(out):

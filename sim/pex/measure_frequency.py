@@ -12,10 +12,12 @@ What one invocation does:
 
   1. derive a bench body from the committed sim/pex/osc/tb_<osc>.spice (the
      same generated bench the testbench-mode reports record) with its single
-     DUT .include re-pointed at the netlist it was handed -- for osc_hd that is
-     the extracted pin order the committed bench already carries, so the
-     schematic leg is measured on the osc_hd_dut.spice wrapper passed as
-     klt pex's --reference-netlist, never on a re-ordered copy;
+     DUT .include re-pointed at the netlist it was handed and its Xdut line
+     rewritten to that netlist's own .SUBCKT pin order (a handed pin set that
+     does not match the bench's wiring is a hard error, never a mis-wired
+     DUT), so both legs run one bench body whatever pin order the extractor
+     emits -- the osc_hd schematic leg is measured on the osc_hd_dut.spice
+     wrapper passed as klt pex's --reference-netlist;
   2. derive a request from the committed sim/pex/requests/<osc>.json with only
      the netlist (and, for a --corner pilot, the corner set) changed;
   3. run that request through `klt sim` -- the batch fleet on any host that
@@ -82,20 +84,44 @@ def parse_corner_id(cid):
     return m.group(1), float(m.group(2)), int(m.group(3))
 
 
+def dut_subckt(path):
+    """(name, [pin...]) of the DUT top: the first .SUBCKT/.subckt the handed netlist declares."""
+    with open(path) as f:
+        for line in f:
+            parts = line.split()
+            if parts and parts[0].lower() == ".subckt":
+                return parts[1], parts[2:]
+    raise SystemExit("no .SUBCKT found in %s" % path)
+
+
 def bench_text(osc, dut_path):
-    """The committed pex bench for `osc` with its single DUT .include re-pointed at `dut_path`.
+    """The committed pex bench for `osc` with its single DUT .include re-pointed at `dut_path`
+    and its Xdut line rewritten to that netlist's own .SUBCKT pin order.
 
     The committed bench bodies are GENERATED (sim/pex/gen_requests.py) and byte-hashed in the
-    testbench-mode records, so they are read, not re-derived: the only change is the include
-    target, exactly the line klt pex itself swaps in testbench mode. osc_hd's committed bench
-    already instantiates the DUT in the extracted pin order, so both legs keep one bench.
+    testbench-mode records, so they are read, not re-derived: the only changes are the include
+    target (exactly the line klt pex itself swaps in testbench mode) and the DUT instantiation
+    line. The committed Xdut line carries the name-to-net mapping (pin and net names are
+    identical in every committed bench); reordering its nets to the handed subckt's pin order
+    keeps one bench body working on both legs whatever pin order the extractor emits -- klt
+    dev2746's --rename-declared-pins yields the declared order for osc_hd where the 2026-11-10
+    extraction (and the osc_hd_dut.spice wrapper's own declaration) used the label order.
+    A handed pin set that is not the committed one is a hard error, never a silently mis-wired DUT.
     """
     with open(os.path.join(HERE, "osc", "tb_%s.spice" % osc)) as f:
         lines = f.readlines()
-    idx = [i for i, l in enumerate(lines) if l.lstrip().lower().startswith((".include", ".inc"))]
-    if len(idx) != 1:
-        raise SystemExit("expected exactly one .include in tb_%s.spice, found %d" % (osc, len(idx)))
-    lines[idx[0]] = '.include "%s"\n' % dut_path
+    inc = [i for i, l in enumerate(lines) if l.lstrip().lower().startswith((".include", ".inc"))]
+    xdut = [i for i, l in enumerate(lines) if l.lstrip().lower().startswith("xdut")]
+    if len(inc) != 1 or len(xdut) != 1:
+        raise SystemExit("expected exactly one .include and one Xdut in tb_%s.spice, found %d/%d"
+                         % (osc, len(inc), len(xdut)))
+    lines[inc[0]] = '.include "%s"\n' % dut_path
+    name, pins = dut_subckt(dut_path)
+    nets = lines[xdut[0]].split()[1:-1]  # drop 'Xdut' and the subckt name
+    if sorted(nets) != sorted(pins):
+        raise SystemExit("tb_%s.spice wires %s but %s declares pins %s"
+                         % (osc, nets, dut_path, pins))
+    lines[xdut[0]] = " ".join(["Xdut"] + [nets[nets.index(p)] for p in pins] + [name]) + "\n"
     return "".join(lines)
 
 
@@ -119,14 +145,20 @@ def expected_corners(r):
 
 
 def run_sim(request_path, out_path, backend, hosts, capacity_wait_s):
-    """Run the derived request through klt sim; returns (exit_status, stdout+stderr tail)."""
-    cmd = ["klt", "sim", request_path, "-o", out_path]
+    """Run the derived request through klt sim; returns (exit_status, stdout+stderr tail).
+
+    The backend is $KLT_PEX_BACKEND when klt pex was given --backend (it also exports it as
+    KLT_SIM_BACKEND), else the request's own backend field. --wait-for-capacity is passed only
+    on the batch backend (klt sim refuses it on local), from the committed request's own
+    batch.capacity_wait_s.
+    """
+    cmd = ["klt", "sim", request_path, "--report-out", out_path]
     if backend:
         cmd += ["--backend", backend]
-    if hosts:
-        cmd += ["--hosts", str(hosts)]
-    if capacity_wait_s is not None:
-        cmd += ["--wait-for-capacity", str(capacity_wait_s)]
+        if hosts:
+            cmd += ["--hosts", str(hosts)]
+        if capacity_wait_s is not None and backend == "batch":
+            cmd += ["--wait-for-capacity", str(capacity_wait_s)]
     p = subprocess.run(cmd, capture_output=True, text=True)
     tail = (p.stdout + p.stderr)[-4000:]
     return p.returncode, tail
