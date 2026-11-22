@@ -386,7 +386,7 @@ Records (new, dated): `records/2026-11-20-osc_subth-dev2493.pex.report.json` (th
 
 SIMULATED/extraction plus one local single-corner probe (`klt 0.9.1` git `4d0d29be…` and `klt 0.9.2` git `046ba74…`
 via `uvx`, engine klayout 0.30.13; ngspice-47; no grid). Record (new, dated):
-`records/2026-11-20-osc_subth-lvs-probe-0.9.2.json`. Nothing earlier was edited; no threshold was changed; the CI
+[`records/2026-11-20-osc_subth-lvs-probe-0.9.2.json`](records/2026-11-20-osc_subth-lvs-probe-0.9.2.json). Nothing earlier was edited; no threshold was changed; the CI
 pin (`.github/workflows/signoff.yml`) stays `klayout-tools==0.9.1` — migrating the pin re-renders the signoff record
 and the attestations and is its own change.
 
