@@ -148,12 +148,19 @@ def load_freq_report(path):
 
 
 def nested_report_for(path, leg):
-    """The committed nested `klt sim` report of one leg, or None when not beside the pex report."""
+    """The committed nested `klt sim` report of one leg, or None when not beside the pex report.
+
+    Committed naming convention: <pex report stem, minus any .pex.report infix>-<leg>.sim.report.json[.gz]
+    beside the pex report (records/2026-11-22-freq-<osc>-schematic.sim.report.json.gz for the pex
+    report records/2026-11-22-freq-<osc>.pex.report.json).
+    """
     stem = Path(path).name
     if stem.endswith(".json.gz"):
         stem = stem[:-8]
     elif stem.endswith(".json"):
         stem = stem[:-5]
+    if stem.endswith(".pex.report"):
+        stem = stem[:-11]
     for suffix in ("-%s.sim.report.json.gz" % leg, "-%s.sim.report.json" % leg):
         p = Path(path).parent / (stem + suffix)
         if p.exists():

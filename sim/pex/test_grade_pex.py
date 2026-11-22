@@ -205,7 +205,8 @@ class GradePexFreq(unittest.TestCase):
                     corners.append({"corner_id": cid, "status": "pass",
                                     "measurements": [{"name": "t_rise", "value": 12, "status": "pass",
                                                       "crossings": {"times": times}}]})
-                with gzip.open(str(hd)[:-5] + "-%s.sim.report.json.gz" % leg, "wt") as g:
+                nested = str(hd).replace(".pex.report.json", "") + "-%s.sim.report.json.gz" % leg
+                with gzip.open(nested, "wt") as g:
                     json.dump({"corners": corners}, g)
                 d = json.loads(hd.read_bytes())
                 for row in d["delta"]:

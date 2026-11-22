@@ -96,7 +96,10 @@ cells meet the nine-edge minimum. The five below (ss and sf corners at −40 °C
 where the schematic leg is marginal too) are the remaining §1 failures on the
 extracted side. The extracted `osc_wire` is not a like-for-like netlist. See
 `sim/pex/README.md`. The extracted side therefore does not close this row
-either.
+either. The 2026-11-22 frequency pass (issue #282,
+`sim/pex/records/2026-11-22-grade-extracted-frequencies.json`) confirms this on
+measured frequencies: 220 of 225 extracted cells resolve, the same five
+`osc_subth` ss/sf −40 °C cells do not.
 
 **Stretch** (a second oscillator on a second standard-cell library): **not
 recorded** — no such oscillator exists in `design/osc_bank/` and no record
@@ -350,16 +353,32 @@ hand check against `klt extract`, not by LVS.
 (`unmet` / `check_failed` in `manifests/sky130-process-monitor.signoff.json`).
 Per `sim/pex/README.md`: the extracted side meets the §1 "oscillates" criterion
 for four oscillators at 45/45 cells and for `osc_subth` at 40/45 (2026-11-20
-dev2493 grade), and the §2 ratio-space coordinate shifts by a median −7.8 %
-(`osc_nmos`), −10.9 % (`osc_pmos`) and −1.6 % (`osc_wire`)
-(`sim/pex/records/2026-11-11-grade-extracted-values.json`, **SIMULATED**,
-`klt pex` reports under `sim/pex/records/`) — but **spec rows 2–4 are not
-re-graded on extracted values**, and the `osc_wire` extraction is not
-like-for-like. The item-7 citation for `osc_subth`
+dev2493 grade), and **spec rows 2–4 are now re-graded on measured frequencies**
+(2026-11-22 frequency pass, issue #282:
+`sim/pex/records/2026-11-22-grade-extracted-frequencies.json`, **SIMULATED**,
+`klt pex --measure-command` reports under `sim/pex/records/`): the same
+`f_osc = (n-1)/(t_last - t_first)` estimator as the schematic record, measured
+per corner on the schematic and the extracted netlist of all five oscillators
+over the 45-cell box, with both legs graded by the same `sim/solve/solve.py`
+replay (seed 20261105, 2000 row-2 draws; the pooled mismatch model is
+schematic-side MC data applied unchanged to both legs, disclosed in the
+record). On the **extracted leg**, row 2 identifies 9/9 cells (the schematic
+leg reproduces the 2026-11-05 result: 8/9, the same `1.98 V/27 °C` `fs->tt`
+error), row 3's worst p99 voltage error is 30 mV at 125 °C ff 1.80 V
+(fallback PASS, target FAIL) and row 4's worst p99 temperature error is
+31.0 °C at ff 1.80 V 125 C (FAIL) — rows 3 and 4 stay FAIL at the target
+tiers on both legs, and the `osc_wire` extraction is not like-for-like. The
+§2 ratio coordinates shift by a median −7.6 % (`osc_nmos`), −11.2 %
+(`osc_pmos`), −1.7 % (`osc_wire`) and −26.3 % (`osc_subth`). All 225
+oscillator/corner pairs per leg are accounted for with unresolved cells as
+null plus cause (the two known schematic cold cells and `osc_subth`'s ss/sf
+−40 °C cells). The item-7 citation for `osc_subth`
 (`sim/pex/records/2026-11-20-osc_subth-dev2493.pex.report.json`) grades `met`;
-the overall `unmet` / `check_failed` verdict is now solely the 2026-11-10
-`osc_nmos` and `osc_wire` reports at status `error` — one schematic-side cold
-cell each (tracked in #264).
+the overall `unmet` / `check_failed` verdict is still solely the 2026-11-10
+`osc_nmos` and `osc_wire` count reports at status `error` — one schematic-side
+cold cell each (tracked in #264; the 2026-11-22 frequency reports hit the same
+two cells on the schematic leg and record them as null with cause, and which
+citations close item 7 stays #264's decision).
 
 **Body bias, stated because item 7 requires the claimant to state it.**
 `manifests/design-evidence-tiers.md` item 7 says `klt signoff` surfaces a
@@ -380,10 +399,14 @@ non-convergence at one cell each (`osc_nmos` tt / 1.80 V / −40 °C and
 `osc_wire` sf / 1.98 V / −40 °C, `timestep_too_small`), so those two
 oscillators have a schematic-vs-extracted delta at 44 of 45 cells rather than
 45; the **extracted** leg converged at both, which is why the extracted-side
-row-1 count above is 45 of 45. And the reported quantity is a **quantised
-frequency proxy** (rising crossings in a fixed window), not a frequency, which
-is why rows 2–4 cannot be re-graded from it. The §9 target's "post-layout
-re-verification of every row above" is therefore not met on this partition.
+row-1 count above is 45 of 45. The 2026-11-10 reported quantity is a
+**quantised frequency proxy** (rising crossings in a fixed window), which is
+why rows 2–4 could not be re-graded from those reports; the 2026-11-22
+frequency pass superseded the proxy with the measured `f_osc` itself (the
+proxy is retained and labelled as such wherever the historical records are
+discussed). The §9 target's "post-layout re-verification of every row above"
+is still not met on this partition: rows 3 and 4 fail on the extracted
+frequencies.
 
 ---
 
