@@ -3,6 +3,12 @@
 Chronological record of merged PRs and closed issues, maintained by the Guide
 role. Newest first.
 
+### 2026-11-21
+
+- **PR #286**: fix(sim): parse the analyze.py CLI with argparse so a report after -o is kept
+- **Issue #293** (closed): osc_hd per-cell ERC finding: psub missing_tie on the PDK row's top substrate sliver (blocks 11.analog's ERC half when #33 cites the LVS)
+- **Issue #285** (closed): Simplify sensitivity CLI parsing so extraction cannot silently drop a report
+
 ### 2026-11-20
 
 - **PR #284**: fix: name the PEX grader in the item-9 analog gate message
