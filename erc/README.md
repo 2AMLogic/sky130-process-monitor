@@ -127,7 +127,8 @@ by the 468 `sky130_fd_sc_hd__tapvpwrvgnd_1` instances and nothing else):
 The verdict of record is in `manifests/sky130-process-monitor.signoff.json`:
 **11.digital `met`**, `t1_met_count` 13 → 14. **11.analog stays `unmet` / `no_evidence`** — issue
 #33's analog half, waiting on #26's `4.analog`; the five per-oscillator ERC reports are committed
-below (#276), with manifest citation deferred under `klayout-tools==0.9.1`.
+below (#276), with manifest citation deferred because the released grader has no multi-member
+item-11 citation shape (2AMLogic/klayout-tools#5597; "What is not claimed" below).
 
 ## Analog — oscillator bank (issue #276)
 
@@ -163,8 +164,9 @@ uvx --from "klayout-tools==0.9.1" klt erc --check erc/osc_hd.report.json   # che
 
 Shared: spec `erc/osc_bank.erc.json`; input `layout/osc_bank.gds`,
 `provenance.input.content_hash` `sha256:625c8ff90f34c6fac7a88339d2c10ad5925da02e118eb6a15a6539c11e05bf29`
-(the GDS input hash recorded in all five reports; manifest citation is deferred under
-`klayout-tools==0.9.1`, see "What is not claimed" below). Measured label counts (`provenance.label_layers`):
+(the GDS input hash recorded in all five reports; manifest citation is deferred because the
+released grader has no multi-member item-11 citation shape, 2AMLogic/klayout-tools#5597 — see
+"What is not claimed" below). Measured label counts (`provenance.label_layers`):
 `osc_hd` `li1` `67/5` = 95, `met1` `68/5` = 76 (the PDK cells' own labels ride along); the custom
 cells carry only the generator's 4 (5 on `osc_subth`: `en`, `out`, `vdd`, `vss`, `vbp`) on `68/5`.
 
@@ -221,10 +223,11 @@ Disposition: **not a layout defect of this repo** — the sliver is inherent to 
 `gen_osc_bank.py`; a generator "fix" would draw taps outside the site row in PDK territory and
 invalidate the DRC/LVS/item-2 baselines. The finding is recorded, not suppressed, and tracked in
 #292. Per the tier rule (zero `erc.missing_tie` from a checked tie) it blocks the analog ERC half
-from `met` while the finding stands; because pinned `klayout-tools==0.9.1` resolves only one ERC
-report per manifest key (last-wins in a list), citing all five per-cell reports under `11.analog`
-would let a clean trailing cell mask this finding once LVS is added, so the manifest citation is
-deferred (see "What is not claimed" below).
+from `met` while the finding stands; because the released `klt signoff` resolves only one ERC
+report per manifest key (last-wins in a list — it has no multi-member item-11 citation shape,
+2AMLogic/klayout-tools#5597), citing all five per-cell reports under `11.analog` would let a
+clean trailing cell mask this finding once LVS is added, so the manifest citation is deferred
+(see "What is not claimed" below).
 
 ### `erc_coverage` (connectivity scope), quoted per cell
 
@@ -264,12 +267,30 @@ cite. Nothing about them is claimed here; their extraction split is #117 /
   `erc/osc_hd.report.json`: fresh `gate_count` 147 vs committed 32, five supply islands, status
   `drifted`, exit 3) — `--top` is not recorded in the report. Tracked as
   2AMLogic/klayout-tools#7022; full replay today = re-run the per-cell command above and diff.
-- **`11.analog` is not claimed, and its manifest citation is deferred under `klayout-tools==0.9.1`.**
+- **`11.analog` is not claimed, and its manifest citation is deferred: the released grader has no
+  multi-member item-11 citation shape (2AMLogic/klayout-tools#5597).**
   All five per-oscillator reports are committed under `erc/osc_*.report.json` as evidence, but
-  `manifests/sky130-process-monitor.json` does not cite them yet: pinned `klt signoff` (`0.9.1`)
-  resolves only one report per evidence kind (last-wins in a list), so citing all five per-cell
-  reports would let a clean trailing cell (`osc_subth`) mask the `osc_hd` `erc.missing_tie`
-  finding (#292) once an LVS report is added, and citing any single cell would cover only one of
-  the five oscillators. `11.analog` therefore stays `unmet` / `no_evidence` and the committed
-  signoff record is unchanged from `main` until #26/#33 supply partition-level LVS alongside
-  bank-level or multi-report ERC grading and #292 is resolved.
+  `manifests/sky130-process-monitor.json` does not cite them yet: `klt signoff` resolves only one
+  report per evidence kind (last-wins in a list), so citing all five per-cell reports would let a
+  clean trailing cell (`osc_subth`) mask the `osc_hd` `erc.missing_tie` finding (#292) once an LVS
+  report is added, and citing any single cell would cover only one of the five oscillators. That
+  is 2AMLogic/klayout-tools#5597 ("T1 item 11's compound citation has no multi-member form, so a
+  partition built from several blocks can cite only one of them"; closed completed 2026-11-17), and
+  it is a property of the released grader, not of this repo's `0.9.1` pin: the grouped-citation
+  change landed upstream on 2026-11-17 (`0517e41`), after `klayout-tools` 0.9.2 was released
+  (2026-11-14, still the latest release on 2026-11-22). Tooling probe on 2026-11-22 — `klt signoff`
+  over scratch copies of the manifest that differ from the committed one only in their `11.analog`
+  entry, graded by released `klayout-tools==0.9.2`; the other 24 rows grade exactly as in the
+  record of record. A tooling observation, not a design result, and not a change to the record of
+  record:
+
+  | `11.analog` citation (scratch manifest) | 0.9.2 verdict |
+  |---|---|
+  | list of lists, each inner list = today's compound entry | `unmet` / `invalid_evidence` |
+  | explicit `{"groups":[{"label":…,"members":[…]}]}` | `unmet` / `invalid_evidence` |
+  | flat: the five ERC reports, `osc_hd` first, plus `lvs/osc_hd.report.json` | **`met`** (15 of 22); `citation.parts` holds only `erc/osc_subth.report.json` and the LVS report — the `osc_hd` finding is dropped |
+  | flat, same six entries, `osc_hd` last | `unmet` / `supply_not_continuous` |
+
+  `11.analog` therefore stays `unmet` / `no_evidence` and the committed signoff record is
+  unchanged from `main` until #26/#33 supply partition-level LVS alongside bank-level or
+  multi-report ERC grading and #292 is resolved.
