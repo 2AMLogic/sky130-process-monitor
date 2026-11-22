@@ -234,14 +234,19 @@ def main(argv):
         f.write("\n")
 
     # The nested report must be written OUTSIDE $KLT_PEX_ARTIFACTS_DIR (docs/cli/pex.md, outdir_locked);
-    # a copy is kept inside it afterwards, next to the bench and request it came from.
+    # a copy is kept inside it afterwards, next to the bench and request it came from. klt sim exits
+    # non-zero whenever any unit fails, but still writes the report -- a failed unit is the caller's
+    # own "solver error" outcome per corner (measurement_document), not a failed leg; only a report
+    # that was never written is a hard error.
     with tempfile.TemporaryDirectory(prefix="pex-freq-sim-") as tmp:
         out = os.path.join(tmp, "sim.report.json")
         status, tail = run_sim(req, out, os.environ.get("KLT_PEX_BACKEND"),
                                hosts, (r.get("batch") or {}).get("capacity_wait_s"))
-        if status != 0 or not os.path.exists(out):
+        if not os.path.exists(out):
             sys.stderr.write("klt sim failed (exit %d):\n%s\n" % (status, tail))
             return 1
+        if status != 0:
+            sys.stderr.write("klt sim exited %d with units unresolved; reading its report\n" % status)
         with open(out) as f:
             report = json.load(f)
         shutil.copyfile(out, os.path.join(art, "sim.report.%s.json" % side))
