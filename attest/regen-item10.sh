@@ -157,34 +157,43 @@ print("audit-only" if failed and all(is_record_audit(c) for c in failed) else "h
 PY
 }
 
-# Re-attest into $TMP_ENV (bytes for the committed envelope) and into
-# $TMP_REPORT (same envelope on stdout, which klt emits even when the
-# attestation fails -- that is what makes the failure classifiable, since klt
-# deliberately writes no -o file for a failing attestation).
+# One attestation pass per attempt, supplying both outputs: the report on
+# stdout (which klt emits even when the attestation fails -- that is what
+# makes the failure classifiable) and, when it passes, the envelope to
+# install at $TMP_ENV. --format json only shapes stdout; the -o envelope
+# bytes are identical either way (measured, item 10 -- attest/regen-item9.sh
+# runs the same single-pass pattern), so unlike the two-pass shape this used
+# to have, the nested signoff-record audit runs once per attempt, not twice
+# on success. klt deliberately writes no -o file for a failing attestation,
+# so the candidate is emptied first: a nonempty candidate afterwards was
+# written by this very invocation. Its exit code lands in $ATT_RC for
+# install_envelope, which installs only from an invocation that exited 0.
 attest() {
-    local rc=0
-    klt signoff --attest 10 --inventory "$REL_INV" --format json \
-        >"$TMP_REPORT" 2>/dev/null || rc=$?
+    ATT_RC=0
+    rm -f "$TMP_ENV" || exit 1
+    klt signoff --attest 10 --inventory "$REL_INV" --format json -o "$TMP_ENV" \
+        >"$TMP_REPORT" 2>/dev/null || ATT_RC=$?
     if [ ! -s "$TMP_REPORT" ]; then
-        echo "regen-item10.sh: klt signoff --attest 10 produced no report (exit $rc)." >&2
+        echo "regen-item10.sh: klt signoff --attest 10 produced no report (exit $ATT_RC)." >&2
         echo "  Re-run it directly to see the error:" >&2
         echo "    uvx --from \"klayout-tools==$PIN\" klt signoff --attest 10 --inventory $REL_INV" >&2
         exit 1
     fi
-    if [ "$rc" -ne 0 ] && [ "$rc" -ne 3 ]; then
-        echo "regen-item10.sh: klt signoff --attest 10 exited $rc (expected 0 or 3)." >&2
+    if [ "$ATT_RC" -ne 0 ] && [ "$ATT_RC" -ne 3 ]; then
+        echo "regen-item10.sh: klt signoff --attest 10 exited $ATT_RC (expected 0 or 3)." >&2
         exit 1
     fi
     return 0
 }
 
 # Write the envelope only once the attestation passes, and only via mv, so a
-# failed or interrupted run can never leave a partial evidence file.
+# failed or interrupted run can never leave a partial evidence file. The
+# candidate is the one attest() captured in the same invocation whose report
+# classified as passing; installing also requires that that invocation exited
+# 0 and left a nonempty candidate (klt writes no -o file for a failing one).
 install_envelope() {
-    local rc=0
-    klt signoff --attest 10 --inventory "$REL_INV" -o "$TMP_ENV" >/dev/null 2>&1 || rc=$?
-    if [ "$rc" -ne 0 ] || [ ! -s "$TMP_ENV" ]; then
-        echo "regen-item10.sh: the attestation passed when classified but wrote no envelope (exit $rc)." >&2
+    if [ "$ATT_RC" -ne 0 ] || [ ! -s "$TMP_ENV" ]; then
+        echo "regen-item10.sh: the attestation passed when classified but wrote no envelope (exit $ATT_RC)." >&2
         exit 1
     fi
 

@@ -281,12 +281,12 @@ regen_partition() {
     echo "== partition: $p =="
 
     # One attestation pass per partition: the cold starts are the cost, so
-    # unlike regen-item10.sh this does not attest twice. --format json only
-    # shapes stdout (measured: the -o envelope bytes are identical either way,
-    # item 10), so the same pass captures the envelope for installation AND
-    # the report that classifies a failure. klt deliberately writes no -o
-    # file for a failing attestation, which is what the emptiness check
-    # below detects.
+    # the same pass captures the envelope for installation AND the report
+    # that classifies a failure. --format json only shapes stdout (measured:
+    # the -o envelope bytes are identical either way, item 10), and klt
+    # deliberately writes no -o file for a failing attestation, which is what
+    # the emptiness check below detects. regen-item10.sh runs the same
+    # single-pass pattern (issue #310).
     local rc=0
     regen_klt signoff --attest 9 --inventory "$inv" --format json -o "$TMP_ENV" \
         >"$TMP_REPORT" 2>/dev/null || rc=$?
