@@ -107,3 +107,5 @@ verification/*/.fv-sdf/sim_build_icarus/
 # issue #31: worktree-local klt_yield_native build (never committed)
 .venv-yield/
 build-yield/
+# issue #287: worktree-local PDK install made by hand, never committed
+/.pdk/
