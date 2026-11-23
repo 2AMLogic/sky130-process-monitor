@@ -1,8 +1,11 @@
 """Deterministic negative controls for solve.py (synthetic data, no simulator).
 Run: python3 -I sim/solve/test_solve.py"""
+import json
 import math
 import os
+import subprocess
 import sys
+import tempfile
 import unittest
 
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -171,6 +174,134 @@ class TY(unittest.TestCase):
             want.append(round(S.TGRID[S.solve_t(d, mod, sd, oscs, S.TGRID)] - t0, 4))
         self.assertGreater(len(set(got)), 3, "noise too low to distinguish grids; raise SIGMA")
         self.assertEqual(got, want)
+
+
+class TCLI(unittest.TestCase):
+    """The solve.py / yield_samples.py command lines (issue #303): a typo'd flag or a malformed
+    invocation is a usage error (exit 2, nothing written) before any grading or output, not a
+    silently dropped option, a raw IndexError, or a no-op negative control."""
+
+    @classmethod
+    def setUpClass(cls):
+        cls._tmp = tempfile.TemporaryDirectory(prefix="solve-cli-")
+        tab, mc = TY.fake_mc(1e-4)
+        cls.freq = os.path.join(cls._tmp.name, "freq.json")
+        cls.mcf = os.path.join(cls._tmp.name, "mc.json")
+        with open(cls.freq, "w") as f:
+            json.dump({"rows": [{"osc": o, "process": p, "vdd": v, "temp_c": t, "f_hz": fh}
+                                for (o, p, v, t), fh in tab.items()]}, f)
+        with open(cls.mcf, "w") as f:
+            json.dump(mc, f)
+
+    @classmethod
+    def tearDownClass(cls):
+        cls._tmp.cleanup()
+
+    @classmethod
+    def _run(cls, script, argv):
+        return subprocess.run([sys.executable, "-I", os.path.join(HERE, script)] + argv,
+                              stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+                              universal_newlines=True)
+
+    def test_grade_writes_json_with_options_on_either_side_of_the_tables(self):
+        after = os.path.join(self._tmp.name, "grade-after.json")
+        p = self._run("solve.py", ["grade", self.freq, self.mcf, "--draws", "10", "--seed", "7", "--json", after])
+        self.assertEqual(p.returncode, 0, p.stderr)
+        self.assertIn("row1 target:", p.stdout)
+        with open(after, "rb") as f:
+            raw = f.read()
+        self.assertFalse(raw.endswith(b"\n"))          # the record serialization has no trailing newline
+        doc = json.loads(raw)
+        self.assertEqual(doc["draws"], 10)
+        self.assertEqual(doc["seed"], 7)
+        self.assertIn("row1", doc)
+        before = os.path.join(self._tmp.name, "grade-before.json")
+        p = self._run("solve.py", ["grade", "--draws", "10", "--seed", "7", "--json", before, self.freq, self.mcf])
+        self.assertEqual(p.returncode, 0, p.stderr)
+        with open(before, "rb") as f:
+            self.assertEqual(f.read(), raw)            # same run either way the options are placed
+
+    def test_grade_unknown_flag_is_a_usage_error_not_a_silent_drop(self):
+        out = os.path.join(self._tmp.name, "grade-nope.json")
+        p = self._run("solve.py", ["grade", self.freq, self.mcf, "--draws", "10", "--out", out])
+        self.assertEqual(p.returncode, 2)
+        self.assertIn("unrecognized arguments", p.stderr)
+        self.assertFalse(os.path.exists(out))
+
+    def test_grade_missing_option_value_is_a_usage_error(self):
+        p = self._run("solve.py", ["grade", self.freq, self.mcf, "--draws"])
+        self.assertEqual(p.returncode, 2)
+        self.assertIn("expected one argument", p.stderr)
+
+    def test_grade_missing_positional_is_a_usage_error(self):
+        p = self._run("solve.py", ["grade", self.freq, "--draws", "10"])
+        self.assertEqual(p.returncode, 2)
+        self.assertIn("required", p.stderr)
+
+    def test_grade_help_prints_usage_instead_of_grading(self):
+        p = self._run("solve.py", ["grade", "--help"])
+        self.assertEqual(p.returncode, 0)
+        self.assertIn("usage: solve.py grade", p.stdout)
+
+    def test_build_writes_samples_the_seed_and_the_named_defect_control(self):
+        out = os.path.join(self._tmp.name, "samples.json")
+        p = self._run("yield_samples.py", ["build", self.freq, self.mcf, self.mcf, "-o", out,
+                                           "--seed", "7", "--defect", "0.3", "--defect-osc", "osc_nmos"])
+        self.assertEqual(p.returncode, 0, p.stderr)
+        with open(out, "rb") as f:
+            raw = f.read()
+        self.assertTrue(raw.endswith(b"\n"))           # the samples serialization ends with a newline
+        doc = json.loads(raw)
+        self.assertEqual(doc["provenance"]["seed"], 7)
+        by = {m["name"]: m for m in doc["measurements"]}
+        desc = by["row3_dV"]["negative_control"]["description"]
+        self.assertIn("+0.3", desc)                    # --defect reached the control, not the default
+        self.assertIn("osc_nmos", desc)                # --defect-osc names the oscillator carrying it
+
+    def test_build_negative_scientific_defect_two_argument_form_matches_decimal(self):
+        # `--defect -1e-3` (separate token) was valid before #303; argparse alone reads `-1e-3` as a flag.
+        a = os.path.join(self._tmp.name, "samples-sci.json")
+        b = os.path.join(self._tmp.name, "samples-dec.json")
+        c = os.path.join(self._tmp.name, "samples-eq.json")
+        base = ["build", self.freq, self.mcf, self.mcf]
+        for out, flag in ((a, ["--defect", "-1e-3"]), (b, ["--defect", "-0.001"]), (c, ["--defect=-1e-3"])):
+            p = self._run("yield_samples.py", base + flag + ["-o", out])
+            self.assertEqual(p.returncode, 0, p.stderr)
+        with open(a, "rb") as fa, open(b, "rb") as fb, open(c, "rb") as fc:
+            raw = fa.read()
+            self.assertEqual(raw, fb.read())
+            self.assertEqual(raw, fc.read())
+
+    def test_build_defect_without_a_value_stays_a_usage_error(self):
+        for tail in (["--defect"], ["--defect", "--seed", "7"], ["--defect", "-notanumber"]):
+            p = self._run("yield_samples.py", ["build", self.freq, self.mcf, self.mcf] + tail)
+            self.assertEqual(p.returncode, 2, tail)
+
+    def test_build_unknown_flag_is_a_usage_error_not_the_default_defect(self):
+        out = os.path.join(self._tmp.name, "samples-nope.json")
+        p = self._run("yield_samples.py", ["build", self.freq, self.mcf, self.mcf, "-o", out, "--defects", "0.3"])
+        self.assertEqual(p.returncode, 2)
+        self.assertIn("unrecognized arguments", p.stderr)
+        self.assertFalse(os.path.exists(out))
+
+    def test_build_missing_option_value_is_a_usage_error(self):
+        p = self._run("yield_samples.py", ["build", self.freq, self.mcf, self.mcf, "-o"])
+        self.assertEqual(p.returncode, 2)
+        self.assertIn("expected one argument", p.stderr)
+
+    def test_build_missing_positional_is_a_usage_error(self):
+        out = os.path.join(self._tmp.name, "samples-missing.json")
+        p = self._run("yield_samples.py", ["build", self.freq, self.mcf, "-o", out])
+        self.assertEqual(p.returncode, 2)
+        self.assertIn("required", p.stderr)
+
+    def test_build_defect_osc_is_validated_against_the_bank(self):
+        out = os.path.join(self._tmp.name, "samples-badosc.json")
+        p = self._run("yield_samples.py", ["build", self.freq, self.mcf, self.mcf, "-o", out,
+                                           "--defect-osc", "osc_hd_typo"])
+        self.assertEqual(p.returncode, 2)
+        self.assertIn("invalid choice", p.stderr)
+        self.assertFalse(os.path.exists(out))
 
 
 if __name__ == "__main__":

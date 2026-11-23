@@ -34,6 +34,7 @@ Conventions (every one is a grading choice made here, none relaxes the spec):
     A joint V+T solve is NOT implemented; the output key reports it as "not run".
   * Draws are seeded; results are deterministic.
 """
+import argparse
 import json
 import math
 import os
@@ -244,28 +245,49 @@ def grade_vs(err, key):
             "stretch": "PASS" if err <= s else "FAIL"}
 
 
+def _grade_parser():
+    """argparse parser for the `grade` subcommand (issue #303).
+
+    A standalone parser, not add_subparsers, with parse_intermixed_args() in main() so the two
+    tables are accepted on either side of the options -- the pattern `sim/sensitivity/analyze.py`
+    adopted in #285. allow_abbrev=False keeps a typo'd flag (`--out` for `--json`) an error instead
+    of the old parser's silent drop.
+    """
+    p = argparse.ArgumentParser(prog="solve.py grade", allow_abbrev=False,
+                                description="grade: rows 1-4 estimate from the #8 frequency"
+                                            " and nominal-MC tables.")
+    p.add_argument("freq", metavar="freq_table.json",
+                   help="analyze.py extract output (the nominal surfaces)")
+    p.add_argument("mc", metavar="mc_table.json",
+                   help="analyze.py extract-mc output (the pooled mismatch sigma)")
+    p.add_argument("--draws", type=int, default=2000, metavar="N",
+                   help="noise draws per cell for rows 2/3/4 (default 2000;"
+                        " rows 3/4 use max(100, N//10))")
+    p.add_argument("--seed", type=int, default=20261105, metavar="S",
+                   help="draw seed (default 20261105)")
+    p.add_argument("--json", metavar="OUT", default=None,
+                   help="write the full result JSON here")
+    return p
+
+
 def main(argv):
-    if len(argv) < 4 or argv[1] != "grade":
+    if len(argv) < 2 or argv[1] != "grade":
         sys.exit(__doc__)
-    a = argv[2:]
-    def opt(name, default):
-        if name in a:
-            i = a.index(name)
-            v = a[i + 1]
-            del a[i:i + 2]
-            return v if default is None else type(default)(v)
-        return default
-    draws, seed, out = opt("--draws", 2000), opt("--seed", 20261105), opt("--json", None)
-    tab = A.table(json.load(open(a[0]))["rows"])
-    _, pooled = A.mc_sigmas(json.load(open(a[1])))
+    args = _grade_parser().parse_intermixed_args(argv[2:])
+    with open(args.freq) as f:
+        tab = A.table(json.load(f)["rows"])
+    with open(args.mc) as f:
+        _, pooled = A.mc_sigmas(json.load(f))
     mc = {o: s for o, s in pooled.items()}
-    r = {"kind": "SIMULATED", "draws": draws, "seed": seed, "mc_pooled_sigma_lnf": mc,
-         "row1": row1(tab), "row2_ratio": row2(tab, mc, draws, seed, True),
-         "row3": row3(tab, mc, max(100, draws // 10), seed), "row4": row4(tab, mc, max(100, draws // 10), seed)}
+    r = {"kind": "SIMULATED", "draws": args.draws, "seed": args.seed, "mc_pooled_sigma_lnf": mc,
+         "row1": row1(tab), "row2_ratio": row2(tab, mc, args.draws, args.seed, True),
+         "row3": row3(tab, mc, max(100, args.draws // 10), args.seed),
+         "row4": row4(tab, mc, max(100, args.draws // 10), args.seed)}
     r["row3"]["grade"] = grade_vs(r["row3"]["worst_p99_abs_err_v"], "row3_V")
     r["row4"]["grade"] = grade_vs(r["row4"].get("worst_p99_abs_err_c"), "row4_T")
-    if out:
-        json.dump(r, open(out, "w"), indent=1, sort_keys=True, default=str)
+    if args.json:
+        with open(args.json, "w") as f:
+            json.dump(r, f, indent=1, sort_keys=True, default=str)
     print("row1 target:", r["row1"]["verdict_target"], " fallback:", r["row1"]["verdict_fallback"],
           " missing:", len(r["row1"]["target_bank_5"]["missing_cells"]))
     for fam, d in r["row2_ratio"].items():

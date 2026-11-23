@@ -30,6 +30,7 @@ Conventions (grading choices made here; none relaxes the spec, no limit is edite
   * Negative control (per measurement): the same draws with a seeded defect, +DEFECT added to ln f of osc_hd.
     Expected to fail. It is a software-injected defect on the same data, not a second simulation; labelled so.
 """
+import argparse
 import json
 import math
 import os
@@ -183,25 +184,81 @@ def build(tab, mc_nom, mc_bind, seed, defect=DEFECT):
             "cells": meta}
 
 
+def _build_parser():
+    """argparse parser for the `build` subcommand (issue #303).
+
+    A standalone parser, not add_subparsers, with parse_intermixed_args() in main() so the three
+    tables are accepted on either side of the options -- the pattern `sim/sensitivity/analyze.py`
+    adopted in #285. allow_abbrev=False keeps a typo'd flag (`--defects` for `--defect`) an error
+    instead of the old parser's silent drop, and `--defect-osc` is validated against the bank so a
+    misspelled oscillator cannot silently produce a no-op negative control.
+    """
+    p = argparse.ArgumentParser(prog="yield_samples.py build", allow_abbrev=False,
+                                description="build: per-draw samples for `klt yield` at the"
+                                            " binding cells.")
+    p.add_argument("freq", metavar="freq.json",
+                   help="analyze.py extract output (the nominal surfaces / model data)")
+    p.add_argument("mc_nom", metavar="mc_nominal.json",
+                   help="analyze.py extract-mc output (calibration read for row 4)")
+    p.add_argument("mc_bind", metavar="mc_bind.json",
+                   help="analyze.py extract-mc output (the binding-cell MC samples)")
+    p.add_argument("-o", dest="out", metavar="samples.json", default=None,
+                   help="output samples file (JSON)")
+    p.add_argument("--seed", type=int, default=20261105, metavar="S",
+                   help="draw seed (default 20261105)")
+    p.add_argument("--defect", type=float, default=DEFECT, metavar="D",
+                   help="seeded negative-control defect added to ln f of --defect-osc"
+                        " (default %g)" % DEFECT)
+    p.add_argument("--defect-osc", default=DEFECT_OSC, metavar="OSC", choices=list(A.OSCS),
+                   help="oscillator carrying the seeded defect (default osc_hd)")
+    return p
+
+
+def _glue_negative_defect(argv):
+    """Rewrite `--defect -1e-3` to `--defect=-1e-3`.
+
+    argparse only treats a leading-dash token as a value when it looks like a plain negative number
+    (`-1`, `-0.001`); a negative scientific-notation value (`-1e-3`), which the pre-#303 parser
+    accepted, is read as an unknown flag and `--defect` reports "expected one argument". Gluing a
+    following token that float() accepts onto the flag keeps that two-argument form working while a
+    missing value (`--defect` last, or followed by another flag) is still a usage error.
+    """
+    out = []
+    i = 0
+    while i < len(argv):
+        tok = argv[i]
+        nxt = argv[i + 1] if i + 1 < len(argv) else None
+        if tok == "--defect" and nxt is not None and nxt.startswith("-"):
+            try:
+                float(nxt)
+            except ValueError:
+                pass
+            else:
+                out.append("--defect=" + nxt)
+                i += 2
+                continue
+        out.append(tok)
+        i += 1
+    return out
+
+
 def main(argv):
-    a = argv[1:]
-    if len(a) < 5 or a[0] != "build":
+    if len(argv) < 2 or argv[1] != "build":
         sys.exit(__doc__)
-    def opt(name, default):
-        if name in a:
-            i = a.index(name)
-            v = a[i + 1]
-            del a[i:i + 2]
-            return type(default)(v) if default is not None else v
-        return default
+    args = _build_parser().parse_intermixed_args(_glue_negative_defect(argv[2:]))
     global DEFECT_OSC
-    out, seed, defect = opt("-o", None), opt("--seed", 20261105), opt("--defect", DEFECT)
-    DEFECT_OSC = opt("--defect-osc", DEFECT_OSC)
-    tab = A.table(json.load(open(a[1]))["rows"])
-    doc = build(tab, json.load(open(a[2])), json.load(open(a[3])), seed, defect)
-    if out:
-        json.dump(doc, open(out, "w"), indent=1)
-        open(out, "a").write("\n")
+    DEFECT_OSC = args.defect_osc
+    with open(args.freq) as f:
+        tab = A.table(json.load(f)["rows"])
+    with open(args.mc_nom) as f:
+        mc_nom = json.load(f)
+    with open(args.mc_bind) as f:
+        mc_bind = json.load(f)
+    doc = build(tab, mc_nom, mc_bind, args.seed, args.defect)
+    if args.out:
+        with open(args.out, "w") as f:
+            json.dump(doc, f, indent=1)
+            f.write("\n")
     for m in doc["measurements"]:
         print(m["name"], "n=%d" % len(m["samples"]), "nulls=%d" % sum(x is None for x in m["samples"]))
     return 0
