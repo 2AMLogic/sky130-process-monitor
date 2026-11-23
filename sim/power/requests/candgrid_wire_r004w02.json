@@ -1,0 +1,97 @@
+{
+  "netlist": "../tb/active_cand_wire_r004w02.spice",
+  "engine": "ngspice",
+  "models": {
+    "pdk": "sky130A",
+    "lib": "libs.tech/ngspice/sky130.lib.spice"
+  },
+  "options": {
+    "timeout_s": 3000,
+    "retry_on_convergence_error": true
+  },
+  "batch": {
+    "job_ceiling_check": "warn"
+  },
+  "backend": "batch",
+  "corners": {
+    "process": [
+      "tt",
+      "ff",
+      "ss",
+      "sf",
+      "fs"
+    ],
+    "supply_v": {
+      "vdd": [
+        1.62,
+        1.8,
+        1.98
+      ]
+    },
+    "temperature_c": [
+      -40,
+      27,
+      125
+    ]
+  },
+  "analysis": {
+    "kind": "tran",
+    "args": "50p 2500n"
+  },
+  "measurements": [
+    {
+      "name": "i_avg",
+      "spice": ".meas tran i_avg avg i(Vdd) from=1250n to=2500n",
+      "unit": "A"
+    },
+    {
+      "name": "t_rise",
+      "unit": "s",
+      "crossings": {
+        "signal": "v(out)",
+        "level": {
+          "frac_of": "vdd",
+          "fraction": 0.5
+        },
+        "edge": "rise",
+        "max": 400
+      }
+    },
+    {
+      "name": "t_s1",
+      "unit": "s",
+      "crossings": {
+        "signal": "v(xdut.s1)",
+        "level": {
+          "frac_of": "vdd",
+          "fraction": 0.5
+        },
+        "edge": "rise",
+        "max": 400
+      }
+    },
+    {
+      "name": "t_n1",
+      "unit": "s",
+      "crossings": {
+        "signal": "v(xdut.n1)",
+        "level": {
+          "frac_of": "vdd",
+          "fraction": 0.5
+        },
+        "edge": "rise",
+        "max": 400
+      }
+    },
+    {
+      "name": "vhi_s1",
+      "spice": ".meas tran vhi_s1 max v(xdut.s1) from=1250n to=2500n",
+      "unit": "V"
+    },
+    {
+      "name": "vlo_s1",
+      "spice": ".meas tran vlo_s1 min v(xdut.s1) from=1250n to=2500n",
+      "unit": "V"
+    }
+  ]
+}

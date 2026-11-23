@@ -274,6 +274,28 @@ below the nA-scale idle currents but not zero), and active mean current is taken
 over the second half of each transient window, not an integer number of cycles
 (error ≤ 1 cycle per window).
 
+**What sets each oscillator's power, and the over-target iteration, are recorded
+in `sim/power/records/2026-11-21-active-power-iteration.md`** (issue #280;
+SIMULATED, same scope — oscillator only, counter not covered). It decomposes
+each oscillator's active power at its binding cell (the wire ring's explicit
+31 × 100 fF load explains 77.6 % of its 1740 µW; the residual is slope-driven
+overlap current), sweeps the levers one at a time (stage count measured
+power-neutral on all four ring families; the capacitor value power-neutral in
+the wire ring's RC-dominated regime; resistor length and driver size the real
+levers), and carries 45-cell candidate grids: `osc_wire` r004w02 at 447.2 µW
+worst-cell (under the fallback everywhere, wire-RC fraction preserved at 0.72)
+and `osc_pmos` l10 at 81.7 µW (under the target everywhere). It also grades the
+six cells this section lists as not graded — union coverage 225/225 — with the
+`osc_wire` sf/1.62 V/−40 °C cell coming from a disclosed relaxed bench
+(`reltol`/`gmin`/`method=gear`, #8's precedent) after two `timestep too small`
+aborts, and the five cold `osc_subth` cells from ms-scale windows. **No verdict
+above changes**: row 7 stays FAIL at every bound for the committed bank; the
+sizing changes are [decision 0004](../spec/decisions/0004-oscillator-bank-active-power-sizing.md),
+status proposed, with the downstream re-runs listed there. The record's §5 also
+states the measured infeasibility of the 100 µW target for the committed bank
+composition (`osc_hd`'s power is fixed by the library cell at ~396 µW and
+stage-count-invariant).
+
 ---
 
 ## Spec §8 — Area budget (analog share)
