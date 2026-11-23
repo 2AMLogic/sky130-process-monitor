@@ -214,10 +214,38 @@ def _build_parser():
     return p
 
 
+def _glue_negative_defect(argv):
+    """Rewrite `--defect -1e-3` to `--defect=-1e-3`.
+
+    argparse only treats a leading-dash token as a value when it looks like a plain negative number
+    (`-1`, `-0.001`); a negative scientific-notation value (`-1e-3`), which the pre-#303 parser
+    accepted, is read as an unknown flag and `--defect` reports "expected one argument". Gluing a
+    following token that float() accepts onto the flag keeps that two-argument form working while a
+    missing value (`--defect` last, or followed by another flag) is still a usage error.
+    """
+    out = []
+    i = 0
+    while i < len(argv):
+        tok = argv[i]
+        nxt = argv[i + 1] if i + 1 < len(argv) else None
+        if tok == "--defect" and nxt is not None and nxt.startswith("-"):
+            try:
+                float(nxt)
+            except ValueError:
+                pass
+            else:
+                out.append("--defect=" + nxt)
+                i += 2
+                continue
+        out.append(tok)
+        i += 1
+    return out
+
+
 def main(argv):
     if len(argv) < 2 or argv[1] != "build":
         sys.exit(__doc__)
-    args = _build_parser().parse_intermixed_args(argv[2:])
+    args = _build_parser().parse_intermixed_args(_glue_negative_defect(argv[2:]))
     global DEFECT_OSC
     DEFECT_OSC = args.defect_osc
     with open(args.freq) as f:

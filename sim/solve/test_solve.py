@@ -258,6 +258,25 @@ class TCLI(unittest.TestCase):
         self.assertIn("+0.3", desc)                    # --defect reached the control, not the default
         self.assertIn("osc_nmos", desc)                # --defect-osc names the oscillator carrying it
 
+    def test_build_negative_scientific_defect_two_argument_form_matches_decimal(self):
+        # `--defect -1e-3` (separate token) was valid before #303; argparse alone reads `-1e-3` as a flag.
+        a = os.path.join(self._tmp.name, "samples-sci.json")
+        b = os.path.join(self._tmp.name, "samples-dec.json")
+        c = os.path.join(self._tmp.name, "samples-eq.json")
+        base = ["build", self.freq, self.mcf, self.mcf]
+        for out, flag in ((a, ["--defect", "-1e-3"]), (b, ["--defect", "-0.001"]), (c, ["--defect=-1e-3"])):
+            p = self._run("yield_samples.py", base + flag + ["-o", out])
+            self.assertEqual(p.returncode, 0, p.stderr)
+        with open(a, "rb") as fa, open(b, "rb") as fb, open(c, "rb") as fc:
+            raw = fa.read()
+            self.assertEqual(raw, fb.read())
+            self.assertEqual(raw, fc.read())
+
+    def test_build_defect_without_a_value_stays_a_usage_error(self):
+        for tail in (["--defect"], ["--defect", "--seed", "7"], ["--defect", "-notanumber"]):
+            p = self._run("yield_samples.py", ["build", self.freq, self.mcf, self.mcf] + tail)
+            self.assertEqual(p.returncode, 2, tail)
+
     def test_build_unknown_flag_is_a_usage_error_not_the_default_defect(self):
         out = os.path.join(self._tmp.name, "samples-nope.json")
         p = self._run("yield_samples.py", ["build", self.freq, self.mcf, self.mcf, "-o", out, "--defects", "0.3"])
