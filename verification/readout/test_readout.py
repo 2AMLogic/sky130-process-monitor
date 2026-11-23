@@ -15,8 +15,7 @@ periods taken from the committed frequency surfaces (not stand-ins) at the nomin
 the slowest-osc_subth cell, reads the bank at three gate settings, and writes a committed
 machine-readable record (verification/readout/conversion-time.json; the SDF-annotated leg
 writes conversion-time-sdf.json) grading each full read against the spec bounds. Reads that
-do not complete (gate shorter than one oscillator period) are recorded as such, never
-asserted away.
+time out are recorded with the gate setting and the observed stimulus.
 """
 import json
 import math
@@ -24,8 +23,8 @@ import os
 
 import cocotb
 from cocotb.clock import Clock
-from cocotb.triggers import RisingEdge, Timer
-from cocotb.utils import get_sim_time
+from cocotb.simtime import convert, get_sim_time
+from cocotb.triggers import RisingEdge, Timer, ValueChange
 
 REF_PS = 100_000  # 10 MHz reference clock
 TOL = 2
@@ -63,6 +62,7 @@ class Host:
         d = self.dut
         d.addr.value = addr
         await RisingEdge(d.clk_ref)
+        self.read_edge = get_sim_time()  # timestamp before the read-data settling delay
         await Timer(1, unit="ns")
         return d.rdata.value.to_unsigned()
 
@@ -404,12 +404,10 @@ CONV_GATE_SETTINGS = (
 SPEC6_BOUNDS_S = {"target": 1e-3, "fallback": 1e-2, "stretch": 1e-4}
 
 _OSC_HD_TRUST = (
-    "counter timing at osc_hd's surface frequency is a recorded spec section 5 FAIL "
-    "(sta/readout.osc-corner.sta.report.json: the counter does not cover osc_hd in any liberty "
-    "corner, its Fmax below f_osc at every corner). Icarus drops SDF TIMINGCHECK sections, so "
-    "neither a completion nor a non-completion here is timing-certified: this entry records "
-    "what the gate-level simulation did, not that the counter meets timing at this frequency. "
-    "spec/decisions/0003-counter-max-input-frequency.md (draft) proposes the resolution."
+    "Independent STA limitation (sta/readout.osc-corner.sta.report.json): counter setup "
+    "slack is -1.227 ns at tt_025C_1v80 and counter Fmax is below the osc_hd surface "
+    "frequency in every reported liberty corner. Icarus drops the SDF TIMINGCHECK sections. "
+    "The simulation does not establish the cause of the timeout."
 )
 
 
@@ -426,11 +424,11 @@ def _conv_meta(cell):
 
 async def _conv_osc(sig, period_ps, first_rise, delay_ps):
     """50% duty oscillator at period_ps whose first rising edge is delay_ps after the
-    coroutine starts; the time (ps) of that first rise is recorded in first_rise[0]
+    coroutine starts; the time (simulator steps) of that first rise is recorded in first_rise[0]
     before it happens."""
     sig.value = 0
     await Timer(max(delay_ps, 1), unit="ps")
-    first_rise[0] = get_sim_time("ps")
+    first_rise[0] = get_sim_time()
     sig.value = 1
     await Timer(period_ps // 2, unit="ps")
     sig.value = 0
@@ -451,21 +449,41 @@ _PHASE_CONVENTION = (
 )
 
 
+def _ref_cycles(start_edge, end_edge):
+    cycles, remainder = divmod(end_edge - start_edge, convert(REF_PS, "ps", to="step"))
+    assert remainder == 0, "both timestamps must be sampled clk_ref edges"
+    return cycles
+
+
+async def _count_rises(signal, counts, name, high_value):
+    while True:
+        await ValueChange(signal)
+        if signal.value == high_value:
+            counts[name] += 1
+
+
 async def _conv_read_one(dut, h, sel, k, meta, sdf_leg):
-    """One host-sequenced read of osc[sel] at gate 2^k, with cycle counts, phase evidence
-    and surface provenance. Completion is recorded, never assumed: a read whose window
-    holds no oscillator rising edge stays busy (test_readout.py::k0_phase_sweep) and is
-    recovered with an asynchronous reset, the only way out. Returns (result, done_at):
-    done_at is the host cycle counter at the STATUS poll that observed done (None if the
-    read did not complete); only relative quantities are serialised, so the record does
-    not depend on what ran earlier in the same simulation."""
+    """Return the read record, sampled CTRL edge and first STATUS edge showing DONE
+    (None on timeout). Only relative times are written to the record."""
     d = dut
     period_ps = meta["period_ps"]
     bound = (2 ** k) + math.ceil(4.0 * period_ps / REF_PS) + 100
     d.we.value, d.addr.value, d.wdata.value = 1, CTRL, ctrl(sel, k)
-    await RisingEdge(d.clk_ref)  # start sampled here; gate_en rises at this edge
-    c_write = h.cycles
-    t_write = get_sim_time("ps")
+    await RisingEdge(d.clk_ref)  # CTRL write sampled here
+    write_edge = get_sim_time()
+    rises = {}
+    monitors = []
+    if sdf_leg and meta["name"] == "osc_hd":
+        routed = d.klt_sdf_dut
+        # Icarus exposes change callbacks on the whole input vector. All unselected bits are low.
+        for name, signal, high_value in (
+            ("osc_input", d.osc, 1 << sel),
+            ("osc_sel_clk", routed.osc_sel_clk, 1),
+            ("tog_o", routed.tog_o, 1),
+            ("done", d.done, 1),
+        ):
+            rises[name] = 0
+            monitors.append(cocotb.start_soon(_count_rises(signal, rises, name, high_value)))
     first_rise = [None]
     drv = cocotb.start_soon(_conv_osc(d.osc[sel], period_ps, first_rise, period_ps // 2))
     await Timer(1, unit="ns")
@@ -477,8 +495,10 @@ async def _conv_read_one(dut, h, sel, k, meta, sdf_leg):
         polls += 1
         if st & DONE:
             completed = True
-            done_at = h.cycles
+            done_at = h.read_edge
             break
+    for monitor in monitors:
+        monitor.cancel()
     res = {
         "sel": sel,
         "osc": meta["name"],
@@ -489,7 +509,9 @@ async def _conv_read_one(dut, h, sel, k, meta, sdf_leg):
         "period_ps": period_ps,
         "source_report": meta["source_report"],
         "phase_evidence": {
-            "first_osc_edge_after_gate_rise_ps": (first_rise[0] or 0) - t_write,
+            "first_osc_edge_after_ctrl_write_ps": (
+                convert(first_rise[0] - write_edge, "step", to="ps") if first_rise[0] is not None else None
+            ),
             "gate_window_ps": (2 ** k) * REF_PS,
             "gate_window_over_osc_period": round(((2 ** k) * REF_PS) / period_ps, 6),
         },
@@ -497,15 +519,21 @@ async def _conv_read_one(dut, h, sel, k, meta, sdf_leg):
     }
     if "caveat" in meta:
         res["surface_caveat"] = meta["caveat"]
+    if rises:
+        res["rising_edges_through_last_status_poll"] = rises
     if completed:
-        res["cycles_write_to_done"] = h.cycles - c_write
-        res["seconds_at_10MHz"] = (h.cycles - c_write) * REF_PS / 1e12
+        cycles = _ref_cycles(write_edge, done_at)
+        assert cycles == polls, "one STATUS poll per clk_ref cycle after the CTRL write"
+        res["cycles_write_to_done"] = cycles
+        res["seconds_at_10MHz"] = cycles * REF_PS / 1e12
         res["status_polls"] = polls
         res["count_observed"] = await h.read(COUNT + sel)
         res["overflow"] = bool(st & OVF)
         assert res["cycles_write_to_done"] >= 2 ** k, "a completed read is never shorter than its gate"
     else:
-        if (2 ** k) * REF_PS < period_ps:
+        if sdf_leg:
+            why = f"STATUS.done stayed clear through all {polls} polls at the driven {period_ps} ps period"
+        elif (2 ** k) * REF_PS < period_ps:
             why = (
                 f"gate window {2 ** k} clk_ref cycles ({(2 ** k) * REF_PS / 1e6} us) is shorter "
                 f"than one oscillator period ({period_ps / 1e6} us), and no oscillator rising "
@@ -518,13 +546,6 @@ async def _conv_read_one(dut, h, sel, k, meta, sdf_leg):
                 "periods, so oscillator rising edges landed inside it and the read still did "
                 "not complete"
             )
-            if sdf_leg:
-                why += (
-                    " -- at gate level with SDF delays this is the recorded spec section 5 "
-                    "counter timing FAIL made visible (sta/readout.osc-corner.sta.report.json: "
-                    "the counter does not cover this oscillator's surface frequency in any "
-                    "liberty corner)"
-                )
         res["did_not_complete"] = {
             "poll_bound_cycles": bound,
             "status_polls": polls,
@@ -540,7 +561,7 @@ async def _conv_read_one(dut, h, sel, k, meta, sdf_leg):
         await Timer(3 * REF_PS, unit="ps")
         d.rst_n.value = 1
         await Timer(3 * REF_PS, unit="ps")
-    return res, done_at
+    return res, write_edge, done_at
 
 
 def _grade_spec6(seconds):
@@ -561,14 +582,13 @@ def _grade_spec6(seconds):
 async def _conv_full_read(dut, h, cell_label, cell, setting, sdf_leg):
     metas = _conv_meta(cell)
     per = []
-    dones = []
-    c_first_write = h.cycles
     for sel, meta in enumerate(metas):
-        r, done_at = await _conv_read_one(dut, h, sel, setting["k"][meta["name"]], meta, sdf_leg)
+        r, write_edge, done_at = await _conv_read_one(dut, h, sel, setting["k"][meta["name"]], meta, sdf_leg)
+        if sel == 0:
+            first_write = write_edge
         if sdf_leg and meta["name"] == "osc_hd":
             r["gate_level_timing_trust"] = _OSC_HD_TRUST
         per.append(r)
-        dones.append(done_at)
     done = all(p["completed"] for p in per)
     full = {
         "cell": cell_label,
@@ -578,8 +598,9 @@ async def _conv_full_read(dut, h, cell_label, cell, setting, sdf_leg):
         "full_read": {
             "definition": (
                 "clk_ref rising edges from the edge that samples the first CTRL start write to "
-                "the edge that first samples STATUS.done on the fifth oscillator; COUNT reads "
-                "excluded (recorded separately as with_count_reads_cycles)"
+                "the first STATUS poll edge showing done on the fifth oscillator. The interval "
+                "includes the first four COUNT reads. with_count_reads_cycles ends at the "
+                "fifth COUNT read edge."
             ),
             "completed": done,
             "gate_only_cycles": sum(p["gate_cycles"] for p in per),
@@ -588,10 +609,13 @@ async def _conv_full_read(dut, h, cell_label, cell, setting, sdf_leg):
     fr = full["full_read"]
     hung = [p["osc"] for p in per if not p["completed"]]
     if done:
-        cycles = dones[-1] - c_first_write
+        cycles = _ref_cycles(first_write, done_at)
+        # Between successive conversions the host reads COUNT, then writes the next CTRL.
+        assert cycles == sum(p["status_polls"] for p in per) + 2 * (len(per) - 1)
         fr["cycles"] = cycles
         fr["seconds_at_10MHz"] = cycles * REF_PS / 1e12
-        fr["with_count_reads_cycles"] = h.cycles - c_first_write
+        fr["with_count_reads_cycles"] = _ref_cycles(first_write, h.read_edge)
+        assert fr["with_count_reads_cycles"] == cycles + 1
         fr["overhead_cycles"] = cycles - fr["gate_only_cycles"]
         b, v = _grade_spec6(fr["seconds_at_10MHz"])
         fr["spec6_bounds"] = b
@@ -740,8 +764,9 @@ async def conversion_time_surfaces(dut):
             "partial annotation (Icarus drops SDF TIMINGCHECK and the zero-delay INTERCONNECT "
             "entries; see verification/README.md disclosed limits)",
             _OSC_HD_TRUST,
-            "osc inputs are ideal bench-driven clocks; the routed netlist's input-to-flop delay "
-            "is not exercised at the real oscillator frequencies (verification/README.md limit 4)",
+            "ideal oscillator inputs at nominal surface periods, down to 1.560 ns for osc_hd. "
+            "Per-read edge counts show how many input edges reached osc_sel_clk and whether "
+            "tog_o or done rose during the observation interval (verification/README.md limit 4).",
         ]
     out = "conversion-time-sdf.json" if sdf_leg else "conversion-time.json"
     path = os.path.join(os.path.dirname(os.path.abspath(__file__)), out)

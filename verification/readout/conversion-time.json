@@ -155,13 +155,13 @@
      "period_ps": 1560,
      "source_report": "sim/sensitivity/records/reports/grid_osc_hd.json.gz",
      "phase_evidence": {
-      "first_osc_edge_after_gate_rise_ps": 780.0,
+      "first_osc_edge_after_ctrl_write_ps": 780.0,
       "gate_window_ps": 102400000,
       "gate_window_over_osc_period": 65641.025641
      },
      "completed": true,
-     "cycles_write_to_done": 1028,
-     "seconds_at_10MHz": 0.0001028,
+     "cycles_write_to_done": 1027,
+     "seconds_at_10MHz": 0.0001027,
      "status_polls": 1027,
      "count_observed": 65641,
      "overflow": false
@@ -176,7 +176,7 @@
      "period_ps": 4505,
      "source_report": "sim/sensitivity/records/reports/grid_osc_nmos.json.gz",
      "phase_evidence": {
-      "first_osc_edge_after_gate_rise_ps": 2252.0,
+      "first_osc_edge_after_ctrl_write_ps": 2252.0,
       "gate_window_ps": 102400000,
       "gate_window_over_osc_period": 22730.299667
      },
@@ -197,7 +197,7 @@
      "period_ps": 12600,
      "source_report": "sim/sensitivity/records/reports/grid_osc_pmos.json.gz",
      "phase_evidence": {
-      "first_osc_edge_after_gate_rise_ps": 6300.0,
+      "first_osc_edge_after_ctrl_write_ps": 6300.0,
       "gate_window_ps": 102400000,
       "gate_window_over_osc_period": 8126.984127
      },
@@ -218,7 +218,7 @@
      "period_ps": 13215,
      "source_report": "sim/sensitivity/records/reports/grid_osc_wire.json.gz",
      "phase_evidence": {
-      "first_osc_edge_after_gate_rise_ps": 6607.0,
+      "first_osc_edge_after_ctrl_write_ps": 6607.0,
       "gate_window_ps": 102400000,
       "gate_window_over_osc_period": 7748.770337
      },
@@ -239,7 +239,7 @@
      "period_ps": 351994,
      "source_report": "sim/sensitivity/records/reports/grid_osc_subth.json.gz",
      "phase_evidence": {
-      "first_osc_edge_after_gate_rise_ps": 175997.0,
+      "first_osc_edge_after_ctrl_write_ps": 175997.0,
       "gate_window_ps": 102400000,
       "gate_window_over_osc_period": 290.91405
      },
@@ -252,19 +252,19 @@
     }
    ],
    "full_read": {
-    "definition": "clk_ref rising edges from the edge that samples the first CTRL start write to the edge that first samples STATUS.done on the fifth oscillator; COUNT reads excluded (recorded separately as with_count_reads_cycles)",
+    "definition": "clk_ref rising edges from the edge that samples the first CTRL start write to the first STATUS poll edge showing done on the fifth oscillator. The interval includes the first four COUNT reads. with_count_reads_cycles ends at the fifth COUNT read edge.",
     "completed": true,
     "gate_only_cycles": 5120,
-    "cycles": 5153,
-    "seconds_at_10MHz": 0.0005153,
-    "with_count_reads_cycles": 5154,
-    "overhead_cycles": 33,
+    "cycles": 5152,
+    "seconds_at_10MHz": 0.0005152,
+    "with_count_reads_cycles": 5153,
+    "overhead_cycles": 32,
     "spec6_bounds": {
      "target_lt_1ms": true,
      "fallback_lt_10ms": true,
      "stretch_lt_100us": false
     },
-    "spec6_verdict": "full read 0.5153 ms at 10 MHz: target (<1 ms) PASS, fallback (<10 ms) PASS, stretch (<100 us) FAIL"
+    "spec6_verdict": "full read 0.5152 ms at 10 MHz: target (<1 ms) PASS, fallback (<10 ms) PASS, stretch (<100 us) FAIL"
    }
   },
   {
@@ -288,7 +288,7 @@
      "period_ps": 1560,
      "source_report": "sim/sensitivity/records/reports/grid_osc_hd.json.gz",
      "phase_evidence": {
-      "first_osc_edge_after_gate_rise_ps": 780.0,
+      "first_osc_edge_after_ctrl_write_ps": 780.0,
       "gate_window_ps": 1638400000,
       "gate_window_over_osc_period": 1050256.410256
      },
@@ -309,7 +309,7 @@
      "period_ps": 4505,
      "source_report": "sim/sensitivity/records/reports/grid_osc_nmos.json.gz",
      "phase_evidence": {
-      "first_osc_edge_after_gate_rise_ps": 2252.0,
+      "first_osc_edge_after_ctrl_write_ps": 2252.0,
       "gate_window_ps": 1638400000,
       "gate_window_over_osc_period": 363684.794673
      },
@@ -330,7 +330,7 @@
      "period_ps": 12600,
      "source_report": "sim/sensitivity/records/reports/grid_osc_pmos.json.gz",
      "phase_evidence": {
-      "first_osc_edge_after_gate_rise_ps": 6300.0,
+      "first_osc_edge_after_ctrl_write_ps": 6300.0,
       "gate_window_ps": 1638400000,
       "gate_window_over_osc_period": 130031.746032
      },
@@ -351,7 +351,7 @@
      "period_ps": 13215,
      "source_report": "sim/sensitivity/records/reports/grid_osc_wire.json.gz",
      "phase_evidence": {
-      "first_osc_edge_after_gate_rise_ps": 6607.0,
+      "first_osc_edge_after_ctrl_write_ps": 6607.0,
       "gate_window_ps": 1638400000,
       "gate_window_over_osc_period": 123980.325388
      },
@@ -372,7 +372,7 @@
      "period_ps": 351994,
      "source_report": "sim/sensitivity/records/reports/grid_osc_subth.json.gz",
      "phase_evidence": {
-      "first_osc_edge_after_gate_rise_ps": 175997.0,
+      "first_osc_edge_after_ctrl_write_ps": 175997.0,
       "gate_window_ps": 1638400000,
       "gate_window_over_osc_period": 4654.624795
      },
@@ -385,19 +385,19 @@
     }
    ],
    "full_read": {
-    "definition": "clk_ref rising edges from the edge that samples the first CTRL start write to the edge that first samples STATUS.done on the fifth oscillator; COUNT reads excluded (recorded separately as with_count_reads_cycles)",
+    "definition": "clk_ref rising edges from the edge that samples the first CTRL start write to the first STATUS poll edge showing done on the fifth oscillator. The interval includes the first four COUNT reads. with_count_reads_cycles ends at the fifth COUNT read edge.",
     "completed": true,
     "gate_only_cycles": 81920,
-    "cycles": 81954,
-    "seconds_at_10MHz": 0.0081954,
-    "with_count_reads_cycles": 81955,
-    "overhead_cycles": 34,
+    "cycles": 81953,
+    "seconds_at_10MHz": 0.0081953,
+    "with_count_reads_cycles": 81954,
+    "overhead_cycles": 33,
     "spec6_bounds": {
      "target_lt_1ms": false,
      "fallback_lt_10ms": true,
      "stretch_lt_100us": false
     },
-    "spec6_verdict": "full read 8.1954 ms at 10 MHz: target (<1 ms) FAIL, fallback (<10 ms) PASS, stretch (<100 us) FAIL"
+    "spec6_verdict": "full read 8.1953 ms at 10 MHz: target (<1 ms) FAIL, fallback (<10 ms) PASS, stretch (<100 us) FAIL"
    }
   },
   {
@@ -421,7 +421,7 @@
      "period_ps": 1560,
      "source_report": "sim/sensitivity/records/reports/grid_osc_hd.json.gz",
      "phase_evidence": {
-      "first_osc_edge_after_gate_rise_ps": 780.0,
+      "first_osc_edge_after_ctrl_write_ps": 780.0,
       "gate_window_ps": 102400000,
       "gate_window_over_osc_period": 65641.025641
      },
@@ -442,7 +442,7 @@
      "period_ps": 4505,
      "source_report": "sim/sensitivity/records/reports/grid_osc_nmos.json.gz",
      "phase_evidence": {
-      "first_osc_edge_after_gate_rise_ps": 2252.0,
+      "first_osc_edge_after_ctrl_write_ps": 2252.0,
       "gate_window_ps": 102400000,
       "gate_window_over_osc_period": 22730.299667
      },
@@ -463,7 +463,7 @@
      "period_ps": 12600,
      "source_report": "sim/sensitivity/records/reports/grid_osc_pmos.json.gz",
      "phase_evidence": {
-      "first_osc_edge_after_gate_rise_ps": 6300.0,
+      "first_osc_edge_after_ctrl_write_ps": 6300.0,
       "gate_window_ps": 102400000,
       "gate_window_over_osc_period": 8126.984127
      },
@@ -484,7 +484,7 @@
      "period_ps": 13215,
      "source_report": "sim/sensitivity/records/reports/grid_osc_wire.json.gz",
      "phase_evidence": {
-      "first_osc_edge_after_gate_rise_ps": 6607.0,
+      "first_osc_edge_after_ctrl_write_ps": 6607.0,
       "gate_window_ps": 102400000,
       "gate_window_over_osc_period": 7748.770337
      },
@@ -505,7 +505,7 @@
      "period_ps": 351994,
      "source_report": "sim/sensitivity/records/reports/grid_osc_subth.json.gz",
      "phase_evidence": {
-      "first_osc_edge_after_gate_rise_ps": 175997.0,
+      "first_osc_edge_after_ctrl_write_ps": 175997.0,
       "gate_window_ps": 1638400000,
       "gate_window_over_osc_period": 4654.624795
      },
@@ -518,19 +518,19 @@
     }
    ],
    "full_read": {
-    "definition": "clk_ref rising edges from the edge that samples the first CTRL start write to the edge that first samples STATUS.done on the fifth oscillator; COUNT reads excluded (recorded separately as with_count_reads_cycles)",
+    "definition": "clk_ref rising edges from the edge that samples the first CTRL start write to the first STATUS poll edge showing done on the fifth oscillator. The interval includes the first four COUNT reads. with_count_reads_cycles ends at the fifth COUNT read edge.",
     "completed": true,
     "gate_only_cycles": 20480,
-    "cycles": 20514,
-    "seconds_at_10MHz": 0.0020514,
-    "with_count_reads_cycles": 20515,
-    "overhead_cycles": 34,
+    "cycles": 20513,
+    "seconds_at_10MHz": 0.0020513,
+    "with_count_reads_cycles": 20514,
+    "overhead_cycles": 33,
     "spec6_bounds": {
      "target_lt_1ms": false,
      "fallback_lt_10ms": true,
      "stretch_lt_100us": false
     },
-    "spec6_verdict": "full read 2.0514 ms at 10 MHz: target (<1 ms) FAIL, fallback (<10 ms) PASS, stretch (<100 us) FAIL"
+    "spec6_verdict": "full read 2.0513 ms at 10 MHz: target (<1 ms) FAIL, fallback (<10 ms) PASS, stretch (<100 us) FAIL"
    }
   },
   {
@@ -554,7 +554,7 @@
      "period_ps": 1455,
      "source_report": "sim/sensitivity/records/reports/grid_osc_hd.json.gz",
      "phase_evidence": {
-      "first_osc_edge_after_gate_rise_ps": 727.0,
+      "first_osc_edge_after_ctrl_write_ps": 727.0,
       "gate_window_ps": 102400000,
       "gate_window_over_osc_period": 70378.006873
      },
@@ -575,7 +575,7 @@
      "period_ps": 3672,
      "source_report": "sim/sensitivity/records/reports/grid_osc_nmos.json.gz",
      "phase_evidence": {
-      "first_osc_edge_after_gate_rise_ps": 1836.0,
+      "first_osc_edge_after_ctrl_write_ps": 1836.0,
       "gate_window_ps": 102400000,
       "gate_window_over_osc_period": 27886.71024
      },
@@ -596,7 +596,7 @@
      "period_ps": 9512,
      "source_report": "sim/sensitivity/records/reports/grid_osc_pmos.json.gz",
      "phase_evidence": {
-      "first_osc_edge_after_gate_rise_ps": 4756.0,
+      "first_osc_edge_after_ctrl_write_ps": 4756.0,
       "gate_window_ps": 102400000,
       "gate_window_over_osc_period": 10765.349033
      },
@@ -617,7 +617,7 @@
      "period_ps": 11767,
      "source_report": "sim/sensitivity/records/reports/probe_wire_sf_relaxed.json.gz",
      "phase_evidence": {
-      "first_osc_edge_after_gate_rise_ps": 5883.0,
+      "first_osc_edge_after_ctrl_write_ps": 5883.0,
       "gate_window_ps": 102400000,
       "gate_window_over_osc_period": 8702.303051
      },
@@ -639,7 +639,7 @@
      "period_ps": 945746030,
      "source_report": "sim/sensitivity/records/reports/grid_osc_subth_sf_cold.json.gz",
      "phase_evidence": {
-      "first_osc_edge_after_gate_rise_ps": 472873015.0,
+      "first_osc_edge_after_ctrl_write_ps": 472873015.0,
       "gate_window_ps": 102400000,
       "gate_window_over_osc_period": 0.108274
      },
@@ -653,7 +653,7 @@
     }
    ],
    "full_read": {
-    "definition": "clk_ref rising edges from the edge that samples the first CTRL start write to the edge that first samples STATUS.done on the fifth oscillator; COUNT reads excluded (recorded separately as with_count_reads_cycles)",
+    "definition": "clk_ref rising edges from the edge that samples the first CTRL start write to the first STATUS poll edge showing done on the fifth oscillator. The interval includes the first four COUNT reads. with_count_reads_cycles ends at the fifth COUNT read edge.",
     "completed": false,
     "gate_only_cycles": 5120,
     "did_not_complete": {
@@ -685,7 +685,7 @@
      "period_ps": 1455,
      "source_report": "sim/sensitivity/records/reports/grid_osc_hd.json.gz",
      "phase_evidence": {
-      "first_osc_edge_after_gate_rise_ps": 727.0,
+      "first_osc_edge_after_ctrl_write_ps": 727.0,
       "gate_window_ps": 1638400000,
       "gate_window_over_osc_period": 1126048.109966
      },
@@ -706,7 +706,7 @@
      "period_ps": 3672,
      "source_report": "sim/sensitivity/records/reports/grid_osc_nmos.json.gz",
      "phase_evidence": {
-      "first_osc_edge_after_gate_rise_ps": 1836.0,
+      "first_osc_edge_after_ctrl_write_ps": 1836.0,
       "gate_window_ps": 1638400000,
       "gate_window_over_osc_period": 446187.363834
      },
@@ -727,7 +727,7 @@
      "period_ps": 9512,
      "source_report": "sim/sensitivity/records/reports/grid_osc_pmos.json.gz",
      "phase_evidence": {
-      "first_osc_edge_after_gate_rise_ps": 4756.0,
+      "first_osc_edge_after_ctrl_write_ps": 4756.0,
       "gate_window_ps": 1638400000,
       "gate_window_over_osc_period": 172245.584525
      },
@@ -748,7 +748,7 @@
      "period_ps": 11767,
      "source_report": "sim/sensitivity/records/reports/probe_wire_sf_relaxed.json.gz",
      "phase_evidence": {
-      "first_osc_edge_after_gate_rise_ps": 5883.0,
+      "first_osc_edge_after_ctrl_write_ps": 5883.0,
       "gate_window_ps": 1638400000,
       "gate_window_over_osc_period": 139236.848814
      },
@@ -770,7 +770,7 @@
      "period_ps": 945746030,
      "source_report": "sim/sensitivity/records/reports/grid_osc_subth_sf_cold.json.gz",
      "phase_evidence": {
-      "first_osc_edge_after_gate_rise_ps": 472873015.0,
+      "first_osc_edge_after_ctrl_write_ps": 472873015.0,
       "gate_window_ps": 1638400000,
       "gate_window_over_osc_period": 1.732389
      },
@@ -783,19 +783,19 @@
     }
    ],
    "full_read": {
-    "definition": "clk_ref rising edges from the edge that samples the first CTRL start write to the edge that first samples STATUS.done on the fifth oscillator; COUNT reads excluded (recorded separately as with_count_reads_cycles)",
+    "definition": "clk_ref rising edges from the edge that samples the first CTRL start write to the first STATUS poll edge showing done on the fifth oscillator. The interval includes the first four COUNT reads. with_count_reads_cycles ends at the fifth COUNT read edge.",
     "completed": true,
     "gate_only_cycles": 81920,
-    "cycles": 108118,
-    "seconds_at_10MHz": 0.0108118,
-    "with_count_reads_cycles": 108119,
-    "overhead_cycles": 26198,
+    "cycles": 108117,
+    "seconds_at_10MHz": 0.0108117,
+    "with_count_reads_cycles": 108118,
+    "overhead_cycles": 26197,
     "spec6_bounds": {
      "target_lt_1ms": false,
      "fallback_lt_10ms": false,
      "stretch_lt_100us": false
     },
-    "spec6_verdict": "full read 10.8118 ms at 10 MHz: target (<1 ms) FAIL, fallback (<10 ms) FAIL, stretch (<100 us) FAIL"
+    "spec6_verdict": "full read 10.8117 ms at 10 MHz: target (<1 ms) FAIL, fallback (<10 ms) FAIL, stretch (<100 us) FAIL"
    }
   },
   {
@@ -819,7 +819,7 @@
      "period_ps": 1455,
      "source_report": "sim/sensitivity/records/reports/grid_osc_hd.json.gz",
      "phase_evidence": {
-      "first_osc_edge_after_gate_rise_ps": 727.0,
+      "first_osc_edge_after_ctrl_write_ps": 727.0,
       "gate_window_ps": 102400000,
       "gate_window_over_osc_period": 70378.006873
      },
@@ -840,7 +840,7 @@
      "period_ps": 3672,
      "source_report": "sim/sensitivity/records/reports/grid_osc_nmos.json.gz",
      "phase_evidence": {
-      "first_osc_edge_after_gate_rise_ps": 1836.0,
+      "first_osc_edge_after_ctrl_write_ps": 1836.0,
       "gate_window_ps": 102400000,
       "gate_window_over_osc_period": 27886.71024
      },
@@ -861,7 +861,7 @@
      "period_ps": 9512,
      "source_report": "sim/sensitivity/records/reports/grid_osc_pmos.json.gz",
      "phase_evidence": {
-      "first_osc_edge_after_gate_rise_ps": 4756.0,
+      "first_osc_edge_after_ctrl_write_ps": 4756.0,
       "gate_window_ps": 102400000,
       "gate_window_over_osc_period": 10765.349033
      },
@@ -882,7 +882,7 @@
      "period_ps": 11767,
      "source_report": "sim/sensitivity/records/reports/probe_wire_sf_relaxed.json.gz",
      "phase_evidence": {
-      "first_osc_edge_after_gate_rise_ps": 5883.0,
+      "first_osc_edge_after_ctrl_write_ps": 5883.0,
       "gate_window_ps": 102400000,
       "gate_window_over_osc_period": 8702.303051
      },
@@ -904,7 +904,7 @@
      "period_ps": 945746030,
      "source_report": "sim/sensitivity/records/reports/grid_osc_subth_sf_cold.json.gz",
      "phase_evidence": {
-      "first_osc_edge_after_gate_rise_ps": 472873015.0,
+      "first_osc_edge_after_ctrl_write_ps": 472873015.0,
       "gate_window_ps": 1638400000,
       "gate_window_over_osc_period": 1.732389
      },
@@ -917,19 +917,19 @@
     }
    ],
    "full_read": {
-    "definition": "clk_ref rising edges from the edge that samples the first CTRL start write to the edge that first samples STATUS.done on the fifth oscillator; COUNT reads excluded (recorded separately as with_count_reads_cycles)",
+    "definition": "clk_ref rising edges from the edge that samples the first CTRL start write to the first STATUS poll edge showing done on the fifth oscillator. The interval includes the first four COUNT reads. with_count_reads_cycles ends at the fifth COUNT read edge.",
     "completed": true,
     "gate_only_cycles": 20480,
-    "cycles": 46678,
-    "seconds_at_10MHz": 0.0046678,
-    "with_count_reads_cycles": 46679,
-    "overhead_cycles": 26198,
+    "cycles": 46677,
+    "seconds_at_10MHz": 0.0046677,
+    "with_count_reads_cycles": 46678,
+    "overhead_cycles": 26197,
     "spec6_bounds": {
      "target_lt_1ms": false,
      "fallback_lt_10ms": true,
      "stretch_lt_100us": false
     },
-    "spec6_verdict": "full read 4.6678 ms at 10 MHz: target (<1 ms) FAIL, fallback (<10 ms) PASS, stretch (<100 us) FAIL"
+    "spec6_verdict": "full read 4.6677 ms at 10 MHz: target (<1 ms) FAIL, fallback (<10 ms) PASS, stretch (<100 us) FAIL"
    }
   }
  ],

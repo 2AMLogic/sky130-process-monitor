@@ -28,7 +28,7 @@ functional behaviour passes every committed check, but the corner-matched static
 timing records a **FAIL in all three liberty corners** — the counter does not
 cover `osc_hd` in any corner — and spec §6 is now **recorded, and it records
 misses**: the target is met only at the nominal cell under the default gate
-(0.5153 ms), every longer gate setting exceeds it (up to 10.8118 ms at the
+(0.5152 ms), every longer gate setting exceeds it (up to 10.8117 ms at the
 slowest-`osc_subth` cell, past even the fallback), and under the default gate at
 that cell the `osc_subth` read does not complete at all. A `pass` would
 overclaim on both counts.
@@ -47,7 +47,7 @@ actually covered and the gaps in that coverage stated.
 | §5 Readout — counter function | **PASS** | — | — | RTL + SDF-annotated gate level, typ | `verification/readout/functional-verification.report.json` |
 | §5 Readout — counter timing vs. the selected oscillator | **FAIL** | — | — | `osc_hd`, all three liberty corners (worst ss_100C_1v60) | `sta/readout.osc-corner.sta.report.json` |
 | §5 Readout — reference-clock accuracy requirement | **not recorded** | **not recorded** | — | — | requirement on an input; the block does not generate it |
-| §6 Conversion time | **FAIL** (0.5153 ms at nominal/default; every longer gate exceeds 1 ms) | **FAIL** (10.8118 ms at sf/1.98 V/−40 °C, k = 14 whole bank) | **FAIL** (best 0.5153 ms) | sf, 1.98 V, −40 °C (`osc_subth`, 945.75 µs; default-gate read does not complete) | `verification/readout/conversion-time.json` |
+| §6 Conversion time | **FAIL** (0.5152 ms at nominal/default; every longer gate exceeds 1 ms) | **FAIL** (10.8117 ms at sf/1.98 V/−40 °C, k = 14 whole bank) | **FAIL** (best 0.5152 ms) | sf, 1.98 V, −40 °C (`osc_subth`, 945.75 µs; default-gate read does not complete) | `verification/readout/conversion-time.json` |
 | §8 Area (digital share) | **not recorded** | **not recorded** | **not recorded** | — | `layout/README.md` |
 | §9 Signoff (digital share) | **not recorded** (whole-block) | components recorded below | — | — | `drc/README.md`, `lvs/README.md`, `verification/README.md` |
 
@@ -201,18 +201,19 @@ and reads the bank at the three gate settings the gate-sizing record
 the spec default 2^10 on all five, 2^14 on all five, and 2^14 on `osc_subth`
 only. No gate is picked and no RTL default is changed by the record.
 
-Full-read conversion time, first CTRL start write to the fifth `STATUS.done`
-(the record also carries per-oscillator times, counts unasserted, phase
-evidence and host overhead):
+The full read starts on the `clk_ref` edge that samples the first CTRL start
+and ends on the fifth oscillator's first STATUS poll showing DONE. The first
+four COUNT reads fall inside that interval. The record also gives the time
+through the fifth COUNT read, one cycle later.
 
 | Cell / gate setting | Full read | §6 verdict (quoted) |
 |---|---|---|
-| nominal, 2^10 × 5 (default) | 5153 cycles = **0.5153 ms** | target **PASS**, fallback PASS, stretch FAIL |
-| nominal, 2^14 × 5 | 81 954 cycles = 8.1954 ms | target FAIL, fallback PASS, stretch FAIL |
-| nominal, 2^14 `osc_subth` only | 20 514 cycles = 2.0514 ms | target FAIL, fallback PASS, stretch FAIL |
+| nominal, 2^10 × 5 (default) | 5152 cycles = **0.5152 ms** | target **PASS**, fallback PASS, stretch FAIL |
+| nominal, 2^14 × 5 | 81 953 cycles = 8.1953 ms | target FAIL, fallback PASS, stretch FAIL |
+| nominal, 2^14 `osc_subth` only | 20 513 cycles = 2.0513 ms | target FAIL, fallback PASS, stretch FAIL |
 | sf 1.98 V −40 °C, 2^10 × 5 (default) | **did not complete** (`osc_subth`) | no time, no grade |
-| sf, 2^14 × 5 | 108 118 cycles = **10.8118 ms** | target FAIL, **fallback FAIL**, stretch FAIL |
-| sf, 2^14 `osc_subth` only | 46 678 cycles = 4.6678 ms | target FAIL, fallback PASS, stretch FAIL |
+| sf, 2^14 × 5 | 108 117 cycles = **10.8117 ms** | target FAIL, **fallback FAIL**, stretch FAIL |
+| sf, 2^14 `osc_subth` only | 46 677 cycles = 4.6677 ms | target FAIL, fallback PASS, stretch FAIL |
 
 Reads that do not complete are recorded as such, with gate and period, never
 asserted away, lengthened or dropped:
@@ -229,27 +230,24 @@ asserted away, lengthened or dropped:
   for it. This is the recorded input to the gate / readout design iteration
   and to draft `spec/decisions/0003-counter-max-input-frequency.md`, which
   remains draft and resolves nothing.
-- **Gate level (SDF typ, nominal cell only): `osc_hd` reads did not complete
-  at any of the three gate settings**, so no gate-level §6 time is recorded at
-  all. `osc_hd`'s surface frequency at nominal (641.0 MHz) exceeds what the
-  §5b STA already fails (counter Fmax 358.9 MHz at tt); with SDF delays
-  annotated the read never completes — the timing FAIL made visible in
-  simulation, not a new verdict. The record states this per read and cites
-  `sta/readout.osc-corner.sta.report.json` rather than silently substituting
-  a slower period; the surface period was driven as-is. `conversion-time-sdf.json`
-  carries the leg's limits: typ corner only, partial annotation (323
-  TIMINGCHECK sections dropped by Icarus, so neither completion nor
-  non-completion is timing-certified), ideal bench-driven `osc` inputs.
+- **Gate level (SDF typ, nominal cell only).** At all three gate settings the
+  host timed out waiting for `osc_hd` at its 1.560 ns surface period (641 MHz).
+  Each timeout leaves the full read ungraded. At the default gate the bench
+  counted 72,116 rising edges at the input and one at `osc_sel_clk`. Neither
+  `tog_o` nor DONE rose. Independently, the §5b STA reports
+  −1.227 ns of counter setup slack at tt and a counter Fmax of 358.9 MHz
+  (`sta/readout.osc-corner.sta.report.json`). Icarus drops 323 SDF TIMINGCHECK
+  sections. The simulation does not identify the cause of the timeout.
 
 What the record adds beyond the planning figure: the 5 × 102.4 µs ≈ 0.5 ms
 arithmetic in `spec/target-spec.md` §6 (quoted there as unverified planning)
-is confirmed only at the nominal cell — 0.5153 ms including 33 cycles of
+is confirmed only at the nominal cell — 0.5152 ms including 32 cycles of
 handshake and host overhead. At the sf cell the `osc_subth` handshake alone
 (the oscillator-domain synchroniser at a 945.75 µs period) costs more than the
 gate: the k = 14 `osc_subth` read is 42 561 cycles (4.2561 ms) against a
-16 384-cycle gate, which is why the whole-bank k = 14 read (10.8118 ms)
+16 384-cycle gate, which is why the whole-bank k = 14 read (10.8117 ms)
 exceeds even the 10 ms fallback while the `osc_subth`-only-k = 14 reading
-stays under it (4.6678 ms).
+stays under it (4.6677 ms).
 
 - `verification/readout/not-statistical.json` still classifies the row
   `deterministic-cycle-count` (the `6.digital` `not_applicable` citation):

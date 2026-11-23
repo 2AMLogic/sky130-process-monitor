@@ -17,8 +17,8 @@
   "limits": [
    "typ corner only: the SDF is the tt_025C_1v80 post-route session, so only the nominal cell is run; the sf_1v98_n40C cell is a corner mismatch and is not",
    "partial annotation (Icarus drops SDF TIMINGCHECK and the zero-delay INTERCONNECT entries; see verification/README.md disclosed limits)",
-   "counter timing at osc_hd's surface frequency is a recorded spec section 5 FAIL (sta/readout.osc-corner.sta.report.json: the counter does not cover osc_hd in any liberty corner, its Fmax below f_osc at every corner). Icarus drops SDF TIMINGCHECK sections, so neither a completion nor a non-completion here is timing-certified: this entry records what the gate-level simulation did, not that the counter meets timing at this frequency. spec/decisions/0003-counter-max-input-frequency.md (draft) proposes the resolution.",
-   "osc inputs are ideal bench-driven clocks; the routed netlist's input-to-flop delay is not exercised at the real oscillator frequencies (verification/README.md limit 4)"
+   "Independent STA limitation (sta/readout.osc-corner.sta.report.json): counter setup slack is -1.227 ns at tt_025C_1v80 and counter Fmax is below the osc_hd surface frequency in every reported liberty corner. Icarus drops the SDF TIMINGCHECK sections. The simulation does not establish the cause of the timeout.",
+   "ideal oscillator inputs at nominal surface periods, down to 1.560 ns for osc_hd. Per-read edge counts show how many input edges reached osc_sel_clk and whether tog_o or done rose during the observation interval (verification/README.md limit 4)."
   ]
  },
  "spec_section_6_bounds_s": {
@@ -160,18 +160,24 @@
      "period_ps": 1560,
      "source_report": "sim/sensitivity/records/reports/grid_osc_hd.json.gz",
      "phase_evidence": {
-      "first_osc_edge_after_gate_rise_ps": 780.0,
+      "first_osc_edge_after_ctrl_write_ps": 780.0,
       "gate_window_ps": 102400000,
       "gate_window_over_osc_period": 65641.025641
      },
      "completed": false,
+     "rising_edges_through_last_status_poll": {
+      "osc_input": 72116,
+      "osc_sel_clk": 1,
+      "tog_o": 0,
+      "done": 0
+     },
      "did_not_complete": {
       "poll_bound_cycles": 1125,
       "status_polls": 1125,
       "recovered_by": "asynchronous rst_n pulse in the bench (the only recovery)",
-      "why": "the gate window spans 65641.026 oscillator periods, so oscillator rising edges landed inside it and the read still did not complete -- at gate level with SDF delays this is the recorded spec section 5 counter timing FAIL made visible (sta/readout.osc-corner.sta.report.json: the counter does not cover this oscillator's surface frequency in any liberty corner)"
+      "why": "STATUS.done stayed clear through all 1125 polls at the driven 1560 ps period"
      },
-     "gate_level_timing_trust": "counter timing at osc_hd's surface frequency is a recorded spec section 5 FAIL (sta/readout.osc-corner.sta.report.json: the counter does not cover osc_hd in any liberty corner, its Fmax below f_osc at every corner). Icarus drops SDF TIMINGCHECK sections, so neither a completion nor a non-completion here is timing-certified: this entry records what the gate-level simulation did, not that the counter meets timing at this frequency. spec/decisions/0003-counter-max-input-frequency.md (draft) proposes the resolution."
+     "gate_level_timing_trust": "Independent STA limitation (sta/readout.osc-corner.sta.report.json): counter setup slack is -1.227 ns at tt_025C_1v80 and counter Fmax is below the osc_hd surface frequency in every reported liberty corner. Icarus drops the SDF TIMINGCHECK sections. The simulation does not establish the cause of the timeout."
     },
     {
      "sel": 1,
@@ -183,7 +189,7 @@
      "period_ps": 4505,
      "source_report": "sim/sensitivity/records/reports/grid_osc_nmos.json.gz",
      "phase_evidence": {
-      "first_osc_edge_after_gate_rise_ps": 2252.0,
+      "first_osc_edge_after_ctrl_write_ps": 2252.0,
       "gate_window_ps": 102400000,
       "gate_window_over_osc_period": 22730.299667
      },
@@ -204,7 +210,7 @@
      "period_ps": 12600,
      "source_report": "sim/sensitivity/records/reports/grid_osc_pmos.json.gz",
      "phase_evidence": {
-      "first_osc_edge_after_gate_rise_ps": 6300.0,
+      "first_osc_edge_after_ctrl_write_ps": 6300.0,
       "gate_window_ps": 102400000,
       "gate_window_over_osc_period": 8126.984127
      },
@@ -225,7 +231,7 @@
      "period_ps": 13215,
      "source_report": "sim/sensitivity/records/reports/grid_osc_wire.json.gz",
      "phase_evidence": {
-      "first_osc_edge_after_gate_rise_ps": 6607.0,
+      "first_osc_edge_after_ctrl_write_ps": 6607.0,
       "gate_window_ps": 102400000,
       "gate_window_over_osc_period": 7748.770337
      },
@@ -246,7 +252,7 @@
      "period_ps": 351994,
      "source_report": "sim/sensitivity/records/reports/grid_osc_subth.json.gz",
      "phase_evidence": {
-      "first_osc_edge_after_gate_rise_ps": 175997.0,
+      "first_osc_edge_after_ctrl_write_ps": 175997.0,
       "gate_window_ps": 102400000,
       "gate_window_over_osc_period": 290.91405
      },
@@ -259,7 +265,7 @@
     }
    ],
    "full_read": {
-    "definition": "clk_ref rising edges from the edge that samples the first CTRL start write to the edge that first samples STATUS.done on the fifth oscillator; COUNT reads excluded (recorded separately as with_count_reads_cycles)",
+    "definition": "clk_ref rising edges from the edge that samples the first CTRL start write to the first STATUS poll edge showing done on the fifth oscillator. The interval includes the first four COUNT reads. with_count_reads_cycles ends at the fifth COUNT read edge.",
     "completed": false,
     "gate_only_cycles": 5120,
     "did_not_complete": {
@@ -291,18 +297,24 @@
      "period_ps": 1560,
      "source_report": "sim/sensitivity/records/reports/grid_osc_hd.json.gz",
      "phase_evidence": {
-      "first_osc_edge_after_gate_rise_ps": 780.0,
+      "first_osc_edge_after_ctrl_write_ps": 780.0,
       "gate_window_ps": 1638400000,
       "gate_window_over_osc_period": 1050256.410256
      },
      "completed": false,
+     "rising_edges_through_last_status_poll": {
+      "osc_input": 1056731,
+      "osc_sel_clk": 1,
+      "tog_o": 0,
+      "done": 0
+     },
      "did_not_complete": {
       "poll_bound_cycles": 16485,
       "status_polls": 16485,
       "recovered_by": "asynchronous rst_n pulse in the bench (the only recovery)",
-      "why": "the gate window spans 1050256.41 oscillator periods, so oscillator rising edges landed inside it and the read still did not complete -- at gate level with SDF delays this is the recorded spec section 5 counter timing FAIL made visible (sta/readout.osc-corner.sta.report.json: the counter does not cover this oscillator's surface frequency in any liberty corner)"
+      "why": "STATUS.done stayed clear through all 16485 polls at the driven 1560 ps period"
      },
-     "gate_level_timing_trust": "counter timing at osc_hd's surface frequency is a recorded spec section 5 FAIL (sta/readout.osc-corner.sta.report.json: the counter does not cover osc_hd in any liberty corner, its Fmax below f_osc at every corner). Icarus drops SDF TIMINGCHECK sections, so neither a completion nor a non-completion here is timing-certified: this entry records what the gate-level simulation did, not that the counter meets timing at this frequency. spec/decisions/0003-counter-max-input-frequency.md (draft) proposes the resolution."
+     "gate_level_timing_trust": "Independent STA limitation (sta/readout.osc-corner.sta.report.json): counter setup slack is -1.227 ns at tt_025C_1v80 and counter Fmax is below the osc_hd surface frequency in every reported liberty corner. Icarus drops the SDF TIMINGCHECK sections. The simulation does not establish the cause of the timeout."
     },
     {
      "sel": 1,
@@ -314,7 +326,7 @@
      "period_ps": 4505,
      "source_report": "sim/sensitivity/records/reports/grid_osc_nmos.json.gz",
      "phase_evidence": {
-      "first_osc_edge_after_gate_rise_ps": 2252.0,
+      "first_osc_edge_after_ctrl_write_ps": 2252.0,
       "gate_window_ps": 1638400000,
       "gate_window_over_osc_period": 363684.794673
      },
@@ -335,7 +347,7 @@
      "period_ps": 12600,
      "source_report": "sim/sensitivity/records/reports/grid_osc_pmos.json.gz",
      "phase_evidence": {
-      "first_osc_edge_after_gate_rise_ps": 6300.0,
+      "first_osc_edge_after_ctrl_write_ps": 6300.0,
       "gate_window_ps": 1638400000,
       "gate_window_over_osc_period": 130031.746032
      },
@@ -356,7 +368,7 @@
      "period_ps": 13215,
      "source_report": "sim/sensitivity/records/reports/grid_osc_wire.json.gz",
      "phase_evidence": {
-      "first_osc_edge_after_gate_rise_ps": 6607.0,
+      "first_osc_edge_after_ctrl_write_ps": 6607.0,
       "gate_window_ps": 1638400000,
       "gate_window_over_osc_period": 123980.325388
      },
@@ -377,7 +389,7 @@
      "period_ps": 351994,
      "source_report": "sim/sensitivity/records/reports/grid_osc_subth.json.gz",
      "phase_evidence": {
-      "first_osc_edge_after_gate_rise_ps": 175997.0,
+      "first_osc_edge_after_ctrl_write_ps": 175997.0,
       "gate_window_ps": 1638400000,
       "gate_window_over_osc_period": 4654.624795
      },
@@ -390,7 +402,7 @@
     }
    ],
    "full_read": {
-    "definition": "clk_ref rising edges from the edge that samples the first CTRL start write to the edge that first samples STATUS.done on the fifth oscillator; COUNT reads excluded (recorded separately as with_count_reads_cycles)",
+    "definition": "clk_ref rising edges from the edge that samples the first CTRL start write to the first STATUS poll edge showing done on the fifth oscillator. The interval includes the first four COUNT reads. with_count_reads_cycles ends at the fifth COUNT read edge.",
     "completed": false,
     "gate_only_cycles": 81920,
     "did_not_complete": {
@@ -422,18 +434,24 @@
      "period_ps": 1560,
      "source_report": "sim/sensitivity/records/reports/grid_osc_hd.json.gz",
      "phase_evidence": {
-      "first_osc_edge_after_gate_rise_ps": 780.0,
+      "first_osc_edge_after_ctrl_write_ps": 780.0,
       "gate_window_ps": 102400000,
       "gate_window_over_osc_period": 65641.025641
      },
      "completed": false,
+     "rising_edges_through_last_status_poll": {
+      "osc_input": 72116,
+      "osc_sel_clk": 1,
+      "tog_o": 0,
+      "done": 0
+     },
      "did_not_complete": {
       "poll_bound_cycles": 1125,
       "status_polls": 1125,
       "recovered_by": "asynchronous rst_n pulse in the bench (the only recovery)",
-      "why": "the gate window spans 65641.026 oscillator periods, so oscillator rising edges landed inside it and the read still did not complete -- at gate level with SDF delays this is the recorded spec section 5 counter timing FAIL made visible (sta/readout.osc-corner.sta.report.json: the counter does not cover this oscillator's surface frequency in any liberty corner)"
+      "why": "STATUS.done stayed clear through all 1125 polls at the driven 1560 ps period"
      },
-     "gate_level_timing_trust": "counter timing at osc_hd's surface frequency is a recorded spec section 5 FAIL (sta/readout.osc-corner.sta.report.json: the counter does not cover osc_hd in any liberty corner, its Fmax below f_osc at every corner). Icarus drops SDF TIMINGCHECK sections, so neither a completion nor a non-completion here is timing-certified: this entry records what the gate-level simulation did, not that the counter meets timing at this frequency. spec/decisions/0003-counter-max-input-frequency.md (draft) proposes the resolution."
+     "gate_level_timing_trust": "Independent STA limitation (sta/readout.osc-corner.sta.report.json): counter setup slack is -1.227 ns at tt_025C_1v80 and counter Fmax is below the osc_hd surface frequency in every reported liberty corner. Icarus drops the SDF TIMINGCHECK sections. The simulation does not establish the cause of the timeout."
     },
     {
      "sel": 1,
@@ -445,7 +463,7 @@
      "period_ps": 4505,
      "source_report": "sim/sensitivity/records/reports/grid_osc_nmos.json.gz",
      "phase_evidence": {
-      "first_osc_edge_after_gate_rise_ps": 2252.0,
+      "first_osc_edge_after_ctrl_write_ps": 2252.0,
       "gate_window_ps": 102400000,
       "gate_window_over_osc_period": 22730.299667
      },
@@ -466,7 +484,7 @@
      "period_ps": 12600,
      "source_report": "sim/sensitivity/records/reports/grid_osc_pmos.json.gz",
      "phase_evidence": {
-      "first_osc_edge_after_gate_rise_ps": 6300.0,
+      "first_osc_edge_after_ctrl_write_ps": 6300.0,
       "gate_window_ps": 102400000,
       "gate_window_over_osc_period": 8126.984127
      },
@@ -487,7 +505,7 @@
      "period_ps": 13215,
      "source_report": "sim/sensitivity/records/reports/grid_osc_wire.json.gz",
      "phase_evidence": {
-      "first_osc_edge_after_gate_rise_ps": 6607.0,
+      "first_osc_edge_after_ctrl_write_ps": 6607.0,
       "gate_window_ps": 102400000,
       "gate_window_over_osc_period": 7748.770337
      },
@@ -508,7 +526,7 @@
      "period_ps": 351994,
      "source_report": "sim/sensitivity/records/reports/grid_osc_subth.json.gz",
      "phase_evidence": {
-      "first_osc_edge_after_gate_rise_ps": 175997.0,
+      "first_osc_edge_after_ctrl_write_ps": 175997.0,
       "gate_window_ps": 1638400000,
       "gate_window_over_osc_period": 4654.624795
      },
@@ -521,7 +539,7 @@
     }
    ],
    "full_read": {
-    "definition": "clk_ref rising edges from the edge that samples the first CTRL start write to the edge that first samples STATUS.done on the fifth oscillator; COUNT reads excluded (recorded separately as with_count_reads_cycles)",
+    "definition": "clk_ref rising edges from the edge that samples the first CTRL start write to the first STATUS poll edge showing done on the fifth oscillator. The interval includes the first four COUNT reads. with_count_reads_cycles ends at the fifth COUNT read edge.",
     "completed": false,
     "gate_only_cycles": 20480,
     "did_not_complete": {

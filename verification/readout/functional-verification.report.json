@@ -19,19 +19,19 @@
       "name": "count_correctness",
       "status": "passed",
       "sim_time_ns": 344701.0,
-      "real_time_s": 2.137
+      "real_time_s": 1.232
     },
     {
       "name": "select_switching",
       "status": "passed",
       "sim_time_ns": 262201.0,
-      "real_time_s": 1.397
+      "real_time_s": 0.759
     },
     {
       "name": "busy_done_sequencing",
       "status": "passed",
       "sim_time_ns": 15401.0,
-      "real_time_s": 0.025
+      "real_time_s": 0.014
     },
     {
       "name": "cal_readback",
@@ -43,31 +43,31 @@
       "name": "reset_mid_gate",
       "status": "passed",
       "sim_time_ns": 10401.0,
-      "real_time_s": 0.008
+      "real_time_s": 0.005
     },
     {
       "name": "saturation_overflow",
       "status": "passed",
       "sim_time_ns": 110501.0,
-      "real_time_s": 0.259
+      "real_time_s": 0.143
     },
     {
       "name": "full_read_cycle_count",
       "status": "passed",
       "sim_time_ns": 515101.0,
-      "real_time_s": 2.749
+      "real_time_s": 1.528
     },
     {
       "name": "k0_phase_sweep",
       "status": "passed",
       "sim_time_ns": 879201.0,
-      "real_time_s": 0.428
+      "real_time_s": 0.244
     },
     {
       "name": "conversion_time_surfaces",
       "status": "passed",
       "sim_time_ns": 30550401.0,
-      "real_time_s": 95.176
+      "real_time_s": 48.207
     }
   ],
   "coverage": null,
@@ -80,12 +80,12 @@
     "results_xml": {
       "path": null,
       "scope": "external",
-      "sha256": "sha256:6caa0e425c31e17a7faffb9be4b2651e6d1d74b5ddcac2955c618f0358bff49b"
+      "sha256": "sha256:99df1c66dea87a52f95622b46dc72d1433772db8b971364339d125a64b7cdc38"
     },
     "test_log": {
       "path": null,
       "scope": "external",
-      "sha256": "sha256:7f33bcb7196a3b79af7e9abe27759df90712d331fe7f9b04a6e26a446b1e58f3"
+      "sha256": "sha256:d39ef1bfcb52c8f52c61e4077272c749aac15a6492fc23cec13925ddeac398bf"
     },
     "build_log": {
       "path": null,

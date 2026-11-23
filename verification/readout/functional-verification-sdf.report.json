@@ -13,55 +13,55 @@
       "name": "reset_values",
       "status": "passed",
       "sim_time_ns": 1701.0,
-      "real_time_s": 1.348
+      "real_time_s": 0.743
     },
     {
       "name": "count_correctness",
       "status": "passed",
       "sim_time_ns": 345401.0,
-      "real_time_s": 3.709
+      "real_time_s": 2.3
     },
     {
       "name": "select_switching",
       "status": "passed",
       "sim_time_ns": 263201.0,
-      "real_time_s": 2.788
+      "real_time_s": 1.821
     },
     {
       "name": "busy_done_sequencing",
       "status": "passed",
       "sim_time_ns": 15601.0,
-      "real_time_s": 0.083
+      "real_time_s": 0.058
     },
     {
       "name": "cal_readback",
       "status": "passed",
       "sim_time_ns": 2201.0,
-      "real_time_s": 0.015
+      "real_time_s": 0.006
     },
     {
       "name": "reset_mid_gate",
       "status": "passed",
       "sim_time_ns": 10501.0,
-      "real_time_s": 0.038
+      "real_time_s": 0.026
     },
     {
       "name": "full_read_cycle_count",
       "status": "passed",
       "sim_time_ns": 515601.0,
-      "real_time_s": 5.597
+      "real_time_s": 3.497
     },
     {
       "name": "k0_phase_sweep",
       "status": "passed",
       "sim_time_ns": 922301.0,
-      "real_time_s": 1.667
+      "real_time_s": 0.954
     },
     {
       "name": "conversion_time_surfaces",
       "status": "passed",
       "sim_time_ns": 10795001.0,
-      "real_time_s": 100.826
+      "real_time_s": 69.53
     }
   ],
   "coverage": null,
@@ -74,24 +74,24 @@
     "results_xml": {
       "path": "verification/readout/.fv-sdf/results_icarus.xml",
       "scope": "repo",
-      "sha256": "sha256:63f45b3cb13b05126f08fa2864e0d06037530e3cdd640ead05eb7bb1a3cacd4d"
+      "sha256": "sha256:9732cb79f76e535cef3b3af1bc010ca498d25ac11480825c5fbf2ed296e3ccd7"
     },
     "test_log": {
       "path": "verification/readout/.fv-sdf/test_icarus.log",
       "scope": "repo",
-      "sha256": "sha256:b1050826592f23fb6fd90bcc4850d828b58acc7c99342f3e952e357b4b64be04"
+      "sha256": "sha256:97f1625d262586be7d414a888e117f0ac53e3c1038e08efa411c94b96aa3cc3d"
     },
     "build_log": {
       "path": "verification/readout/.fv-sdf/build_icarus.log",
       "scope": "repo",
-      "sha256": "sha256:32d6de3225d3f08f0c91005c16e7243ed9d30ca69a886896b912472a4d51e5fb"
+      "sha256": "sha256:68956a4990631f744842159a71fc03fd22e003df3899c65c97c309b8ebee8e1c"
     },
     "random_seed": 1,
     "source_defines": {},
     "env": {},
     "initial_state": null,
     "sdf": {
-      "file": "/home/ubuntu/GitHub/sky130-process-monitor/.loom/worktrees/issue-281/layout/readout/out_sdf/readout_route.sdf",
+      "file": "/workspace/work/2amlogic-sky130-process-monitor-984edaea/.loom/worktrees/2amlogic-sky130-process-monitor-984edaea/pr-298/layout/readout/out_sdf/readout_route.sdf",
       "corner": "typ",
       "entries": "all",
       "annotated": true,
