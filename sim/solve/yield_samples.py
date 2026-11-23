@@ -33,7 +33,12 @@ Conventions (grading choices made here; none relaxes the spec, no limit is edite
     Limit: margin > 0 (strict). One measurement per true corner.
   * A row that uses the configured defect oscillator (default osc_hd) also reports a negative control.
     It adds +DEFECT to ln f of that oscillator on the same draw data and is expected to fail.
-    A row that excludes that oscillator reports only the nominal measurement.
+    A row that excludes that oscillator reports only the nominal measurement. The control is a
+    software-injected defect on the same data, not a second simulation; labelled so. Row 4 injects the
+    defect on the measurement draw only and leaves the calibration read nominal (a die that drifted
+    after calibration); rows 2 and 3 inject it on the single draw each of them uses. Injecting it on
+    both row-4 draws made it cancel in d = rd - cal -- exactly the constant offset the one-point
+    calibration removes -- so the control was vacuous (issue #317, spec/decisions/0005).
 """
 import json
 import math
@@ -125,7 +130,13 @@ def row4_samples(tab, mc, mc_nom, seed, defect=0.0):
         return None, []
     rng = random.Random("%s|y4|%s" % (seed, defect))
     ds, sg, n = draws(tab, mc, oscs, p0, v0, t0, rng, defect)
-    cs, scal, ncal = draws(tab, mc_nom, oscs, p0, 1.8, 27, random.Random("%s|y4cal|%s" % (seed, defect)), defect)
+    # The seeded defect is injected on the measurement draw ONLY and the calibration read stays
+    # nominal -- post-calibration drift, the offset a one-point calibration cannot absorb
+    # (spec/decisions/0005, issue #317). Injecting it on both draws made it cancel exactly in
+    # d = rd - cal, so the row-4 control could not fail. The calibration RNG stream therefore does
+    # not depend on the defect; its seed string keeps the literal 0.0 tail so the nominal arm's
+    # stream (defect = 0.0) is bit-identical to the pre-0005 recorded runs.
+    cs, scal, ncal = draws(tab, mc_nom, oscs, p0, 1.8, 27, random.Random("%s|y4cal|%s" % (seed, 0.0)), 0.0)
     mod = {o: [S.tmodel_delta(tab, o, v0, tt) for tt in S.TGRID] for o in oscs}
     sd = {o: math.sqrt(sg[o] ** 2 + scal[o] ** 2) for o in oscs}
     out = []
@@ -171,12 +182,13 @@ def row2_samples(tab, mc, seed, defect=0.0):
 def build(tab, mc_nom, mc_bind, seed, defect=DEFECT):
     ms, meta = [], {}
 
-    def add_measurement(name, row, unit, samples, control):
+    def add_measurement(name, row, unit, samples, control, control_description=None):
         measurement = {"name": name, "spec_row": row, "unit": unit, "samples": samples,
                        "limits": LIMITS["row" + row]}
         if control is not None:
             measurement["negative_control"] = {
-                "samples": control, "description": "seeded defect: +%g on ln f of %s" % (defect, DEFECT_OSC)}
+                "samples": control,
+                "description": control_description or "seeded defect: +%g on ln f of %s" % (defect, DEFECT_OSC)}
         ms.append(measurement)
 
     r2, o2 = row2_samples(tab, mc_bind, seed)
@@ -194,7 +206,9 @@ def build(tab, mc_nom, mc_bind, seed, defect=DEFECT):
     meta["row4"] = {"cell": "ff @ 1.62 V / 27 C (cal at 1.80 V / 27 C)", "oscillators": o4}
     if r4:
         control = row4_samples(tab, mc_bind, mc_nom, seed, defect)[0] if DEFECT_OSC in o4 else None
-        add_measurement("row4_dT", "4", "C", r4, control)
+        add_measurement("row4_dT", "4", "C", r4, control,
+                        "seeded defect: +%g on ln f of %s on the measurement draw only (calibration read nominal)"
+                        % (defect, DEFECT_OSC))
     return {"kind": "SIMULATED", "measurements": ms,
             "provenance": {"seed": seed, "rng": "ngspice-46 mismatch MC via klt sim (fleet); python random for reading noise",
                            "corner_matrix": ["tt", "ff", "ss", "sf", "fs"]},

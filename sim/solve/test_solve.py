@@ -282,6 +282,50 @@ class TY(unittest.TestCase):
         self.assertGreater(len(set(got)), 3, "noise too low to distinguish grids; raise SIGMA")
         self.assertEqual(got, want)
 
+    # ---- issue #317 (spec/decisions/0005): the row-4 seeded defect is injected on the measurement
+    # draw only; the calibration read stays nominal (post-calibration drift). Before 0005 the same
+    # defect was passed to both draws() calls, so it subtracted out exactly in d = rd - cal and the
+    # control certified noise reshuffling, not estimator sensitivity. Every assertion below that goes
+    # through row4_samples failed on that code: the list was the nominal all-zero one at every defect.
+    # The calibrated() loop is the issue's measurement method (both RNG streams held fixed); it spells
+    # the injection out itself, so it documents the sensitivity and row4_samples carries the regression.
+    def test_row4_negative_control_moves_with_the_defect(self):
+        import random
+        import yield_samples as Y
+        tab, mc = self.fake_mc(1e-4)
+        p0, v0, t0 = Y.CELLS["row4"]
+        oscs = list(A.OSCS)
+        mod = {o: [S.tmodel_delta(tab, o, v0, tt) for tt in S.TGRID] for o in oscs}
+
+        def calibrated(defect):
+            # row4_samples' grading loop with both RNG streams held fixed (identically seeded per
+            # arm, the issue's measurement method): the deltas differ only through the defect.
+            ds, sg, _ = Y.draws(tab, mc, oscs, p0, v0, t0, random.Random("y4ctl"), defect)
+            cs, scal, ncal = Y.draws(tab, mc, oscs, p0, 1.8, 27, random.Random("y4calctl"), 0.0)
+            sd = {o: math.sqrt(sg[o] ** 2 + scal[o] ** 2) for o in oscs}
+            out = []
+            for k, rd in enumerate(ds):
+                cal = cs[k % ncal] if ncal else None
+                if rd is None or cal is None:
+                    out.append(None)
+                    continue
+                d = {o: rd[o] - cal[o] for o in oscs}
+                out.append(round(S.TGRID[S.solve_t(d, mod, sd, oscs, S.TGRID)] - t0, 4))
+            return out
+
+        nom, ctl, gross = calibrated(0.0), calibrated(Y.DEFECT), calibrated(0.5)
+        self.assertNotEqual(nom, ctl)
+        shift = [abs(c - n) for n, c in zip(nom, ctl)]
+        self.assertTrue(all(x >= 0.5 for x in shift), shift)   # every draw moves >= one TGRID step
+        self.assertTrue(all(abs(x) > 5 for x in gross))        # a gross defect fails the +-5 C limit
+        fn_nom, _ = Y.row4_samples(tab, mc, mc, 1)             # and through row4_samples itself
+        fn_ctl, _ = Y.row4_samples(tab, mc, mc, 1, Y.DEFECT)
+        fn_gross, _ = Y.row4_samples(tab, mc, mc, 1, 0.5)
+        self.assertNotEqual(fn_nom, fn_ctl)
+        self.assertTrue(all(x is not None and abs(x) >= 0.5 for x in
+                            (c - n for n, c in zip(fn_nom, fn_ctl))), (fn_nom, fn_ctl))
+        self.assertTrue(all(x is not None and abs(x) > 5 for x in fn_gross), fn_gross)
+
 
 if __name__ == "__main__":
     unittest.main()
