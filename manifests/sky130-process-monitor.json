@@ -46,7 +46,7 @@
   ],
   "5.analog": {
    "file": "evidence/item5_analog.json",
-   "content_hash": "sha256:8103130d068c67ede6e552fcfc45f605d4ad8533d8392e4d73ce56218084ae45"
+   "content_hash": "sha256:fb63b7da58c32ac4c647a4a9576eb6f7e0aad868ac6b7a63b96f06e581aa56b4"
   },
   "5.digital": [
    {

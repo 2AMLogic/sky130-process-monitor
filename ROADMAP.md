@@ -31,10 +31,14 @@ of the gap to T1: #5.
 
 What sits behind the unmet rows, each from a committed record:
 
-- **Spec rows fail at schematic level.** Rows 1, 3 and 4 and the row-2 five-corner target grade FAIL;
-  only the row-2 slow/fast fallback passes
-  ([`sim/solve/records/2026-11-05-rows1-4.md`](sim/solve/records/2026-11-05-rows1-4.md)). 7 of the 225
-  grid cells show no or too-short oscillation, all at −40 °C.
+- **Spec rows fail at schematic level.** On the full frequency table (all 225 oscillator cells resolved;
+  five single-cell cold fills, [`sim/solve/records/2026-11-21-rows1-4-fulltable.md`](sim/solve/records/2026-11-21-rows1-4-fulltable.md))
+  row 1 passes target and fallback — the old "7 of the 225 grid cells show no or too-short oscillation,
+  all at −40 °C" is resolved, two of the fills on relaxed-solver values with an unbounded bias caveat —
+  row 3 passes its ±50 mV fallback (target still fails, 34 mV at ff / 1.80 V / 125 °C), row 4 still
+  fails (now 36.0 °C at sf / 1.62 V / 125 °C, 45/45 cells graded), and the row-2 five-corner target
+  still fails on the 1.98 V / 27 °C fs→tt confusion. The reduced-table grading remains recorded,
+  unedited, in [`sim/solve/records/2026-11-05-rows1-4.md`](sim/solve/records/2026-11-05-rows1-4.md).
 - **The cold-cell margin is set by counter quantisation, not mismatch.** At 1.98 V / −40 °C `osc_subth`
   gets under one count in the default gate at the ss and sf corners
   ([`2026-11-06-mc-offnominal-cold-margin.md`](sim/sensitivity/records/2026-11-06-mc-offnominal-cold-margin.md)

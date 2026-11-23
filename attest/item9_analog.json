@@ -1085,6 +1085,9 @@
    "path": "sim/sensitivity/osc/tb_osc_nmos.spice"
   },
   {
+   "path": "sim/sensitivity/osc/tb_osc_nmos_probe.spice"
+  },
+  {
    "path": "sim/sensitivity/osc/tb_osc_pmos.spice"
   },
   {
@@ -1167,12 +1170,68 @@
    }
   },
   {
+   "path": "sim/sensitivity/requests/grid_osc_subth_sf_1.62V_-40C.json",
+   "cold_start": {
+    "argv": [
+     "klt",
+     "sim",
+     "grid_osc_subth_sf_1.62V_-40C.json",
+     "--dry-run"
+    ],
+    "cwd": "sim/sensitivity/requests",
+    "local_only": true,
+    "timeout_s": 600
+   }
+  },
+  {
+   "path": "sim/sensitivity/requests/grid_osc_subth_sf_1.8V_-40C.json",
+   "cold_start": {
+    "argv": [
+     "klt",
+     "sim",
+     "grid_osc_subth_sf_1.8V_-40C.json",
+     "--dry-run"
+    ],
+    "cwd": "sim/sensitivity/requests",
+    "local_only": true,
+    "timeout_s": 600
+   }
+  },
+  {
    "path": "sim/sensitivity/requests/grid_osc_subth_sf_cold.json",
    "cold_start": {
     "argv": [
      "klt",
      "sim",
      "grid_osc_subth_sf_cold.json",
+     "--dry-run"
+    ],
+    "cwd": "sim/sensitivity/requests",
+    "local_only": true,
+    "timeout_s": 600
+   }
+  },
+  {
+   "path": "sim/sensitivity/requests/grid_osc_subth_ss_1.62V_-40C.json",
+   "cold_start": {
+    "argv": [
+     "klt",
+     "sim",
+     "grid_osc_subth_ss_1.62V_-40C.json",
+     "--dry-run"
+    ],
+    "cwd": "sim/sensitivity/requests",
+    "local_only": true,
+    "timeout_s": 600
+   }
+  },
+  {
+   "path": "sim/sensitivity/requests/grid_osc_subth_ss_1.8V_-40C.json",
+   "cold_start": {
+    "argv": [
+     "klt",
+     "sim",
+     "grid_osc_subth_ss_1.8V_-40C.json",
      "--dry-run"
     ],
     "cwd": "sim/sensitivity/requests",
@@ -1397,6 +1456,20 @@
      "klt",
      "sim",
      "mc_osc_wire.json",
+     "--dry-run"
+    ],
+    "cwd": "sim/sensitivity/requests",
+    "local_only": true,
+    "timeout_s": 600
+   }
+  },
+  {
+   "path": "sim/sensitivity/requests/probe_nmos_tt_1.8V_-40C.json",
+   "cold_start": {
+    "argv": [
+     "klt",
+     "sim",
+     "probe_nmos_tt_1.8V_-40C.json",
      "--dry-run"
     ],
     "cwd": "sim/sensitivity/requests",

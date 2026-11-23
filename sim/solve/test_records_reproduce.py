@@ -91,6 +91,17 @@ MCNOM_6 = ["%s/mc_osc_%s.json.gz" % (R, o) for o in _SIX]
 GRID_8 = ["%s/grid_osc_%s.json.gz" % (R, o) for o in
           ("hd", "hd_5p", "nmos", "pmos", "subth", "subth_sf_cold", "wire", "wire_sf_cold")]
 
+# The nine reports of records/2026-11-14-osc-subth-gate-sizing.md section 1 (in that record's order:
+# hd_5p BEFORE hd so the default-step osc_hd value wins; probe_wire_sf_relaxed last), plus the five
+# single-cell cold reports of issue #277 (four long-window osc_subth grids, then the relaxed-options
+# osc_nmos probe). 225 of 225 coordinates resolve on this list; it grades the full-table record.
+# NOTE the order is neither GRID_5's nor GRID_8's -- it is the 2026-11-14 record's own, extended.
+_COLD2 = ("subth_ss_1.8V_-40C", "subth_ss_1.62V_-40C", "subth_sf_1.8V_-40C", "subth_sf_1.62V_-40C")
+GRID_14 = (["%s/grid_osc_%s.json.gz" % (R, o) for o in
+            ("hd_5p", "hd", "nmos", "pmos", "subth", "subth_sf_cold", "wire", "wire_sf_cold")]
+           + ["%s/grid_osc_%s.json.gz" % (R, c) for c in _COLD2]
+           + ["%s/probe_wire_sf_relaxed.json.gz" % R, "%s/probe_nmos_tt_relaxed.json.gz" % R])
+
 # `sim/solve/mc/reports/*.json.gz` from f1026ec onwards: osc_hd / osc_pmos / osc_subth in one report
 # each, osc_nmos / osc_wire one report per binding cell (the per-cell resubmission of that record).
 _BIND_CELLS = ["ff_1.62V_27C", "ff_1.98V_27C", "fs_1.98V_27C", "sf_1.98V_27C",
@@ -127,6 +138,11 @@ _ROWS14 = [
     (ANALYZE, ["extract-mc"] + MCNOM_5 + ["-o", "@mcnom_5.json"]),
     (SOLVE, ["grade", "@freq_5.json", "@mcnom_5.json", "--json", "@rows1-4.json"]),
 ]
+_ROWS14_FULL = [
+    (ANALYZE, ["extract"] + GRID_14 + ["-o", "@freq_14.json"]),
+    (ANALYZE, ["extract-mc"] + MCNOM_5 + ["-o", "@mcnom_5.json"]),
+    (SOLVE, ["grade", "@freq_14.json", "@mcnom_5.json", "--json", "@rows1-4-fulltable.json"]),
+]
 _FULL_BANK = [
     (ANALYZE, ["extract"] + GRID_6 + ["-o", "@freq_6.json"]),
     (ANALYZE, ["extract-mc"] + MCNOM_6 + ["-o", "@mcnom_6.json"]),
@@ -158,6 +174,15 @@ PINNED = {
         # Every row 2/3/4 number in the record is unaffected. The record is
         # evidence and is NOT regenerated to paper over this; CI runs 3.12, and an
         # older interpreter skips this one check with the reason above.
+        "min_python": (3, 12),
+    },
+    "sim/solve/records/2026-11-21-rows1-4-fulltable.json": {
+        "record": "sim/solve/records/2026-11-21-rows1-4-fulltable.md",
+        "steps": _ROWS14_FULL,
+        # Same MEASURED 3.12 floor and for the same reason: the record writes the
+        # same five mc_pooled_sigma_lnf values at full float repr from the same
+        # MCNOM_5 inputs (verified identical to the 2026-11-05 record's), so the
+        # 1-ULP sum() split applies to this record exactly as to that one.
         "min_python": (3, 12),
     },
     # The five samples outputs below are the dated 2026-11-23 regeneration of #317 / decision 0005
@@ -274,6 +299,9 @@ class ReproducePinnedRecords(unittest.TestCase):
     def test_rows1_4_grade(self):
         self._check("sim/solve/records/2026-11-05-rows1-4.json")
 
+    def test_full_table_grade(self):
+        self._check("sim/solve/records/2026-11-21-rows1-4-fulltable.json")
+
     def test_samples_binding_cells(self):
         self._check("sim/solve/mc/samples-binding-cells-2026-11-23.json")
 
@@ -345,7 +373,7 @@ class PinnedListsAreLiteral(unittest.TestCase):
     def test_pinned_list_sizes(self):
         """The counts the record notes quote, so a silently shortened list fails here too."""
         self.assertEqual((len(GRID_5), len(MCNOM_5)), (5, 5))
-        self.assertEqual((len(GRID_6), len(MCNOM_6), len(GRID_8)), (6, 6, 8))
+        self.assertEqual((len(GRID_6), len(MCNOM_6), len(GRID_8), len(GRID_14)), (6, 6, 8, 14))
         self.assertEqual(len(MCBIND_18), 18)
         self.assertEqual((len(MCSIZED_SUBTH_24), len(MCSIZED_ALL_120)), (24, 120))
 
