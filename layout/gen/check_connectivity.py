@@ -26,7 +26,6 @@ for name, nstage in (("osc_hd", 31), ("osc_nmos", 31), ("osc_pmos", 31), ("osc_w
     pres = mk(66, 13)                                     # poly-resistor marker: the body is a resistor, not a wire
     poly = poly - pres
     sd = diff - poly
-    gp = poly & diff                                      # gate channel
     for lay in (sd, poly, licon, li1, mcon, met1, via, met2, tap):
         l2n.connect(lay)
     l2n.connect(sd, licon); l2n.connect(poly, licon); l2n.connect(tap, licon)
@@ -34,9 +33,6 @@ for name, nstage in (("osc_hd", 31), ("osc_nmos", 31), ("osc_pmos", 31), ("osc_w
     l2n.connect(met1, via); l2n.connect(via, met2)
     l2n.connect(met1, txt)
     l2n.extract_netlist()
-    nets = {}
-    for net in l2n.netlist().top_circuit().each_net():
-        pass
     cir = l2n.netlist().top_circuit()
     named = {}
     for net in cir.each_net():
