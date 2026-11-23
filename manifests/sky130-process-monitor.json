@@ -77,13 +77,13 @@
     "file": "sim/pex/records/2026-11-10-osc_hd.pex.report.json"
    },
    {
-    "file": "sim/pex/records/2026-11-10-osc_nmos.pex.report.json"
+    "file": "sim/pex/records/2026-11-11-osc_nmos-coldcell-relaxed.pex.report.json"
    },
    {
     "file": "sim/pex/records/2026-11-10-osc_pmos.pex.report.json"
    },
    {
-    "file": "sim/pex/records/2026-11-10-osc_wire.pex.report.json"
+    "file": "sim/pex/records/2026-11-11-osc_wire-coldcell-relaxed.pex.report.json"
    },
    {
     "file": "sim/pex/records/2026-11-20-osc_subth-dev2493.pex.report.json"

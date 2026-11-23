@@ -21,7 +21,7 @@ checklist: the `klt signoff` input and its committed output.
   | `5.digital` | `sta/`, `verification/readout/` | **list** — STA report plus pre-layout functional report |
   | `6.analog` | `sim/solve/mc/` | Monte-Carlo yield report |
   | `6.digital` | `spec/`, `verification/readout/` | **`not_applicable` block** — a spec citation plus a statement, not a pass |
-  | `7.analog` | `sim/pex/records/` | **list** — the four `2026-11-10-osc_*.pex.report.json` |
+  | `7.analog` | `sim/pex/records/` | **list** — five `klt pex` reports: `2026-11-10-osc_{hd,pmos}.pex.report.json`, `2026-11-11-osc_{nmos,wire}-coldcell-relaxed.pex.report.json` (substituted per [decision 0006](../spec/decisions/0006-item7-cold-cells.md), which pairs each with the 44 passing cells of its 2026-11-10 report) and `2026-11-20-osc_subth-dev2493.pex.report.json` |
   | `7.digital` | `verification/readout/` | SDF-annotated functional report |
   | `8.analog`, `8.digital` | `evidence/` | one hand-assembled `generic` envelope each (no klt aggregation verb, klayout-tools#309), grading `check_failed` today |
   | `11.digital` | `erc/`, `lvs/`, `layout/readout/` | **list** — ERC, LVS and layout reports |
@@ -48,10 +48,13 @@ checklist: the `klt signoff` input and its committed output.
   repo's `LICENSE` does not relicense the vendored copy. When upstream moves,
   re-vendor and regenerate the record in the same PR.
 - **`sky130-process-monitor.signoff.json`** — the **verdict of record**,
-  graded with `klayout-tools==0.9.1`. Today 14 of the 22 T1 rows read `met`
-  (items 1, 2, 3, 9 and 10 on both partitions, plus 4.digital, 5.digital, 7.digital and
-  11.digital); 6.digital
-  reads `not_applicable`; 5.analog, 6.analog, 7.analog and item 8 on both partitions read
+  graded with `klayout-tools==0.9.1`. Today 15 of the 22 T1 rows read `met`
+  (items 1, 2, 3, 7, 9 and 10 on both partitions, plus 4.digital, 5.digital and
+  11.digital; `7.analog` closes on the five `klt pex` citations under
+  [decision 0006](../spec/decisions/0006-item7-cold-cells.md), establishing post-layout
+  re-simulation coverage across the 45-cell box while the oscillator and solve
+  performance failures remain recorded under `5.analog` and `8.analog`); 6.digital
+  reads `not_applicable`; 5.analog, 6.analog and item 8 on both partitions read
   `unmet` / `check_failed` (their cited envelopes grade, and fail their targets); and 4.analog and
   11.analog read `unmet` / `no_evidence` (the five per-oscillator ERC reports for 11.analog are
   committed under `erc/osc_*.report.json`, #276, with manifest citation deferred pending #26/#33

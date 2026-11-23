@@ -1,12 +1,26 @@
 # sim/pex — post-layout re-verification, analog (T1 item 7, issue #32)
 
-**SIMULATED only (ngspice 46 on the batch fleet, sky130A `open_pdks f6eeac7d…`); nothing here is measured.**
-Evidence for `7.analog`: `klt pex` reports (`klt 0.9.2.dev460+g1c0ae85debd3`) that re-run the #29 45-cell
+**SIMULATED only (ngspice 46/47 on the batch fleet and bounded single-corner local probes, sky130A `open_pdks f6eeac7d…`); nothing here is measured.**
+Evidence for `7.analog`: `klt pex` reports that re-run the #29 45-cell
 PVT-box grid (5 process × 1.62/1.80/1.98 V × −40/27/125 °C) on the schematic and on the layout-extracted
 netlist of each oscillator and report the per-corner schematic-vs-extracted delta.
 
-**Result: `7.analog` is NOT met.** `klt signoff` grades it `unmet` (`check_failed`), and the evidence is
-incomplete for two independent reasons (below). Nothing was relaxed; the failing and missing rows are the result.
+**Result: `7.analog` is MET ([decision 0006](../../spec/decisions/0006-item7-cold-cells.md), issue #264).**
+`klt signoff` (`klayout-tools==0.9.1`) grades `T1 #7 [analog]` `met` on five citations in
+[`manifests/sky130-process-monitor.json`](../../manifests/sky130-process-monitor.json):
+`records/2026-11-10-osc_{hd,pmos}.pex.report.json` (45/45 corners each),
+`records/2026-11-20-osc_subth-dev2493.pex.report.json` (45/45 corners on the net-split-fixed extractor),
+and `records/2026-11-11-osc_{nmos,wire}-coldcell-relaxed.pex.report.json` substituted per
+[decision 0006](../../spec/decisions/0006-item7-cold-cells.md), which pairs each one-corner relaxed-solver
+supplement (`osc_nmos` tt/1.80 V/−40 °C, 204 → 158 edges; `osc_wire` sf/1.98 V/−40 °C, 68 → 50 edges) with
+the 44 passing default-bench corners of its 2026-11-10 report (`records/2026-11-10-osc_{nmos,wire}.pex.report.json`,
+whose bytes and schematic-leg `timestep_too_small` errors remain untouched). **That `met` verdict covers T1
+item-7 post-layout re-simulation evidence only, not oscillator or solve performance:** extracted `osc_subth`
+falls below row 1's ≥ 9-edge threshold in 5 cold `ss`/`sf` cells, `osc_wire` extraction is not like-for-like
+against the item-1 netlist (finding 3 below, plus the `09374950…` vs `76c8872a…` extraction build difference
+on the cold-cell supplement), and on measured extracted frequencies (`records/2026-11-22-grade-extracted-frequencies.json`,
+issue #282) spec rows 1, 3 and 4 fail their target bounds (`5.analog` and `8.analog` stay `unmet`). The
+initial 2026-11-10 sections and dated subsections below are preserved as append-only run history.
 
 ## Files
 
@@ -532,3 +546,21 @@ stays **UNMET** (`check_failed`) — the 2026-11-10 `osc_nmos`/`osc_wire` count 
 status `error`, and the new frequency reports are not cited for item 7 (which citations close the item is
 #264's decision, not this pass). The committed signoff record reproduces unchanged after the item-9
 envelope refresh below; `T1 #7 [digital]` stays met.
+
+## Signoff closure 2026-11-23 (issue #264, decision 0006): `T1 #7 [analog]` graded `met`
+
+No simulation, extraction or report bytes changed; all `records/*.json*` remain append-only. Per the
+2026-11-23 operator ruling recorded in [`spec/decisions/0006-item7-cold-cells.md`](../../spec/decisions/0006-item7-cold-cells.md)
+(option A), `manifests/sky130-process-monitor.json` substitutes
+`records/2026-11-11-osc_nmos-coldcell-relaxed.pex.report.json` (`tt/1.800V/-40C`, 204 → 158 edges) and
+`records/2026-11-11-osc_wire-coldcell-relaxed.pex.report.json` (`sf/1.980V/-40C`, 68 → 50 edges) in
+`evidence["7.analog"]` alongside `2026-11-10-osc_{hd,pmos}.pex.report.json` and
+`2026-11-20-osc_subth-dev2493.pex.report.json`, with decision 0006 pairing each supplement's single
+relaxed-solver corner (`.options reltol=0.01 gmin=1e-10 method=gear`, `.tran 20p 800n 0 10p`, and for
+`osc_wire` the `09374950…` vs `76c8872a…` extraction build plus finding 3's non-like-for-like wire model)
+with the 44 passing default-bench corners of its 2026-11-10 report. Regenerating
+`manifests/sky130-process-monitor.signoff.json` with CI's pinned `klayout-tools==0.9.1` grades all five
+`7.analog` citations `met` and moves `T1 #7 [analog]` from `unmet` (`check_failed`) to **`met`** (`7.digital`
+stays `met`, 15/22 T1 rows `met`). Decision 0006 covers item-7 post-layout evidence completeness only; the
+oscillator and solve performance grades above (5 cold `osc_subth` cells below 9 edges, and spec rows 1, 3
+and 4 failing their targets on measured extracted frequencies) stand unchanged.
