@@ -12,7 +12,7 @@ of the gap to T1: #5.
 
 ## Where it stands
 
-`klt signoff` (`klayout-tools==0.9.1`) grades 14 of the 22 T1 rows `met`, one `not_applicable`, seven
+`klt signoff` (`klayout-tools==0.9.1`) grades 15 of the 22 T1 rows `met`, one `not_applicable`, six
 `unmet`. Checklist: [`manifests/design-evidence-tiers.md`](manifests/design-evidence-tiers.md).
 
 | T1 item | Analog (oscillator bank) | Digital (readout) |
@@ -23,7 +23,7 @@ of the gap to T1: #5.
 | 4 LVS clean | **unmet**, `no_evidence` (#26) | met |
 | 5 Corner verification | **unmet**, `check_failed` | met |
 | 6 Monte Carlo | **unmet**, `check_failed` (#31) | not applicable |
-| 7 Post-layout | **unmet**, `check_failed` (#32, #264) | met |
+| 7 Post-layout | met ([decision 0006](spec/decisions/0006-item7-cold-cells.md); performance rows below) | met |
 | 8 Characterization report | **unmet**, `check_failed` | **unmet**, `check_failed` |
 | 9 Testbenches shipped | met | met |
 | 10 Repo hygiene | met | met |
@@ -47,13 +47,19 @@ What sits behind the unmet rows, each from a committed record:
   0003](spec/decisions/0003-counter-max-input-frequency.md), draft).
 - **LVS, analog.** `osc_hd`, `osc_nmos` and `osc_pmos` match their item-1 netlists; `osc_wire` and
   `osc_subth` match reduced references only ([`lvs/README.md`](lvs/README.md)).
-- **Post-layout, analog.** Four oscillators re-run extracted and come out slower (median −14 % to −24 %
-  on the `klt pex` edge-count proxy). The extracted `osc_subth` oscillates again: the dev661 `vh`-net
-  split (2AMLogic/klayout-tools#5311) is fixed and reporter-verified on released `klayout-tools` 0.9.2 —
-  LVS `match` on both input streams (0.9.1 control: `match` on both too) and 111 rising edges / 100 µs at
-  tt / 1.80 V / 27 °C against the schematic's 169
-  ([`sim/pex/records/2026-11-20-osc_subth-lvs-probe-0.9.2.json`](sim/pex/records/2026-11-20-osc_subth-lvs-probe-0.9.2.json)).
-  Rows 2–4 are not re-graded on extracted values
+- **Post-layout, analog.** `7.analog` is `met` for T1 item-7 evidence coverage under
+  [decision 0006](spec/decisions/0006-item7-cold-cells.md) (#264), which pairs the 44 passing
+  default-bench cells of `2026-11-10-osc_{nmos,wire}.pex.report.json` with the #102 relaxed-solver
+  cold-cell supplements (`2026-11-11-osc_{nmos,wire}-coldcell-relaxed.pex.report.json`) alongside
+  `osc_hd`, `osc_pmos` and the 2026-11-20 `osc_subth` run. Oscillator and solve performance remain
+  distinct from that coverage verdict: four oscillators come out slower once extracted (median −14 %
+  to −24 % on the `klt pex` edge-count proxy); the extracted `osc_subth` oscillates in 40/45 cells
+  after the 2AMLogic/klayout-tools#5311 fix (5 cold `ss`/`sf` cells stay below row 1's ≥ 9-edge
+  criterion; reporter-verified on released `klayout-tools` 0.9.2 in
+  [`sim/pex/records/2026-11-20-osc_subth-lvs-probe-0.9.2.json`](sim/pex/records/2026-11-20-osc_subth-lvs-probe-0.9.2.json));
+  `osc_wire` extraction is not like-for-like; and on measured extracted frequencies
+  ([`sim/pex/records/2026-11-22-grade-extracted-frequencies.json`](sim/pex/records/2026-11-22-grade-extracted-frequencies.json),
+  #282) spec rows 1, 3 and 4 fail their target bounds, keeping `8.analog` `unmet`
   ([`sim/pex/README.md`](sim/pex/README.md)).
 - **DRC is a curated-deck result.** The PDK-native deck reports 562 violations (`ct.4` ×220, `li.5`
   ×342) on the analog stream ([`drc/README.md`](drc/README.md); tool gap 2AMLogic/klayout-tools#5233).
@@ -73,18 +79,11 @@ which await promotion.
 
 ## Next
 
-- **Close the remaining `7.analog` gap: the `osc_nmos` / `osc_wire` cold-cell reports** (#264, the
-  remainder of #32). The `osc_subth` side is done — the 45-cell extracted re-run passed
-  ([`sim/pex/records/2026-11-20-osc_subth-dev2493.pex.report.json`](sim/pex/records/2026-11-20-osc_subth-dev2493.pex.report.json))
-  and the extractor fix is reporter-verified on released `klayout-tools` 0.9.2
-  ([`sim/pex/records/2026-11-20-osc_subth-lvs-probe-0.9.2.json`](sim/pex/records/2026-11-20-osc_subth-lvs-probe-0.9.2.json);
-  #117 closed). *Done when* the 2026-11-10 `osc_nmos` / `osc_wire` `error` reports are superseded by
-  clean full-box ones and the signoff record is regenerated.
-- **Re-grade spec rows 2–4 on extracted frequencies.** After #32; needs a frequency, not the quantised
-  edge count `klt pex` reports today. *Done when* a record under `sim/pex/records/` gives the row 2–4
-  verdicts on extracted values. No issue yet.
-- **Native-deck DRC on the analog stream.** After #32 (#264), because the layout must stay unchanged for that
-  re-check. Rework the generator's li1 / licon geometry. *Done when* `klt drc --engine klayout` reports
+- **Re-grade spec rows 2–4 on extracted frequencies.** Done on measured extracted frequencies in
+  [`sim/pex/records/2026-11-22-grade-extracted-frequencies.json`](sim/pex/records/2026-11-22-grade-extracted-frequencies.json)
+  (#282); rows 1, 3 and 4 remain failing at their target bounds.
+- **Native-deck DRC on the analog stream.** Unblocked on `7.analog` ([decision 0006](spec/decisions/0006-item7-cold-cells.md)
+  closed #264 without changing the layout). Rework the generator's li1 / licon geometry. *Done when* `klt drc --engine klayout` reports
   no `ct.4` / `li.5` on `osc_bank` and DRC, LVS and the item-2 attestation are re-run. No issue yet.
 - **11.analog** (#33), after 4.analog is met (#26). Per-oscillator ERC reports are committed
   (`erc/osc_*.report.json`, #276), with manifest citation deferred — the released grader has no
@@ -113,10 +112,10 @@ which await promotion.
   against the item-1 netlists, ratify a schematic change, or leave unmet. Blocks #33 (analog).
 - **#31, 6.analog Monte Carlo** — decision needed on how many further draws to run for rows 2 and 3. A
   further gap: no released `klt` runs `klt yield` (2AMLogic/klayout-tools#5018).
-- **#32** — the release wait is over: `klayout-tools` 0.9.2 carries the #5311 fix and the reporter
-  verification is recorded
+- **#32** — `7.analog` and `7.digital` both grade `met` ([decision 0006](spec/decisions/0006-item7-cold-cells.md), #264),
+  and the `klayout-tools` 0.9.2 reporter verification for #5311 is recorded
   ([`sim/pex/records/2026-11-20-osc_subth-lvs-probe-0.9.2.json`](sim/pex/records/2026-11-20-osc_subth-lvs-probe-0.9.2.json));
-  upstream closure stays with the klayout-tools owner. What still blocks `7.analog` is #264.
+  upstream closure of 2AMLogic/klayout-tools#5311 stays with the klayout-tools owner.
 - **Decisions 0002 and 0003** — proposed, not ratified.
 
 The T1 issues listed above are the ones blocked or awaiting a decision; for what is dispatchable

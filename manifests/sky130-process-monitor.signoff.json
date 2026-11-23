@@ -9,7 +9,7 @@
   "tier": null,
   "t1_item_count": 22,
   "build_t1_item_count": 22,
-  "t1_met_count": 14,
+  "t1_met_count": 15,
   "t1_not_applicable_count": 1,
   "source_doc": "manifests/design-evidence-tiers.md",
   "source_doc_content_hash": "sha256:c7a1e7e10627fae396007e0ff951734f37d95028b8f49f2e21e802e9f552f318",
@@ -742,10 +742,49 @@
       "notes": [
         "A `klt pex` citation is only as good as the **device-body bias** of the netlist it ran on (#1983). A device body left on an anonymous, deck-synthesized net has no DC bias path at all, which makes a resimulation of that extracted netlist *physically wrong, not merely imprecise* (`docs/cli/extract.md` \u2192 \"Coverage\") \u2014 the run converges and reports numbers, and those numbers are not comparable to the schematic leg they are being diffed against. A `klt pex` report states the condition in its own `body_bias` block (`docs/cli/pex.md`), and `klt signoff` surfaces it verbatim on this item's citation (`citation.body_bias`). **It does not grade on it**: an item-7 citation whose `body_bias.status` is `\"unbiased\"` still renders `met`, because the condition is a deck-coverage property some PDKs produce on every layout they extract, not a defect this command can adjudicate. So a claim citing item 7 must read that field and state whether its post-layout numbers were measured on a properly-biased netlist \u2014 claimant-enforced, exactly like item 3's DRC-coverage disclosure. The same discipline applies upstream at item 4: `klt lvs`'s `body_verification` block says whether the compare verified the body ties at all, and `\"unchecked\"` (a pre-extracted netlist) is not `\"verified\"`."
       ],
-      "status": "unmet",
-      "reason": "check_failed",
+      "status": "met",
+      "reason": null,
       "graded_by_build": true,
-      "citation": null,
+      "citation": {
+        "file": "sim/pex/records/2026-11-10-osc_hd.pex.report.json",
+        "command": null,
+        "kind": "pex",
+        "check_status": "pass",
+        "content_hash": "sha256:27ba1a27d93b3a297ff08ee290b47477d23a08b4c96b1a571b47adca6a5f5ca9",
+        "input_verified": false,
+        "exit_status": 0,
+        "pex_inputs": [
+          {
+            "role": "testbenches[0].request",
+            "path": "sim/pex/requests/osc_hd.json",
+            "sha256": "sha256:0e8db9715887b3251a309a06f205746a04d1f7f9cb93bfb96f5323b4ebaa7b34",
+            "status": "verified"
+          },
+          {
+            "role": "testbenches[0].netlist",
+            "path": "sim/pex/osc/tb_osc_hd.spice",
+            "sha256": "sha256:4f0df3f8cca97a86eb5866ba664ad44883e87e6c4e9213c9dede1bc68ccf3632",
+            "status": "verified"
+          },
+          {
+            "role": "testbenches[0].schematic_netlist",
+            "path": "sim/pex/osc/osc_hd_dut.spice",
+            "sha256": "sha256:e195d10b616e7934c8c2203f194e3186431f222e0478e0f72996c2aa63872429",
+            "status": "verified"
+          },
+          {
+            "role": "reference_netlist",
+            "path": "sim/pex/osc/osc_hd_dut.spice",
+            "sha256": "sha256:e195d10b616e7934c8c2203f194e3186431f222e0478e0f72996c2aa63872429",
+            "status": "verified"
+          }
+        ],
+        "body_bias": {
+          "status": "biased",
+          "unbiased_device_count": 0,
+          "unbiased_nets": []
+        }
+      },
       "citations_graded": [
         {
           "citation": "sim/pex/records/2026-11-10-osc_hd.pex.report.json",
@@ -753,9 +792,9 @@
           "reason": null
         },
         {
-          "citation": "sim/pex/records/2026-11-10-osc_nmos.pex.report.json",
-          "status": "unmet",
-          "reason": "check_failed"
+          "citation": "sim/pex/records/2026-11-11-osc_nmos-coldcell-relaxed.pex.report.json",
+          "status": "met",
+          "reason": null
         },
         {
           "citation": "sim/pex/records/2026-11-10-osc_pmos.pex.report.json",
@@ -763,9 +802,9 @@
           "reason": null
         },
         {
-          "citation": "sim/pex/records/2026-11-10-osc_wire.pex.report.json",
-          "status": "unmet",
-          "reason": "check_failed"
+          "citation": "sim/pex/records/2026-11-11-osc_wire-coldcell-relaxed.pex.report.json",
+          "status": "met",
+          "reason": null
         },
         {
           "citation": "sim/pex/records/2026-11-20-osc_subth-dev2493.pex.report.json",
@@ -773,12 +812,208 @@
           "reason": null
         }
       ],
-      "detail": {
-        "failed_citations": [
-          "sim/pex/records/2026-11-10-osc_nmos.pex.report.json",
-          "sim/pex/records/2026-11-10-osc_wire.pex.report.json"
-        ]
-      }
+      "citations": [
+        {
+          "file": "sim/pex/records/2026-11-10-osc_hd.pex.report.json",
+          "command": null,
+          "kind": "pex",
+          "check_status": "pass",
+          "content_hash": "sha256:27ba1a27d93b3a297ff08ee290b47477d23a08b4c96b1a571b47adca6a5f5ca9",
+          "input_verified": false,
+          "exit_status": 0,
+          "pex_inputs": [
+            {
+              "role": "testbenches[0].request",
+              "path": "sim/pex/requests/osc_hd.json",
+              "sha256": "sha256:0e8db9715887b3251a309a06f205746a04d1f7f9cb93bfb96f5323b4ebaa7b34",
+              "status": "verified"
+            },
+            {
+              "role": "testbenches[0].netlist",
+              "path": "sim/pex/osc/tb_osc_hd.spice",
+              "sha256": "sha256:4f0df3f8cca97a86eb5866ba664ad44883e87e6c4e9213c9dede1bc68ccf3632",
+              "status": "verified"
+            },
+            {
+              "role": "testbenches[0].schematic_netlist",
+              "path": "sim/pex/osc/osc_hd_dut.spice",
+              "sha256": "sha256:e195d10b616e7934c8c2203f194e3186431f222e0478e0f72996c2aa63872429",
+              "status": "verified"
+            },
+            {
+              "role": "reference_netlist",
+              "path": "sim/pex/osc/osc_hd_dut.spice",
+              "sha256": "sha256:e195d10b616e7934c8c2203f194e3186431f222e0478e0f72996c2aa63872429",
+              "status": "verified"
+            }
+          ],
+          "body_bias": {
+            "status": "biased",
+            "unbiased_device_count": 0,
+            "unbiased_nets": []
+          }
+        },
+        {
+          "file": "sim/pex/records/2026-11-11-osc_nmos-coldcell-relaxed.pex.report.json",
+          "command": null,
+          "kind": "pex",
+          "check_status": "pass",
+          "content_hash": "sha256:76c6a407061578bcf49baa7426b4b9714e343f879821a50043ff61c60dc18e1b",
+          "input_verified": false,
+          "exit_status": 0,
+          "pex_inputs": [
+            {
+              "role": "testbenches[0].request",
+              "path": "sim/pex/requests/osc_nmos_coldcell.json",
+              "sha256": "sha256:44fa6deba2a31416d928d9d45540681fd6c6f860ec2d827c820359e8f4568e77",
+              "status": "verified"
+            },
+            {
+              "role": "testbenches[0].netlist",
+              "path": "sim/pex/osc/tb_osc_nmos_relaxed.spice",
+              "sha256": "sha256:b3f3e4fd72fead619df318988cf1e239e483517880f99183bf50b2962add51fe",
+              "status": "verified"
+            },
+            {
+              "role": "testbenches[0].schematic_netlist",
+              "path": "design/osc_bank/osc_nmos.spice",
+              "sha256": "sha256:d6038257bee7a1b09a8b6d6fbf2e24d43d8d62afcc31d3ac33eaf94de50cdb5c",
+              "status": "verified"
+            },
+            {
+              "role": "reference_netlist",
+              "path": "design/osc_bank/osc_nmos.spice",
+              "sha256": "sha256:d6038257bee7a1b09a8b6d6fbf2e24d43d8d62afcc31d3ac33eaf94de50cdb5c",
+              "status": "verified"
+            }
+          ],
+          "body_bias": {
+            "status": "biased",
+            "unbiased_device_count": 0,
+            "unbiased_nets": []
+          }
+        },
+        {
+          "file": "sim/pex/records/2026-11-10-osc_pmos.pex.report.json",
+          "command": null,
+          "kind": "pex",
+          "check_status": "pass",
+          "content_hash": "sha256:27ba1a27d93b3a297ff08ee290b47477d23a08b4c96b1a571b47adca6a5f5ca9",
+          "input_verified": false,
+          "exit_status": 0,
+          "pex_inputs": [
+            {
+              "role": "testbenches[0].request",
+              "path": "sim/pex/requests/osc_pmos.json",
+              "sha256": "sha256:db76d0f4929673b95bc367be284d6cff9f373418a4082d1823c9af109aa1007a",
+              "status": "verified"
+            },
+            {
+              "role": "testbenches[0].netlist",
+              "path": "sim/pex/osc/tb_osc_pmos.spice",
+              "sha256": "sha256:e5c0422965fb170ff9815c15b97484127f021de07a930f3cbcedb7b45544c29a",
+              "status": "verified"
+            },
+            {
+              "role": "testbenches[0].schematic_netlist",
+              "path": "design/osc_bank/osc_pmos.spice",
+              "sha256": "sha256:4cc0534e39453b40ed75b60bcb4a2877fde699fcd4bc0919cefa02915f75f619",
+              "status": "verified"
+            },
+            {
+              "role": "reference_netlist",
+              "path": "design/osc_bank/osc_pmos.spice",
+              "sha256": "sha256:4cc0534e39453b40ed75b60bcb4a2877fde699fcd4bc0919cefa02915f75f619",
+              "status": "verified"
+            }
+          ],
+          "body_bias": {
+            "status": "biased",
+            "unbiased_device_count": 0,
+            "unbiased_nets": []
+          }
+        },
+        {
+          "file": "sim/pex/records/2026-11-11-osc_wire-coldcell-relaxed.pex.report.json",
+          "command": null,
+          "kind": "pex",
+          "check_status": "pass",
+          "content_hash": "sha256:76c6a407061578bcf49baa7426b4b9714e343f879821a50043ff61c60dc18e1b",
+          "input_verified": false,
+          "exit_status": 0,
+          "pex_inputs": [
+            {
+              "role": "testbenches[0].request",
+              "path": "sim/pex/requests/osc_wire_coldcell.json",
+              "sha256": "sha256:049a82274edbb2663272f84b95ce89a5730e33dcf95f2c1207f3f332f1901ace",
+              "status": "verified"
+            },
+            {
+              "role": "testbenches[0].netlist",
+              "path": "sim/pex/osc/tb_osc_wire_relaxed.spice",
+              "sha256": "sha256:4aee74c395018acebfa713b38a1838fb39755ff26a070c8a58006c1ab11db2b3",
+              "status": "verified"
+            },
+            {
+              "role": "testbenches[0].schematic_netlist",
+              "path": "design/osc_bank/osc_wire.spice",
+              "sha256": "sha256:11ed4cb7fb1aac224dd0f10bc39b575ee6dec0921ba2e95c90948a27db1ed4a8",
+              "status": "verified"
+            },
+            {
+              "role": "reference_netlist",
+              "path": "design/osc_bank/osc_wire.spice",
+              "sha256": "sha256:11ed4cb7fb1aac224dd0f10bc39b575ee6dec0921ba2e95c90948a27db1ed4a8",
+              "status": "verified"
+            }
+          ],
+          "body_bias": {
+            "status": "biased",
+            "unbiased_device_count": 0,
+            "unbiased_nets": []
+          }
+        },
+        {
+          "file": "sim/pex/records/2026-11-20-osc_subth-dev2493.pex.report.json",
+          "command": null,
+          "kind": "pex",
+          "check_status": "pass",
+          "content_hash": "sha256:625c8ff90f34c6fac7a88339d2c10ad5925da02e118eb6a15a6539c11e05bf29",
+          "input_verified": true,
+          "exit_status": 0,
+          "pex_inputs": [
+            {
+              "role": "testbenches[0].request",
+              "path": "sim/pex/requests/osc_subth.json",
+              "sha256": "sha256:acb1f5ce135fc39605269d7fea0e067ea761613475e80a5a7dd89109e22132b2",
+              "status": "verified"
+            },
+            {
+              "role": "testbenches[0].netlist",
+              "path": "sim/pex/osc/tb_osc_subth.spice",
+              "sha256": "sha256:c039fec6a0230d1593b67309de3cd158faeddcd7b29e621cc787637d562a6187",
+              "status": "verified"
+            },
+            {
+              "role": "testbenches[0].schematic_netlist",
+              "path": "design/osc_bank/osc_subth.spice",
+              "sha256": "sha256:b26767202fb2594d0055db35b12b1b51c1a86168d2462b1366ddb5bdbe04c00e",
+              "status": "verified"
+            },
+            {
+              "role": "reference_netlist",
+              "path": "design/osc_bank/osc_subth.spice",
+              "sha256": "sha256:b26767202fb2594d0055db35b12b1b51c1a86168d2462b1366ddb5bdbe04c00e",
+              "status": "verified"
+            }
+          ],
+          "body_bias": {
+            "status": "biased",
+            "unbiased_device_count": 0,
+            "unbiased_nets": []
+          }
+        }
+      ]
     },
     {
       "tier": "T1",

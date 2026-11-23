@@ -107,27 +107,31 @@ verdict — every one of them *simulated*:
   digital partition only — `4.analog` stays unmet because `osc_wire` and
   `osc_subth` match reduced references, not the item-1 netlists
   ([`lvs/README.md`](lvs/README.md)).
-- *post-layout re-verification* — **digital cleared, analog attempted and
-  unmet.** The SDF re-run above covers the digital partition. On the analog
-  partition parasitic extraction and a 45-cell `klt pex` re-run exist for all
-  five oscillators, and `klt signoff` still grades `7.analog` `unmet`
-  ([`sim/pex/README.md`](sim/pex/README.md)): the four oscillators that
-  produced a delta come out slower once extracted (per-oscillator median
-  −14 % to −24 % on the edge-count proxy `klt pex` reports), the extracted
-  `osc_subth` does not oscillate in either of the two re-runs those counts
-  come from — 0 or 1 crossings in all 45 of 45 extracted cells on the
-  `dev661` run and all 35 of 35 on the `gds109` run, none reaching the
-  ≥ 9 rising edges row 1 needs. The earlier 2026-11-11 run is excluded: its
-  14 LVT PFETs extracted as plain `pfet_01v8`, which `klt pex` flags as a
-  `model_mismatch` and `sim/pex/README.md` records as not a valid comparison,
-  so its three large extracted counts are not read as deltas. A local
-  single-corner probe on the `gds109` extraction (tt / 1.80 V / 27 C) traced
-  the non-start to 14 split `vh` nets and left layout-defect versus
-  extraction-defect open; a separate structural diagnosis attributes the split
-  to the extractor (2AMLogic/klayout-tools#5311). And spec rows 2–4 have not
-  been re-graded on extracted values. The
-  oscillator frequencies above are schematic-level and do not carry to the
-  layout unchanged.
+- *post-layout re-verification* — **T1 item 7 met on both partitions; analog
+  spec targets failing on extracted netlists.** The SDF re-run above covers
+  `7.digital`. On the analog partition, `klt signoff` grades `7.analog` `met`
+  ([`sim/pex/README.md`](sim/pex/README.md),
+  [decision 0006](spec/decisions/0006-item7-cold-cells.md)): `osc_hd`, `osc_pmos`
+  and the 2026-11-20 `osc_subth` re-run on the net-split-fixed extractor
+  ([`sim/pex/records/2026-11-20-osc_subth-dev2493.pex.report.json`](sim/pex/records/2026-11-20-osc_subth-dev2493.pex.report.json);
+  earlier 2026-11-11 `pfet_01v8` `model_mismatch` and split-`vh`
+  2AMLogic/klayout-tools#5311 runs stay recorded as history in
+  `sim/pex/README.md`) pass at the report level across all 45 corners, and
+  decision 0006 pairs the 44 passing default-bench corners of
+  `2026-11-10-osc_{nmos,wire}.pex.report.json` (whose schematic-leg
+  `timestep_too_small` cold-cell errors remain unedited) with the two #102
+  relaxed-solver cold-cell supplements
+  (`2026-11-11-osc_{nmos,wire}-coldcell-relaxed.pex.report.json`) substituted in
+  the manifest. That `met` verdict covers T1 item-7 evidence completeness only,
+  not oscillator or solve performance: the four non-subthreshold rings slow once
+  extracted (per-oscillator median −14 % to −24 % on the `klt pex` edge-count
+  proxy; `osc_subth` median −42.4 %, with 5 cold `ss`/`sf` extracted cells below
+  row 1's ≥ 9 rising edges), `osc_wire` extraction is not like-for-like against
+  the item-1 netlist, and on measured extracted frequencies
+  ([`sim/pex/records/2026-11-22-grade-extracted-frequencies.json`](sim/pex/records/2026-11-22-grade-extracted-frequencies.json))
+  spec rows 1, 3 and 4 fail their target bounds (row 2 passes 9/9 and row 3
+  passes its ±50 mV fallback; row 4 fails at 31.0 °C). The schematic-level
+  oscillator frequencies above do not carry to the layout unchanged.
 - *shuttle seat*, *measured silicon* — not reached. Nothing here is measured.
 
 ## Reproduce
@@ -311,15 +315,19 @@ The current grader uses each request’s verified duration for frequency proxies
 All four oscillators pass the row-1 "oscillates" criterion on the extracted
 side, and the row-2 ratio-space coordinate shifts by a median −7.8 %
 (`osc_nmos`), −10.9 % (`osc_pmos`) and −1.6 % (`osc_wire`). `osc_subth` is
-**not** in this record — its extracted side does not oscillate in the
-`dev661` or the `gds109` re-run (see the rung above) — and rows
-2–4 are **not** re-graded, because the `klt pex` scalar is a quantised
-edge count rather than a frequency. Re-running the extraction and the 45-cell
-grid themselves is a batch-fleet submission, named in
+**not** in this 2026-11-11 record — its net-split-fixed 45-cell count run is
+graded separately in
+[`sim/pex/records/2026-11-20-grade-extracted-values-osc_subth-dev2493.json`](sim/pex/records/2026-11-20-grade-extracted-values-osc_subth-dev2493.json)
+— and rows 2–4 are **not** re-graded by this count command (the measured-frequency
+re-grade of rows 2–4 is `grade_pex.py freq` in
+[`sim/pex/README.md`](sim/pex/README.md)). Re-running the extraction and the
+45-cell grid themselves is a batch-fleet submission, named in
 [`sim/pex/README.md`](sim/pex/README.md) § "Reproduce one oscillator" — named
-there for completeness, not re-run here. The caveats that keep `7.analog`
-unmet, including the `osc_wire` extraction not being like-for-like, are in
-that file.
+there for completeness, not re-run here. `7.analog` grades `met` under
+[decision 0006](spec/decisions/0006-item7-cold-cells.md) for item-7 evidence
+coverage; the relaxed cold-cell solver settings, the `osc_wire` extraction
+caveats (`09374950…` vs `76c8872a…`, and non-like-for-like wire modelling), and
+the failing extracted performance rows are disclosed in both files.
 
 **9 — characterization reports, both partitions.** The two T1 item-8 reports are
 **hand-assembled** aggregations of the records above, so no command regenerates
