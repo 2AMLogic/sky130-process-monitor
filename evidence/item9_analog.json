@@ -87,7 +87,7 @@
         "role": "testbench",
         "path": "sim/pex/grade_pex.py",
         "passed": true,
-        "content_hash": "sha256:934164d572e3357c495e48c8a57c45fe0184664d0ece12d635ff75cc8f290d55"
+        "content_hash": "sha256:fd77e46e0b606a416a5f8e672417a01b18dbb4d466f757a05a716f3dae8b0fef"
       },
       {
         "check": "present",
