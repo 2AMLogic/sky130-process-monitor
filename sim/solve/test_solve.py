@@ -168,16 +168,47 @@ class TY(unittest.TestCase):
         # osc_hd, and row 2, whose baseline is gone, reports no measurement.
         import yield_samples as Y
         tab, mc = self.fake_mc(1e-4)
-        for key in [k for k in mc["samples"] if k.startswith("osc_hd|")]:
+        for key in ("osc_hd|tt|1.98|27", "osc_hd|tt|1.62|-40", "osc_hd|ff|1.80|27"):
             self._keep_two(mc, key)
         doc = Y.build(tab, mc, mc, 1, defect=0.5)
-        names = {m["name"] for m in doc["measurements"]}
-        self.assertIn("row3_dV", names)
-        self.assertIn("row4_dT", names)
-        self.assertFalse([n for n in names if n.startswith("row2_margin")])
-        self.assertNotIn("osc_hd", doc["cells"]["row3"]["oscillators"])
-        self.assertNotIn("osc_hd", doc["cells"]["row4"]["oscillators"])
-        self.assertNotIn("osc_hd", doc["cells"]["row2"]["oscillators"])
+        self.assertEqual([m["name"] for m in doc["measurements"]], ["row3_dV", "row4_dT"])
+        for m in doc["measurements"]:
+            with self.subTest(row=m["spec_row"]):
+                self.assertEqual(len(m["samples"]), 20)
+                self.assertNotIn(None, m["samples"])
+                self.assertNotIn("negative_control", m)
+        remaining = [o for o in A.OSCS if o != "osc_hd"]
+        self.assertEqual(doc["cells"]["row3"]["oscillators"], remaining)
+        self.assertEqual(doc["cells"]["row4"]["oscillators"], remaining)
+        self.assertEqual(doc["cells"]["row2"]["oscillators"], [])
+
+    def test_row2_controls_require_the_configured_defect_oscillator(self):
+        from unittest.mock import patch
+        import yield_samples as Y
+        tab, mc = self.fake_mc(1e-4)
+        self._keep_two(mc, "osc_nmos|tt|1.98|27")
+        with patch.object(Y, "DEFECT_OSC", "osc_nmos"):
+            doc = Y.build(tab, mc, mc, 1)
+        margins = [m for m in doc["measurements"] if m["spec_row"] == "2"]
+        self.assertEqual([m["name"] for m in margins], ["row2_margin_%s" % p for p in A.PROCESS])
+        for m in margins:
+            self.assertNotIn("negative_control", m)
+        for m in doc["measurements"]:
+            if m["spec_row"] in ("3", "4"):
+                self.assertIn("osc_nmos", m["negative_control"]["description"])
+
+    def test_one_eligible_oscillator_leaves_every_row_unused(self):
+        import yield_samples as Y
+        tab, mc = self.fake_mc(1e-4)
+        for o in A.OSCS:
+            if o != A.BASELINE:
+                for cell in ("tt|1.98|27", "tt|1.62|-40", "ff|1.80|27"):
+                    self._keep_two(mc, "%s|%s" % (o, cell))
+        doc = Y.build(tab, mc, mc, 1)
+        self.assertEqual(doc["measurements"], [])
+        for row in ("row2", "row3", "row4"):
+            with self.subTest(row=row):
+                self.assertEqual(doc["cells"][row]["oscillators"], [])
 
     def test_zero_spread_cell_with_three_draws_is_eligible(self):
         # A zero mismatch sigma is a real estimate, not a missing one: the cell

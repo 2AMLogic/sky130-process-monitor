@@ -31,8 +31,9 @@ Conventions (grading choices made here; none relaxes the spec, no limit is edite
   * Row 2 (corner ID at known V,T, ratio space): `solve.distances`, the whitened distances solve.classify ranks;
     sample = d(nearest wrong centroid) - d(true centroid); > 0 means classified correctly.
     Limit: margin > 0 (strict). One measurement per true corner.
-  * Negative control (per measurement): the same draws with a seeded defect, +DEFECT added to ln f of osc_hd.
-    Expected to fail. It is a software-injected defect on the same data, not a second simulation; labelled so.
+  * A row that uses the configured defect oscillator (default osc_hd) also reports a negative control.
+    It adds +DEFECT to ln f of that oscillator on the same draw data and is expected to fail.
+    A row that excludes that oscillator reports only the nominal measurement.
 """
 import json
 import math
@@ -101,7 +102,7 @@ def row3_samples(tab, mc, seed, defect=0.0):
     oscs = [o for o in usable(mc, tab, p0, v0, t0)
             if all(tab.get((o, p, v, t0)) for p in A.PROCESS for v in A.VDD)]
     if len(oscs) < 2:
-        return None, oscs
+        return None, []
     full = {(o, p): S.vmodel(tab, o, p, t0, None, S.VGRID) for o in oscs for p in A.PROCESS}
     rng = random.Random("%s|y3|%s" % (seed, defect))
     ds, sg, n = draws(tab, mc, oscs, p0, v0, t0, rng, defect)
@@ -121,7 +122,7 @@ def row4_samples(tab, mc, mc_nom, seed, defect=0.0):
             if all(tab.get((o, "tt", v, t)) for v in A.VDD for t in A.TEMP)
             and _cell_sigma(per_nom, o, p0, 1.8, 27) is not None]
     if len(oscs) < 2:
-        return None, oscs
+        return None, []
     rng = random.Random("%s|y4|%s" % (seed, defect))
     ds, sg, n = draws(tab, mc, oscs, p0, v0, t0, rng, defect)
     cs, scal, ncal = draws(tab, mc_nom, oscs, p0, 1.8, 27, random.Random("%s|y4cal|%s" % (seed, defect)), defect)
@@ -145,7 +146,7 @@ def row2_samples(tab, mc, seed, defect=0.0):
                                     and tab.get((o, p, v0, t0))
                                     for p in A.PROCESS)]
     if A.BASELINE not in oscs or len(oscs) < 2:
-        return None, oscs
+        return None, []
     use = [o for o in oscs if o != A.BASELINE]
     cen = {p: [math.log(tab[(o, p, v0, t0)]) - math.log(tab[(A.BASELINE, p, v0, t0)]) for o in use]
            for p in A.PROCESS}
@@ -169,26 +170,31 @@ def row2_samples(tab, mc, seed, defect=0.0):
 
 def build(tab, mc_nom, mc_bind, seed, defect=DEFECT):
     ms, meta = [], {}
+
+    def add_measurement(name, row, unit, samples, control):
+        measurement = {"name": name, "spec_row": row, "unit": unit, "samples": samples,
+                       "limits": LIMITS["row" + row]}
+        if control is not None:
+            measurement["negative_control"] = {
+                "samples": control, "description": "seeded defect: +%g on ln f of %s" % (defect, DEFECT_OSC)}
+        ms.append(measurement)
+
     r2, o2 = row2_samples(tab, mc_bind, seed)
-    r2b, _ = row2_samples(tab, mc_bind, seed, defect)
     meta["row2"] = {"cell": "all 5 corners @ 1.98 V / 27 C", "oscillators": o2}
     if r2:
+        controls = row2_samples(tab, mc_bind, seed, defect)[0] if DEFECT_OSC in o2 else {}
         for p in A.PROCESS:
-            ms.append({"name": "row2_margin_%s" % p, "spec_row": "2", "unit": "whitened d^2 margin",
-                       "samples": r2[p], "limits": LIMITS["row2"],
-                       "negative_control": {"samples": r2b[p], "description": "seeded defect: +%g on ln f of %s" % (defect, DEFECT_OSC)}})
+            add_measurement("row2_margin_%s" % p, "2", "whitened d^2 margin", r2[p], controls.get(p))
     r3, o3 = row3_samples(tab, mc_bind, seed)
-    r3b, _ = row3_samples(tab, mc_bind, seed, defect)
     meta["row3"] = {"cell": "tt @ 1.62 V / -40 C", "oscillators": o3}
     if r3:
-        ms.append({"name": "row3_dV", "spec_row": "3", "unit": "V", "samples": r3, "limits": LIMITS["row3"],
-                   "negative_control": {"samples": r3b, "description": "seeded defect: +%g on ln f of %s" % (defect, DEFECT_OSC)}})
+        control = row3_samples(tab, mc_bind, seed, defect)[0] if DEFECT_OSC in o3 else None
+        add_measurement("row3_dV", "3", "V", r3, control)
     r4, o4 = row4_samples(tab, mc_bind, mc_nom, seed)
-    r4b, _ = row4_samples(tab, mc_bind, mc_nom, seed, defect)
     meta["row4"] = {"cell": "ff @ 1.62 V / 27 C (cal at 1.80 V / 27 C)", "oscillators": o4}
     if r4:
-        ms.append({"name": "row4_dT", "spec_row": "4", "unit": "C", "samples": r4, "limits": LIMITS["row4"],
-                   "negative_control": {"samples": r4b, "description": "seeded defect: +%g on ln f of %s" % (defect, DEFECT_OSC)}})
+        control = row4_samples(tab, mc_bind, mc_nom, seed, defect)[0] if DEFECT_OSC in o4 else None
+        add_measurement("row4_dT", "4", "C", r4, control)
     return {"kind": "SIMULATED", "measurements": ms,
             "provenance": {"seed": seed, "rng": "ngspice-46 mismatch MC via klt sim (fleet); python random for reading noise",
                            "corner_matrix": ["tt", "ff", "ss", "sf", "fs"]},
