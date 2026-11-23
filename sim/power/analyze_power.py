@@ -38,17 +38,31 @@ BOUNDS_UW = {"active": (100.0, 500.0, 20.0), "idle": (1.0, 10.0, 0.1)}
 MIN_EDGES = _SENS.SKIP_EDGES + _SENS.MIN_CYCLES + 1
 
 
+def classify_bench(path):
+    """(kind, oscillator) for a graded bench path, else (None, None).
+
+    Graded benches are exactly `active_<osc>`, `idle_<osc>` and `idle_<osc>_settle`; any other deck
+    (cross-checks, the gated candidate) is not a row-7 grading input."""
+    stem = os.path.splitext(os.path.basename(path))[0]
+    for o in OSCS:
+        if stem == "active_" + o:
+            return "active", o
+        if stem in ("idle_" + o, "idle_" + o + "_settle"):
+            return "idle", o
+    return None, None
+
+
 def extract(paths, carry_active=None):
     rows, envs = [], []
     for p in paths:
         rep = _load(p)
         path = rep["netlist"]["path"]
-        kind = "idle" if "idle_" in path else "active"
-        osc = next((o for o in OSCS if o in path), None)
+        kind, osc = classify_bench(path)
         if osc is None:
-            # A bench this grader does not grade (issue #279 adds candidate/cross-check decks whose
-            # reports may sit in the same -o tree). Recorded as environment, never as a row.
-            envs.append({"report": p, "kind": kind, "oscillator": None, "job_id": None, "job_ids": None,
+            # A bench this grader does not grade: the issue #279 candidate and cross-check decks
+            # (xcheck_*, gated_subth_*) whose reports may sit in the same -o tree. Recorded as
+            # environment, never as a row, so it can never shadow a graded cell.
+            envs.append({"report": p, "kind": None, "oscillator": None, "job_id": None, "job_ids": None,
                          "runner_pdk": None})
             continue
         rem, runner_pdk = _remote(rep)
@@ -72,7 +86,8 @@ def extract(paths, carry_active=None):
         # Issue #279: the idle half alone is re-run (active benches unchanged), so the new table
         # carries the prior committed table's active rows verbatim -- never re-simulated, never
         # re-derived; the record names the carried file and its own record.
-        prior = json.load(open(carry_active))
+        with open(carry_active) as f:
+            prior = json.load(f)
         rows.extend(r for r in prior["rows"] if r["kind"] == "active")
     return {"kind": "SIMULATED", "rows": rows, "environment": envs}
 

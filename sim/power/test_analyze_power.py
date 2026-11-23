@@ -160,6 +160,33 @@ class Issue279IdleRebench(unittest.TestCase):
         self.assertEqual(len(tab["environment"]), 1)
         self.assertIsNone(tab["environment"][0]["oscillator"])
 
+    def test_generated_bench_paths_are_classified_explicitly(self):
+        # Every committed request's deck: graded benches map to (kind, osc); all others to (None, None).
+        graded = {"active_osc_hd": ("active", "osc_hd"), "idle_osc_wire": ("idle", "osc_wire"),
+                  "idle_osc_nmos_settle": ("idle", "osc_nmos"), "idle_osc_wire_settle": ("idle", "osc_wire")}
+        for stem, want in graded.items():
+            self.assertEqual(P.classify_bench("sim/power/tb/%s.spice" % stem), want)
+        for stem in ("xcheck_settle_osc_nmos_ic", "xcheck_settle_osc_nmos_norshunt",
+                     "xcheck_settle_osc_wire_ic", "xcheck_settle_osc_wire_norshunt",
+                     "gated_subth_idle", "gated_subth_idle_tran", "gated_subth_active"):
+            self.assertEqual(P.classify_bench("sim/power/tb/%s.spice" % stem), (None, None), stem)
+
+    def test_idle_crosscheck_report_never_displaces_a_genuine_active_row(self):
+        # Mixed -o tree: a genuine active cell, then an xcheck idle-current report for the same cell.
+        good = report(cells={("tt", 1.80, 27): 20}, osc="osc_wire")
+        xc = report(cells={("tt", 1.80, 27): None}, kind="idle", osc="osc_wire", i_a=None)
+        xc["netlist"]["path"] = "sim/power/tb/xcheck_settle_osc_wire_ic.spice"
+        with tempfile.TemporaryDirectory() as d:
+            paths = []
+            for n, rep in enumerate((good, xc)):
+                paths.append(os.path.join(d, "r%d.json" % n))
+                with open(paths[-1], "w") as f:
+                    json.dump(rep, f)
+            tab = P.extract(paths)
+        self.assertEqual([(r["kind"], r["osc"], r["i_a"]) for r in tab["rows"]], [("active", "osc_wire", 1.5e-4)])
+        grade_get = {(r["kind"], r["osc"], r["process"], r["vdd"], r["temp_c"]): r["i_a"] for r in tab["rows"]}
+        self.assertEqual(grade_get[("active", "osc_wire", "tt", 1.8, 27)], 1.5e-4)
+
     def test_carry_active_appends_prior_active_rows_verbatim(self):
         rep = report(cells={("tt", 1.80, 27): 20})
         prior = {"kind": "SIMULATED",
