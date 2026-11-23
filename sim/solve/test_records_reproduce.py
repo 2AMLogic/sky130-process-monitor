@@ -36,6 +36,16 @@ Not covered here
 `RECORD-2026-11-06-item6-full-bank.md`, so there is no committed file left to diff it against. Its
 input set is still identified and pinned in that record's appended note; it reproduces the file as
 committed at `63392bd`, which only `git show` can supply and a shallow CI checkout does not have.
+
+The five pre-0004 samples outputs (`samples-binding-cells.json`, `samples-sized.json`,
+`samples-sized-negctl-hd0.3.json`, `samples-sized-bank.json`, `samples-sized-bank-negctl-hd0.3.json`)
+are likewise not re-derived here (#317): their row-4 negative-control arms were produced by a
+`yield_samples.py` that injected the seeded defect on the one-point calibration draw as well, where
+it cancelled exactly, and the post-0004 code cannot regenerate those bytes by design. They reproduce
+with the `yield_samples.py` of any commit from `63392bd` to just before the 0004 change (`git show`
+supplies it). Their nominal arms and their rows 2/3 control arms are byte-identical to the dated
+2026-11-23 successors pinned below -- the semantics change touches only the row-4 control arm -- and
+`sim/solve/mc/RECORD-2026-11-23-row4-negative-control.md` records that measured identity.
 """
 import filecmp
 import os
@@ -122,7 +132,7 @@ _FULL_BANK = [
     (ANALYZE, ["extract-mc"] + MCNOM_6 + ["-o", "@mcnom_6.json"]),
     (ANALYZE, ["extract-mc"] + MCBIND_18 + ["-o", "@mcbind_18.json"]),
     (YIELD_SAMPLES, ["build", "@freq_6.json", "@mcnom_6.json", "@mcbind_18.json",
-                     "-o", "@samples-binding-cells.json"]),
+                     "-o", "@samples-binding-cells-2026-11-23.json"]),
 ]
 _SIZED_COMMON = [
     (ANALYZE, ["extract"] + GRID_8 + ["-o", "@freq_8.json"]),
@@ -150,37 +160,41 @@ PINNED = {
         # older interpreter skips this one check with the reason above.
         "min_python": (3, 12),
     },
-    "sim/solve/mc/samples-binding-cells.json": {
-        "record": "sim/solve/mc/RECORD-2026-11-06-item6-full-bank.md",
+    # The five samples outputs below are the dated 2026-11-23 regeneration of #317 / decision 0004
+    # (row-4 negative control no longer cancels in the one-point calibration). Their pre-0004
+    # predecessors stay committed as evidence but are no longer re-derivable by this code -- see
+    # "Not covered here" above and sim/solve/mc/RECORD-2026-11-23-row4-negative-control.md.
+    "sim/solve/mc/samples-binding-cells-2026-11-23.json": {
+        "record": "sim/solve/mc/RECORD-2026-11-23-row4-negative-control.md",
         "steps": _FULL_BANK,
     },
-    "sim/solve/mc/samples-sized.json": {
-        "record": "sim/solve/mc/RECORD-2026-11-06-item6-sized.md",
+    "sim/solve/mc/samples-sized-2026-11-23.json": {
+        "record": "sim/solve/mc/RECORD-2026-11-23-row4-negative-control.md",
         "steps": _SIZED + [
             (YIELD_SAMPLES, ["build", "@freq_8.json", "@mcnom_6.json", "@mcbind_sized.json",
-                             "-o", "@samples-sized.json"]),
+                             "-o", "@samples-sized-2026-11-23.json"]),
         ],
     },
-    "sim/solve/mc/samples-sized-negctl-hd0.3.json": {
-        "record": "sim/solve/mc/RECORD-2026-11-06-item6-sized.md",
+    "sim/solve/mc/samples-sized-negctl-hd0.3-2026-11-23.json": {
+        "record": "sim/solve/mc/RECORD-2026-11-23-row4-negative-control.md",
         "steps": _SIZED + [
             (YIELD_SAMPLES, ["build", "@freq_8.json", "@mcnom_6.json", "@mcbind_sized.json",
-                             "--defect", "0.3", "-o", "@samples-sized-negctl.json"]),
+                             "--defect", "0.3", "-o", "@samples-sized-negctl-2026-11-23.json"]),
         ],
     },
-    "sim/solve/mc/samples-sized-bank.json": {
-        "record": "sim/solve/mc/RECORD-2026-11-06-item6-sized-bank.md",
+    "sim/solve/mc/samples-sized-bank-2026-11-23.json": {
+        "record": "sim/solve/mc/RECORD-2026-11-23-row4-negative-control.md",
         "steps": _SIZED_BANK + [
             (YIELD_SAMPLES, ["build", "@freq_8.json", "@mcnom_6.json", "@mcbind_sized_bank.json",
-                             "-o", "@samples-sized-bank.json"]),
+                             "-o", "@samples-sized-bank-2026-11-23.json"]),
         ],
     },
-    "sim/solve/mc/samples-sized-bank-negctl-hd0.3.json": {
-        "record": "sim/solve/mc/RECORD-2026-11-06-item6-sized-bank.md",
+    "sim/solve/mc/samples-sized-bank-negctl-hd0.3-2026-11-23.json": {
+        "record": "sim/solve/mc/RECORD-2026-11-23-row4-negative-control.md",
         "steps": _SIZED_BANK + [
             (YIELD_SAMPLES, ["build", "@freq_8.json", "@mcnom_6.json", "@mcbind_sized_bank.json",
                              "--defect", "0.3", "--defect-osc", "osc_hd",
-                             "-o", "@samples-sized-bank-negctl.json"]),
+                             "-o", "@samples-sized-bank-negctl-2026-11-23.json"]),
         ],
     },
 }
@@ -261,19 +275,19 @@ class ReproducePinnedRecords(unittest.TestCase):
         self._check("sim/solve/records/2026-11-05-rows1-4.json")
 
     def test_samples_binding_cells(self):
-        self._check("sim/solve/mc/samples-binding-cells.json")
+        self._check("sim/solve/mc/samples-binding-cells-2026-11-23.json")
 
     def test_samples_sized(self):
-        self._check("sim/solve/mc/samples-sized.json")
+        self._check("sim/solve/mc/samples-sized-2026-11-23.json")
 
     def test_samples_sized_negative_control(self):
-        self._check("sim/solve/mc/samples-sized-negctl-hd0.3.json")
+        self._check("sim/solve/mc/samples-sized-negctl-hd0.3-2026-11-23.json")
 
     def test_samples_sized_bank(self):
-        self._check("sim/solve/mc/samples-sized-bank.json")
+        self._check("sim/solve/mc/samples-sized-bank-2026-11-23.json")
 
     def test_samples_sized_bank_negative_control(self):
-        self._check("sim/solve/mc/samples-sized-bank-negctl-hd0.3.json")
+        self._check("sim/solve/mc/samples-sized-bank-negctl-hd0.3-2026-11-23.json")
 
 
 class PinnedListsAreLiteral(unittest.TestCase):
