@@ -143,5 +143,109 @@ class GradeDoesNotMoveTheRecordedVerdict(unittest.TestCase):
             self.assertEqual(json.loads(json.dumps(got, sort_keys=True)), json.load(f))
 
 
+class Issue279IdleRebench(unittest.TestCase):
+    """extract() must tolerate the candidate / cross-check reports (issue #279) sitting in the same
+    -o tree, and must be able to carry a prior table's active rows verbatim when only the idle half
+    is re-run."""
+
+    def test_unknown_bench_report_yields_no_rows(self):
+        rep = report(cells={("tt", 1.80, 27): 20})  # a graded active cell, to prove rows still flow
+        rep["netlist"]["path"] = "sim/power/tb/gated_subth_idle.spice"
+        with tempfile.TemporaryDirectory() as d:
+            path = os.path.join(d, "r.json")
+            with open(path, "w") as f:
+                json.dump(rep, f)
+            tab = P.extract([path])
+        self.assertEqual(tab["rows"], [])
+        self.assertEqual(len(tab["environment"]), 1)
+        self.assertIsNone(tab["environment"][0]["oscillator"])
+
+    def test_generated_bench_paths_are_classified_explicitly(self):
+        # Every committed request's deck: graded benches map to (kind, osc); all others to (None, None).
+        graded = {"active_osc_hd": ("active", "osc_hd"), "idle_osc_wire": ("idle", "osc_wire"),
+                  "idle_osc_nmos_settle": ("idle", "osc_nmos"), "idle_osc_wire_settle": ("idle", "osc_wire")}
+        for stem, want in graded.items():
+            self.assertEqual(P.classify_bench("sim/power/tb/%s.spice" % stem), want)
+        for stem in ("xcheck_settle_osc_nmos_ic", "xcheck_settle_osc_nmos_norshunt",
+                     "xcheck_settle_osc_wire_ic", "xcheck_settle_osc_wire_norshunt",
+                     "gated_subth_idle", "gated_subth_idle_tran", "gated_subth_active"):
+            self.assertEqual(P.classify_bench("sim/power/tb/%s.spice" % stem), (None, None), stem)
+
+    def test_idle_crosscheck_report_never_displaces_a_genuine_active_row(self):
+        # Mixed -o tree: a genuine active cell, then an xcheck idle-current report for the same cell.
+        good = report(cells={("tt", 1.80, 27): 20}, osc="osc_wire")
+        xc = report(cells={("tt", 1.80, 27): None}, kind="idle", osc="osc_wire", i_a=None)
+        xc["netlist"]["path"] = "sim/power/tb/xcheck_settle_osc_wire_ic.spice"
+        with tempfile.TemporaryDirectory() as d:
+            paths = []
+            for n, rep in enumerate((good, xc)):
+                paths.append(os.path.join(d, "r%d.json" % n))
+                with open(paths[-1], "w") as f:
+                    json.dump(rep, f)
+            tab = P.extract(paths)
+        self.assertEqual([(r["kind"], r["osc"], r["i_a"]) for r in tab["rows"]], [("active", "osc_wire", 1.5e-4)])
+        grade_get = {(r["kind"], r["osc"], r["process"], r["vdd"], r["temp_c"]): r["i_a"] for r in tab["rows"]}
+        self.assertEqual(grade_get[("active", "osc_wire", "tt", 1.8, 27)], 1.5e-4)
+
+    def test_carry_active_appends_prior_active_rows_verbatim(self):
+        rep = report(cells={("tt", 1.80, 27): 20})
+        prior = {"kind": "SIMULATED",
+                 "rows": [{"kind": "active", "osc": "osc_hd", "process": "ff", "vdd": 1.98,
+                           "temp_c": -40, "i_a": 8.8e-4, "unit_status": "pass"}],
+                 "environment": []}
+        with tempfile.TemporaryDirectory() as d:
+            path = os.path.join(d, "r.json")
+            with open(path, "w") as f:
+                json.dump(rep, f)
+            prior_path = os.path.join(d, "prior.json")
+            with open(prior_path, "w") as f:
+                json.dump(prior, f)
+            tab = P.extract([path], carry_active=prior_path)
+        self.assertEqual([r for r in tab["rows"] if r["kind"] == "active" and r["process"] == "ff"],
+                         prior["rows"])
+        self.assertTrue(any(r["kind"] == "active" and r["process"] == "tt" for r in tab["rows"]))
+
+
+class Issue295CandidateAnalysis(unittest.TestCase):
+    """cand_idle / cand_ab: the comparison is derived from per-cell data; frequency comes from edge
+    timestamps under the nine-edge rule, never from capped counts."""
+
+    def _write(self, d, name, rep):
+        path = os.path.join(d, name)
+        with open(path, "w") as f:
+            json.dump(rep, f)
+        return path
+
+    def test_cand_idle_derives_reduction_per_cell(self):
+        rep = report(cells={("tt", 1.80, 27): None}, kind="idle", osc="osc_subth", i_a=-4.78e-10)
+        un = {"rows": [{"kind": "idle", "osc": "osc_subth", "process": "tt", "vdd": 1.8, "temp_c": 27, "i_a": 1.0044e-6}]}
+        with tempfile.TemporaryDirectory() as d:
+            r = P.cand_idle(self._write(d, "r.json", rep), un)
+        c = r["cells"]["tt|1.80|27"]
+        self.assertAlmostEqual(c["reduction_x"], 1.0044e-6 / 4.78e-10)
+        self.assertEqual(r["cells_present"], 1)
+
+    def test_cand_ab_uses_timestamps_and_reports_missing_pairs(self):
+        def rep(times_by_cell, vbp):
+            corners = []
+            for (p, v, t), times in times_by_cell.items():
+                meas = [{"name": "t_rise", "unit": "s", "crossings": {"times": times}},
+                        {"name": "vbp_avg", "value": vbp, "unit": "V"}]
+                for tt, val in (("2n", vbp * 0.5), ("5n", vbp * 0.995), ("10n", vbp)):
+                    meas.append({"name": "vbp_" + tt, "value": val, "unit": "V"})
+                corners.append({"process": p, "supply_v": {"vdd": v}, "temperature_c": t, "status": "pass",
+                                "measurements": meas})
+            return {"netlist": {"path": "x.spice"}, "corners": corners, "environment": {}}
+        a = rep({("tt", 1.8, 27): crossings(20, 1e-6), ("sf", 1.8, -40): crossings(5, 1e-6)}, 1.5)
+        g = rep({("tt", 1.8, 27): crossings(20, 1.02e-6), ("sf", 1.8, -40): crossings(5, 1e-6)}, 1.5)
+        with tempfile.TemporaryDirectory() as d:
+            r = P.cand_ab(self._write(d, "a.json", a), self._write(d, "g.json", g))["cells"]
+        nom = r["tt|1.80|27"]
+        self.assertAlmostEqual(nom["f_ratio_gated_over_ungated"], 1 / 1.02, places=6)
+        self.assertEqual(nom["gated"]["vbp_settled_by"], "5n")  # 0.995 is within 1%, 0.5 is not
+        self.assertTrue(r["sf|1.80|-40"]["pair"].startswith("MISSING"))
+        self.assertIsNone(r["sf|1.80|-40"]["f_ratio_gated_over_ungated"])
+
+
 if __name__ == "__main__":
     unittest.main()

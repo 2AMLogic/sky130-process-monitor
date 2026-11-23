@@ -1,0 +1,16 @@
+* Power bench (IDLE, settle): osc_nmos with the enable held at vss for the whole window; transient
+* from t=0 (caps at 0, a defined powered-up-gated-off state); mean supply current over the final
+* half-window (request .meas). Replaces the op-form idle bench, whose DC solve on the gated-off
+* ring is non-unique (issue #279; records/2026-11-21-idle-settle.md). SIMULATION, schematic-level.
+* Sensitivity-grade testbench body for osc_nmos (circuit body only: klt sim owns .control/.end).
+* SIMULATION: schematic-level netlist design/osc_bank/osc_nmos.spice, no layout, no parasitics.
+* Enable is a behavioural source that follows v(vdd), so it swings rail to rail at every swept
+* supply (an explicit PULSE could not be swept with the supply in a Monte Carlo `units` request).
+* It is off for 1 ns and then ramps to v(vdd) over 100 ps.
+.options rshunt=1e12
+.include "../../../design/osc_bank/osc_nmos.spice"
+Vdd vdd 0 1.8
+Vss vss 0 0
+Ven en 0 0
+Xdut en out vdd vss osc_nmos
+.ic v(xdut.n0)=0 v(xdut.n1)=0 v(xdut.n2)=0 v(xdut.n3)=0 v(xdut.n4)=0 v(xdut.n5)=0 v(xdut.n6)=0 v(xdut.n7)=0 v(xdut.n8)=0 v(xdut.n9)=0 v(xdut.n10)=0 v(xdut.n11)=0 v(xdut.n12)=0 v(xdut.n13)=0 v(xdut.n14)=0 v(xdut.n15)=0 v(xdut.n16)=0 v(xdut.n17)=0 v(xdut.n18)=0 v(xdut.n19)=0 v(xdut.n20)=0 v(xdut.n21)=0 v(xdut.n22)=0 v(xdut.n23)=0 v(xdut.n24)=0 v(xdut.n25)=0 v(xdut.n26)=0 v(xdut.n27)=0 v(xdut.n28)=0 v(xdut.n29)=0 v(out)=0

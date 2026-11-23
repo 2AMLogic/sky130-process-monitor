@@ -9,7 +9,7 @@
   "tier": null,
   "t1_item_count": 22,
   "build_t1_item_count": 22,
-  "t1_met_count": 14,
+  "t1_met_count": 13,
   "t1_not_applicable_count": 1,
   "source_doc": "manifests/design-evidence-tiers.md",
   "source_doc_content_hash": "sha256:c7a1e7e10627fae396007e0ff951734f37d95028b8f49f2e21e802e9f552f318",
@@ -837,35 +837,10 @@
       "partition_boundary": "Ring-oscillator bank (standard-cell and custom-cell variants, including the leakage-starved subthreshold oscillator) and the subthreshold sensing path.",
       "text": "every claimed measurement's testbench committed, with a documented cold-start invocation a third party can run; pinned PDK revision.",
       "notes": [],
-      "status": "met",
-      "reason": null,
+      "status": "unmet",
+      "reason": "stale_evidence",
       "graded_by_build": true,
-      "citation": {
-        "file": "evidence/item9_analog.json",
-        "command": null,
-        "kind": "generic",
-        "check_status": "pass",
-        "content_hash": "sha256:bad7ec19fae89f4a300417b3781c95cb4f4cee974405bc4a15fef0b87e3356ed",
-        "input_verified": true,
-        "exit_status": 0,
-        "artifact_binding": {
-          "t1_item": 9,
-          "path": {
-            "path": "attest/item9_analog.json",
-            "scope": "repo"
-          },
-          "content_hash": "sha256:bad7ec19fae89f4a300417b3781c95cb4f4cee974405bc4a15fef0b87e3356ed",
-          "input_verified": true,
-          "summary": "T1 item 9 (Testbenches shipped): 612/612 attestation checks passed (klt signoff --attest)",
-          "source": "attest/item9_analog.json",
-          "attestation": {
-            "producer": "klt signoff --attest",
-            "inventory_schema_version": 1,
-            "check_count": 612,
-            "passed_count": 612
-          }
-        }
-      }
+      "citation": null
     },
     {
       "tier": "T1",
