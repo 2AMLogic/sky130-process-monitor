@@ -1,0 +1,1545 @@
+{
+ "kind": "SIMULATED",
+ "rows": [
+  {
+   "f_hz": 666149401.57214,
+   "osc": "osc_hd",
+   "process": "ff",
+   "temp_c": -40,
+   "vdd": 1.62
+  },
+  {
+   "f_hz": 658483108.5439348,
+   "osc": "osc_hd",
+   "process": "ff",
+   "temp_c": 27,
+   "vdd": 1.62
+  },
+  {
+   "f_hz": 637332052.4044685,
+   "osc": "osc_hd",
+   "process": "ff",
+   "temp_c": 125,
+   "vdd": 1.62
+  },
+  {
+   "f_hz": 778616426.0564157,
+   "osc": "osc_hd",
+   "process": "ff",
+   "temp_c": -40,
+   "vdd": 1.8
+  },
+  {
+   "f_hz": 758947959.3958137,
+   "osc": "osc_hd",
+   "process": "ff",
+   "temp_c": 27,
+   "vdd": 1.8
+  },
+  {
+   "f_hz": 722488747.4137857,
+   "osc": "osc_hd",
+   "process": "ff",
+   "temp_c": 125,
+   "vdd": 1.8
+  },
+  {
+   "f_hz": 871401907.206871,
+   "osc": "osc_hd",
+   "process": "ff",
+   "temp_c": -40,
+   "vdd": 1.98
+  },
+  {
+   "f_hz": 840335073.2733632,
+   "osc": "osc_hd",
+   "process": "ff",
+   "temp_c": 27,
+   "vdd": 1.98
+  },
+  {
+   "f_hz": 792808775.7690554,
+   "osc": "osc_hd",
+   "process": "ff",
+   "temp_c": 125,
+   "vdd": 1.98
+  },
+  {
+   "f_hz": 478291581.6651908,
+   "osc": "osc_hd",
+   "process": "fs",
+   "temp_c": -40,
+   "vdd": 1.62
+  },
+  {
+   "f_hz": 449071884.92891055,
+   "osc": "osc_hd",
+   "process": "fs",
+   "temp_c": 27,
+   "vdd": 1.62
+  },
+  {
+   "f_hz": 412442677.96270156,
+   "osc": "osc_hd",
+   "process": "fs",
+   "temp_c": 125,
+   "vdd": 1.62
+  },
+  {
+   "f_hz": 588529586.1697851,
+   "osc": "osc_hd",
+   "process": "fs",
+   "temp_c": -40,
+   "vdd": 1.8
+  },
+  {
+   "f_hz": 545349560.7697191,
+   "osc": "osc_hd",
+   "process": "fs",
+   "temp_c": 27,
+   "vdd": 1.8
+  },
+  {
+   "f_hz": 492282452.41952497,
+   "osc": "osc_hd",
+   "process": "fs",
+   "temp_c": 125,
+   "vdd": 1.8
+  },
+  {
+   "f_hz": 683059956.3120507,
+   "osc": "osc_hd",
+   "process": "fs",
+   "temp_c": -40,
+   "vdd": 1.98
+  },
+  {
+   "f_hz": 628930997.311548,
+   "osc": "osc_hd",
+   "process": "fs",
+   "temp_c": 27,
+   "vdd": 1.98
+  },
+  {
+   "f_hz": 563203668.3659062,
+   "osc": "osc_hd",
+   "process": "fs",
+   "temp_c": 125,
+   "vdd": 1.98
+  },
+  {
+   "f_hz": 371203386.1146492,
+   "osc": "osc_hd",
+   "process": "sf",
+   "temp_c": -40,
+   "vdd": 1.62
+  },
+  {
+   "f_hz": 396211929.2974307,
+   "osc": "osc_hd",
+   "process": "sf",
+   "temp_c": 27,
+   "vdd": 1.62
+  },
+  {
+   "f_hz": 421023685.7020311,
+   "osc": "osc_hd",
+   "process": "sf",
+   "temp_c": 125,
+   "vdd": 1.62
+  },
+  {
+   "f_hz": 484659568.7732943,
+   "osc": "osc_hd",
+   "process": "sf",
+   "temp_c": -40,
+   "vdd": 1.8
+  },
+  {
+   "f_hz": 492937443.93808323,
+   "osc": "osc_hd",
+   "process": "sf",
+   "temp_c": 27,
+   "vdd": 1.8
+  },
+  {
+   "f_hz": 499559764.502002,
+   "osc": "osc_hd",
+   "process": "sf",
+   "temp_c": 125,
+   "vdd": 1.8
+  },
+  {
+   "f_hz": 585866864.7851074,
+   "osc": "osc_hd",
+   "process": "sf",
+   "temp_c": -40,
+   "vdd": 1.98
+  },
+  {
+   "f_hz": 578940708.1057745,
+   "osc": "osc_hd",
+   "process": "sf",
+   "temp_c": 27,
+   "vdd": 1.98
+  },
+  {
+   "f_hz": 569130958.2694266,
+   "osc": "osc_hd",
+   "process": "sf",
+   "temp_c": 125,
+   "vdd": 1.98
+  },
+  {
+   "f_hz": 280354717.38983876,
+   "osc": "osc_hd",
+   "process": "ss",
+   "temp_c": -40,
+   "vdd": 1.62
+  },
+  {
+   "f_hz": 289776954.7191236,
+   "osc": "osc_hd",
+   "process": "ss",
+   "temp_c": 27,
+   "vdd": 1.62
+  },
+  {
+   "f_hz": 295933439.73689675,
+   "osc": "osc_hd",
+   "process": "ss",
+   "temp_c": 125,
+   "vdd": 1.62
+  },
+  {
+   "f_hz": 367697017.29624933,
+   "osc": "osc_hd",
+   "process": "ss",
+   "temp_c": -40,
+   "vdd": 1.8
+  },
+  {
+   "f_hz": 365205002.8546245,
+   "osc": "osc_hd",
+   "process": "ss",
+   "temp_c": 27,
+   "vdd": 1.8
+  },
+  {
+   "f_hz": 359066529.455645,
+   "osc": "osc_hd",
+   "process": "ss",
+   "temp_c": 125,
+   "vdd": 1.8
+  },
+  {
+   "f_hz": 448033443.10517156,
+   "osc": "osc_hd",
+   "process": "ss",
+   "temp_c": -40,
+   "vdd": 1.98
+  },
+  {
+   "f_hz": 434782676.4886322,
+   "osc": "osc_hd",
+   "process": "ss",
+   "temp_c": 27,
+   "vdd": 1.98
+  },
+  {
+   "f_hz": 417401824.48096156,
+   "osc": "osc_hd",
+   "process": "ss",
+   "temp_c": 125,
+   "vdd": 1.98
+  },
+  {
+   "f_hz": 446734547.18472105,
+   "osc": "osc_hd",
+   "process": "tt",
+   "temp_c": -40,
+   "vdd": 1.62
+  },
+  {
+   "f_hz": 455661909.2385915,
+   "osc": "osc_hd",
+   "process": "tt",
+   "temp_c": 27,
+   "vdd": 1.62
+  },
+  {
+   "f_hz": 460351873.6280355,
+   "osc": "osc_hd",
+   "process": "tt",
+   "temp_c": 125,
+   "vdd": 1.62
+  },
+  {
+   "f_hz": 553813364.2716986,
+   "osc": "osc_hd",
+   "process": "tt",
+   "temp_c": -40,
+   "vdd": 1.8
+  },
+  {
+   "f_hz": 548621744.6331389,
+   "osc": "osc_hd",
+   "process": "tt",
+   "temp_c": 27,
+   "vdd": 1.8
+  },
+  {
+   "f_hz": 538280051.6008693,
+   "osc": "osc_hd",
+   "process": "tt",
+   "temp_c": 125,
+   "vdd": 1.8
+  },
+  {
+   "f_hz": 647198760.6422977,
+   "osc": "osc_hd",
+   "process": "tt",
+   "temp_c": -40,
+   "vdd": 1.98
+  },
+  {
+   "f_hz": 628930820.988792,
+   "osc": "osc_hd",
+   "process": "tt",
+   "temp_c": 27,
+   "vdd": 1.98
+  },
+  {
+   "f_hz": 607290368.3995273,
+   "osc": "osc_hd",
+   "process": "tt",
+   "temp_c": 125,
+   "vdd": 1.98
+  },
+  {
+   "f_hz": 215094117.42837733,
+   "osc": "osc_nmos",
+   "process": "ff",
+   "temp_c": -40,
+   "vdd": 1.62
+  },
+  {
+   "f_hz": 194430843.455445,
+   "osc": "osc_nmos",
+   "process": "ff",
+   "temp_c": 27,
+   "vdd": 1.62
+  },
+  {
+   "f_hz": 176057874.40385547,
+   "osc": "osc_nmos",
+   "process": "ff",
+   "temp_c": 125,
+   "vdd": 1.62
+  },
+  {
+   "f_hz": 256930182.65141082,
+   "osc": "osc_nmos",
+   "process": "ff",
+   "temp_c": -40,
+   "vdd": 1.8
+  },
+  {
+   "f_hz": 229356262.27956438,
+   "osc": "osc_nmos",
+   "process": "ff",
+   "temp_c": 27,
+   "vdd": 1.8
+  },
+  {
+   "f_hz": 203235902.2698298,
+   "osc": "osc_nmos",
+   "process": "ff",
+   "temp_c": 125,
+   "vdd": 1.8
+  },
+  {
+   "f_hz": 294112120.2233468,
+   "osc": "osc_nmos",
+   "process": "ff",
+   "temp_c": -40,
+   "vdd": 1.98
+  },
+  {
+   "f_hz": 261041628.93989703,
+   "osc": "osc_nmos",
+   "process": "ff",
+   "temp_c": 27,
+   "vdd": 1.98
+  },
+  {
+   "f_hz": 227907488.3198686,
+   "osc": "osc_nmos",
+   "process": "ff",
+   "temp_c": 125,
+   "vdd": 1.98
+  },
+  {
+   "f_hz": 159159154.75797728,
+   "osc": "osc_nmos",
+   "process": "fs",
+   "temp_c": -40,
+   "vdd": 1.62
+  },
+  {
+   "f_hz": 140968551.22039628,
+   "osc": "osc_nmos",
+   "process": "fs",
+   "temp_c": 27,
+   "vdd": 1.62
+  },
+  {
+   "f_hz": 127609470.30232742,
+   "osc": "osc_nmos",
+   "process": "fs",
+   "temp_c": 125,
+   "vdd": 1.62
+  },
+  {
+   "f_hz": 201611350.33325264,
+   "osc": "osc_nmos",
+   "process": "fs",
+   "temp_c": -40,
+   "vdd": 1.8
+  },
+  {
+   "f_hz": 175960323.79693842,
+   "osc": "osc_nmos",
+   "process": "fs",
+   "temp_c": 27,
+   "vdd": 1.8
+  },
+  {
+   "f_hz": 154421896.97041777,
+   "osc": "osc_nmos",
+   "process": "fs",
+   "temp_c": 125,
+   "vdd": 1.8
+  },
+  {
+   "f_hz": 242497314.6194322,
+   "osc": "osc_nmos",
+   "process": "fs",
+   "temp_c": -40,
+   "vdd": 1.98
+  },
+  {
+   "f_hz": 209886936.2585386,
+   "osc": "osc_nmos",
+   "process": "fs",
+   "temp_c": 27,
+   "vdd": 1.98
+  },
+  {
+   "f_hz": 180273914.05158123,
+   "osc": "osc_nmos",
+   "process": "fs",
+   "temp_c": 125,
+   "vdd": 1.98
+  },
+  {
+   "f_hz": 148505162.0653879,
+   "osc": "osc_nmos",
+   "process": "sf",
+   "temp_c": -40,
+   "vdd": 1.62
+  },
+  {
+   "f_hz": 135174074.55774572,
+   "osc": "osc_nmos",
+   "process": "sf",
+   "temp_c": 27,
+   "vdd": 1.62
+  },
+  {
+   "f_hz": 121789962.48464268,
+   "osc": "osc_nmos",
+   "process": "sf",
+   "temp_c": 125,
+   "vdd": 1.62
+  },
+  {
+   "f_hz": 183139925.21473455,
+   "osc": "osc_nmos",
+   "process": "sf",
+   "temp_c": -40,
+   "vdd": 1.8
+  },
+  {
+   "f_hz": 162260548.23414415,
+   "osc": "osc_nmos",
+   "process": "sf",
+   "temp_c": 27,
+   "vdd": 1.8
+  },
+  {
+   "f_hz": 141973183.51817593,
+   "osc": "osc_nmos",
+   "process": "sf",
+   "temp_c": 125,
+   "vdd": 1.8
+  },
+  {
+   "f_hz": 214412279.07433257,
+   "osc": "osc_nmos",
+   "process": "sf",
+   "temp_c": -40,
+   "vdd": 1.98
+  },
+  {
+   "f_hz": 187065154.60313156,
+   "osc": "osc_nmos",
+   "process": "sf",
+   "temp_c": 27,
+   "vdd": 1.98
+  },
+  {
+   "f_hz": 160417633.43585655,
+   "osc": "osc_nmos",
+   "process": "sf",
+   "temp_c": 125,
+   "vdd": 1.98
+  },
+  {
+   "f_hz": 114257463.56445208,
+   "osc": "osc_nmos",
+   "process": "ss",
+   "temp_c": -40,
+   "vdd": 1.62
+  },
+  {
+   "f_hz": 100401619.29039517,
+   "osc": "osc_nmos",
+   "process": "ss",
+   "temp_c": 27,
+   "vdd": 1.62
+  },
+  {
+   "f_hz": 88381841.74817413,
+   "osc": "osc_nmos",
+   "process": "ss",
+   "temp_c": 125,
+   "vdd": 1.62
+  },
+  {
+   "f_hz": 146572911.11800736,
+   "osc": "osc_nmos",
+   "process": "ss",
+   "temp_c": -40,
+   "vdd": 1.8
+  },
+  {
+   "f_hz": 125718549.48806456,
+   "osc": "osc_nmos",
+   "process": "ss",
+   "temp_c": 27,
+   "vdd": 1.8
+  },
+  {
+   "f_hz": 107180964.04777752,
+   "osc": "osc_nmos",
+   "process": "ss",
+   "temp_c": 125,
+   "vdd": 1.8
+  },
+  {
+   "f_hz": 177785865.52137482,
+   "osc": "osc_nmos",
+   "process": "ss",
+   "temp_c": -40,
+   "vdd": 1.98
+  },
+  {
+   "f_hz": 150351393.28154242,
+   "osc": "osc_nmos",
+   "process": "ss",
+   "temp_c": 27,
+   "vdd": 1.98
+  },
+  {
+   "f_hz": 125342062.78582628,
+   "osc": "osc_nmos",
+   "process": "ss",
+   "temp_c": 125,
+   "vdd": 1.98
+  },
+  {
+   "f_hz": 161687902.88771898,
+   "osc": "osc_nmos",
+   "process": "tt",
+   "temp_c": -40,
+   "vdd": 1.62
+  },
+  {
+   "f_hz": 143950271.64750764,
+   "osc": "osc_nmos",
+   "process": "tt",
+   "temp_c": 27,
+   "vdd": 1.62
+  },
+  {
+   "f_hz": 128423539.17673112,
+   "osc": "osc_nmos",
+   "process": "tt",
+   "temp_c": 125,
+   "vdd": 1.62
+  },
+  {
+   "f_hz": 199038813.21902755,
+   "osc": "osc_nmos",
+   "process": "tt",
+   "temp_c": -40,
+   "vdd": 1.8
+  },
+  {
+   "f_hz": 174351402.7961814,
+   "osc": "osc_nmos",
+   "process": "tt",
+   "temp_c": 27,
+   "vdd": 1.8
+  },
+  {
+   "f_hz": 151666604.25448754,
+   "osc": "osc_nmos",
+   "process": "tt",
+   "temp_c": 125,
+   "vdd": 1.8
+  },
+  {
+   "f_hz": 233641464.6979319,
+   "osc": "osc_nmos",
+   "process": "tt",
+   "temp_c": -40,
+   "vdd": 1.98
+  },
+  {
+   "f_hz": 202879711.08693406,
+   "osc": "osc_nmos",
+   "process": "tt",
+   "temp_c": 27,
+   "vdd": 1.98
+  },
+  {
+   "f_hz": 173382992.45994908,
+   "osc": "osc_nmos",
+   "process": "tt",
+   "temp_c": 125,
+   "vdd": 1.98
+  },
+  {
+   "f_hz": 53519213.76602685,
+   "osc": "osc_pmos",
+   "process": "ff",
+   "temp_c": -40,
+   "vdd": 1.62
+  },
+  {
+   "f_hz": 61162081.13429052,
+   "osc": "osc_pmos",
+   "process": "ff",
+   "temp_c": 27,
+   "vdd": 1.62
+  },
+  {
+   "f_hz": 70671379.45697537,
+   "osc": "osc_pmos",
+   "process": "ff",
+   "temp_c": 125,
+   "vdd": 1.62
+  },
+  {
+   "f_hz": 77519379.82493372,
+   "osc": "osc_pmos",
+   "process": "ff",
+   "temp_c": -40,
+   "vdd": 1.8
+  },
+  {
+   "f_hz": 81622381.75432155,
+   "osc": "osc_pmos",
+   "process": "ff",
+   "temp_c": 27,
+   "vdd": 1.8
+  },
+  {
+   "f_hz": 89285714.06396806,
+   "osc": "osc_pmos",
+   "process": "ff",
+   "temp_c": 125,
+   "vdd": 1.8
+  },
+  {
+   "f_hz": 102564099.3470386,
+   "osc": "osc_pmos",
+   "process": "ff",
+   "temp_c": -40,
+   "vdd": 1.98
+  },
+  {
+   "f_hz": 103626943.18681966,
+   "osc": "osc_pmos",
+   "process": "ff",
+   "temp_c": 27,
+   "vdd": 1.98
+  },
+  {
+   "f_hz": 106951872.53318371,
+   "osc": "osc_pmos",
+   "process": "ff",
+   "temp_c": 125,
+   "vdd": 1.98
+  },
+  {
+   "f_hz": 42964563.88463171,
+   "osc": "osc_pmos",
+   "process": "fs",
+   "temp_c": -40,
+   "vdd": 1.62
+  },
+  {
+   "f_hz": 48543689.56904345,
+   "osc": "osc_pmos",
+   "process": "fs",
+   "temp_c": 27,
+   "vdd": 1.62
+  },
+  {
+   "f_hz": 56818182.50327375,
+   "osc": "osc_pmos",
+   "process": "fs",
+   "temp_c": 125,
+   "vdd": 1.62
+  },
+  {
+   "f_hz": 60882798.68472684,
+   "osc": "osc_pmos",
+   "process": "fs",
+   "temp_c": -40,
+   "vdd": 1.8
+  },
+  {
+   "f_hz": 64660263.53363221,
+   "osc": "osc_pmos",
+   "process": "fs",
+   "temp_c": 27,
+   "vdd": 1.8
+  },
+  {
+   "f_hz": 71301215.67286338,
+   "osc": "osc_pmos",
+   "process": "fs",
+   "temp_c": 125,
+   "vdd": 1.8
+  },
+  {
+   "f_hz": 77821012.47566809,
+   "osc": "osc_pmos",
+   "process": "fs",
+   "temp_c": -40,
+   "vdd": 1.98
+  },
+  {
+   "f_hz": 80271741.65817991,
+   "osc": "osc_pmos",
+   "process": "fs",
+   "temp_c": 27,
+   "vdd": 1.98
+  },
+  {
+   "f_hz": 85470090.77532943,
+   "osc": "osc_pmos",
+   "process": "fs",
+   "temp_c": 125,
+   "vdd": 1.98
+  },
+  {
+   "f_hz": 33500839.120179288,
+   "osc": "osc_pmos",
+   "process": "sf",
+   "temp_c": -40,
+   "vdd": 1.62
+  },
+  {
+   "f_hz": 36363637.27426139,
+   "osc": "osc_pmos",
+   "process": "sf",
+   "temp_c": 27,
+   "vdd": 1.62
+  },
+  {
+   "f_hz": 41407867.89028417,
+   "osc": "osc_pmos",
+   "process": "sf",
+   "temp_c": 125,
+   "vdd": 1.62
+  },
+  {
+   "f_hz": 53423986.22695745,
+   "osc": "osc_pmos",
+   "process": "sf",
+   "temp_c": -40,
+   "vdd": 1.8
+  },
+  {
+   "f_hz": 53304685.493765265,
+   "osc": "osc_pmos",
+   "process": "sf",
+   "temp_c": 27,
+   "vdd": 1.8
+  },
+  {
+   "f_hz": 56179781.74937453,
+   "osc": "osc_pmos",
+   "process": "sf",
+   "temp_c": 125,
+   "vdd": 1.8
+  },
+  {
+   "f_hz": 77519377.58908515,
+   "osc": "osc_pmos",
+   "process": "sf",
+   "temp_c": -40,
+   "vdd": 1.98
+  },
+  {
+   "f_hz": 72514829.84897973,
+   "osc": "osc_pmos",
+   "process": "sf",
+   "temp_c": 27,
+   "vdd": 1.98
+  },
+  {
+   "f_hz": 71174387.77201699,
+   "osc": "osc_pmos",
+   "process": "sf",
+   "temp_c": 125,
+   "vdd": 1.98
+  },
+  {
+   "f_hz": 26260832.42347752,
+   "osc": "osc_pmos",
+   "process": "ss",
+   "temp_c": -40,
+   "vdd": 1.62
+  },
+  {
+   "f_hz": 29258842.47244123,
+   "osc": "osc_pmos",
+   "process": "ss",
+   "temp_c": 27,
+   "vdd": 1.62
+  },
+  {
+   "f_hz": 34090120.69476002,
+   "osc": "osc_pmos",
+   "process": "ss",
+   "temp_c": 125,
+   "vdd": 1.62
+  },
+  {
+   "f_hz": 41407867.46484667,
+   "osc": "osc_pmos",
+   "process": "ss",
+   "temp_c": -40,
+   "vdd": 1.8
+  },
+  {
+   "f_hz": 42553196.503384754,
+   "osc": "osc_pmos",
+   "process": "ss",
+   "temp_c": 27,
+   "vdd": 1.8
+  },
+  {
+   "f_hz": 45662113.54115685,
+   "osc": "osc_pmos",
+   "process": "ss",
+   "temp_c": 125,
+   "vdd": 1.8
+  },
+  {
+   "f_hz": 58508965.27083038,
+   "osc": "osc_pmos",
+   "process": "ss",
+   "temp_c": -40,
+   "vdd": 1.98
+  },
+  {
+   "f_hz": 56657223.80687674,
+   "osc": "osc_pmos",
+   "process": "ss",
+   "temp_c": 27,
+   "vdd": 1.98
+  },
+  {
+   "f_hz": 57802192.34451125,
+   "osc": "osc_pmos",
+   "process": "ss",
+   "temp_c": 125,
+   "vdd": 1.98
+  },
+  {
+   "f_hz": 38759689.557695955,
+   "osc": "osc_pmos",
+   "process": "tt",
+   "temp_c": -40,
+   "vdd": 1.62
+  },
+  {
+   "f_hz": 43763675.821842015,
+   "osc": "osc_pmos",
+   "process": "tt",
+   "temp_c": 27,
+   "vdd": 1.62
+  },
+  {
+   "f_hz": 51316789.66522774,
+   "osc": "osc_pmos",
+   "process": "tt",
+   "temp_c": 125,
+   "vdd": 1.62
+  },
+  {
+   "f_hz": 57189178.922195226,
+   "osc": "osc_pmos",
+   "process": "tt",
+   "temp_c": -40,
+   "vdd": 1.8
+  },
+  {
+   "f_hz": 61672518.16995786,
+   "osc": "osc_pmos",
+   "process": "tt",
+   "temp_c": 27,
+   "vdd": 1.8
+  },
+  {
+   "f_hz": 66628318.92813612,
+   "osc": "osc_pmos",
+   "process": "tt",
+   "temp_c": 125,
+   "vdd": 1.8
+  },
+  {
+   "f_hz": 77821012.47615367,
+   "osc": "osc_pmos",
+   "process": "tt",
+   "temp_c": -40,
+   "vdd": 1.98
+  },
+  {
+   "f_hz": 78125000.13737233,
+   "osc": "osc_pmos",
+   "process": "tt",
+   "temp_c": 27,
+   "vdd": 1.98
+  },
+  {
+   "f_hz": 81967222.83733904,
+   "osc": "osc_pmos",
+   "process": "tt",
+   "temp_c": 125,
+   "vdd": 1.98
+  },
+  {
+   "f_hz": 813030.878128518,
+   "osc": "osc_subth",
+   "process": "ff",
+   "temp_c": -40,
+   "vdd": 1.62
+  },
+  {
+   "f_hz": 7019494.7956706155,
+   "osc": "osc_subth",
+   "process": "ff",
+   "temp_c": 27,
+   "vdd": 1.62
+  },
+  {
+   "f_hz": 24464143.127767984,
+   "osc": "osc_subth",
+   "process": "ff",
+   "temp_c": 125,
+   "vdd": 1.62
+  },
+  {
+   "f_hz": 1419020.9002624159,
+   "osc": "osc_subth",
+   "process": "ff",
+   "temp_c": -40,
+   "vdd": 1.8
+  },
+  {
+   "f_hz": 10078203.44715719,
+   "osc": "osc_subth",
+   "process": "ff",
+   "temp_c": 27,
+   "vdd": 1.8
+  },
+  {
+   "f_hz": 32276265.23642582,
+   "osc": "osc_subth",
+   "process": "ff",
+   "temp_c": 125,
+   "vdd": 1.8
+  },
+  {
+   "f_hz": 2152542.119349666,
+   "osc": "osc_subth",
+   "process": "ff",
+   "temp_c": -40,
+   "vdd": 1.98
+  },
+  {
+   "f_hz": 13611673.65668487,
+   "osc": "osc_subth",
+   "process": "ff",
+   "temp_c": 27,
+   "vdd": 1.98
+  },
+  {
+   "f_hz": 35121209.721246734,
+   "osc": "osc_subth",
+   "process": "ff",
+   "temp_c": 125,
+   "vdd": 1.98
+  },
+  {
+   "f_hz": 2791109.5190178263,
+   "osc": "osc_subth",
+   "process": "fs",
+   "temp_c": -40,
+   "vdd": 1.62
+  },
+  {
+   "f_hz": 8805224.765123222,
+   "osc": "osc_subth",
+   "process": "fs",
+   "temp_c": 27,
+   "vdd": 1.62
+  },
+  {
+   "f_hz": 24090007.55490155,
+   "osc": "osc_subth",
+   "process": "fs",
+   "temp_c": 125,
+   "vdd": 1.62
+  },
+  {
+   "f_hz": 3475518.014777274,
+   "osc": "osc_subth",
+   "process": "fs",
+   "temp_c": -40,
+   "vdd": 1.8
+  },
+  {
+   "f_hz": 11276390.860539494,
+   "osc": "osc_subth",
+   "process": "fs",
+   "temp_c": 27,
+   "vdd": 1.8
+  },
+  {
+   "f_hz": 23461622.13121787,
+   "osc": "osc_subth",
+   "process": "fs",
+   "temp_c": 125,
+   "vdd": 1.8
+  },
+  {
+   "f_hz": 5175781.207936281,
+   "osc": "osc_subth",
+   "process": "fs",
+   "temp_c": -40,
+   "vdd": 1.98
+  },
+  {
+   "f_hz": 14949335.483783975,
+   "osc": "osc_subth",
+   "process": "fs",
+   "temp_c": 27,
+   "vdd": 1.98
+  },
+  {
+   "f_hz": 32990287.794965416,
+   "osc": "osc_subth",
+   "process": "fs",
+   "temp_c": 125,
+   "vdd": 1.98
+  },
+  {
+   "f_hz": 12911.361735066579,
+   "osc": "osc_subth",
+   "process": "sf",
+   "temp_c": 27,
+   "vdd": 1.62
+  },
+  {
+   "f_hz": 1031751.4888198914,
+   "osc": "osc_subth",
+   "process": "sf",
+   "temp_c": 125,
+   "vdd": 1.62
+  },
+  {
+   "f_hz": 26182.924134432902,
+   "osc": "osc_subth",
+   "process": "sf",
+   "temp_c": 27,
+   "vdd": 1.8
+  },
+  {
+   "f_hz": 2019072.8229702127,
+   "osc": "osc_subth",
+   "process": "sf",
+   "temp_c": 125,
+   "vdd": 1.8
+  },
+  {
+   "f_hz": 52472.18279366433,
+   "osc": "osc_subth",
+   "process": "sf",
+   "temp_c": 27,
+   "vdd": 1.98
+  },
+  {
+   "f_hz": 3180603.1442553387,
+   "osc": "osc_subth",
+   "process": "sf",
+   "temp_c": 125,
+   "vdd": 1.98
+  },
+  {
+   "f_hz": 54418.584034344116,
+   "osc": "osc_subth",
+   "process": "ss",
+   "temp_c": 27,
+   "vdd": 1.62
+  },
+  {
+   "f_hz": 2385599.8313889485,
+   "osc": "osc_subth",
+   "process": "ss",
+   "temp_c": 125,
+   "vdd": 1.62
+  },
+  {
+   "f_hz": 107944.35426754811,
+   "osc": "osc_subth",
+   "process": "ss",
+   "temp_c": 27,
+   "vdd": 1.8
+  },
+  {
+   "f_hz": 3296368.40118685,
+   "osc": "osc_subth",
+   "process": "ss",
+   "temp_c": 125,
+   "vdd": 1.8
+  },
+  {
+   "f_hz": 4971.471944129197,
+   "osc": "osc_subth",
+   "process": "ss",
+   "temp_c": -40,
+   "vdd": 1.98
+  },
+  {
+   "f_hz": 205145.3844727804,
+   "osc": "osc_subth",
+   "process": "ss",
+   "temp_c": 27,
+   "vdd": 1.98
+  },
+  {
+   "f_hz": 5032713.297460257,
+   "osc": "osc_subth",
+   "process": "ss",
+   "temp_c": 125,
+   "vdd": 1.98
+  },
+  {
+   "f_hz": 32400.397989380297,
+   "osc": "osc_subth",
+   "process": "tt",
+   "temp_c": -40,
+   "vdd": 1.62
+  },
+  {
+   "f_hz": 861347.1639419928,
+   "osc": "osc_subth",
+   "process": "tt",
+   "temp_c": 27,
+   "vdd": 1.62
+  },
+  {
+   "f_hz": 8537494.177065333,
+   "osc": "osc_subth",
+   "process": "tt",
+   "temp_c": 125,
+   "vdd": 1.62
+  },
+  {
+   "f_hz": 72709.73686995459,
+   "osc": "osc_subth",
+   "process": "tt",
+   "temp_c": -40,
+   "vdd": 1.8
+  },
+  {
+   "f_hz": 1744490.6763360691,
+   "osc": "osc_subth",
+   "process": "tt",
+   "temp_c": 27,
+   "vdd": 1.8
+  },
+  {
+   "f_hz": 12855746.297722686,
+   "osc": "osc_subth",
+   "process": "tt",
+   "temp_c": 125,
+   "vdd": 1.8
+  },
+  {
+   "f_hz": 151444.10004504476,
+   "osc": "osc_subth",
+   "process": "tt",
+   "temp_c": -40,
+   "vdd": 1.98
+  },
+  {
+   "f_hz": 1723249.7214174187,
+   "osc": "osc_subth",
+   "process": "tt",
+   "temp_c": 27,
+   "vdd": 1.98
+  },
+  {
+   "f_hz": 15463161.238886157,
+   "osc": "osc_subth",
+   "process": "tt",
+   "temp_c": 125,
+   "vdd": 1.98
+  },
+  {
+   "f_hz": 61740763.60188568,
+   "osc": "osc_wire",
+   "process": "ff",
+   "temp_c": -40,
+   "vdd": 1.62
+  },
+  {
+   "f_hz": 65086111.845169395,
+   "osc": "osc_wire",
+   "process": "ff",
+   "temp_c": 27,
+   "vdd": 1.62
+  },
+  {
+   "f_hz": 68927805.82726231,
+   "osc": "osc_wire",
+   "process": "ff",
+   "temp_c": 125,
+   "vdd": 1.62
+  },
+  {
+   "f_hz": 72454805.09594817,
+   "osc": "osc_wire",
+   "process": "ff",
+   "temp_c": -40,
+   "vdd": 1.8
+  },
+  {
+   "f_hz": 74856503.71411338,
+   "osc": "osc_wire",
+   "process": "ff",
+   "temp_c": 27,
+   "vdd": 1.8
+  },
+  {
+   "f_hz": 77181134.93501294,
+   "osc": "osc_wire",
+   "process": "ff",
+   "temp_c": 125,
+   "vdd": 1.8
+  },
+  {
+   "f_hz": 82007588.60398446,
+   "osc": "osc_wire",
+   "process": "ff",
+   "temp_c": -40,
+   "vdd": 1.98
+  },
+  {
+   "f_hz": 83377166.65948026,
+   "osc": "osc_wire",
+   "process": "ff",
+   "temp_c": 27,
+   "vdd": 1.98
+  },
+  {
+   "f_hz": 84098622.31056808,
+   "osc": "osc_wire",
+   "process": "ff",
+   "temp_c": 125,
+   "vdd": 1.98
+  },
+  {
+   "f_hz": 54882172.31364726,
+   "osc": "osc_wire",
+   "process": "fs",
+   "temp_c": -40,
+   "vdd": 1.62
+  },
+  {
+   "f_hz": 57569273.81543221,
+   "osc": "osc_wire",
+   "process": "fs",
+   "temp_c": 27,
+   "vdd": 1.62
+  },
+  {
+   "f_hz": 60989378.651983984,
+   "osc": "osc_wire",
+   "process": "fs",
+   "temp_c": 125,
+   "vdd": 1.62
+  },
+  {
+   "f_hz": 64894469.45039752,
+   "osc": "osc_wire",
+   "process": "fs",
+   "temp_c": -40,
+   "vdd": 1.8
+  },
+  {
+   "f_hz": 66854265.14600162,
+   "osc": "osc_wire",
+   "process": "fs",
+   "temp_c": 27,
+   "vdd": 1.8
+  },
+  {
+   "f_hz": 69079196.99926749,
+   "osc": "osc_wire",
+   "process": "fs",
+   "temp_c": 125,
+   "vdd": 1.8
+  },
+  {
+   "f_hz": 73960192.12898757,
+   "osc": "osc_wire",
+   "process": "fs",
+   "temp_c": -40,
+   "vdd": 1.98
+  },
+  {
+   "f_hz": 75137951.61406805,
+   "osc": "osc_wire",
+   "process": "fs",
+   "temp_c": 27,
+   "vdd": 1.98
+  },
+  {
+   "f_hz": 76028487.41477321,
+   "osc": "osc_wire",
+   "process": "fs",
+   "temp_c": 125,
+   "vdd": 1.98
+  },
+  {
+   "f_hz": 43741205.18561909,
+   "osc": "osc_wire",
+   "process": "sf",
+   "temp_c": -40,
+   "vdd": 1.62
+  },
+  {
+   "f_hz": 48611588.80587502,
+   "osc": "osc_wire",
+   "process": "sf",
+   "temp_c": 27,
+   "vdd": 1.62
+  },
+  {
+   "f_hz": 54295477.4447191,
+   "osc": "osc_wire",
+   "process": "sf",
+   "temp_c": 125,
+   "vdd": 1.62
+  },
+  {
+   "f_hz": 53707555.492954105,
+   "osc": "osc_wire",
+   "process": "sf",
+   "temp_c": -40,
+   "vdd": 1.8
+  },
+  {
+   "f_hz": 57596937.929314055,
+   "osc": "osc_wire",
+   "process": "sf",
+   "temp_c": 27,
+   "vdd": 1.8
+  },
+  {
+   "f_hz": 62077810.642289706,
+   "osc": "osc_wire",
+   "process": "sf",
+   "temp_c": 125,
+   "vdd": 1.8
+  },
+  {
+   "f_hz": 62584864.97815748,
+   "osc": "osc_wire",
+   "process": "sf",
+   "temp_c": -40,
+   "vdd": 1.98
+  },
+  {
+   "f_hz": 65608118.007370755,
+   "osc": "osc_wire",
+   "process": "sf",
+   "temp_c": 27,
+   "vdd": 1.98
+  },
+  {
+   "f_hz": 68862121.85030583,
+   "osc": "osc_wire",
+   "process": "sf",
+   "temp_c": 125,
+   "vdd": 1.98
+  },
+  {
+   "f_hz": 39904448.69189287,
+   "osc": "osc_wire",
+   "process": "ss",
+   "temp_c": -40,
+   "vdd": 1.62
+  },
+  {
+   "f_hz": 43881862.865693286,
+   "osc": "osc_wire",
+   "process": "ss",
+   "temp_c": 27,
+   "vdd": 1.62
+  },
+  {
+   "f_hz": 48644787.374027625,
+   "osc": "osc_wire",
+   "process": "ss",
+   "temp_c": 125,
+   "vdd": 1.62
+  },
+  {
+   "f_hz": 48954502.78297517,
+   "osc": "osc_wire",
+   "process": "ss",
+   "temp_c": -40,
+   "vdd": 1.8
+  },
+  {
+   "f_hz": 52147511.620621435,
+   "osc": "osc_wire",
+   "process": "ss",
+   "temp_c": 27,
+   "vdd": 1.8
+  },
+  {
+   "f_hz": 55988097.50707805,
+   "osc": "osc_wire",
+   "process": "ss",
+   "temp_c": 125,
+   "vdd": 1.8
+  },
+  {
+   "f_hz": 57110716.96460442,
+   "osc": "osc_wire",
+   "process": "ss",
+   "temp_c": -40,
+   "vdd": 1.98
+  },
+  {
+   "f_hz": 59621239.8469752,
+   "osc": "osc_wire",
+   "process": "ss",
+   "temp_c": 27,
+   "vdd": 1.98
+  },
+  {
+   "f_hz": 62502057.26444976,
+   "osc": "osc_wire",
+   "process": "ss",
+   "temp_c": 125,
+   "vdd": 1.98
+  },
+  {
+   "f_hz": 50432530.33958572,
+   "osc": "osc_wire",
+   "process": "tt",
+   "temp_c": -40,
+   "vdd": 1.62
+  },
+  {
+   "f_hz": 54058622.58077868,
+   "osc": "osc_wire",
+   "process": "tt",
+   "temp_c": 27,
+   "vdd": 1.62
+  },
+  {
+   "f_hz": 58538862.975568764,
+   "osc": "osc_wire",
+   "process": "tt",
+   "temp_c": 125,
+   "vdd": 1.62
+  },
+  {
+   "f_hz": 60362243.50777696,
+   "osc": "osc_wire",
+   "process": "tt",
+   "temp_c": -40,
+   "vdd": 1.8
+  },
+  {
+   "f_hz": 63177202.33865255,
+   "osc": "osc_wire",
+   "process": "tt",
+   "temp_c": 27,
+   "vdd": 1.8
+  },
+  {
+   "f_hz": 66543062.67203561,
+   "osc": "osc_wire",
+   "process": "tt",
+   "temp_c": 125,
+   "vdd": 1.8
+  },
+  {
+   "f_hz": 69317053.2921452,
+   "osc": "osc_wire",
+   "process": "tt",
+   "temp_c": -40,
+   "vdd": 1.98
+  },
+  {
+   "f_hz": 71345053.45262635,
+   "osc": "osc_wire",
+   "process": "tt",
+   "temp_c": 27,
+   "vdd": 1.98
+  },
+  {
+   "f_hz": 73497743.02935979,
+   "osc": "osc_wire",
+   "process": "tt",
+   "temp_c": 125,
+   "vdd": 1.98
+  }
+ ]
+}

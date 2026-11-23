@@ -1,0 +1,8 @@
+* ACTIVE-power candidate bench: pmos_wn015 (EXPERIMENT VARIANT, not the committed design).
+* Same bench shape as tb/active_osc_pmos.spice; the variant subckt differs from
+* design/osc_bank/osc_pmos.spice by exactly the lever recorded in the iteration record.
+.include "cand/pmos_wn015.spice"
+Vdd vdd 0 1.8
+Vss vss 0 0
+Ben en 0 V='v(vdd)*min(max((time-1n)/100p,0),1)'
+Xdut en out vdd vss osc_pmos_wn015

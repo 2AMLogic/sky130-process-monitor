@@ -13,6 +13,8 @@ incomplete for two independent reasons (below). Nothing was relaxed; the failing
 | Path | What |
 |---|---|
 | `gen_requests.py` | writes **everything in `osc/` and `requests/<osc>.json`**: the #29 `grid_<osc>.json` with only the testbench body swapped, and the bench bodies themselves derived from `sim/sensitivity/osc/`. Deterministic; a re-run must leave `git status --porcelain sim/pex` empty |
+| `measure_frequency.py` | the `klt pex --measure-command` callback of the 2026-11-22 frequency pass (issue #282): derives each leg's bench/request from the committed bytes, runs the grid through `klt sim` on the fleet, reduces crossings to `f_hz` with the shared estimator. Offline suite: `sim/pex/test_measure_frequency.py` |
+| `grade_pex.py` | grades the committed reports: the historical count path (`records/2026-11-11/20-grade-*`) and the frequency path (`freq`, issue #282) that rebuilds both legs from the nested reports, replays `sim/solve/solve.py` per leg and writes the paired comparison. Suites: `sim/pex/test_grade_pex.py` |
 | `osc/tb_<osc>.spice`, `osc/tb_<osc>_relaxed.spice`, `osc/osc_hd_dut.spice` | GENERATED, do not edit. Derived from `sim/sensitivity/osc/tb_<osc>.spice` so the pex leg runs the #29 circuit and no second copy exists (issue #137): the line-2 provenance comment is swapped (except `osc_hd`, whose committed bench keeps the sensitivity wording and is reproduced as committed), `osc_hd` gets the one `.include` `klt pex` requires plus the extracted pin order (see "osc_hd pin order"), and `_relaxed` appends the #69 solver options. `sim/pex/test_gen_requests.py` (in `npm test`) fails if a committed file stops matching |
 | `requests/<osc>.json` | `klt pex` testbench requests (`batch.capacity_wait_s: 600`). GENERATED |
 | `requests/osc_{nmos,wire}_coldcell.json` | hand-written single-cell follow-up requests, not emitted by the generator (see "The two non-converged cold cells") |
@@ -381,3 +383,152 @@ Records (new, dated): `records/2026-11-20-osc_subth-dev2493.pex.report.json` (th
    `7.analog` list now cites this report as a fifth entry, and the committed signoff record
    (`manifests/sky130-process-monitor.signoff.json`) was regenerated with the pinned klt; the only diff is the new
    `met` citation.
+
+## Release probe 2026-11-20 (issue #275): `osc_subth` LVS on released 0.9.1 / 0.9.2 — both streams `match`
+
+SIMULATED/extraction plus one local single-corner probe (`klt 0.9.1` git `4d0d29be…` and `klt 0.9.2` git `046ba74…`
+via `uvx`, engine klayout 0.30.13; ngspice-47; no grid). Record (new, dated):
+[`records/2026-11-20-osc_subth-lvs-probe-0.9.2.json`](records/2026-11-20-osc_subth-lvs-probe-0.9.2.json). Nothing earlier was edited; no threshold was changed; the CI
+pin (`.github/workflows/signoff.yml`) stays `klayout-tools==0.9.1` — migrating the pin re-renders the signoff record
+and the attestations and is its own change.
+
+1. **LVS on the two input streams** (each stream's own GDS / request / reference taken from one commit; a fresh
+   scratch `klt extract --deck sky130` + `klt lvs` per run, per the request's relative `osc_subth.layout.spice`):
+
+   | stream | GDS sha256 | klt 0.9.1 | klt 0.9.2 |
+   |---|---|---|---|
+   | pre-divider, the original 2AMLogic/klayout-tools#5311 reporter inputs (`8edb3f4`) | `76c6a407…` | `match`, 34/34 nets, 46/46 devices | `match`, 34/34 nets, 46/46 devices |
+   | divider-bearing (`b9fc650`, current main) | `625c8ff9…` | `match`, 34/34 nets, 48/48 devices | `match`, 34/34 nets, 48/48 devices |
+
+   The historical dev661 observation on the original stream — 48 layout nets vs 34 reference nets
+   (2AMLogic/klayout-tools#5311, `0.9.2.dev661`) — does **not** reproduce on either release. The divider stream's
+   two mismatches are the known `res_high_po` parameter caveats of the committed `lvs/osc_subth.report.json`
+   (`geometry_not_compared` + `placeholder_value`), identical on both releases.
+2. **The `vh` split is gone on the release.** `diag/vh_split.py` with klt 0.9.2 (its own Python, 0.9.2 first on
+   PATH): 14/14 headers share their net with a stage-PFET terminal (dev661: 0/14); the no-`lvtn` scratch control
+   stays 14/14. All 14 headers extract as `pfet L=0.5U W=0.42U AS=0.2205P AD=0.1218P PS=1.54U`, identical on 0.9.1
+   and 0.9.2 (the #5315 apportioned shared-diffusion geometry).
+3. **One-corner ring-start on the released extraction** (`klt pex --extract-only`, `--pdk-root` pinned to the repo's
+   `c6d73a35…` sky130A; extracted sha256 `a13f74ea…`, **byte-identical** to `extracted/osc_subth.dev2493.spice`, so
+   the release and the dev2493 first-fix build extract the same bytes here): `probe/run_probe.sh`,
+   tt / 1.80 V / 27 C, free `vbp` → **111 rising edges / 100 µs** (schematic 169; split dev661 extraction 0;
+   dev2493 111), `vbp` settled at 1.5000 V.
+4. **Upstream:** the reporter result is posted on 2AMLogic/klayout-tools#5311
+   ([comment](https://github.com/2AMLogic/klayout-tools/issues/5311#issuecomment-7050857025)) — `match` with the
+   original-stream counts for the release and the 0.9.1 control; closure stays with the upstream owner.
+
+## Re-run 2026-11-22 (issue #282): measured schematic-vs-extracted FREQUENCIES on all five oscillators (`klt pex --measure-command`)
+
+SIMULATED only (ngspice on the batch fleet; `klt 0.9.3.dev2830+g16b5356ea24c`, layout `layout/osc_bank.gds`
+sha256 `625c8ff9…` unchanged since #109). Nothing earlier was edited; no threshold was changed; no local
+ngspice grid was run (one single-corner pilot and the two 2026-11-11-style local probes are the only local
+units, as host rules allow). The measurement is the **frequency itself** — `f_osc = (n-1)/(t_last - t_first)`
+over the rising crossings of `v(out)` at VDD/2 after `SKIP_EDGES=3` start-up edges, `MIN_CYCLES=5` complete
+cycles, i.e. ≥ 9 edges — computed by the same shared estimator as the schematic #29 frequencies
+(`sim/sensitivity/analyze.py::freq_from_crossings`, loaded via `sim/_siblings.py`), not a count proxy.
+
+### How (the `--measure-command` contract, 2AMLogic/klayout-tools#2478)
+
+`sim/pex/measure_frequency.py` is the caller-supplied measure command. Per leg it takes the DUT netlist
+`klt pex` hands it (the `--reference-netlist` for the schematic leg, the freshly extracted netlist for the
+extracted leg), re-points the committed `sim/pex/osc/tb_<osc>.spice` bench's single DUT `.include` at it —
+rewriting the Xdut line to that netlist's own `.SUBCKT` pin order, so one bench body serves both legs
+whatever pin order the extractor emits — derives the request from the committed
+`sim/pex/requests/<osc>.json` (only the netlist swapped), runs it through `klt sim` on the batch fleet
+(request `batch.capacity_wait_s: 600`; `--hosts 45` sharding for `osc_subth`), reduces each corner's
+crossing times to `f_hz`, and prints the measurement document `klt pex` pairs into `delta[]`. Unresolved
+cells are `null` with the cause: *too few edges*, *solver error*, or *missing result*.
+
+One paired corner (pilot, `--backend local`, tt / 1.80 V / 27 °C, `osc_hd`) verified the callback first:
+record `records/2026-11-22-freq-pilot-osc_hd.pex.report.json` — sch 641.03 MHz vs ext 548.62 MHz
+(−14.4 %), 191 vs 164 rising edges, matching the 2026-11-10 counts (191/164) at that corner. The pilot
+also caught that klt dev2830's `--rename-declared-pins` extracts `osc_hd` in the declared pin order
+(`en out vdd vss`) where the 2026-11-10 extraction used the label order (`out en vss vdd`); the bench
+derivation now follows the handed netlist's own pin order instead of assuming either.
+
+Grid invocation per oscillator (foreground, blocking; the callback's nested `klt sim` routes to the fleet;
+`osc_hd` additionally takes `--rename-declared-pins`, and `osc_subth` takes `--hosts 45` in the measure
+command and `--measure-timeout-s 7200`):
+
+    klt pex layout/osc_bank.gds --deck sky130 --pdk sky130A --pdk-root <pinned sky130A (open_pdks c6d73a35…)> \
+        --top <osc> --pins en,out,vdd,vss --backend batch --wait-for-capacity 600 \
+        --measure-command 'python3 -I sim/pex/measure_frequency.py --osc <osc>' \
+        --reference-netlist design/osc_bank/<osc>.spice \
+        -o <dir>/<osc>.spice --outdir <dir> --envelope-out records/2026-11-22-freq-<osc>.pex.report.json --format json
+
+(`osc_hd`'s `--reference-netlist` is `sim/pex/osc/osc_hd_dut.spice`, the pin-order wrapper.) Records per
+oscillator: the `klt pex` report `records/2026-11-22-freq-<osc>.pex.report.json`, both nested leg `klt sim`
+reports (the crossing times the frequencies were reduced from)
+`records/2026-11-22-freq-<osc>-{schematic,extracted}.sim.report.json.gz`, and the extracted netlist
+`extracted/<osc>.dev2830.spice`. Provenance per report: `klt 0.9.3.dev2830`, layout `625c8ff9…`,
+client-side extraction PDK `open_pdks c6d73a35…` (`--pdk-root`, the repo pin; deck expected `f6eeac7d…`,
+`compatibility.status = "mismatch"` recorded verbatim as on 2026-11-20), every fleet worker on both legs
+ran PDK `f6eeac7d…` with ngspice 47 (`environment.remote.worker_environment` in each nested report).
+
+### Coverage: all 225 oscillator/corner pairs accounted for on each leg
+
+| Oscillator | pex status | paired cells | unresolved (leg, cause) | delta % min / median / max | extracted netlist sha256 |
+|---|---|---|---|---|---|
+| `osc_hd` | pass | 45/45 | — | −22.0 / −14.4 / −6.4 | `bc4ab743…` |
+| `osc_nmos` | error | 44/45 | tt/1.80 V/−40 C, schematic, solver error (the known #29 cold cell) | −23.9 / −21.5 / −19.2 | `68b62d0e…` |
+| `osc_pmos` | pass | 45/45 | — | −26.9 / −23.9 / −21.6 | `3ace67c3…` |
+| `osc_wire` | error | 44/45 | sf/1.98 V/−40 C, schematic, solver error (the known #29 cold cell) | −26.8 / −16.4 / +6.5 | `09374950…` |
+| `osc_subth` | error | 39/45 | ss/{1.62,1.80} V/−40 C and sf/{1.62,1.80,1.98} V/−40 C, **both legs**, too few edges (the #29/#32 cold cells); fs/1.62 V/125 C, schematic, solver error (a one-off this run, not a known cold cell — the extracted leg measured 24.09 MHz there) | −81.1 / −36.5 / +72.6 | `a13f74ea…` |
+
+Every unresolved cell is a `null` `f_hz` with its cause in the report's `delta[].error.message` — nothing
+is dropped silently. The relaxed-solver cold-cell records of 2026-11-11 are NOT folded in (that is #264's
+decision); the two schematic cold cells above are the same two cells those records cover.
+
+### Grading rows 2–4 on measured frequencies (`grade_pex.py freq`)
+
+    R=sim/sensitivity/records/reports
+    python3 -I sim/sensitivity/analyze.py extract-mc \
+      $R/mc_osc_hd.json.gz $R/mc_osc_nmos.json.gz $R/mc_osc_pmos.json.gz $R/mc_osc_wire.json.gz \
+      $R/mc_osc_subth.json.gz -o mc.json        # the 2026-11-05 record's pinned MC recipe
+    python3 -I sim/pex/grade_pex.py freq mc.json records/2026-11-22-grade-extracted-frequencies.json \
+      records/2026-11-22-freq-osc_{hd,nmos,pmos,wire,subth}.pex.report.json
+
+The grader rebuilds each leg's `f_hz` from the committed nested leg reports (same shared estimator),
+cross-checks them against the pex delta values, writes one solve input per leg
+(`2026-11-22-grade-extracted-frequencies-leg-{schematic,extracted}.json`) and replays
+`sim/solve/solve.py grade` on each (seed 20261105, 2000 row-2 draws — the schematic record's own recipe),
+so the row verdicts come from the existing solver, not a reimplementation. **The pooled mismatch model is
+schematic-side MC data applied unchanged to both legs** (recorded in the record's `mc.disclosure`).
+
+**Row verdicts (existing thresholds, `sim/solve/solve.py` on both legs; full output in the record
+and in `2026-11-22-grade-extracted-frequencies-rows234-{schematic,extracted}.json`):**
+
+| Row (target / fallback) | schematic leg | extracted leg |
+|---|---|---|
+| 1 oscillates, 45 cells, all five | FAIL (8 missing: the 2 known `osc_nmos`/`osc_wire` cold cells + 6 `osc_subth`) / FAIL | FAIL (5 missing: the `osc_subth` ss/sf −40 C cells) / **PASS** |
+| 2 five-corner ID (ratio space) | FAIL — 8/9 identified, `1.98 V/27 C` one `fs->tt` error, the **same failing cell as the 2026-11-05 schematic record** / PASS | **PASS** 9/9 / PASS |
+| 3 V solve p99 (±20 / ±50 mV) | FAIL — worst 158 mV at 125 °C fs 1.80 V / FAIL | FAIL target — worst **30 mV** at 125 °C ff 1.80 V / **fallback PASS** |
+| 4 T solve p99 (±5 / ±10 °C) | FAIL — worst 19.0 °C at ff 1.62 V 27 °C (the 2026-11-05 record's own binding cell and value) / FAIL | FAIL — worst **31.0 °C** at ff 1.80 V 125 °C / FAIL |
+
+Cross-validation: the schematic leg is an independent re-run of the #29 benches (ngspice 47 on the fleet,
+not the 2026-11-05 ngspice-46 reports), and it reproduces the committed schematic grading wherever the
+resolved-cell sets agree — the same row-2 failing cell and the same row-4 binding cell and value. On the
+extracted leg the bank is *fuller* (`osc_nmos`'s cold cell converges there, so row 4 grades all five
+oscillators) and row 2 identifies all nine cells, but row 4's temperature error grows to 31.0 °C and rows
+3/4 stay FAIL at the target tiers. Coverage limits, stated: row 4 on the extracted leg does not grade the
+`sf`/`ss` corners (the `osc_subth` −40 °C cells those rows need), and every `osc_subth` number on either
+leg carries the unvalidated MC sigma disclosed in the 2026-11-05 record. No threshold was changed; no
+relaxed-solver result enters any table.
+
+The row-2 classifier coordinate ln(f_i/f_osc_hd) moves extracted-vs-schematic by (min / median / max %,
+over the cells common to both legs): `osc_nmos` −17.1 / −7.6 / +0.6, `osc_pmos` −18.8 / −11.2 / +0.2,
+`osc_wire` −21.6 / −1.7 / +33.0 (still not like-for-like, finding 3), `osc_subth` −78.8 / −26.3 / +104.9.
+
+Extraction provenance: `osc_nmos` (`68b62d0e…`), `osc_pmos` (`3ace67c3…`) and `osc_subth` (`a13f74ea…`,
+the dev2493 bytes) are byte-identical to the committed extractions; `osc_hd` (`bc4ab743…`) differs from
+the 2026-11-10 `06e20067…` only by the dev2830 `--rename-declared-pins` pin order (declared
+`en out vdd vss` instead of label order; same devices/nets — the bench derivation follows whichever it is
+handed); `osc_wire` (`09374950…`) is the dev599-and-later extraction already recorded as
+`extracted/osc_wire.dev599.spice`, not the 2026-11-10 `76c8872a…`. `model_mismatch` stays the expected
+hierarchy/`res_high_po` kinds recorded earlier; `body_bias.status = biased` everywhere.
+
+`klt signoff` (pinned `klt 0.9.1` via uvx, as `.github/workflows/signoff.yml` runs it): `T1 #7 [analog]`
+stays **UNMET** (`check_failed`) — the 2026-11-10 `osc_nmos`/`osc_wire` count reports it cites are still
+status `error`, and the new frequency reports are not cited for item 7 (which citations close the item is
+#264's decision, not this pass). The committed signoff record reproduces unchanged after the item-9
+envelope refresh below; `T1 #7 [digital]` stays met.

@@ -1,0 +1,892 @@
+{
+ "draws": 2000,
+ "kind": "SIMULATED",
+ "mc": {
+  "disclosure": "the pooled mismatch model is schematic-side MC data (nominal V/T, #29 reports), applied unchanged to both legs",
+  "path": "/tmp/pex-freq-grid/grade/mc.json",
+  "pooled_sigma_lnf": {
+   "osc_hd": 0.00335645729608838,
+   "osc_nmos": 0.0030833026295411857,
+   "osc_pmos": 0.006711570064586323,
+   "osc_subth": 0.26612537512545015,
+   "osc_wire": 0.0014583321231023286
+  },
+  "sha256": "sha256:1875a953d4d29cd88600cda3512d0bac449ca9a2d849fc3132e67f2450f8a1c8"
+ },
+ "oscillators": {
+  "osc_hd": {
+   "corners": 45,
+   "legs": {
+    "extracted": {
+     "causes": {},
+     "resolved": 45,
+     "unresolved": 0
+    },
+    "schematic": {
+     "causes": {},
+     "resolved": 45,
+     "unresolved": 0
+    }
+   },
+   "provenance": {
+    "extracted_netlist": {
+     "path": null,
+     "scope": "external"
+    },
+    "extraction_pdk": {
+     "compatibility": {
+      "expected": "open_pdks f6eeac7dad085ffcc829ccfd721f7b4ce39edcf7",
+      "package": "open_pdks-sky130",
+      "status": "mismatch"
+     },
+     "name": "sky130A",
+     "source": "--pdk-root flag",
+     "version": "open_pdks c6d73a35f524070e85faff4a6a9eef49553ebc2b"
+    },
+    "klt_version": "0.9.3.dev2830+g16b5356ea24c",
+    "layout": "sha256:625c8ff90f34c6fac7a88339d2c10ad5925da02e118eb6a15a6539c11e05bf29",
+    "measurement": {
+     "command": [
+      "python3",
+      "-I",
+      "sim/pex/measure_frequency.py",
+      "--osc",
+      "osc_hd"
+     ],
+     "timeout_s": 5400.0
+    },
+    "nested_extracted_report": {
+     "engine_version": "47",
+     "job_id": "klt-sim-b9a100ef302d",
+     "oscillator": "osc_hd",
+     "report": "sim/pex/records/2026-11-22-freq-osc_hd-extracted.sim.report.json.gz",
+     "runner_ngspice": [
+      "** ngspice-47 : Circuit level simulation program"
+     ],
+     "runner_pdk": "open_pdks f6eeac7dad085ffcc829ccfd721f7b4ce39edcf7"
+    },
+    "nested_schematic_report": {
+     "engine_version": "47",
+     "job_id": "klt-sim-ad84ed64a4e2",
+     "oscillator": "osc_hd",
+     "report": "sim/pex/records/2026-11-22-freq-osc_hd-schematic.sim.report.json.gz",
+     "runner_ngspice": [
+      "** ngspice-47 : Circuit level simulation program"
+     ],
+     "runner_pdk": "open_pdks f6eeac7dad085ffcc829ccfd721f7b4ce39edcf7"
+    },
+    "reference_netlist": {
+     "path": "sim/pex/osc/osc_hd_dut.spice",
+     "scope": "repo"
+    },
+    "report": "sim/pex/records/2026-11-22-freq-osc_hd.pex.report.json",
+    "request": {
+     "analysis": {
+      "args": "10p 300n",
+      "kind": "tran"
+     },
+     "options": {
+      "retry_on_convergence_error": true,
+      "timeout_s": 3000
+     },
+     "path": "sim/pex/requests/osc_hd.json",
+     "sha256": "sha256:0e8db9715887b3251a309a06f205746a04d1f7f9cb93bfb96f5323b4ebaa7b34"
+    }
+   }
+  },
+  "osc_nmos": {
+   "corners": 45,
+   "legs": {
+    "extracted": {
+     "causes": {},
+     "resolved": 45,
+     "unresolved": 0
+    },
+    "schematic": {
+     "causes": {
+      "tt/1.800V/-40C": "solver error: unit error, measurement error"
+     },
+     "resolved": 44,
+     "unresolved": 1
+    }
+   },
+   "provenance": {
+    "extracted_netlist": {
+     "path": null,
+     "scope": "external"
+    },
+    "extraction_pdk": {
+     "compatibility": {
+      "expected": "open_pdks f6eeac7dad085ffcc829ccfd721f7b4ce39edcf7",
+      "package": "open_pdks-sky130",
+      "status": "mismatch"
+     },
+     "name": "sky130A",
+     "source": "--pdk-root flag",
+     "version": "open_pdks c6d73a35f524070e85faff4a6a9eef49553ebc2b"
+    },
+    "klt_version": "0.9.3.dev2830+g16b5356ea24c",
+    "layout": "sha256:625c8ff90f34c6fac7a88339d2c10ad5925da02e118eb6a15a6539c11e05bf29",
+    "measurement": {
+     "command": [
+      "python3",
+      "-I",
+      "sim/pex/measure_frequency.py",
+      "--osc",
+      "osc_nmos"
+     ],
+     "timeout_s": 5400.0
+    },
+    "nested_extracted_report": {
+     "engine_version": "47",
+     "job_id": "klt-sim-63ede6acc057",
+     "oscillator": "osc_nmos",
+     "report": "sim/pex/records/2026-11-22-freq-osc_nmos-extracted.sim.report.json.gz",
+     "runner_ngspice": [
+      "** ngspice-47 : Circuit level simulation program"
+     ],
+     "runner_pdk": "open_pdks f6eeac7dad085ffcc829ccfd721f7b4ce39edcf7"
+    },
+    "nested_schematic_report": {
+     "engine_version": "47",
+     "job_id": "klt-sim-e42dfe5fe839",
+     "oscillator": "osc_nmos",
+     "report": "sim/pex/records/2026-11-22-freq-osc_nmos-schematic.sim.report.json.gz",
+     "runner_ngspice": [
+      "** ngspice-47 : Circuit level simulation program"
+     ],
+     "runner_pdk": "open_pdks f6eeac7dad085ffcc829ccfd721f7b4ce39edcf7"
+    },
+    "reference_netlist": {
+     "path": "design/osc_bank/osc_nmos.spice",
+     "scope": "repo"
+    },
+    "report": "sim/pex/records/2026-11-22-freq-osc_nmos.pex.report.json",
+    "request": {
+     "analysis": {
+      "args": "20p 800n",
+      "kind": "tran"
+     },
+     "options": {
+      "retry_on_convergence_error": true,
+      "timeout_s": 3000
+     },
+     "path": "sim/pex/requests/osc_nmos.json",
+     "sha256": "sha256:e4437c783736c4f2cb5fc3bd67a206de5a55b9e9dfa304abb0bcd505337f5593"
+    }
+   }
+  },
+  "osc_pmos": {
+   "corners": 45,
+   "legs": {
+    "extracted": {
+     "causes": {},
+     "resolved": 45,
+     "unresolved": 0
+    },
+    "schematic": {
+     "causes": {},
+     "resolved": 45,
+     "unresolved": 0
+    }
+   },
+   "provenance": {
+    "extracted_netlist": {
+     "path": null,
+     "scope": "external"
+    },
+    "extraction_pdk": {
+     "compatibility": {
+      "expected": "open_pdks f6eeac7dad085ffcc829ccfd721f7b4ce39edcf7",
+      "package": "open_pdks-sky130",
+      "status": "mismatch"
+     },
+     "name": "sky130A",
+     "source": "--pdk-root flag",
+     "version": "open_pdks c6d73a35f524070e85faff4a6a9eef49553ebc2b"
+    },
+    "klt_version": "0.9.3.dev2830+g16b5356ea24c",
+    "layout": "sha256:625c8ff90f34c6fac7a88339d2c10ad5925da02e118eb6a15a6539c11e05bf29",
+    "measurement": {
+     "command": [
+      "python3",
+      "-I",
+      "sim/pex/measure_frequency.py",
+      "--osc",
+      "osc_pmos"
+     ],
+     "timeout_s": 5400.0
+    },
+    "nested_extracted_report": {
+     "engine_version": "47",
+     "job_id": "klt-sim-e2d1d95e5b9c",
+     "oscillator": "osc_pmos",
+     "report": "sim/pex/records/2026-11-22-freq-osc_pmos-extracted.sim.report.json.gz",
+     "runner_ngspice": [
+      "** ngspice-47 : Circuit level simulation program"
+     ],
+     "runner_pdk": "open_pdks f6eeac7dad085ffcc829ccfd721f7b4ce39edcf7"
+    },
+    "nested_schematic_report": {
+     "engine_version": "47",
+     "job_id": "klt-sim-9d058a3f131f",
+     "oscillator": "osc_pmos",
+     "report": "sim/pex/records/2026-11-22-freq-osc_pmos-schematic.sim.report.json.gz",
+     "runner_ngspice": [
+      "** ngspice-47 : Circuit level simulation program"
+     ],
+     "runner_pdk": "open_pdks f6eeac7dad085ffcc829ccfd721f7b4ce39edcf7"
+    },
+    "reference_netlist": {
+     "path": "design/osc_bank/osc_pmos.spice",
+     "scope": "repo"
+    },
+    "report": "sim/pex/records/2026-11-22-freq-osc_pmos.pex.report.json",
+    "request": {
+     "analysis": {
+      "args": "50p 2.5u",
+      "kind": "tran"
+     },
+     "options": {
+      "retry_on_convergence_error": true,
+      "timeout_s": 3000
+     },
+     "path": "sim/pex/requests/osc_pmos.json",
+     "sha256": "sha256:db76d0f4929673b95bc367be284d6cff9f373418a4082d1823c9af109aa1007a"
+    }
+   }
+  },
+  "osc_subth": {
+   "corners": 45,
+   "legs": {
+    "extracted": {
+     "causes": {
+      "sf/1.620V/-40C": "too few edges: 0 rising edges < 9 (SKIP_EDGES=3, MIN_CYCLES=5)",
+      "sf/1.800V/-40C": "too few edges: 0 rising edges < 9 (SKIP_EDGES=3, MIN_CYCLES=5)",
+      "sf/1.980V/-40C": "too few edges: 1 rising edges < 9 (SKIP_EDGES=3, MIN_CYCLES=5)",
+      "ss/1.620V/-40C": "too few edges: 1 rising edges < 9 (SKIP_EDGES=3, MIN_CYCLES=5)",
+      "ss/1.800V/-40C": "too few edges: 3 rising edges < 9 (SKIP_EDGES=3, MIN_CYCLES=5)"
+     },
+     "resolved": 40,
+     "unresolved": 5
+    },
+    "schematic": {
+     "causes": {
+      "fs/1.620V/125C": "solver error: unit error, measurement error",
+      "sf/1.620V/-40C": "too few edges: 0 rising edges < 9 (SKIP_EDGES=3, MIN_CYCLES=5)",
+      "sf/1.800V/-40C": "too few edges: 2 rising edges < 9 (SKIP_EDGES=3, MIN_CYCLES=5)",
+      "sf/1.980V/-40C": "too few edges: 2 rising edges < 9 (SKIP_EDGES=3, MIN_CYCLES=5)",
+      "ss/1.620V/-40C": "too few edges: 2 rising edges < 9 (SKIP_EDGES=3, MIN_CYCLES=5)",
+      "ss/1.800V/-40C": "too few edges: 6 rising edges < 9 (SKIP_EDGES=3, MIN_CYCLES=5)"
+     },
+     "resolved": 39,
+     "unresolved": 6
+    }
+   },
+   "provenance": {
+    "extracted_netlist": {
+     "path": null,
+     "scope": "external"
+    },
+    "extraction_pdk": {
+     "compatibility": {
+      "expected": "open_pdks f6eeac7dad085ffcc829ccfd721f7b4ce39edcf7",
+      "package": "open_pdks-sky130",
+      "status": "mismatch"
+     },
+     "name": "sky130A",
+     "source": "--pdk-root flag",
+     "version": "open_pdks c6d73a35f524070e85faff4a6a9eef49553ebc2b"
+    },
+    "klt_version": "0.9.3.dev2830+g16b5356ea24c",
+    "layout": "sha256:625c8ff90f34c6fac7a88339d2c10ad5925da02e118eb6a15a6539c11e05bf29",
+    "measurement": {
+     "command": [
+      "python3",
+      "-I",
+      "sim/pex/measure_frequency.py",
+      "--osc",
+      "osc_subth",
+      "--hosts",
+      "45"
+     ],
+     "timeout_s": 7200.0
+    },
+    "nested_extracted_report": {
+     "engine_version": "47",
+     "job_id": null,
+     "oscillator": "osc_subth",
+     "report": "sim/pex/records/2026-11-22-freq-osc_subth-extracted.sim.report.json.gz",
+     "runner_ngspice": [],
+     "runner_pdk": null
+    },
+    "nested_schematic_report": {
+     "engine_version": "47",
+     "job_id": null,
+     "oscillator": "osc_subth",
+     "report": "sim/pex/records/2026-11-22-freq-osc_subth-schematic.sim.report.json.gz",
+     "runner_ngspice": [],
+     "runner_pdk": null
+    },
+    "reference_netlist": {
+     "path": "design/osc_bank/osc_subth.spice",
+     "scope": "repo"
+    },
+    "report": "sim/pex/records/2026-11-22-freq-osc_subth.pex.report.json",
+    "request": {
+     "analysis": {
+      "args": "20n 2m",
+      "kind": "tran"
+     },
+     "options": {
+      "retry_on_convergence_error": true,
+      "timeout_s": 3000
+     },
+     "path": "sim/pex/requests/osc_subth.json",
+     "sha256": "sha256:acb1f5ce135fc39605269d7fea0e067ea761613475e80a5a7dd89109e22132b2"
+    }
+   }
+  },
+  "osc_wire": {
+   "corners": 45,
+   "legs": {
+    "extracted": {
+     "causes": {},
+     "resolved": 45,
+     "unresolved": 0
+    },
+    "schematic": {
+     "causes": {
+      "sf/1.980V/-40C": "solver error: unit error, measurement error"
+     },
+     "resolved": 44,
+     "unresolved": 1
+    }
+   },
+   "provenance": {
+    "extracted_netlist": {
+     "path": null,
+     "scope": "external"
+    },
+    "extraction_pdk": {
+     "compatibility": {
+      "expected": "open_pdks f6eeac7dad085ffcc829ccfd721f7b4ce39edcf7",
+      "package": "open_pdks-sky130",
+      "status": "mismatch"
+     },
+     "name": "sky130A",
+     "source": "--pdk-root flag",
+     "version": "open_pdks c6d73a35f524070e85faff4a6a9eef49553ebc2b"
+    },
+    "klt_version": "0.9.3.dev2830+g16b5356ea24c",
+    "layout": "sha256:625c8ff90f34c6fac7a88339d2c10ad5925da02e118eb6a15a6539c11e05bf29",
+    "measurement": {
+     "command": [
+      "python3",
+      "-I",
+      "sim/pex/measure_frequency.py",
+      "--osc",
+      "osc_wire"
+     ],
+     "timeout_s": 5400.0
+    },
+    "nested_extracted_report": {
+     "engine_version": "47",
+     "job_id": "klt-sim-e20b370ea115",
+     "oscillator": "osc_wire",
+     "report": "sim/pex/records/2026-11-22-freq-osc_wire-extracted.sim.report.json.gz",
+     "runner_ngspice": [
+      "** ngspice-47 : Circuit level simulation program"
+     ],
+     "runner_pdk": "open_pdks f6eeac7dad085ffcc829ccfd721f7b4ce39edcf7"
+    },
+    "nested_schematic_report": {
+     "engine_version": "47",
+     "job_id": "klt-sim-747164f04353",
+     "oscillator": "osc_wire",
+     "report": "sim/pex/records/2026-11-22-freq-osc_wire-schematic.sim.report.json.gz",
+     "runner_ngspice": [
+      "** ngspice-47 : Circuit level simulation program"
+     ],
+     "runner_pdk": "open_pdks f6eeac7dad085ffcc829ccfd721f7b4ce39edcf7"
+    },
+    "reference_netlist": {
+     "path": "design/osc_bank/osc_wire.spice",
+     "scope": "repo"
+    },
+    "report": "sim/pex/records/2026-11-22-freq-osc_wire.pex.report.json",
+    "request": {
+     "analysis": {
+      "args": "50p 2.5u",
+      "kind": "tran"
+     },
+     "options": {
+      "retry_on_convergence_error": true,
+      "timeout_s": 3000
+     },
+     "path": "sim/pex/requests/osc_wire.json",
+     "sha256": "sha256:74dba1cb498bb40dc2ab7e14c6e0be72f54ee0a7908f71547ceb5983cfc0366d"
+    }
+   }
+  }
+ },
+ "row2_coordinate_shift_pct": {
+  "osc_nmos": {
+   "cells": 44,
+   "max": 0.6172477477094152,
+   "median": -7.5537558026215805,
+   "min": -17.102872830476922,
+   "per_cell_pct": {
+    "ff/1.62V/-40C": -17.102872830476922,
+    "ff/1.62V/125C": -4.7398103250644645,
+    "ff/1.62V/27C": -11.465768525313358,
+    "ff/1.80V/-40C": -12.611640669602298,
+    "ff/1.80V/125C": -3.6574065380045373,
+    "ff/1.80V/27C": -8.876744053714859,
+    "ff/1.98V/-40C": -9.510867489221098,
+    "ff/1.98V/125C": -2.5442167820002526,
+    "ff/1.98V/27C": -6.349945661277823,
+    "fs/1.62V/-40C": -13.110009428217385,
+    "fs/1.62V/125C": -0.11152683204492808,
+    "fs/1.62V/27C": -7.296904595945108,
+    "fs/1.80V/-40C": -11.286943848442277,
+    "fs/1.80V/125C": 0.2941959018456952,
+    "fs/1.80V/27C": -5.980844052226509,
+    "fs/1.98V/-40C": -10.489308968092814,
+    "fs/1.98V/125C": 0.6172477477094152,
+    "fs/1.98V/27C": -4.28182837728861,
+    "sf/1.62V/-40C": -16.049180581262725,
+    "sf/1.62V/125C": -12.978313268336228,
+    "sf/1.62V/27C": -15.103129735630471,
+    "sf/1.80V/-40C": -11.598791141519172,
+    "sf/1.80V/125C": -9.696864807151417,
+    "sf/1.80V/27C": -10.71276617099467,
+    "sf/1.98V/-40C": -7.644876922323151,
+    "sf/1.98V/125C": -7.126987135600215,
+    "sf/1.98V/27C": -7.462634682920011,
+    "ss/1.62V/-40C": -14.05822567728725,
+    "ss/1.62V/125C": -7.3449486956552406,
+    "ss/1.62V/27C": -10.774957678598563,
+    "ss/1.80V/-40C": -10.001642955519884,
+    "ss/1.80V/125C": -5.31851419683389,
+    "ss/1.80V/27C": -7.671064589054144,
+    "ss/1.98V/-40C": -7.1286808370116255,
+    "ss/1.98V/125C": -3.74027539061339,
+    "ss/1.98V/27C": -5.302442503399929,
+    "tt/1.62V/-40C": -13.914840678344342,
+    "tt/1.62V/125C": -7.421134116920136,
+    "tt/1.62V/27C": -10.70873323356184,
+    "tt/1.80V/125C": -5.370876676919201,
+    "tt/1.80V/27C": -8.223596703668933,
+    "tt/1.98V/-40C": -7.251158819072733,
+    "tt/1.98V/125C": -4.106251429882546,
+    "tt/1.98V/27C": -5.535919295826597
+   }
+  },
+  "osc_pmos": {
+   "cells": 45,
+   "max": 0.16763875834695519,
+   "median": -11.19860671659303,
+   "min": -18.76083677986944,
+   "per_cell_pct": {
+    "ff/1.62V/-40C": -18.369931966751775,
+    "ff/1.62V/125C": -6.953281375710596,
+    "ff/1.62V/27C": -12.661537793746437,
+    "ff/1.80V/-40C": -16.47140090702175,
+    "ff/1.80V/125C": -8.258256014993714,
+    "ff/1.80V/27C": -10.45708693441253,
+    "ff/1.98V/-40C": -11.038597953310614,
+    "ff/1.98V/125C": -7.915009076343615,
+    "ff/1.98V/27C": -7.560700791770547,
+    "fs/1.62V/-40C": -14.795732129952999,
+    "fs/1.62V/125C": -2.8538581698419274,
+    "fs/1.62V/27C": -8.316094658894613,
+    "fs/1.80V/-40C": -10.242254916099391,
+    "fs/1.80V/125C": 0.16763875834695519,
+    "fs/1.80V/27C": -7.693865684344425,
+    "fs/1.98V/-40C": -12.949715611158341,
+    "fs/1.98V/125C": -0.7700282662340241,
+    "fs/1.98V/27C": -5.892984631656361,
+    "sf/1.62V/-40C": -18.76083677986944,
+    "sf/1.62V/125C": -17.408356203771213,
+    "sf/1.62V/27C": -18.62197387895338,
+    "sf/1.80V/-40C": -14.537953813917625,
+    "sf/1.80V/125C": -14.035283153749257,
+    "sf/1.80V/27C": -14.76629775547994,
+    "sf/1.98V/-40C": -13.49507584692191,
+    "sf/1.98V/125C": -11.596140660179321,
+    "sf/1.98V/27C": -12.025182154678383,
+    "ss/1.62V/-40C": -16.132465734345637,
+    "ss/1.62V/125C": -11.19860671659303,
+    "ss/1.62V/27C": -13.476670164062421,
+    "ss/1.80V/-40C": -12.29282908850834,
+    "ss/1.80V/125C": -9.402306506027113,
+    "ss/1.80V/27C": -11.194547854357273,
+    "ss/1.98V/-40C": -11.588924922356526,
+    "ss/1.98V/125C": -9.037913094837036,
+    "ss/1.98V/27C": -10.093787632737229,
+    "tt/1.62V/-40C": -15.57509353300669,
+    "tt/1.62V/125C": -10.704827170622211,
+    "tt/1.62V/27C": -13.162120114691788,
+    "tt/1.80V/-40C": -15.37254612692055,
+    "tt/1.80V/125C": -10.451600166684782,
+    "tt/1.80V/27C": -9.204420260789014,
+    "tt/1.98V/-40C": -11.670076180608902,
+    "tt/1.98V/125C": -7.28204482480439,
+    "tt/1.98V/27C": -10.707076145630435
+   }
+  },
+  "osc_subth": {
+   "cells": 39,
+   "max": 104.90434695204156,
+   "median": -26.31926689619751,
+   "min": -78.80963526662583,
+   "per_cell_pct": {
+    "ff/1.62V/-40C": -37.58074379702747,
+    "ff/1.62V/125C": -34.250031758682674,
+    "ff/1.62V/27C": 1.2209686719477864,
+    "ff/1.80V/-40C": -22.641630890064825,
+    "ff/1.80V/125C": -64.64025004005235,
+    "ff/1.80V/27C": 19.416656897927286,
+    "ff/1.98V/-40C": -26.078822427741454,
+    "ff/1.98V/125C": -71.39954666658446,
+    "ff/1.98V/27C": 4.681501491797135,
+    "fs/1.62V/-40C": -3.329559544084526,
+    "fs/1.62V/27C": 0.043837565692905756,
+    "fs/1.80V/-40C": -69.91546553758126,
+    "fs/1.80V/125C": -70.42043690830668,
+    "fs/1.80V/27C": -15.614977303891164,
+    "fs/1.98V/-40C": 7.474001365115068,
+    "fs/1.98V/125C": -7.108736834712726,
+    "fs/1.98V/27C": 35.999540798394136,
+    "sf/1.62V/125C": -42.95202417844774,
+    "sf/1.62V/27C": -26.31926689619751,
+    "sf/1.80V/125C": -78.80963526662583,
+    "sf/1.80V/27C": -20.53393676382059,
+    "sf/1.98V/125C": -72.37354301816808,
+    "sf/1.98V/27C": -21.29564612042486,
+    "ss/1.62V/125C": -5.62425053716078,
+    "ss/1.62V/27C": -28.496269714427424,
+    "ss/1.80V/125C": -68.53197245904987,
+    "ss/1.80V/27C": -37.19407547005481,
+    "ss/1.98V/-40C": -21.74622275183349,
+    "ss/1.98V/125C": -3.2286812302305457,
+    "ss/1.98V/27C": -41.69439258276586,
+    "tt/1.62V/-40C": -29.541084030461917,
+    "tt/1.62V/125C": 47.29946127651965,
+    "tt/1.62V/27C": -43.69101539196968,
+    "tt/1.80V/-40C": -34.30593421034842,
+    "tt/1.80V/125C": 104.90434695204156,
+    "tt/1.80V/27C": -28.252539708833567,
+    "tt/1.98V/-40C": -41.91867476382043,
+    "tt/1.98V/125C": 44.23704142008778,
+    "tt/1.98V/27C": -76.82202920233745
+   }
+  },
+  "osc_wire": {
+   "cells": 44,
+   "max": 33.00940307950082,
+   "median": -1.7091058852358787,
+   "min": -21.55015228430319,
+   "per_cell_pct": {
+    "ff/1.62V/-40C": -21.55015228430319,
+    "ff/1.62V/125C": 20.020040964288842,
+    "ff/1.62V/27C": -5.139181351226984,
+    "ff/1.80V/-40C": -17.4994498084629,
+    "ff/1.80V/125C": 25.27163050101846,
+    "ff/1.80V/27C": -1.0873678210211235,
+    "ff/1.98V/-40C": -13.317133159831018,
+    "ff/1.98V/125C": 30.987614882344296,
+    "ff/1.98V/27C": 3.95329104196116,
+    "fs/1.62V/-40C": -16.713900734335276,
+    "fs/1.62V/125C": 24.56554031061533,
+    "fs/1.62V/27C": -0.34692280030381717,
+    "fs/1.80V/-40C": -14.55967859972378,
+    "fs/1.80V/125C": 28.571585738922202,
+    "fs/1.80V/27C": 2.0341958391763892,
+    "fs/1.98V/-40C": -13.37626428563965,
+    "fs/1.98V/125C": 33.00940307950082,
+    "fs/1.98V/27C": 5.301002357891349,
+    "sf/1.62V/-40C": -20.70297607653737,
+    "sf/1.62V/125C": 3.3056043171480365,
+    "sf/1.62V/27C": -11.43990991776268,
+    "sf/1.80V/-40C": -17.035107393584003,
+    "sf/1.80V/125C": 9.215061459616635,
+    "sf/1.80V/27C": -6.556914618094167,
+    "sf/1.98V/125C": 15.017090669616495,
+    "sf/1.98V/27C": -2.330843949450634,
+    "ss/1.62V/-40C": -17.99247919143735,
+    "ss/1.62V/125C": 9.49887194449872,
+    "ss/1.62V/27C": -6.4029393287626135,
+    "ss/1.80V/-40C": -14.598023429932127,
+    "ss/1.80V/125C": 13.457656949752517,
+    "ss/1.80V/27C": -2.9456081385163535,
+    "ss/1.98V/-40C": -12.102104680996462,
+    "ss/1.98V/125C": 17.607399943888158,
+    "ss/1.98V/27C": -0.012053877777318256,
+    "tt/1.62V/-40C": -18.423555778566815,
+    "tt/1.62V/125C": 12.393416432533755,
+    "tt/1.62V/27C": -5.584382056846893,
+    "tt/1.80V/-40C": -15.160184255689757,
+    "tt/1.80V/125C": 17.458936640115752,
+    "tt/1.80V/27C": -2.4463839550538546,
+    "tt/1.98V/-40C": -12.355553145624732,
+    "tt/1.98V/125C": 22.338002023073923,
+    "tt/1.98V/27C": 1.5813749870846383
+   }
+  }
+ },
+ "seed": 20261105,
+ "solve_replay": {
+  "extracted": {
+   "draws": 2000,
+   "mc_pooled_sigma_lnf": {
+    "osc_hd": 0.00335645729608838,
+    "osc_nmos": 0.0030833026295411857,
+    "osc_pmos": 0.006711570064586323,
+    "osc_subth": 0.26612537512545015,
+    "osc_wire": 0.0014583321231023286
+   },
+   "row1": {
+    "lowest_f_cell": {
+     "cell": [
+      "osc_subth",
+      "ss",
+      1.98,
+      -40
+     ],
+     "f_hz": 4971.471944129197
+    },
+    "missing_cells": [
+     [
+      "osc_subth",
+      "ss",
+      1.62,
+      -40
+     ],
+     [
+      "osc_subth",
+      "ss",
+      1.8,
+      -40
+     ],
+     [
+      "osc_subth",
+      "sf",
+      1.62,
+      -40
+     ],
+     [
+      "osc_subth",
+      "sf",
+      1.8,
+      -40
+     ],
+     [
+      "osc_subth",
+      "sf",
+      1.98,
+      -40
+     ]
+    ],
+    "verdict_fallback": "PASS",
+    "verdict_target": "FAIL"
+   },
+   "row2": {
+    "fallback_slow_fast": {
+     "failing_cells": {},
+     "gradable_cells": 9,
+     "identified_cells": 9,
+     "ungradable_cells": {},
+     "verdict": "PASS"
+    },
+    "target_5_corner": {
+     "failing_cells": {},
+     "gradable_cells": 9,
+     "identified_cells": 9,
+     "ungradable_cells": {},
+     "verdict": "PASS"
+    }
+   },
+   "row3": {
+    "binding_cell": "125 C ff 1.80 V",
+    "cells_graded": 45,
+    "cells_total": 45,
+    "grade": {
+     "fallback": "PASS",
+     "stretch": "FAIL",
+     "target": "FAIL"
+    },
+    "temperature_rows_not_gradable": {},
+    "worst_p99_abs_err_v": 0.030000000000000027
+   },
+   "row4": {
+    "binding_cell": "ff 1.80 V 125 C",
+    "cells_graded": 29,
+    "cells_total": 45,
+    "corners_not_graded": {
+     "sf": {
+      "gradable": false
+     },
+     "ss": {
+      "gradable": false
+     }
+    },
+    "gradable": true,
+    "grade": {
+     "fallback": "FAIL",
+     "stretch": "FAIL",
+     "target": "FAIL"
+    },
+    "oscillators": [
+     "osc_hd",
+     "osc_nmos",
+     "osc_pmos",
+     "osc_wire",
+     "osc_subth"
+    ],
+    "oscillators_excluded": [],
+    "worst_p99_abs_err_c": 31.0
+   },
+   "seed": 20261105
+  },
+  "schematic": {
+   "draws": 2000,
+   "mc_pooled_sigma_lnf": {
+    "osc_hd": 0.00335645729608838,
+    "osc_nmos": 0.0030833026295411857,
+    "osc_pmos": 0.006711570064586323,
+    "osc_subth": 0.26612537512545015,
+    "osc_wire": 0.0014583321231023286
+   },
+   "row1": {
+    "lowest_f_cell": {
+     "cell": [
+      "osc_subth",
+      "ss",
+      1.98,
+      -40
+     ],
+     "f_hz": 7542.433089897681
+    },
+    "missing_cells": [
+     [
+      "osc_nmos",
+      "tt",
+      1.8,
+      -40
+     ],
+     [
+      "osc_wire",
+      "sf",
+      1.98,
+      -40
+     ],
+     [
+      "osc_subth",
+      "ss",
+      1.62,
+      -40
+     ],
+     [
+      "osc_subth",
+      "ss",
+      1.8,
+      -40
+     ],
+     [
+      "osc_subth",
+      "sf",
+      1.62,
+      -40
+     ],
+     [
+      "osc_subth",
+      "sf",
+      1.8,
+      -40
+     ],
+     [
+      "osc_subth",
+      "sf",
+      1.98,
+      -40
+     ],
+     [
+      "osc_subth",
+      "fs",
+      1.62,
+      125
+     ]
+    ],
+    "verdict_fallback": "FAIL",
+    "verdict_target": "FAIL"
+   },
+   "row2": {
+    "fallback_slow_fast": {
+     "failing_cells": {},
+     "gradable_cells": 9,
+     "identified_cells": 9,
+     "ungradable_cells": {},
+     "verdict": "PASS"
+    },
+    "target_5_corner": {
+     "failing_cells": {
+      "1.98|27": {
+       "fs->tt": 1
+      }
+     },
+     "gradable_cells": 9,
+     "identified_cells": 8,
+     "ungradable_cells": {},
+     "verdict": "FAIL"
+    }
+   },
+   "row3": {
+    "binding_cell": "125 C fs 1.80 V",
+    "cells_graded": 45,
+    "cells_total": 45,
+    "grade": {
+     "fallback": "FAIL",
+     "stretch": "FAIL",
+     "target": "FAIL"
+    },
+    "temperature_rows_not_gradable": {},
+    "worst_p99_abs_err_v": 0.15800000000000014
+   },
+   "row4": {
+    "binding_cell": "ff 1.62 V 27 C",
+    "cells_graded": 21,
+    "cells_total": 45,
+    "corners_not_graded": {
+     "fs": {
+      "gradable": false
+     },
+     "sf": {
+      "gradable": false
+     },
+     "ss": {
+      "gradable": false
+     }
+    },
+    "gradable": true,
+    "grade": {
+     "fallback": "FAIL",
+     "stretch": "FAIL",
+     "target": "FAIL"
+    },
+    "oscillators": [
+     "osc_hd",
+     "osc_pmos",
+     "osc_wire",
+     "osc_subth"
+    ],
+    "oscillators_excluded": [
+     "osc_nmos"
+    ],
+    "worst_p99_abs_err_c": 19.0
+   },
+   "seed": 20261105
+  }
+ }
+}
