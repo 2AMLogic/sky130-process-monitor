@@ -13,6 +13,8 @@ results.xml
 # host-path-specific, so never committed (issue #152). results_icarus.xml in
 # the same directory IS cited evidence and stays tracked.
 verification/*/.fv-sdf/*.v
+verification/*/.fv-sdf/*.sdf
+verification/*/.fv-sdf/sim_build_icarus/
 # cocotb venv, made by hand inside the worktree (sim/README.md, "Environment")
 .venv/
 # >>> loom-managed (do not edit) >>>
@@ -105,3 +107,5 @@ verification/*/.fv-sdf/*.v
 # issue #31: worktree-local klt_yield_native build (never committed)
 .venv-yield/
 build-yield/
+# issue #287: worktree-local PDK install made by hand, never committed
+/.pdk/

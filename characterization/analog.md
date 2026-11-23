@@ -248,8 +248,10 @@ sky130A. Graded by `sim/power/analyze_power.py`.
 **Coverage:** idle 45 of 45 cells, all five oscillators at every cell —
 `osc_hd`/`osc_pmos`/`osc_subth` re-run as `op`; `osc_nmos` and `osc_wire`
 re-benched as **transient-settle** decks (`en` held low from t = 0, mean supply
-current over the final half-window), which settle the gated-off ring from a
-defined initial state instead of a DC solve. Active 219 of 225 oscillator
+current over the final half-window): a transient settles the gated-off ring
+where the `op` solve does not. The graded settle decks start from the DC
+operating point (plain `tran`); the defined all-zero start (`uic`) is the
+separate cross-check recorded below. Active 219 of 225 oscillator
 cells, unchanged: the six not graded and never filled are
 `osc_subth` ss / 1.62 V, ss / 1.80 V, sf / 1.62 V, sf / 1.80 V, sf / 1.98 V at
 −40 °C (fewer than 8 rising edges in the window) and `osc_wire`
@@ -265,35 +267,71 @@ added to these numbers to form a block figure; this report forms none.
 **The idle figure is no longer suspect.** The 2026-11-05 idle binding figure
 (490 µW at sf / 1.62 V / 27 °C) was an `op` artifact of a non-unique DC solve
 on the gated-off ring: all nine flagged cells move to nA-scale leakage under
-the settle bench (0.36 nA at that cell, ~850 000× down), from every defined
-initial state tried (zero-IC, all-nodes-1.8 V `.ic`), with and without the
-rshunt option, and no other cell in either grid moves by more than 10×. The
+the settle bench (0.36 nA at that cell, ~850 000× down); a zero-start (`uic`,
+all nodes 0 V) run and an all-nodes-1.8 V `.ic` run reach the same nA scale at
+all nine cells (the cold sf/ss cells differ by 1.2–1.7× between starts, of the
+order of the rshunt floor), and no other cell in either grid moves by more
+than 10×. The record states what is not reproduced: the earlier claim that a
+different measurement set flips the sf / 1.62 V / 27 °C `op` cell to 0.36 nA was
+not reproduced in two single-unit runs (both give 301.8 µA). The
 graded 125.9 µW binding figure is the physical leakage of the gated-off bank at
 125 °C: in the settled forced logic state, the OFF pull-up pfet of every
 alternate un-gated stage conducts min-channel-length subthreshold current —
 `osc_wire`'s W = 8 µm / L = 0.15 µm pfets at 2.38 µA each (fs / 1.98 V / 125 °C)
 × 15 stages ≈ 35.7 µW of its 70.6 µW, `osc_nmos`'s W = 3 µm / L = 0.15 µm pfets
 × 15 ≈ 23 µW of its 45 µW (isolated-device probes close both to ~2%), and
-`osc_subth` contributes ~10 µW of which ~2.2 µW is its ungated bias divider.
+`osc_subth` contributes ~10 µW (5.03 µA) of which ~2.2 µW is its ungated bias divider.
 The named next design iteration (recorded, not adopted): lengthen or gate the
 pull-ups of the un-gated stages, and adopt the `en`-gated divider candidate.
 
 **`osc_subth`'s divider is ungated in the ratified design and an `en`-gated
 candidate exists.** The candidate (`sim/power/cand/osc_subth_gated.spice`, one
 edit: the divider return through an en-gated nfet) cuts the nominal-cell idle
-current from 1.004 µA to 0.478 nA (~2100×), keeps `vbp` within ~1 mV of the
-design tap, leaves the oscillation frequency unchanged within 1 % everywhere
-both rings resolve, and starts up in under 10 ns after `en` rises. It is **not
-adopted**: `design/osc_bank/` is item-1 / LVS / pex evidence; adoption would
+current from 1.004 µA to 0.478 nA (~2100×) and, over all 45 cells
+(`sim/power/records/2026-11-23-cand-idle.json`), from between 0.9 µA and 5.0 µA
+to between 0.234 nA and 643 nA (reduction 6× at fs / 1.62 V / 125 °C to ~3850×
+at ss / 1.62 V / −40 °C; the hottest fast cells keep 0.2–0.64 µA that is not
+the divider and not the switch, whose isolated OFF leakage is ≤ 0.3 nA). It
+keeps `vbp` within 0.11 mV of the ungated bench's settled value and its
+bias settles to within 1 % by 10 ns after `en` rises, at least 13× before the
+first output edge (≥ 0.13 µs). **Frequency equivalence is not established
+everywhere**: 11 of the 16 sampled cells resolve a frequency in both variants
+(by output-edge timestamps), 6 agree within 1 %, and 5 do not (fs at −40 °C
+differs by 5–8 %, tt / 1.98 V / −40 °C by 4.7 %); the other 5 cells are below the
+nine-edge rule in both variants. It is **not adopted**: `design/osc_bank/` is item-1 / LVS / pex evidence; adoption would
 invalidate the `osc_subth` rows 1-4, Monte Carlo, layout, LVS and pex evidence
 and is a follow-up issue.
 
 Disclosures carried from the record: `.options rshunt=1e12` stays on the two
 settle benches (it fails to converge without it on two ss / −40 °C `osc_wire`
-cells; at the nA scale of the −40 °C cells it contributes ~0.3–0.4 nA, six
-orders below the binding figure); active mean current is taken over the second
+cells; with a 1e13 Ω shunt both cells converge at 0.42 / 0.47 nA against the
+graded 0.70 / 0.78 nA, so at the nA scale of the −40 °C cells the 1e12 shunt
+accounts for up to ~0.3 nA, ~1.7× of the figure there, and six orders below the
+binding figure; no converged shunt-free result was obtained); active mean current is taken over the second
 half of each transient window, not an integer number of cycles (error ≤ 1 cycle
 per window).
+
+**What sets each oscillator's power, and the over-target iteration, are recorded
+in `sim/power/records/2026-11-21-active-power-iteration.md`** (issue #280;
+SIMULATED, same scope — oscillator only, counter not covered). It decomposes
+each oscillator's active power at its binding cell (the wire ring's explicit
+31 × 100 fF load explains 77.6 % of its 1740 µW; the residual is slope-driven
+overlap current), sweeps the levers one at a time (stage count measured
+power-neutral on all four ring families; the capacitor value power-neutral in
+the wire ring's RC-dominated regime; resistor length and driver size the real
+levers), and carries 45-cell candidate grids: `osc_wire` r004w02 at 447.2 µW
+worst-cell (under the fallback everywhere, wire-RC fraction preserved at 0.72)
+and `osc_pmos` l10 at 81.7 µW (under the target everywhere). It also grades the
+six cells this section lists as not graded — union coverage 225/225 — with the
+`osc_wire` sf/1.62 V/−40 °C cell coming from a disclosed relaxed bench
+(`reltol`/`gmin`/`method=gear`, #8's precedent) after two `timestep too small`
+aborts, and the five cold `osc_subth` cells from ms-scale windows. **No verdict
+above changes**: row 7 stays FAIL at every bound for the committed bank; the
+sizing changes are [decision 0004](../spec/decisions/0004-oscillator-bank-active-power-sizing.md),
+status proposed, with the downstream re-runs listed there. The record's §5 also
+states the measured infeasibility of the 100 µW target for the committed bank
+composition (`osc_hd`'s power is fixed by the library cell at ~396 µW and
+stage-count-invariant).
 
 ---
 

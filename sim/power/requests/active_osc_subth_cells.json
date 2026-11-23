@@ -151,6 +151,46 @@
         "edge": "rise",
         "max": 400
       }
+    },
+    {
+      "name": "vbp_avg",
+      "spice": ".meas tran vbp_avg avg v(xdut.vbp) from=1000000n to=2000000n",
+      "unit": "V"
+    },
+    {
+      "name": "vbp_2n",
+      "spice": ".meas tran vbp_2n find v(xdut.vbp) at=2n",
+      "unit": "V"
+    },
+    {
+      "name": "vbp_5n",
+      "spice": ".meas tran vbp_5n find v(xdut.vbp) at=5n",
+      "unit": "V"
+    },
+    {
+      "name": "vbp_10n",
+      "spice": ".meas tran vbp_10n find v(xdut.vbp) at=10n",
+      "unit": "V"
+    },
+    {
+      "name": "vbp_20n",
+      "spice": ".meas tran vbp_20n find v(xdut.vbp) at=20n",
+      "unit": "V"
+    },
+    {
+      "name": "vbp_50n",
+      "spice": ".meas tran vbp_50n find v(xdut.vbp) at=50n",
+      "unit": "V"
+    },
+    {
+      "name": "vbp_100n",
+      "spice": ".meas tran vbp_100n find v(xdut.vbp) at=100n",
+      "unit": "V"
+    },
+    {
+      "name": "vbp_1u",
+      "spice": ".meas tran vbp_1u find v(xdut.vbp) at=1u",
+      "unit": "V"
     }
   ]
 }

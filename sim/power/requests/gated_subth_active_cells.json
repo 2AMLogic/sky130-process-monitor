@@ -158,8 +158,28 @@
       "unit": "V"
     },
     {
+      "name": "vbp_2n",
+      "spice": ".meas tran vbp_2n find v(xdut.vbp) at=2n",
+      "unit": "V"
+    },
+    {
+      "name": "vbp_5n",
+      "spice": ".meas tran vbp_5n find v(xdut.vbp) at=5n",
+      "unit": "V"
+    },
+    {
       "name": "vbp_10n",
       "spice": ".meas tran vbp_10n find v(xdut.vbp) at=10n",
+      "unit": "V"
+    },
+    {
+      "name": "vbp_20n",
+      "spice": ".meas tran vbp_20n find v(xdut.vbp) at=20n",
+      "unit": "V"
+    },
+    {
+      "name": "vbp_50n",
+      "spice": ".meas tran vbp_50n find v(xdut.vbp) at=50n",
       "unit": "V"
     },
     {

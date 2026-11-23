@@ -3,6 +3,8 @@
 
     analyze_power.py extract REPORT.json[.gz]... [-o power_table.json] [--carry-active PRIOR_TABLE.json]
     analyze_power.py grade power_table.json [--json OUT]
+    analyze_power.py cand-idle CAND_IDLE_REPORT.json UNGATED_POWER_TABLE.json -o cand_idle.json   (issue #279 candidate)
+    analyze_power.py cand-ab ACTIVE_REPORT.json GATED_REPORT.json -o cand_ab.json                 (issue #279 candidate)
 
 Scope, stated with every verdict: the OSCILLATOR BANK ONLY. The counter has no SPICE-level netlist, so COUNTER
 POWER IS NOT COVERED; the spec's "one oscillator plus counter" active figure is therefore not graded in full
@@ -92,6 +94,68 @@ def extract(paths, carry_active=None):
     return {"kind": "SIMULATED", "rows": rows, "environment": envs}
 
 
+EN_MID_NS = 1.05  # the A/B benches' behavioural enable: 0 until 1 ns, 100 ps ramp -> half-rail at 1.05 ns
+VBP_TIMES = ("2n", "5n", "10n", "20n", "50n", "100n", "1u")
+VBP_TOL = 0.01    # bias counted settled when within 1% of the long-window mean
+
+
+def _cell(c):
+    return "%s|%.2f|%d" % (c["process"], c["supply_v"]["vdd"], c["temperature_c"])
+
+
+def cand_idle(report_path, ungated_table):
+    """Per-cell result of the gated candidate's 45-cell idle grid, beside the ungated osc_subth design's
+    idle current at the same cell (from the committed power table) -- the comparison is derived here, from
+    data, never typed into the record."""
+    rep = _load(report_path)
+    un = {"%s|%.2f|%d" % (r["process"], r["vdd"], r["temp_c"]): r["i_a"]
+          for r in ungated_table["rows"] if r["kind"] == "idle" and r["osc"] == "osc_subth"}
+    cells = {}
+    for c in rep["corners"]:
+        m = {x["name"]: x for x in c["measurements"]}
+        v = (m.get("i_vdd") or {}).get("value")
+        i = abs(v) if v is not None and c["status"] == "pass" else None
+        k = _cell(c)
+        u = un.get(k)
+        cells[k] = {"gated_i_a": i, "ungated_i_a": u, "unit_status": c["status"],
+                    "reduction_x": (u / i) if (i and u) else None,
+                    "gated_uW": (i * c["supply_v"]["vdd"] * 1e6) if i is not None else None}
+    return {"kind": "SIMULATED", "bench": rep["netlist"]["path"], "cells": cells,
+            "cells_present": sum(x["gated_i_a"] is not None for x in cells.values()), "cells_expected": 45}
+
+
+def cand_ab(active_path, gated_path):
+    """A/B of the unchanged and gated osc_subth on the same cells, from output-edge timestamps: frequency
+    by sensitivity/analyze.py freq_from_crossings (the nine-edge rule, so an unresolvable ring is reported
+    MISSING, never compared), first output edge after the enable midpoint, and bias settling reported
+    separately (first sampled time at which vbp is within VBP_TOL of the long-window mean)."""
+    out = {}
+    for tag, path in (("ungated", active_path), ("gated", gated_path)):
+        for c in _load(path)["corners"]:
+            m = {x["name"]: x for x in c["measurements"]}
+            times = ((m.get("t_rise") or {}).get("crossings") or {}).get("times") or []
+            ref = (m.get("vbp_avg") or {}).get("value")
+            settle = None
+            if ref:
+                for t in VBP_TIMES:
+                    v = (m.get("vbp_" + t) or {}).get("value")
+                    if v is not None and abs(v - ref) <= VBP_TOL * abs(ref):
+                        settle = t
+                        break
+            out.setdefault(_cell(c), {})[tag] = {
+                "status": c["status"], "edges": len(times), "f_hz": _SENS.freq_from_crossings(times),
+                "first_edge_after_en_ns": (times[0] * 1e9 - EN_MID_NS) if times else None,
+                "vbp_avg_v": ref, "vbp_settled_by": settle,
+                "vbp_samples_v": {t: (m.get("vbp_" + t) or {}).get("value") for t in VBP_TIMES}}
+    for d in out.values():
+        a, g = d.get("ungated", {}), d.get("gated", {})
+        fa, fg = a.get("f_hz"), g.get("f_hz")
+        d["f_ratio_gated_over_ungated"] = (fg / fa) if (fa and fg) else None
+        d["pair"] = "resolved" if (fa and fg) else "MISSING (below the %d-edge rule in: %s)" % (
+            MIN_EDGES, ", ".join(t for t, x in (("ungated", fa), ("gated", fg)) if not x))
+    return {"kind": "SIMULATED", "cells": out}
+
+
 def grade(tab):
     out = {"scope": "oscillator bank only; counter power NOT covered", "kind": "SIMULATED"}
     cells = {(p, v, t) for r in tab["rows"] for p, v, t in [(r["process"], r["vdd"], r["temp_c"])]}
@@ -131,6 +195,14 @@ def main(a):
         carry = a[a.index("--carry-active") + 1] if "--carry-active" in a else None
         paths = [x for x in a[2:i] if x != "--carry-active" and x != carry]
         json.dump(extract(paths, carry), open(a[i + 1], "w"), indent=1, sort_keys=True)
+        return 0
+    if len(a) >= 5 and a[1] == "cand-idle" and "-o" in a:
+        with open(a[3]) as f:
+            r = cand_idle(a[2], json.load(f))
+        json.dump(r, open(a[a.index("-o") + 1], "w"), indent=1, sort_keys=True)
+        return 0
+    if len(a) >= 5 and a[1] == "cand-ab" and "-o" in a:
+        json.dump(cand_ab(a[2], a[3]), open(a[a.index("-o") + 1], "w"), indent=1, sort_keys=True)
         return 0
     if len(a) >= 3 and a[1] == "grade":
         r = grade(json.load(open(a[2])))

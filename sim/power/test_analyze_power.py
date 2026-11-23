@@ -206,5 +206,46 @@ class Issue279IdleRebench(unittest.TestCase):
         self.assertTrue(any(r["kind"] == "active" and r["process"] == "tt" for r in tab["rows"]))
 
 
+class Issue295CandidateAnalysis(unittest.TestCase):
+    """cand_idle / cand_ab: the comparison is derived from per-cell data; frequency comes from edge
+    timestamps under the nine-edge rule, never from capped counts."""
+
+    def _write(self, d, name, rep):
+        path = os.path.join(d, name)
+        with open(path, "w") as f:
+            json.dump(rep, f)
+        return path
+
+    def test_cand_idle_derives_reduction_per_cell(self):
+        rep = report(cells={("tt", 1.80, 27): None}, kind="idle", osc="osc_subth", i_a=-4.78e-10)
+        un = {"rows": [{"kind": "idle", "osc": "osc_subth", "process": "tt", "vdd": 1.8, "temp_c": 27, "i_a": 1.0044e-6}]}
+        with tempfile.TemporaryDirectory() as d:
+            r = P.cand_idle(self._write(d, "r.json", rep), un)
+        c = r["cells"]["tt|1.80|27"]
+        self.assertAlmostEqual(c["reduction_x"], 1.0044e-6 / 4.78e-10)
+        self.assertEqual(r["cells_present"], 1)
+
+    def test_cand_ab_uses_timestamps_and_reports_missing_pairs(self):
+        def rep(times_by_cell, vbp):
+            corners = []
+            for (p, v, t), times in times_by_cell.items():
+                meas = [{"name": "t_rise", "unit": "s", "crossings": {"times": times}},
+                        {"name": "vbp_avg", "value": vbp, "unit": "V"}]
+                for tt, val in (("2n", vbp * 0.5), ("5n", vbp * 0.995), ("10n", vbp)):
+                    meas.append({"name": "vbp_" + tt, "value": val, "unit": "V"})
+                corners.append({"process": p, "supply_v": {"vdd": v}, "temperature_c": t, "status": "pass",
+                                "measurements": meas})
+            return {"netlist": {"path": "x.spice"}, "corners": corners, "environment": {}}
+        a = rep({("tt", 1.8, 27): crossings(20, 1e-6), ("sf", 1.8, -40): crossings(5, 1e-6)}, 1.5)
+        g = rep({("tt", 1.8, 27): crossings(20, 1.02e-6), ("sf", 1.8, -40): crossings(5, 1e-6)}, 1.5)
+        with tempfile.TemporaryDirectory() as d:
+            r = P.cand_ab(self._write(d, "a.json", a), self._write(d, "g.json", g))["cells"]
+        nom = r["tt|1.80|27"]
+        self.assertAlmostEqual(nom["f_ratio_gated_over_ungated"], 1 / 1.02, places=6)
+        self.assertEqual(nom["gated"]["vbp_settled_by"], "5n")  # 0.995 is within 1%, 0.5 is not
+        self.assertTrue(r["sf|1.80|-40"]["pair"].startswith("MISSING"))
+        self.assertIsNone(r["sf|1.80|-40"]["f_ratio_gated_over_ungated"])
+
+
 if __name__ == "__main__":
     unittest.main()

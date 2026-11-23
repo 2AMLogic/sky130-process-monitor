@@ -1,0 +1,21 @@
+* Isolated OFF-device probes (PR #295 finding 6): each device at Vgs=0, |Vds|=vdd, body at its rail;
+* a 0 V sense source per device so one .meas per device reports its OFF current (positive out of
+* the supply). SIMULATION, schematic-level single devices; geometries are the ring/candidate ones.
+Vdd vdd 0 1.8
+Vss vss 0 0
+Vm_p_wire_stage vdd m_p_wire_stage 0
+XM_p_wire_stage vss vdd m_p_wire_stage vdd sky130_fd_pr__pfet_01v8 L=0.15 W=8.0 nf=1 mult=1 m=1
+Vm_p_nmos_stage vdd m_p_nmos_stage 0
+XM_p_nmos_stage vss vdd m_p_nmos_stage vdd sky130_fd_pr__pfet_01v8 L=0.15 W=3.0 nf=1 mult=1 m=1
+Vm_p_subth_stage vdd m_p_subth_stage 0
+XM_p_subth_stage vss vdd m_p_subth_stage vdd sky130_fd_pr__pfet_01v8 L=0.15 W=0.84 nf=1 mult=1 m=1
+Vm_p_subth_lvt vdd m_p_subth_lvt 0
+XM_p_subth_lvt vss vdd m_p_subth_lvt vdd sky130_fd_pr__pfet_01v8_lvt L=0.5 W=0.42 nf=1 mult=1 m=1
+Vm_n_stage vdd m_n_stage 0
+XM_n_stage m_n_stage vss vss vss sky130_fd_pr__nfet_01v8 L=0.15 W=4.0 nf=1 mult=1 m=1
+Vm_n_enstack vdd m_n_enstack 0
+XM_n_enstack m_n_enstack vss vss vss sky130_fd_pr__nfet_01v8 L=0.5 W=0.84 nf=1 mult=1 m=1
+Vm_n_long vdd m_n_long 0
+XM_n_long m_n_long vss vss vss sky130_fd_pr__nfet_01v8 L=0.5 W=0.42 nf=1 mult=1 m=1
+Vm_n_gate_switch vdd m_n_gate_switch 0
+XM_n_gate_switch m_n_gate_switch vss vss vss sky130_fd_pr__nfet_01v8 L=0.15 W=1.0 nf=1 mult=1 m=1

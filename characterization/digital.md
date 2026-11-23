@@ -26,8 +26,12 @@ partition's share; neither report claims a whole-block verdict for them.
 **Status of this report: `fail`** (`evidence/item8_digital.json`). The counter's
 functional behaviour passes every committed check, but the corner-matched static
 timing records a **FAIL in all three liberty corners** — the counter does not
-cover `osc_hd` in any corner — and spec §6 has **no recorded result at all**. A
-`pass` would overclaim on both counts.
+cover `osc_hd` in any corner — and spec §6 is now **recorded, and it records
+misses**: the target is met only at the nominal cell under the default gate
+(0.5152 ms), every longer gate setting exceeds it (up to 10.8117 ms at the
+slowest-`osc_subth` cell, past even the fallback), and under the default gate at
+that cell the `osc_subth` read does not complete at all. A `pass` would
+overclaim on both counts.
 
 Beyond the spec rows, the T1 item-8 checklist asks a digital partition for
 **Fmax, area and power across the corner set**, not just functional pass/fail.
@@ -43,7 +47,7 @@ actually covered and the gaps in that coverage stated.
 | §5 Readout — counter function | **PASS** | — | — | RTL + SDF-annotated gate level, typ | `verification/readout/functional-verification.report.json` |
 | §5 Readout — counter timing vs. the selected oscillator | **FAIL** | — | — | `osc_hd`, all three liberty corners (worst ss_100C_1v60) | `sta/readout.osc-corner.sta.report.json` |
 | §5 Readout — reference-clock accuracy requirement | **not recorded** | **not recorded** | — | — | requirement on an input; the block does not generate it |
-| §6 Conversion time | **not recorded** | **not recorded** | **not recorded** | — | `spec/target-spec.md` §6 (planning figure only) |
+| §6 Conversion time | **FAIL** (0.5152 ms at nominal/default; every longer gate exceeds 1 ms) | **FAIL** (10.8117 ms at sf/1.98 V/−40 °C, k = 14 whole bank) | **FAIL** (best 0.5152 ms) | sf, 1.98 V, −40 °C (`osc_subth`, 945.75 µs; default-gate read does not complete) | `verification/readout/conversion-time.json` |
 | §8 Area (digital share) | **not recorded** | **not recorded** | **not recorded** | — | `layout/README.md` |
 | §9 Signoff (digital share) | **not recorded** (whole-block) | components recorded below | — | — | `drc/README.md`, `lvs/README.md`, `verification/README.md` |
 
@@ -61,19 +65,19 @@ output. It decomposes into three separately-evidenced parts, below.
 
 **Verdict: PASS.** Recorded in
 `verification/readout/functional-verification.report.json` (the `5.digital`
-citation, with `sta/readout.sta.report.json`): `status: "pass"`, **9 of 9
+citation, with `sta/readout.sta.report.json`): `status: "pass"`, **10 of 10
 tests**, 0 failed, 0 skipped. **SIMULATED** RTL simulation — Icarus 13.0,
 cocotb 2.1.0, testbench `verification/readout/test_readout.py`, random seed 1.
-The nine tests are `reset_values`, `count_correctness`, `select_switching`,
+The ten tests are `reset_values`, `count_correctness`, `select_switching`,
 `busy_done_sequencing`, `cal_readback`, `reset_mid_gate`,
-`saturation_overflow`, `full_read_cycle_count` and `k0_phase_sweep`, so
-gate/count correctness, saturation and select — exactly what
-`spec/digital-rows.json` names as this row's testbench — are each covered by a
-named passing test.
+`saturation_overflow`, `full_read_cycle_count`, `k0_phase_sweep` and
+`conversion_time_surfaces`, so gate/count correctness, saturation and select —
+exactly what `spec/digital-rows.json` names as this row's testbench — are each
+covered by a named passing test.
 
 **Post-layout re-verification (T1 item 7, `7.digital`, graded `met`):**
 `verification/readout/functional-verification-sdf.report.json` — `status:
-"pass"`, **8 of 8 tests**, SDF-annotated against
+"pass"`, **9 of 9 tests**, SDF-annotated against
 `layout/readout/out_sdf/readout_route.sdf` at the **typ** corner. The annotation
 is **partial** and its own report says so: Icarus implements IOPATH/INTERCONNECT
 annotation but not SDF TIMINGCHECK, so **323 TIMINGCHECK sections are dropped**
@@ -175,36 +179,81 @@ rather than left out:**
 
 ## Spec §6 — Conversion time
 
-**Verdict: not recorded.** No committed record under `sim/` or `verification/`
-grades a conversion time against the spec §6 bounds (< 1 ms target, < 10 ms
-fallback, < 100 µs stretch).
+**Verdict: recorded, FAIL against target and fallback and stretch** (the target
+is met at exactly one of the six recorded cell × gate-setting combinations).
+Recorded in `verification/readout/conversion-time.json`, written by the bench
+itself (`verification/readout/test_readout.py::conversion_time_surfaces`);
+the gate-level leg is `verification/readout/conversion-time-sdf.json`.
+**SIMULATED** — Icarus 13.0, cocotb 2.1.0, RTL pre-layout plus one
+SDF-annotated gate-level leg, random seed 1, reference clock exactly 10 MHz.
+This section quotes the record's verdicts; it derives none.
 
-What exists, and what it is:
+Spec §6 binds "< 1 ms for a full read of all oscillators" (target), "< 10 ms"
+(fallback) and "< 100 µs" (stretch), at the target reference frequency with
+**all oscillator frequencies from the surfaces**. The bench therefore drives
+the five oscillators at their committed surface periods — nominal cell
+(tt, 1.80 V, 27 °C) and the cell with the slowest `osc_subth`
+(sf, 1.98 V, −40 °C; 1057.37 Hz, T = 945.75 µs), each period naming its source
+report and grid cell in the record (`osc_wire` at the sf cell is the
+relaxed-solver probe value, 84.986 MHz, carrying its recorded bias caveat) —
+and reads the bank at the three gate settings the gate-sizing record
+(`sim/sensitivity/records/2026-11-14-osc-subth-gate-sizing.md`) tabulates:
+the spec default 2^10 on all five, 2^14 on all five, and 2^14 on `osc_subth`
+only. No gate is picked and no RTL default is changed by the record.
 
-- **`spec/target-spec.md` §6 carries a planning figure, not a verdict**, and
-  labels it so: *"Planning check, unverified: five oscillators sequentially at
-  the default gate is 5 × 102.4 µs ≈ 0.5 ms."* It is quoted here **only as a
-  planning figure**. It is arithmetic on the gate length, not a result of any
-  run, and nothing in this report treats it as a pass.
-- **A committed testbench exercises the full read**, but does not grade this
-  row: `verification/readout/test_readout.py::full_read_cycle_count` drives five
-  oscillators at a 10 MHz reference with k = 10 and checks each count, then
-  asserts only that the total is at least the gate-only cycle count and **less
-  than 1.2× it** — an *overhead* bound, not the spec §6 bound. The committed
-  report `verification/readout/functional-verification.report.json` records that
-  test's `status: "passed"` and its simulated time, and **no cycle count or
-  conversion time**; the cycle figure appears only in a simulation log that is
-  not committed. So there is no committed figure to quote, and this row is not
-  recorded.
-- `verification/readout/not-statistical.json` classifies the row
-  `deterministic-cycle-count` (part of the `6.digital` `not_applicable`
-  citation): conversion time is an exact arithmetic result of the design with no
-  spread to estimate. That statement is about the row's *statistical* class — it
-  is not a measurement of the row and does not grade it.
+The full read starts on the `clk_ref` edge that samples the first CTRL start
+and ends on the fifth oscillator's first STATUS poll showing DONE. The first
+four COUNT reads fall inside that interval. The record also gives the time
+through the fifth COUNT read, one cycle later.
 
-Closing this row needs a committed record that states the full-read conversion
-time at the target reference frequency and grades it against spec §6. Producing
-one is outside this report, which runs nothing.
+| Cell / gate setting | Full read | §6 verdict (quoted) |
+|---|---|---|
+| nominal, 2^10 × 5 (default) | 5152 cycles = **0.5152 ms** | target **PASS**, fallback PASS, stretch FAIL |
+| nominal, 2^14 × 5 | 81 953 cycles = 8.1953 ms | target FAIL, fallback PASS, stretch FAIL |
+| nominal, 2^14 `osc_subth` only | 20 513 cycles = 2.0513 ms | target FAIL, fallback PASS, stretch FAIL |
+| sf 1.98 V −40 °C, 2^10 × 5 (default) | **did not complete** (`osc_subth`) | no time, no grade |
+| sf, 2^14 × 5 | 108 117 cycles = **10.8117 ms** | target FAIL, **fallback FAIL**, stretch FAIL |
+| sf, 2^14 `osc_subth` only | 46 677 cycles = 4.6677 ms | target FAIL, fallback PASS, stretch FAIL |
+
+Reads that do not complete are recorded as such, with gate and period, never
+asserted away, lengthened or dropped:
+
+- **sf cell, default gate, `osc_subth`: the read hangs.** The gate window
+  (1024 clk_ref cycles = 102.4 µs) is shorter than one oscillator period
+  (945.75 µs; window/period 0.108), and at the bench's recorded deterministic
+  phase (first `osc_subth` rising edge half a period after the gate rise) no
+  rising edge lands inside the window — the condition under which
+  `test_readout.py::k0_phase_sweep` established busy never clears (issue #82;
+  the RTL documents the minimum-k rule 2^k·T_ref ≥ T_osc). The record carries
+  the phase evidence; completion at this cell and gate is phase-dependent, so
+  **no full-read time exists at the default gate** and no §6 bound is graded
+  for it. This is the recorded input to the gate / readout design iteration
+  and to draft `spec/decisions/0003-counter-max-input-frequency.md`, which
+  remains draft and resolves nothing.
+- **Gate level (SDF typ, nominal cell only).** At all three gate settings the
+  host timed out waiting for `osc_hd` at its 1.560 ns surface period (641 MHz).
+  Each timeout leaves the full read ungraded. At the default gate the bench
+  counted 72,116 rising edges at the input and one at `osc_sel_clk`. Neither
+  `tog_o` nor DONE rose. Independently, the §5b STA reports
+  −1.227 ns of counter setup slack at tt and a counter Fmax of 358.9 MHz
+  (`sta/readout.osc-corner.sta.report.json`). Icarus drops 323 SDF TIMINGCHECK
+  sections. The simulation does not identify the cause of the timeout.
+
+What the record adds beyond the planning figure: the 5 × 102.4 µs ≈ 0.5 ms
+arithmetic in `spec/target-spec.md` §6 (quoted there as unverified planning)
+is confirmed only at the nominal cell — 0.5152 ms including 32 cycles of
+handshake and host overhead. At the sf cell the `osc_subth` handshake alone
+(the oscillator-domain synchroniser at a 945.75 µs period) costs more than the
+gate: the k = 14 `osc_subth` read is 42 561 cycles (4.2561 ms) against a
+16 384-cycle gate, which is why the whole-bank k = 14 read (10.8117 ms)
+exceeds even the 10 ms fallback while the `osc_subth`-only-k = 14 reading
+stays under it (4.6677 ms).
+
+- `verification/readout/not-statistical.json` still classifies the row
+  `deterministic-cycle-count` (the `6.digital` `not_applicable` citation):
+  conversion time is an exact arithmetic result of the design with no spread
+  to estimate. That classification is unchanged; this record now supplies the
+  measured figures it lacked.
 
 ---
 
@@ -358,13 +407,14 @@ listed here as components — not as a §9 pass:
   did not verify the body ties.
 - **Post-layout re-verification (T1 item 7, `7.digital`, graded `met`)** — the
   SDF-annotated functional run of §5a:
-  `verification/readout/functional-verification-sdf.report.json`, 8/8 pass,
+  `verification/readout/functional-verification-sdf.report.json`, 9/9 pass,
   **typ corner only**, annotation **partial** (323 TIMINGCHECK sections
   dropped). See `verification/README.md`.
 
 **Why that is not a §9 pass for this partition.** The §9 target additionally
-requires post-layout re-verification of **every row above**: spec §6 has no
-verification at all (above), so it has none post-layout either; the post-layout
+requires post-layout re-verification of **every row above**: spec §6's
+post-layout leg records no conversion time at all (the `osc_hd` reads did not
+complete at gate level, §6 above); the post-layout
 functional run covers one corner, not the box; and there is **no SPEF-backed
 post-layout timing run** on this block (`spef_sta` is null in
 `layout/readout/report.json`, and both `klt sta` runs are DEF-only). The
@@ -379,8 +429,14 @@ report records the digital components above and **no §9 verdict**.
 - **Nothing here is measured.** Every figure is simulated, a static-timing
   result, or a simulated-flow output, at the corner and testbench named beside
   it.
-- **Spec §6 is not recorded**, and the planning arithmetic in
-  `spec/target-spec.md` §6 is quoted only as a planning figure.
+- **Spec §6 is recorded only as far as the committed record reaches**: two
+  cells (nominal; sf 1.98 V / −40 °C) × three gate settings, pre-layout, at
+  the bench's single recorded deterministic phase — completion under a
+  sub-period gate is phase-dependent, so the sf/default non-completion is the
+  recorded phase's outcome, with `k0_phase_sweep` characterizing the law. The
+  gate-level leg records no §6 time at all (`osc_hd` reads did not complete;
+  typ corner, partial annotation). The planning arithmetic in
+  `spec/target-spec.md` §6 is still quoted only as a planning figure.
 - **No whole-block verdict** is formed for spec §8 or §9, and no cross-partition
   area or power figure is computed from the two reports' numbers.
 - **Power and Fmax are not swept across the spec PVT box.** Power is one nominal
@@ -391,7 +447,10 @@ report records the digital components above and **no §9 verdict**.
   proposal only.** The §5b FAIL stands as recorded; nothing here ratifies or
   acts on that draft.
 - **No new simulation, synthesis, place-and-route, extraction or Monte Carlo was
-  run for this report.** It is an aggregation of already-committed records; the
+  run for this report.** It is an aggregation of committed records — including
+  `verification/readout/conversion-time.json` and
+  `verification/readout/conversion-time-sdf.json`, which the readout bench
+  itself wrote and which were committed before this report quoted them; the
   T1 item-8 checklist is satisfied by a hand-assembled record because no `klt`
   aggregation verb exists (`manifests/design-evidence-tiers.md` item 8;
   upstream tracker klayout-tools#309).

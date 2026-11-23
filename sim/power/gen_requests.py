@@ -160,6 +160,90 @@ def xcheck_request(osc, variant):
     return r
 
 
+# Review follow-up (PR #295, findings 2 and 6): a defined ZERO start (`uic`, every ring node 0 V) at the nine
+# suspect cells, and a converged shunt-sensitivity check at the two ss / -40 C osc_wire cells whose norshunt
+# cross-check failed. The plain settle bench starts from the DC operating point, which is exactly the
+# non-unique solve under suspicion, so it cannot establish a zero start; `uic` skips the DC solve.
+SHUNT_CELLS = {"osc_wire": [("ss", 1.62, -40), ("ss", 1.80, -40)]}
+SHUNT_VARIANTS = {"shunt13": "1e13", "shunt14": "1e14"}
+
+
+def xcheck2_text(osc, variant):
+    body = open(os.path.join(HERE, "tb", "idle_%s_settle.spice" % osc)).read()
+    if variant == "zero":
+        body += ".ic " + " ".join("v(%s)=0" % ("out" if n == "out" else "xdut." + n) for n in IC_NODES[osc]) + "\n"
+    else:
+        body = body.replace(".options rshunt=1e12\n", ".options rshunt=%s\n" % SHUNT_VARIANTS[variant], 1)
+        assert ".options rshunt=%s" % SHUNT_VARIANTS[variant] in body
+    return body
+
+
+def xcheck2_request(osc, variant):
+    """`zero`: tran with `uic` and every ring node at 0 V, on the suspect cells. `shunt13`/`shunt14`: the
+    settle bench with a larger shunt resistance (less shunt current), on the cells the norshunt run lost."""
+    r = settle_request(osc)
+    r["netlist"] = "../tb/xcheck_settle_%s_%s.spice" % (osc, variant)
+    del r["measurements"][1]
+    if variant == "zero":
+        r["analysis"] = {"kind": "tran", "args": "10n %dn uic" % SETTLE[osc]}
+        cells = SUSPECT[osc]
+    else:
+        cells = SHUNT_CELLS[osc]
+    r["corners"] = {"units": [{"process": p, "temperature_c": t, "supply_v": {"vdd": v}} for p, v, t in cells]}
+    return r
+
+
+# --- issue #279: isolated OFF-device probes (PR #295 finding 6) ---------------------------------
+#
+# One deck, one instance per probed device geometry, each with its own source so a single .meas per
+# device reports the OFF current at Vgs=0, |Vds|=vdd: the numbers the idle record cites for the dominant
+# leakage devices and for the candidate's switch. Instances use the ring geometries (design/osc_bank/).
+PROBE_DEVICES = [  # (label, model, W, L)
+    ("p_wire_stage", "pfet_01v8", 8.0, 0.15), ("p_nmos_stage", "pfet_01v8", 3.0, 0.15),
+    ("p_subth_stage", "pfet_01v8", 0.84, 0.15), ("p_subth_lvt", "pfet_01v8_lvt", 0.42, 0.5),
+    ("n_stage", "nfet_01v8", 4.0, 0.15), ("n_enstack", "nfet_01v8", 0.84, 0.5),
+    ("n_long", "nfet_01v8", 0.42, 0.5), ("n_gate_switch", "nfet_01v8", 1.0, 0.15),
+]
+PROBE_CELLS = [("fs", 1.98, 125), ("ff", 1.98, 125), ("ss", 1.98, 125), ("fs", 1.98, -40)]
+
+
+def probe_tb_text():
+    ln = ["* Isolated OFF-device probes (PR #295 finding 6): each device at Vgs=0, |Vds|=vdd, body at its rail;",
+          "* a 0 V sense source per device so one .meas per device reports its OFF current (positive out of",
+          "* the supply). SIMULATION, schematic-level single devices; geometries are the ring/candidate ones.",
+          "Vdd vdd 0 1.8", "Vss vss 0 0"]
+    for lab, mod, w, l in PROBE_DEVICES:
+        ln.append("Vm_%s vdd m_%s 0" % (lab, lab))
+        if mod.startswith("pfet"):  # source=m, gate=vdd (Vgs=0), drain=vss, body=vdd
+            ln.append("XM_%s vss vdd m_%s vdd sky130_fd_pr__%s L=%s W=%s nf=1 mult=1 m=1" % (lab, lab, mod, l, w))
+        else:  # drain=m, gate=vss, source=vss, body=vss
+            ln.append("XM_%s m_%s vss vss vss sky130_fd_pr__%s L=%s W=%s nf=1 mult=1 m=1" % (lab, lab, mod, l, w))
+    return "\n".join(ln) + "\n"
+
+
+def probe_request():
+    b = request("osc_subth", True)
+    r = {"netlist": "../tb/probe_off_devices.spice", "engine": b["engine"], "models": b["models"],
+         "options": b["options"], "batch": b["batch"], "backend": b["backend"],
+         "corners": {"units": [{"process": p, "temperature_c": t, "supply_v": {"vdd": v}} for p, v, t in PROBE_CELLS]},
+         "analysis": {"kind": "op", "args": ""},
+         "measurements": [{"name": "i_%s" % lab, "expr": "i(Vm_%s)" % lab, "unit": "A"} for lab, *_ in PROBE_DEVICES]}
+    return r
+
+
+def op_probe_request(variant):
+    """Single-unit op probe of the 2026-11-05 suspect cell osc_nmos sf / 1.62 V / 27 C on the committed
+    op-form idle deck. `a`: i(Vdd) only; `b`: i(Vdd) plus three node voltages (a different measurement
+    set on the identical deck). One unit, so `klt sim` keeps it local."""
+    r = request("osc_nmos", True)
+    r["corners"] = {"units": [{"process": "sf", "temperature_c": 27, "supply_v": {"vdd": 1.62}}]}
+    if variant == "b":
+        r["measurements"] += [{"name": "v_out", "expr": "v(out)", "unit": "V"},
+                              {"name": "v_n0", "expr": "v(xdut.n0)", "unit": "V"},
+                              {"name": "v_n1", "expr": "v(xdut.n1)", "unit": "V"}]
+    return r
+
+
 # --- issue #279: en-gated osc_subth bias-divider candidate ----------------------------------
 #
 # Candidate netlist only (adoption is a follow-up issue): the design netlist with the divider return
@@ -248,6 +332,22 @@ if __name__ == "__main__":
             with open(os.path.join(HERE, "requests", "xcheck_settle_%s_%s.json" % (osc, variant)), "w") as f:
                 json.dump(xcheck_request(osc, variant), f, indent=2)
                 f.write("\n")
+    variants = [(o, "zero") for o in SETTLE] + [(o, v) for o in SHUNT_CELLS for v in SHUNT_VARIANTS]
+    for osc, variant in variants:
+        with open(os.path.join(HERE, "tb", "xcheck_settle_%s_%s.spice" % (osc, variant)), "w") as f:
+            f.write(xcheck2_text(osc, variant))
+        with open(os.path.join(HERE, "requests", "xcheck_settle_%s_%s.json" % (osc, variant)), "w") as f:
+            json.dump(xcheck2_request(osc, variant), f, indent=2)
+            f.write("\n")
+    for v in ("a", "b"):
+        with open(os.path.join(HERE, "requests", "probe_op_osc_nmos_sf162_%s.json" % v), "w") as f:
+            json.dump(op_probe_request(v), f, indent=2)
+            f.write("\n")
+    with open(os.path.join(HERE, "tb", "probe_off_devices.spice"), "w") as f:
+        f.write(probe_tb_text())
+    with open(os.path.join(HERE, "requests", "probe_off_devices.json"), "w") as f:
+        json.dump(probe_request(), f, indent=2)
+        f.write("\n")
     with open(os.path.join(HERE, "tb", "gated_subth_idle.spice"), "w") as f:
         f.write(GATED_IDLE_BODY)
     with open(os.path.join(HERE, "tb", "gated_subth_active.spice"), "w") as f:
@@ -281,15 +381,18 @@ if __name__ == "__main__":
     # active A/B on the nominal + cold cells: gated candidate vs the unchanged design bench
     r = request("osc_subth", False)
     r["corners"] = {"units": gated_units()}
+    # The same measurement set on BOTH benches. Edge timestamps (`t_rise` crossings, cap 400) give the
+    # oscillator frequency and first output edge via sensitivity/analyze.py freq_from_crossings; the vbp
+    # samples give bias settling separately (PR #295 finding 4): vbp_avg is the settled reference, the
+    # timed samples show when vbp is within tolerance of it.
+    r["measurements"] = r["measurements"] + [
+        {"name": "vbp_avg", "spice": ".meas tran vbp_avg avg v(xdut.vbp) from=1000000n to=2000000n", "unit": "V"}] + [
+        {"name": "vbp_%s" % t, "spice": ".meas tran vbp_%s find v(xdut.vbp) at=%s" % (t, t), "unit": "V"}
+        for t in ("2n", "5n", "10n", "20n", "50n", "100n", "1u")]
     with open(os.path.join(HERE, "requests", "active_osc_subth_cells.json"), "w") as f:
         json.dump(r, f, indent=2)
         f.write("\n")
     r["netlist"] = "../tb/gated_subth_active.spice"
-    r["measurements"] = r["measurements"] + [
-        {"name": "vbp_avg", "spice": ".meas tran vbp_avg avg v(xdut.vbp) from=1000000n to=2000000n", "unit": "V"},
-        {"name": "vbp_10n", "spice": ".meas tran vbp_10n find v(xdut.vbp) at=10n", "unit": "V"},
-        {"name": "vbp_100n", "spice": ".meas tran vbp_100n find v(xdut.vbp) at=100n", "unit": "V"},
-        {"name": "vbp_1u", "spice": ".meas tran vbp_1u find v(xdut.vbp) at=1u", "unit": "V"}]
     with open(os.path.join(HERE, "requests", "gated_subth_active_cells.json"), "w") as f:
         json.dump(r, f, indent=2)
         f.write("\n")

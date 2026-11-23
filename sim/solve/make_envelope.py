@@ -49,7 +49,10 @@ def build():
     ]
     return {
         "schema_version": 1, "kind": "model-run", "status": "fail",
-        "method": "post-processing of #8 frequency surfaces (rows 1-4) plus klt sim power benches (row 7); SIMULATED, schematic-level, ngspice-46, sky130A",
+        "method": "post-processing of #8 frequency surfaces (rows 1-4) plus klt sim power benches (row 7); SIMULATED, schematic-level, sky130A. "
+                  "Simulator versions differ by input: rows 1-4 (the #8 frequency surfaces) and the row-7 active half (carried "
+                  "verbatim from the 2026-11-05 table) were run on ngspice-46; the row-7 idle half is the 2026-11-21 re-run "
+                  "(issue #279) on ngspice-47",
         "t1_item": 5, "measurements": ms,
         "inputs": {R14: sha(R14), PWR: sha(PWR)},
     }

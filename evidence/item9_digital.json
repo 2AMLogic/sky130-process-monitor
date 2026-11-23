@@ -59,14 +59,14 @@
         "role": "testbench",
         "path": "verification/readout/request-sdf.json",
         "passed": true,
-        "content_hash": "sha256:8d23c8ffab742f03fb6f2ff2879cf381a73c74dd7906ef2ee9ef7dc7b1937a5a"
+        "content_hash": "sha256:97eb8969f19cd4af1ed5f1a0e7407c3a81f060a2164db90ed9fb5a7028012475"
       },
       {
         "check": "present",
         "role": "testbench",
         "path": "verification/readout/test_readout.py",
         "passed": true,
-        "content_hash": "sha256:5d60d71ea6ca906dd6687a093380bcc376de47a6a8311bae7683a4f56a723288"
+        "content_hash": "sha256:fb9afbc6d3c36aa5254b610742011226fd9163ff834cb7187b4109283f1a9ba1"
       },
       {
         "check": "command",
