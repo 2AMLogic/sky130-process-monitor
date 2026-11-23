@@ -371,8 +371,14 @@ above. `klt lvs` also does not compare resistor L/W
 (`device.geometry_not_compared`), so the `osc_subth` divider lengths agree by a
 hand check against `klt extract`, not by LVS.
 
-**Post-layout re-verification (T1 item 7) — `7.analog` is NOT met**
-(`unmet` / `check_failed` in `manifests/sky130-process-monitor.signoff.json`).
+**Post-layout re-verification (T1 item 7) — `7.analog` is `met`** for
+item-7 evidence coverage under
+[decision 0006](../spec/decisions/0006-item7-cold-cells.md)
+(`met` in `manifests/sky130-process-monitor.signoff.json`). That verdict is a
+statement about evidence coverage, not about oscillator performance: the
+oscillator and solve failures below (five cold `osc_subth` cells under row 1's
+9-edge criterion; spec rows 1/3/4 failing their target bounds on measured
+extracted frequencies) are unchanged and are not what `7.analog` grades.
 Per `sim/pex/README.md`: the extracted side meets the §1 "oscillates" criterion
 for four oscillators at 45/45 cells and for `osc_subth` at 40/45 (2026-11-20
 dev2493 grade), and **spec rows 2–4 are now re-graded on measured frequencies**
@@ -396,11 +402,15 @@ oscillator/corner pairs per leg are accounted for with unresolved cells as
 null plus cause (the two known schematic cold cells and `osc_subth`'s ss/sf
 −40 °C cells). The item-7 citation for `osc_subth`
 (`sim/pex/records/2026-11-20-osc_subth-dev2493.pex.report.json`) grades `met`;
-the overall `unmet` / `check_failed` verdict is still solely the 2026-11-10
-`osc_nmos` and `osc_wire` count reports at status `error` — one schematic-side
-cold cell each (tracked in #264; the 2026-11-22 frequency reports hit the same
-two cells on the schematic leg and record them as null with cause, and which
-citations close item 7 stays #264's decision).
+until decision 0006 the overall verdict was `unmet` / `check_failed`, solely
+because of the 2026-11-10 `osc_nmos` and `osc_wire` count reports at status
+`error` — one schematic-side cold cell each (the 2026-11-22 frequency reports
+hit the same two cells on the schematic leg and record them as null with
+cause). Decision 0006 (issue #264) closes item 7 by citing the 2026-11-11
+converged single-corner supplements for those two cells in place of the two
+`error` reports, each paired with the 44 passing cells of its 2026-11-10 report
+(45 corners per oscillator), and `7.analog` now grades `met`; the 2026-11-10
+`osc_nmos` / `osc_wire` reports are no longer cited by any manifest evidence key.
 
 **Body bias, stated because item 7 requires the claimant to state it.**
 `manifests/design-evidence-tiers.md` item 7 says `klt signoff` surfaces a
