@@ -1,0 +1,49 @@
+* EXPERIMENT VARIANT subckt for the row-7 active-power iteration (issue #280).
+* Lever {"n": 21} from the committed design point (the empty lever is the base, which
+* reproduces design/osc_bank/osc_nmos.spice; asserted by gen_candidates.py).
+.subckt osc_nmos_n021 en out vdd vss
+XMp1 n0 out vdd vdd sky130_fd_pr__pfet_01v8 L=0.15 W=3 nf=1 ad=0.87 as=0.87 pd=6.58 ps=6.58 nrd=0.0966666666667 nrs=0.0966666666667 sd=0 mult=1 m=1
+XMp6 n0 en vdd vdd sky130_fd_pr__pfet_01v8 L=0.15 W=3 nf=1 ad=0.87 as=0.87 pd=6.58 ps=6.58 nrd=0.0966666666667 nrs=0.0966666666667 sd=0 mult=1 m=1
+XMn11 n0 out mid vss sky130_fd_pr__nfet_01v8 L=0.5 W=0.84 nf=1 ad=0.2436 as=0.2436 pd=2.26 ps=2.26 nrd=0.345238095238 nrs=0.345238095238 sd=0 mult=1 m=1
+XMn16 mid en vss vss sky130_fd_pr__nfet_01v8 L=0.5 W=0.84 nf=1 ad=0.2436 as=0.2436 pd=2.26 ps=2.26 nrd=0.345238095238 nrs=0.345238095238 sd=0 mult=1 m=1
+XMp102 n1 n0 vdd vdd sky130_fd_pr__pfet_01v8 L=0.15 W=3 nf=1 ad=0.87 as=0.87 pd=6.58 ps=6.58 nrd=0.0966666666667 nrs=0.0966666666667 sd=0 mult=1 m=1
+XMn112 n1 n0 vss vss sky130_fd_pr__nfet_01v8 L=0.5 W=0.42 nf=1 ad=0.1218 as=0.1218 pd=1.42 ps=1.42 nrd=0.690476190476 nrs=0.690476190476 sd=0 mult=1 m=1
+XMp104 n2 n1 vdd vdd sky130_fd_pr__pfet_01v8 L=0.15 W=3 nf=1 ad=0.87 as=0.87 pd=6.58 ps=6.58 nrd=0.0966666666667 nrs=0.0966666666667 sd=0 mult=1 m=1
+XMn114 n2 n1 vss vss sky130_fd_pr__nfet_01v8 L=0.5 W=0.42 nf=1 ad=0.1218 as=0.1218 pd=1.42 ps=1.42 nrd=0.690476190476 nrs=0.690476190476 sd=0 mult=1 m=1
+XMp106 n3 n2 vdd vdd sky130_fd_pr__pfet_01v8 L=0.15 W=3 nf=1 ad=0.87 as=0.87 pd=6.58 ps=6.58 nrd=0.0966666666667 nrs=0.0966666666667 sd=0 mult=1 m=1
+XMn116 n3 n2 vss vss sky130_fd_pr__nfet_01v8 L=0.5 W=0.42 nf=1 ad=0.1218 as=0.1218 pd=1.42 ps=1.42 nrd=0.690476190476 nrs=0.690476190476 sd=0 mult=1 m=1
+XMp108 n4 n3 vdd vdd sky130_fd_pr__pfet_01v8 L=0.15 W=3 nf=1 ad=0.87 as=0.87 pd=6.58 ps=6.58 nrd=0.0966666666667 nrs=0.0966666666667 sd=0 mult=1 m=1
+XMn118 n4 n3 vss vss sky130_fd_pr__nfet_01v8 L=0.5 W=0.42 nf=1 ad=0.1218 as=0.1218 pd=1.42 ps=1.42 nrd=0.690476190476 nrs=0.690476190476 sd=0 mult=1 m=1
+XMp110 n5 n4 vdd vdd sky130_fd_pr__pfet_01v8 L=0.15 W=3 nf=1 ad=0.87 as=0.87 pd=6.58 ps=6.58 nrd=0.0966666666667 nrs=0.0966666666667 sd=0 mult=1 m=1
+XMn120 n5 n4 vss vss sky130_fd_pr__nfet_01v8 L=0.5 W=0.42 nf=1 ad=0.1218 as=0.1218 pd=1.42 ps=1.42 nrd=0.690476190476 nrs=0.690476190476 sd=0 mult=1 m=1
+XMp112 n6 n5 vdd vdd sky130_fd_pr__pfet_01v8 L=0.15 W=3 nf=1 ad=0.87 as=0.87 pd=6.58 ps=6.58 nrd=0.0966666666667 nrs=0.0966666666667 sd=0 mult=1 m=1
+XMn122 n6 n5 vss vss sky130_fd_pr__nfet_01v8 L=0.5 W=0.42 nf=1 ad=0.1218 as=0.1218 pd=1.42 ps=1.42 nrd=0.690476190476 nrs=0.690476190476 sd=0 mult=1 m=1
+XMp114 n7 n6 vdd vdd sky130_fd_pr__pfet_01v8 L=0.15 W=3 nf=1 ad=0.87 as=0.87 pd=6.58 ps=6.58 nrd=0.0966666666667 nrs=0.0966666666667 sd=0 mult=1 m=1
+XMn124 n7 n6 vss vss sky130_fd_pr__nfet_01v8 L=0.5 W=0.42 nf=1 ad=0.1218 as=0.1218 pd=1.42 ps=1.42 nrd=0.690476190476 nrs=0.690476190476 sd=0 mult=1 m=1
+XMp116 n8 n7 vdd vdd sky130_fd_pr__pfet_01v8 L=0.15 W=3 nf=1 ad=0.87 as=0.87 pd=6.58 ps=6.58 nrd=0.0966666666667 nrs=0.0966666666667 sd=0 mult=1 m=1
+XMn126 n8 n7 vss vss sky130_fd_pr__nfet_01v8 L=0.5 W=0.42 nf=1 ad=0.1218 as=0.1218 pd=1.42 ps=1.42 nrd=0.690476190476 nrs=0.690476190476 sd=0 mult=1 m=1
+XMp118 n9 n8 vdd vdd sky130_fd_pr__pfet_01v8 L=0.15 W=3 nf=1 ad=0.87 as=0.87 pd=6.58 ps=6.58 nrd=0.0966666666667 nrs=0.0966666666667 sd=0 mult=1 m=1
+XMn128 n9 n8 vss vss sky130_fd_pr__nfet_01v8 L=0.5 W=0.42 nf=1 ad=0.1218 as=0.1218 pd=1.42 ps=1.42 nrd=0.690476190476 nrs=0.690476190476 sd=0 mult=1 m=1
+XMp120 n10 n9 vdd vdd sky130_fd_pr__pfet_01v8 L=0.15 W=3 nf=1 ad=0.87 as=0.87 pd=6.58 ps=6.58 nrd=0.0966666666667 nrs=0.0966666666667 sd=0 mult=1 m=1
+XMn130 n10 n9 vss vss sky130_fd_pr__nfet_01v8 L=0.5 W=0.42 nf=1 ad=0.1218 as=0.1218 pd=1.42 ps=1.42 nrd=0.690476190476 nrs=0.690476190476 sd=0 mult=1 m=1
+XMp122 n11 n10 vdd vdd sky130_fd_pr__pfet_01v8 L=0.15 W=3 nf=1 ad=0.87 as=0.87 pd=6.58 ps=6.58 nrd=0.0966666666667 nrs=0.0966666666667 sd=0 mult=1 m=1
+XMn132 n11 n10 vss vss sky130_fd_pr__nfet_01v8 L=0.5 W=0.42 nf=1 ad=0.1218 as=0.1218 pd=1.42 ps=1.42 nrd=0.690476190476 nrs=0.690476190476 sd=0 mult=1 m=1
+XMp124 n12 n11 vdd vdd sky130_fd_pr__pfet_01v8 L=0.15 W=3 nf=1 ad=0.87 as=0.87 pd=6.58 ps=6.58 nrd=0.0966666666667 nrs=0.0966666666667 sd=0 mult=1 m=1
+XMn134 n12 n11 vss vss sky130_fd_pr__nfet_01v8 L=0.5 W=0.42 nf=1 ad=0.1218 as=0.1218 pd=1.42 ps=1.42 nrd=0.690476190476 nrs=0.690476190476 sd=0 mult=1 m=1
+XMp126 n13 n12 vdd vdd sky130_fd_pr__pfet_01v8 L=0.15 W=3 nf=1 ad=0.87 as=0.87 pd=6.58 ps=6.58 nrd=0.0966666666667 nrs=0.0966666666667 sd=0 mult=1 m=1
+XMn136 n13 n12 vss vss sky130_fd_pr__nfet_01v8 L=0.5 W=0.42 nf=1 ad=0.1218 as=0.1218 pd=1.42 ps=1.42 nrd=0.690476190476 nrs=0.690476190476 sd=0 mult=1 m=1
+XMp128 n14 n13 vdd vdd sky130_fd_pr__pfet_01v8 L=0.15 W=3 nf=1 ad=0.87 as=0.87 pd=6.58 ps=6.58 nrd=0.0966666666667 nrs=0.0966666666667 sd=0 mult=1 m=1
+XMn138 n14 n13 vss vss sky130_fd_pr__nfet_01v8 L=0.5 W=0.42 nf=1 ad=0.1218 as=0.1218 pd=1.42 ps=1.42 nrd=0.690476190476 nrs=0.690476190476 sd=0 mult=1 m=1
+XMp130 n15 n14 vdd vdd sky130_fd_pr__pfet_01v8 L=0.15 W=3 nf=1 ad=0.87 as=0.87 pd=6.58 ps=6.58 nrd=0.0966666666667 nrs=0.0966666666667 sd=0 mult=1 m=1
+XMn140 n15 n14 vss vss sky130_fd_pr__nfet_01v8 L=0.5 W=0.42 nf=1 ad=0.1218 as=0.1218 pd=1.42 ps=1.42 nrd=0.690476190476 nrs=0.690476190476 sd=0 mult=1 m=1
+XMp132 n16 n15 vdd vdd sky130_fd_pr__pfet_01v8 L=0.15 W=3 nf=1 ad=0.87 as=0.87 pd=6.58 ps=6.58 nrd=0.0966666666667 nrs=0.0966666666667 sd=0 mult=1 m=1
+XMn142 n16 n15 vss vss sky130_fd_pr__nfet_01v8 L=0.5 W=0.42 nf=1 ad=0.1218 as=0.1218 pd=1.42 ps=1.42 nrd=0.690476190476 nrs=0.690476190476 sd=0 mult=1 m=1
+XMp134 n17 n16 vdd vdd sky130_fd_pr__pfet_01v8 L=0.15 W=3 nf=1 ad=0.87 as=0.87 pd=6.58 ps=6.58 nrd=0.0966666666667 nrs=0.0966666666667 sd=0 mult=1 m=1
+XMn144 n17 n16 vss vss sky130_fd_pr__nfet_01v8 L=0.5 W=0.42 nf=1 ad=0.1218 as=0.1218 pd=1.42 ps=1.42 nrd=0.690476190476 nrs=0.690476190476 sd=0 mult=1 m=1
+XMp136 n18 n17 vdd vdd sky130_fd_pr__pfet_01v8 L=0.15 W=3 nf=1 ad=0.87 as=0.87 pd=6.58 ps=6.58 nrd=0.0966666666667 nrs=0.0966666666667 sd=0 mult=1 m=1
+XMn146 n18 n17 vss vss sky130_fd_pr__nfet_01v8 L=0.5 W=0.42 nf=1 ad=0.1218 as=0.1218 pd=1.42 ps=1.42 nrd=0.690476190476 nrs=0.690476190476 sd=0 mult=1 m=1
+XMp138 n19 n18 vdd vdd sky130_fd_pr__pfet_01v8 L=0.15 W=3 nf=1 ad=0.87 as=0.87 pd=6.58 ps=6.58 nrd=0.0966666666667 nrs=0.0966666666667 sd=0 mult=1 m=1
+XMn148 n19 n18 vss vss sky130_fd_pr__nfet_01v8 L=0.5 W=0.42 nf=1 ad=0.1218 as=0.1218 pd=1.42 ps=1.42 nrd=0.690476190476 nrs=0.690476190476 sd=0 mult=1 m=1
+XMp140 out n19 vdd vdd sky130_fd_pr__pfet_01v8 L=0.15 W=3 nf=1 ad=0.87 as=0.87 pd=6.58 ps=6.58 nrd=0.0966666666667 nrs=0.0966666666667 sd=0 mult=1 m=1
+XMn150 out n19 vss vss sky130_fd_pr__nfet_01v8 L=0.5 W=0.42 nf=1 ad=0.1218 as=0.1218 pd=1.42 ps=1.42 nrd=0.690476190476 nrs=0.690476190476 sd=0 mult=1 m=1
+.ends

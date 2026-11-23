@@ -37,12 +37,12 @@ Not covered here
 input set is still identified and pinned in that record's appended note; it reproduces the file as
 committed at `63392bd`, which only `git show` can supply and a shallow CI checkout does not have.
 
-The five pre-0004 samples outputs (`samples-binding-cells.json`, `samples-sized.json`,
+The five pre-0005 samples outputs (`samples-binding-cells.json`, `samples-sized.json`,
 `samples-sized-negctl-hd0.3.json`, `samples-sized-bank.json`, `samples-sized-bank-negctl-hd0.3.json`)
 are likewise not re-derived here (#317): their row-4 negative-control arms were produced by a
 `yield_samples.py` that injected the seeded defect on the one-point calibration draw as well, where
-it cancelled exactly, and the post-0004 code cannot regenerate those bytes by design. They reproduce
-with the `yield_samples.py` of any commit from `63392bd` to just before the 0004 change (`git show`
+it cancelled exactly, and the post-0005 code cannot regenerate those bytes by design. They reproduce
+with the `yield_samples.py` of any commit from `63392bd` to just before the 0005 change (`git show`
 supplies it). Their nominal arms and their rows 2/3 control arms are byte-identical to the dated
 2026-11-23 successors pinned below -- the semantics change touches only the row-4 control arm -- and
 `sim/solve/mc/RECORD-2026-11-23-row4-negative-control.md` records that measured identity.
@@ -160,8 +160,8 @@ PINNED = {
         # older interpreter skips this one check with the reason above.
         "min_python": (3, 12),
     },
-    # The five samples outputs below are the dated 2026-11-23 regeneration of #317 / decision 0004
-    # (row-4 negative control no longer cancels in the one-point calibration). Their pre-0004
+    # The five samples outputs below are the dated 2026-11-23 regeneration of #317 / decision 0005
+    # (row-4 negative control no longer cancels in the one-point calibration). Their pre-0005
     # predecessors stay committed as evidence but are no longer re-derivable by this code -- see
     # "Not covered here" above and sim/solve/mc/RECORD-2026-11-23-row4-negative-control.md.
     "sim/solve/mc/samples-binding-cells-2026-11-23.json": {

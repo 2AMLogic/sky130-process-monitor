@@ -1,4 +1,4 @@
-# 2026-11-23 — T1 item 6: row-4 yield negative control no longer cancels in the one-point calibration (issue #317, decision 0004)
+# 2026-11-23 — T1 item 6: row-4 yield negative control no longer cancels in the one-point calibration (issue #317, decision 0005)
 
 **SIMULATED. Post-processing only: pure stdlib re-derivation of the committed yield samples from the
 recorded MC reports; no simulator, no PDK, no new draws, nothing measured.** Append-only: the five
@@ -10,13 +10,13 @@ edited. No spec bound, limit, target or grid is changed. Rows 2 and 3 controls a
 `yield_samples.py` `row4_samples` passed the same seeded `defect` to both `draws()` calls — the
 measurement draw at (ff, 1.62 V, 27 C) and the one-point calibration draw at (ff, 1.80 V, 27 C) —
 and row 4 grades the calibrated difference `d = rd - cal`, so the offset subtracted out **exactly**
-and the control could not fail (#317). Per [`spec/decisions/0004`](../../../spec/decisions/0004-row4-negative-control.md)
+and the control could not fail (#317). Per [`spec/decisions/0005`](../../../spec/decisions/0005-row4-negative-control.md)
 the defect is now injected on the **measurement draw only** (post-calibration drift); the calibration
 read stays nominal, and its RNG stream no longer depends on the defect (seed string keeps the literal
 `0.0` tail), so the control's calibration draw is the nominal arm's draw. The `build()` description
 of the row-4 control states where the defect is injected. Rows 2 and 3 keep their existing injection
 and seeding. A fixed-noise regression test in `sim/solve/test_solve.py`
-(`test_row4_negative_control_moves_with_the_defect`) fails on the pre-0004 code.
+(`test_row4_negative_control_moves_with_the_defect`) fails on the pre-0005 code.
 
 ## Fixed-RNG verification (the issue's measurement method, `TY.fake_mc(1e-4)`, row-4 grading loop,
 both RNG streams held fixed so the deltas differ only through the defect)
@@ -26,15 +26,20 @@ both RNG streams held fixed so the deltas differ only through the defect)
 | 0.0 | all `0.0` |
 | 0.05 (committed `DEFECT`) | all `-1.0` — every draw moves ≥ one `TGRID` step |
 | 0.5 | all `-8.5` — outside the ±5 C row-4 limit |
-| same three on pre-0004 `main` | **bit-identical to defect 0.0 in all three cases** (the vacuous control) |
+| 5.0 (the issue's 100x probe) | all `-72.0` |
+
+The same four defects were then run through `row4_samples` itself (its own seeding) on the merged
+code and give the same four results; on pre-0005 `origin/main` (`7eb4daa`) all four give **all `0.0`,
+bit-identical to defect 0.0** (the vacuous control), which is the `assertNotEqual(fn_nom, fn_ctl)`
+failure of the regression test on that code.
 
 ## Regenerated evidence (new, dated; prior files untouched)
 
 Each new file is built from **the same pinned inputs, order and seed (20261105)** as its predecessor;
-the nominal arms and the rows 2/3 control arms are byte-identical to the committed files (checked),
-and only `row4_dT.negative_control` differs. "nc moved" counts samples whose value changed against
-the predecessor's control arm (grid snapping at 0.5 C absorbs sub-step shifts; the sensitivity itself
-is the fixed-RNG table above):
+apart from `row4_dT.negative_control` the JSON is identical to the committed predecessor (checked as
+data, see the foot of this record), so only the row-4 control arm differs. "nc moved" counts samples
+whose value changed against the predecessor's control arm (grid snapping at 0.5 C absorbs sub-step
+shifts; the sensitivity itself is the fixed-RNG table above):
 
 | new file (this record) | supersedes | row-4 n | nc moved | \|nc\| > 5 C |
 |---|---|---|---|---|
@@ -50,9 +55,9 @@ already fails its limit outright, so the control's job here is to stay sensitive
 verdict).
 
 The committed `yield-*.json` (`klt yield` outputs) are **not** regenerated: they grade the nominal
-arms, which are byte-identical, so every recorded item-6 yield figure is unchanged, and the row-4
-control yield inside them stays 0.0 (already failing at nominal). Re-running `klt yield` on the dated
-files needs `klt_yield_native` (2AMLogic/klayout-tools#5018, built from tag v0.9.1 into a
+arms, which are identical in the dated files, so every recorded item-6 yield figure is unchanged, and
+the row-4 control yield inside them stays 0.0 (already failing at nominal). Re-running `klt yield` on
+the dated files needs `klt_yield_native` (2AMLogic/klayout-tools#5018, built from tag v0.9.1 into a
 worktree-local `.venv-yield`); it is the last step of the reproduce block and is not covered by
 `sim/solve/test_records_reproduce.py`, which pins the samples files only.
 
@@ -93,10 +98,14 @@ python3 -I sim/solve/yield_samples.py build freq_8.json  mcnom_6.json mcbind_siz
 # klt yield <each dated samples file> --format json   # needs klt_yield_native (2AMLogic/klayout-tools#5018)
 ```
 
-Byte-identity of the five predecessor files against these input sets was re-measured on the pre-0004
-`yield_samples.py` (extracted via `git show origin/main:sim/solve/yield_samples.py`) before
-regenerating: all five `cmp` steps exit 0, so the input pins above are exactly the sets the prior
-records were built from. Checked 2026-11-23 on CPython 3.12. The nominal arms of the dated files are
-byte-identical to the committed predecessors' nominal arms (the semantics change touches only the
-row-4 control arm), and `sim/solve/test_records_reproduce.py` pins the five dated outputs to these
-same literal lists.
+Byte-identity of the five predecessor files against these input sets was re-measured on the pre-0005
+`yield_samples.py` (`origin/main` at `7eb4daa`, i.e. after #296 merged) by running the pre-0005
+`sim/solve/test_records_reproduce.py` against them: its five predecessor checks pass byte-for-byte, so
+the input pins above are exactly the sets the prior records were built from. The dated files were
+built before #296 merged and were **not** rebuilt afterwards: on the merged tree (#296 plus this
+change) the five dated outputs regenerate byte-identically from the same lists
+(`sim/solve/test_records_reproduce.py`, 10 of 10 tests), because #296's per-cell sigma
+(`analyze.mc_sigmas`) is the same estimate the former `sigma_cell` computed for every eligible cell.
+Compared as data, each dated file equals its predecessor with `row4_dT.negative_control` removed: the
+nominal arms and the rows 2/3 control arms are identical, and only the row-4 control arm differs.
+Checked 2026-11-23 on CPython 3.12.3, post-processing only.
