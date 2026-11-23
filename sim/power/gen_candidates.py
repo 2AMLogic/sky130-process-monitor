@@ -390,7 +390,7 @@ def deck_text(name, osc):
     return "\n".join(body) + "\n"
 
 
-def write_probe_deck():
+def probe_deck_text():
     """The relaxed power bench for the osc_wire sf/1.62 V/-40 C convergence cell: the committed
     active_osc_wire.spice body plus exactly the option line of the sensitivity probe bench that
     resolved the same abort at sf/1.98 V/-40 C (sim/sensitivity/osc/tb_osc_wire_probe.spice)."""
@@ -401,12 +401,15 @@ def write_probe_deck():
     head = ("* Power bench (ACTIVE, relaxed probe): committed active_osc_wire.spice body plus the\n"
             "* sensitivity probe bench's option line (%s), for the sf/1.62 V/-40 C\n"
             "* `timestep too small` cell. SIMULATION, schematic-level; bench option, not a model change.\n" % opt.strip())
-    out = head + body.replace("* Power bench (ACTIVE)", "* Power bench (ACTIVE)", 1)
-    lines = out.splitlines()
+    lines = (head + body).splitlines()
     idx = next(i for i, l in enumerate(lines) if l.startswith(".options rshunt"))
     lines.insert(idx, opt)
+    return "\n".join(lines) + "\n"
+
+
+def write_probe_deck():
     with open(os.path.join(HERE, "tb", "active_osc_wire_probe.spice"), "w") as f:
-        f.write("\n".join(lines) + "\n")
+        f.write(probe_deck_text())
 
 
 def write_all(carried=None):

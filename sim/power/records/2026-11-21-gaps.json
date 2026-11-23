@@ -80,7 +80,9 @@
    "f_hz": null,
    "gradable": false,
    "n_edges": 0,
+   "note": "raw report for the aborting un-relaxed fleet run of requests/gap_osc_wire_sf_1.62V_-40C.json was not retained in reports/ (only the six graded-cell reports are committed); not re-derivable from reports/",
    "osc": "osc_wire",
+   "report_retained": false,
    "rule": ">= 9 rising crossings (the #8 rule via analyze_power.MIN_EDGES)",
    "unit_status": "error"
   },

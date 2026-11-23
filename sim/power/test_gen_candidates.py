@@ -9,7 +9,6 @@ Two subjects, both load-bearing for the record:
      N*C*VDD*dV*f, the DC term is the committed idle current, and the residual is what remains;
      gradability of a gap cell follows analyze_power.MIN_EDGES (the #8 rule), never a local number.
 """
-import importlib.util
 import json
 import os
 import sys
@@ -111,6 +110,23 @@ class Requests(unittest.TestCase):
             self.assertEqual(req["corners"]["process"], G.PROCESS)
             self.assertEqual(len(req["corners"]["supply_v"]["vdd"]) * len(req["corners"]["temperature_c"])
                              * len(G.PROCESS), 45)
+
+    def test_probe_deck_is_committed_body_plus_one_options_line(self):
+        with open(os.path.join(HERE, "tb", "active_osc_wire.spice")) as f:
+            base_lines = f.read().splitlines()
+        with open(os.path.join(HERE, "..", "sensitivity", "osc", "tb_osc_wire_probe.spice")) as f:
+            sens_probe = f.read().splitlines()
+        opt = next(l for l in sens_probe if l.startswith(".options"))
+        text = G.probe_deck_text()
+        with open(os.path.join(HERE, "tb", "active_osc_wire_probe.spice")) as f:
+            self.assertEqual(text, f.read())
+        lines = text.splitlines()
+        base_non_comment = [l for l in base_lines if not l.startswith("*")]
+        probe_non_comment = [l for l in lines if not l.startswith("*")]
+        self.assertEqual(len(probe_non_comment), len(base_non_comment) + 1)
+        idx = probe_non_comment.index(".options rshunt=1e12")
+        self.assertEqual(probe_non_comment[idx - 1], opt)
+        self.assertEqual(probe_non_comment[:idx - 1] + probe_non_comment[idx:], base_non_comment)
 
 
 def probe_report(osc="osc_wire", e_j=2.0e-9, win_s=1.25e-6, i_a=-1.0e-3, n_edges=100,

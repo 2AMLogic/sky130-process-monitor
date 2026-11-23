@@ -11,7 +11,7 @@ under `reports/` (unlike the 2026-11-05 run, so crossing counts stay re-derivabl
 `sim/power/analyze_iteration.py`; tables `2026-11-21-*.json` in this directory.
 
 No design netlist, no spec threshold and no existing record was changed for this study. Candidates are
-bench-side EXPERIMENT VARIANTS; any adoption is [decision 0004](../../spec/decisions/0004-oscillator-bank-active-power-sizing.md) (proposed), not this record.
+bench-side EXPERIMENT VARIANTS; any adoption is [decision 0004](../../../spec/decisions/0004-oscillator-bank-active-power-sizing.md) (proposed), not this record.
 
 ## 1. Binding cells (verified from the committed table)
 
@@ -28,7 +28,7 @@ bench-side EXPERIMENT VARIANTS; any adoption is [decision 0004](../../spec/decis
 
 ## 2. Decomposition at each binding cell (one single-corner probe per oscillator)
 
-`2026-11-21-decompose.json`; probe reports `reports/probe_osc_*.json[.gz]`. Method: supply power over the
+`2026-11-21-decompose.json`; probe reports `reports/probe_osc_*.json.gz`. Method: supply power over the
 settled half-window from the `klt sim` `energy` measurement (net delivered energy ÷ window), cross-checked
 against the committed mean-current convention (`P_iavg`) — the two agree to ≤ 0.1 % on every probe, and
 each probe's `P_iavg` reproduces the committed table's cell to the same digits. The explicit-switching term
@@ -162,9 +162,10 @@ substituted.
 
 ## 6. The six ungraded active cells: fresh runs
 
-`2026-11-21-gaps.json`; reports `reports/gap_*.json.gz` (raw reports committed, with crossing counts and
-unit status — the 2026-11-14 correction could not re-derive these because the 2026-11-05 raw reports were
-never committed). Windows sized from the committed sensitivity surface with ≥ 2× margin over 9 crossings
+`2026-11-21-gaps.json`; reports `reports/gap_*.json.gz` (raw reports committed for all six graded cells,
+with crossing counts and unit status — the 2026-11-14 correction could not re-derive these because the
+2026-11-05 raw reports were never committed; the aborting un-relaxed wire attempt's report was not
+retained, see below). Windows sized from the committed sensitivity surface with ≥ 2× margin over 9 crossings
 at each cell's own frequency; gradability is the #8 rule via `analyze_power.MIN_EDGES` (9 rising
 crossings), never interpolated.
 
@@ -182,9 +183,12 @@ committed 2 ms window had resolved at most 6 edges at these cells). No verdict c
 worst graded cell stays ff/1.98/125 at 36.6 µW.
 
 The `osc_wire` sf/1.62 V/−40 °C cell took the two-step path #8 used for the same abort at sf/1.98 V/−40 °C:
-with tmax capped at 20 ps the transient **still aborts** (`timestep too small`,
-`reports/gap_osc_wire_sf_1.62V_-40C.json.gz`; `retry_on_convergence_error` retried and failed the same
-way), so the graded result above comes from a power-side copy of the committed relaxed probe bench
+with tmax capped at 20 ps (`requests/gap_osc_wire_sf_1.62V_-40C.json`), the un-relaxed fleet run **still
+aborted** (`timestep too small`; `retry_on_convergence_error` retried and failed the same way on the
+`klt 0.9.0` fleet runner — that aborting attempt's raw report was **not retained** in `reports/`, which
+keeps only the six graded-cell reports, so the corresponding `error` row in `2026-11-21-gaps.json` is not
+re-derivable from `reports/`, though the committed request reproduces the default-trapezoidal
+nonconvergence). The graded result above comes from a power-side copy of the committed relaxed probe bench
 (`tb/active_osc_wire_probe.spice`: the committed body plus exactly `reltol=0.01 gmin=1e-10 method=gear`;
 `reports/gap_osc_wire_sf_1.62V_-40C_relaxed.json.gz`). **Disclosure:** this one cell is integrated with
 gear/relaxed tolerances where the other 224 use the default trapezoidal settings — a bench option, not a

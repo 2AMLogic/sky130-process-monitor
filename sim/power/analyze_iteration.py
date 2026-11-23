@@ -32,7 +32,6 @@ post-processing; see sim/solve/records/2026-11-05-rows1-4.md for the pinned repo
 """
 import argparse
 import json
-import math
 import os
 import sys
 
@@ -122,7 +121,7 @@ def decompose(probe_paths, idle_table):
             nn = (((m.get("t_n1") or {}).get("crossings") or {}).get("times") or [])[3:]
             k = min(len(s), len(nn))
             if k >= 4 and f:
-                d = sorted(nn[i] - s[i] for i in range(k))
+                d = [nn[i] - s[i] for i in range(k)]
                 rc = sum(d) / len(d)
                 row["rc_delay_s"] = rc
                 row["stage_delay_s"] = 1.0 / (2 * WIRE_N * f)
@@ -160,7 +159,7 @@ def screens(paths):
             k = min(len(s), len(nn))
             nstages = _GEN.CANDIDATES[fam]["levers"][tag].get("n", 31)
             if k >= 4 and f:
-                d = sorted(nn[i] - s[i] for i in range(k))
+                d = [nn[i] - s[i] for i in range(k)]
                 rc = sum(d) / len(d)
                 row["rc_delay_s"] = rc
                 row["stage_delay_s"] = 1.0 / (2 * nstages * f)
