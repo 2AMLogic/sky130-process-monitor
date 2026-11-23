@@ -3,14 +3,14 @@
   "kind": "generic",
   "status": "pass",
   "t1_item": 9,
-  "summary": "T1 item 9 (Testbenches shipped): 544/544 attestation checks passed (klt signoff --attest)",
+  "summary": "T1 item 9 (Testbenches shipped): 612/612 attestation checks passed (klt signoff --attest)",
   "source": "attest/item9_analog.json",
   "attestation": {
     "producer": "klt signoff --attest",
     "inventory_schema_version": 1,
     "hash_algorithm": "sha256-raw-bytes",
-    "check_count": 544,
-    "passed_count": 544,
+    "check_count": 612,
+    "passed_count": 612,
     "checks": [
       {
         "check": "present",
@@ -246,6 +246,237 @@
       {
         "check": "present",
         "role": "testbench",
+        "path": "sim/power/requests/cand_hd_n021.json",
+        "passed": true,
+        "content_hash": "sha256:1e46132287f02c818a825ec734161f46ed857175da1b5153422251ca7507779a"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/power/requests/cand_hd_n061.json",
+        "passed": true,
+        "content_hash": "sha256:4336d65725072a68000a1143a47420efc2ceae598af8ed5d07ea32f0ca17fcff"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/power/requests/cand_nmos_l10.json",
+        "passed": true,
+        "content_hash": "sha256:613507995eeefc1e4a7171301f479428b0c4da3024c7413855a15b63f46408c9"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/power/requests/cand_nmos_l20.json",
+        "passed": true,
+        "content_hash": "sha256:0858dc9e0fbfceaf96c7bce623086388379b4d5e9dcb8c49c4e4795be14ea985"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/power/requests/cand_nmos_l30.json",
+        "passed": true,
+        "content_hash": "sha256:c09b3dc2d8c997dc8a26e687af5c24a21f9b8f8b29aefd3ec8eb21bd504cd85f"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/power/requests/cand_nmos_n021.json",
+        "passed": true,
+        "content_hash": "sha256:5751dc9ad6711178871a4cc1fa969e0239cd5ab84fda589b34c0550db293340a"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/power/requests/cand_nmos_wp015.json",
+        "passed": true,
+        "content_hash": "sha256:c7898b8886989e19ef4dce14c008c779a2f85aa664df5d9141b0b4540e66bded"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/power/requests/cand_pmos_l10.json",
+        "passed": true,
+        "content_hash": "sha256:d811c85391f10f5980e4fa63d399f33d2f3741d7bcb6b58bf1ae0dda9c8950db"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/power/requests/cand_pmos_l20.json",
+        "passed": true,
+        "content_hash": "sha256:f00b610426d2a9831a932343c3719b83f61c7f82d023461bd8dafc99b2122dcc"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/power/requests/cand_pmos_n021.json",
+        "passed": true,
+        "content_hash": "sha256:826dff2680099c52385a2ea7744fd7947c4e91c1aa04526e6c448738f831bb68"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/power/requests/cand_pmos_wn015.json",
+        "passed": true,
+        "content_hash": "sha256:23a4b1174e36ac321033d7179d355a259817dab14adbb293df46cd0e8461dd0e"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/power/requests/cand_wire_c025.json",
+        "passed": true,
+        "content_hash": "sha256:1d3f862905e185b4244b143906ceac9240b18138104ec085f5fc1905909db6a3"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/power/requests/cand_wire_c050.json",
+        "passed": true,
+        "content_hash": "sha256:b39ebf674297fb176ae21a856cf68abac3c2056346d22ee1c07b04ba2a27a0eb"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/power/requests/cand_wire_n021.json",
+        "passed": true,
+        "content_hash": "sha256:10c63d9a0db3e4165bfb28ebedecf24d1050d78ea57b7ca82ffcb094f50dbb51"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/power/requests/cand_wire_n061.json",
+        "passed": true,
+        "content_hash": "sha256:3cbc76a95f5f3018f65dd17ba897235c1924625a4cc9c9b0dbe0994b2d907972"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/power/requests/cand_wire_r002.json",
+        "passed": true,
+        "content_hash": "sha256:83132ed56e50586b1b2b8c12792358a930ed7e3c38adb63c1146ea52240c32ce"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/power/requests/cand_wire_r002w02.json",
+        "passed": true,
+        "content_hash": "sha256:9000767f86668165a3f5b483f1854075f32b2706a8ad42495adc72488b80702e"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/power/requests/cand_wire_r004.json",
+        "passed": true,
+        "content_hash": "sha256:75da9e3f999b10b4e1530a06053ffba5489d59551fce3c977603b8645a2ce4a3"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/power/requests/cand_wire_r004w02.json",
+        "passed": true,
+        "content_hash": "sha256:3764de14860234dd61f6931082422b3460e345fa6ffa84f545014f8f93f8eac8"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/power/requests/cand_wire_r005.json",
+        "passed": true,
+        "content_hash": "sha256:8fa3e10587fe513522c92fb2af47ddfcc80c7d223ecb81662b95b38b4dcaa140"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/power/requests/cand_wire_w02.json",
+        "passed": true,
+        "content_hash": "sha256:92767bc13a7f360a6a56a71112cd2ac9b83a4dc26ab85eaa107f096229a363fd"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/power/requests/cand_wire_w04.json",
+        "passed": true,
+        "content_hash": "sha256:1264b3f929a577823d780f6599055d24268dc8c1542af6a8dd39d944eeb2fb05"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/power/requests/candgrid_hd_n061.json",
+        "passed": true,
+        "content_hash": "sha256:cb4184a84b5cba74aa235ed54d229f4c076b18fa01c10f9cb218a93b02aa96e6"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/power/requests/candgrid_nmos_l30.json",
+        "passed": true,
+        "content_hash": "sha256:cf0562f329b115b88d7f5613ea79e79317405c8b8395821b990ce1683c5ce0ec"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/power/requests/candgrid_pmos_l10.json",
+        "passed": true,
+        "content_hash": "sha256:bd5705b4fba8ebda05cba49661db20c9e7c84787e0384921d593be8608618f01"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/power/requests/candgrid_wire_r004w02.json",
+        "passed": true,
+        "content_hash": "sha256:f3d5e6888c442a4584cf05b0afc7304bfb96373648c83eeb621b5244ed4da256"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/power/requests/gap_osc_subth_sf_1.62V_-40C.json",
+        "passed": true,
+        "content_hash": "sha256:19465d69b293d1895c63abd8abe08b8b7c3fd3722710c4288630af9632fabfe8"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/power/requests/gap_osc_subth_sf_1.80V_-40C.json",
+        "passed": true,
+        "content_hash": "sha256:4d5fbe0a69c709a5d72f76394f8611c37e41fe72939d88da6995d7fb78624541"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/power/requests/gap_osc_subth_sf_1.98V_-40C.json",
+        "passed": true,
+        "content_hash": "sha256:3df73f9196051c9a7a9838bc1020e03197479f41e7e7aed4729a4b8c2ed47e45"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/power/requests/gap_osc_subth_ss_1.62V_-40C.json",
+        "passed": true,
+        "content_hash": "sha256:43d243390c511ad95a2cf2f4559abdbf50762ec50398ed6af98a33579da4a88b"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/power/requests/gap_osc_subth_ss_1.80V_-40C.json",
+        "passed": true,
+        "content_hash": "sha256:9227b098120613468f1aff14a0b9c5764a93a5570d75af91dfbc6eb1b9cee644"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/power/requests/gap_osc_wire_sf_1.62V_-40C.json",
+        "passed": true,
+        "content_hash": "sha256:81f842d5359f7fd1f52612a9e822a739e945099cd0b00cc4b3fbd267a344157b"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/power/requests/gap_osc_wire_sf_1.62V_-40C_relaxed.json",
+        "passed": true,
+        "content_hash": "sha256:3a8529bf8467a85b1e3dac6efbfca1803eedb377f85981494326af026d42c0a4"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
         "path": "sim/power/requests/idle_osc_hd.json",
         "passed": true,
         "content_hash": "sha256:069f9aff7c0b90e2a03ec96a9802bbca164f295561bca80389127dd31c12a249"
@@ -281,6 +512,195 @@
       {
         "check": "present",
         "role": "testbench",
+        "path": "sim/power/requests/probe_osc_hd.json",
+        "passed": true,
+        "content_hash": "sha256:3ad69b11b39b0315f1bcefb6b624657687b7516be600c004aa7ab1cf72201348"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/power/requests/probe_osc_nmos.json",
+        "passed": true,
+        "content_hash": "sha256:8c726921b9de6388f87cb722a569cdb95377e4393d51fee98a4b494a5ff1223c"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/power/requests/probe_osc_pmos.json",
+        "passed": true,
+        "content_hash": "sha256:181bfb5f9bd18cc2b981615f2b4d56bbd3b6255f9b7a262068663bf846a603e9"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/power/requests/probe_osc_subth.json",
+        "passed": true,
+        "content_hash": "sha256:c266c6744062dbb9e8475f679cbb7e5bb4b7e30eb8d2418df810238d1ffdc360"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/power/requests/probe_osc_wire.json",
+        "passed": true,
+        "content_hash": "sha256:1bbd5f42032bcd52007947abf68116d2f01f0719b8f477d91cd2cbff4fd0cd55"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/power/tb/active_cand_hd_n021.spice",
+        "passed": true,
+        "content_hash": "sha256:cb4b0a1348ccecdd4d4401ef88442e8db538f81b171813a71d865fb26b056c6b"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/power/tb/active_cand_hd_n061.spice",
+        "passed": true,
+        "content_hash": "sha256:e46fab47de8adc21c347551782092d02ae1955a83c0143a0d14f3acac8b81a45"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/power/tb/active_cand_nmos_l10.spice",
+        "passed": true,
+        "content_hash": "sha256:93873c046e39c1438afe3ecc041997de32ddd9586bc050e4298f24b4797ab2e9"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/power/tb/active_cand_nmos_l20.spice",
+        "passed": true,
+        "content_hash": "sha256:c480b3aa83e9802fea822aa1457d50db6ba58d171fd691d9b350b1ab36d26b68"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/power/tb/active_cand_nmos_l30.spice",
+        "passed": true,
+        "content_hash": "sha256:dca28ab06233287b34ec4bebe48e46d15a257f7df06468a864d6029c95c12361"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/power/tb/active_cand_nmos_n021.spice",
+        "passed": true,
+        "content_hash": "sha256:0a9d765d04ca1e782fd3388f75051e48195dcc13289ffc0cfcc514ad96288dda"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/power/tb/active_cand_nmos_wp015.spice",
+        "passed": true,
+        "content_hash": "sha256:3e6ae0ed9855902e970185ece7c5e0b378dfad3fb2e8b4225ac0716c72aaf818"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/power/tb/active_cand_pmos_l10.spice",
+        "passed": true,
+        "content_hash": "sha256:2c96a0cdb1d7cb8382701c675ede9d1d81af8627333162ff11e82ddd42ee67ee"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/power/tb/active_cand_pmos_l20.spice",
+        "passed": true,
+        "content_hash": "sha256:6be4c1919fde0fa4b1a713d784d33bb4468f8a34e773a8c7e8ad6f1b6a117e28"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/power/tb/active_cand_pmos_n021.spice",
+        "passed": true,
+        "content_hash": "sha256:54eaa26b66da429c89fdae7f567e996c0c6ac047ac6287260edc27386dfc0352"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/power/tb/active_cand_pmos_wn015.spice",
+        "passed": true,
+        "content_hash": "sha256:795fe01db91976cb9d1772a08f19c89de2e9e493b4f6aafa4b18ceb1303ec819"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/power/tb/active_cand_wire_c025.spice",
+        "passed": true,
+        "content_hash": "sha256:df1ea282ed93c5075204701702eede616f1f05938efe792547aa9cc11ec24f6a"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/power/tb/active_cand_wire_c050.spice",
+        "passed": true,
+        "content_hash": "sha256:991ce35085322c30da16dec5588d76076e100da0d77777bd2ee045b8b959fa1f"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/power/tb/active_cand_wire_n021.spice",
+        "passed": true,
+        "content_hash": "sha256:e537061ea1578536ecf6cf6591045270e1075db57c37f05f21d7a1d3364532f4"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/power/tb/active_cand_wire_n061.spice",
+        "passed": true,
+        "content_hash": "sha256:bf2d030ffc3ba1bf1e7809b2952c861be03662d5b266fe9312c5543578134552"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/power/tb/active_cand_wire_r002.spice",
+        "passed": true,
+        "content_hash": "sha256:184b3e811ffc5762ee814e6dfbf8aaed44fc2881d40726681d772fd445146ce5"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/power/tb/active_cand_wire_r002w02.spice",
+        "passed": true,
+        "content_hash": "sha256:06f18b83bfda739224b580fc07f1e3a2f6342030c7964e1b95d2f032424631bc"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/power/tb/active_cand_wire_r004.spice",
+        "passed": true,
+        "content_hash": "sha256:7bea75a1576cfa6c986dd80cfc14a7bc59e5acbd57d0c3e3afdbe37920990fa4"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/power/tb/active_cand_wire_r004w02.spice",
+        "passed": true,
+        "content_hash": "sha256:8187c4890fb789b74f595e88434937131ad03c00aeadf459278bb7c22dfbbbb6"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/power/tb/active_cand_wire_r005.spice",
+        "passed": true,
+        "content_hash": "sha256:6923ab8a767fc97e426df63a4db0eb2ed23ec58b1371b92f86e513b8c08e6b80"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/power/tb/active_cand_wire_w02.spice",
+        "passed": true,
+        "content_hash": "sha256:1ec6c9d930ff839994e65c4241175264484a3d279dab1e48f2c5af666109639d"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/power/tb/active_cand_wire_w04.spice",
+        "passed": true,
+        "content_hash": "sha256:4b03006315aa22526f18b79b3b2468acf71c42af22e90ce34b8d86b34dcbde3f"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
         "path": "sim/power/tb/active_osc_hd.spice",
         "passed": true,
         "content_hash": "sha256:4977b6e6d4efac3857a6e6f1921e477b878cdec9dd7ea23262e21bd55602d3aa"
@@ -312,6 +732,195 @@
         "path": "sim/power/tb/active_osc_wire.spice",
         "passed": true,
         "content_hash": "sha256:cf4339c3c46938226479286cf615175ddf0c5536d24605e5e2dc6b5672199eaa"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/power/tb/active_osc_wire_probe.spice",
+        "passed": true,
+        "content_hash": "sha256:1761710dd7a4914ecca2da2f19552e29d7d621264555e42c8517a9270374a1b2"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/power/tb/cand/hd_base.spice",
+        "passed": true,
+        "content_hash": "sha256:4a39c74a59907ebd3403229982e9aeec8b04b1c7d9b1b8abf2f0af8fd5335a44"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/power/tb/cand/hd_n021.spice",
+        "passed": true,
+        "content_hash": "sha256:4024a7f3fb1204ab931235f581edd5e8dc8c5ebc796c39069df3acbca1b43588"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/power/tb/cand/hd_n061.spice",
+        "passed": true,
+        "content_hash": "sha256:5addcafce577b580780cf7d70824a422fe59fc4e733d4e32f8b2b6c37e39b89e"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/power/tb/cand/nmos_base.spice",
+        "passed": true,
+        "content_hash": "sha256:976203a070b6b51dc8d7b824eb933649b035bdc96d47ee82577192949b8091d5"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/power/tb/cand/nmos_l10.spice",
+        "passed": true,
+        "content_hash": "sha256:adaf8a33437967d5b28833481a293b1501aba17e4b029c86190f94f271f539de"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/power/tb/cand/nmos_l20.spice",
+        "passed": true,
+        "content_hash": "sha256:1f4207d0b1fd1fdb877528b832cc4b60096ef4a90790bac2c5c8e9f21494f30c"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/power/tb/cand/nmos_l30.spice",
+        "passed": true,
+        "content_hash": "sha256:9b8a0a5e921f0bacfd674bf244e7761ec6b0ad3ebef40d7d16a321ffff807652"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/power/tb/cand/nmos_n021.spice",
+        "passed": true,
+        "content_hash": "sha256:88844e3a72686d6562969e73b868a9fbfd09523e7aa3ecff59e128d7991b64cf"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/power/tb/cand/nmos_wp015.spice",
+        "passed": true,
+        "content_hash": "sha256:46a9fcfe214ce772f75ff9deb57a12ad294065ff445e556a3f2c9819d650c953"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/power/tb/cand/pmos_base.spice",
+        "passed": true,
+        "content_hash": "sha256:edb456aeb5519c8e2d63168f02cfd953097f01b0a69c2bb12bd1fecb33cd023c"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/power/tb/cand/pmos_l10.spice",
+        "passed": true,
+        "content_hash": "sha256:dbc6f3abceeea0608b664a468d373b96411ef468ee4fe15406ef960a78a082e4"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/power/tb/cand/pmos_l20.spice",
+        "passed": true,
+        "content_hash": "sha256:05ecd851499fb6c64ac3dd4e1f0ad1b819a8dba97141630812d38c3db5f44d9c"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/power/tb/cand/pmos_n021.spice",
+        "passed": true,
+        "content_hash": "sha256:f46bcd3a9dd76d5b2b777ec471a75e70dc47eed032088119dd7d168dc7434a66"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/power/tb/cand/pmos_wn015.spice",
+        "passed": true,
+        "content_hash": "sha256:ba0000e29b5abe2d03be2f96c35292e9eadcbbab7f58c7abbc1c517213dd2214"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/power/tb/cand/wire_base.spice",
+        "passed": true,
+        "content_hash": "sha256:eb843ad82b9a65e7f1400ff4be63548c2b55a4a1101d1dd9091b6af3f388b16a"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/power/tb/cand/wire_c025.spice",
+        "passed": true,
+        "content_hash": "sha256:0d43932c7c43ec82e62ffb794560f34db1d58f62fd9d0b7e07d8a6eb93f06d74"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/power/tb/cand/wire_c050.spice",
+        "passed": true,
+        "content_hash": "sha256:0d4f717cb49f3f86a9abc9a11ad1cd2d3213317453f99ec596c50751b0be2a18"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/power/tb/cand/wire_n021.spice",
+        "passed": true,
+        "content_hash": "sha256:ba67120a6bd2fef544a3f90a170798c237317418461a8106fc128af366a1ff6b"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/power/tb/cand/wire_n061.spice",
+        "passed": true,
+        "content_hash": "sha256:b436a6723dcd3183149a96c662c73013336a6e58bbea2ca8baa9480bb12d1598"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/power/tb/cand/wire_r002.spice",
+        "passed": true,
+        "content_hash": "sha256:bea56261f5507c49ee44c2715dcc9ba86d235ff4503cb7105a518e7df0b2da47"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/power/tb/cand/wire_r002w02.spice",
+        "passed": true,
+        "content_hash": "sha256:419d152404635766586a902d6a7e430c28ade1a3d43f1180c7344446011b8c98"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/power/tb/cand/wire_r004.spice",
+        "passed": true,
+        "content_hash": "sha256:2b20f74847578b594393c15729b58d01e4528feb60ee19e7697f93b86d473366"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/power/tb/cand/wire_r004w02.spice",
+        "passed": true,
+        "content_hash": "sha256:0fb33549abfbc5120b241e065c8af107f9c55aa1bf9f36c434250f56484c1de0"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/power/tb/cand/wire_r005.spice",
+        "passed": true,
+        "content_hash": "sha256:f37217fc02d7bb9e7b5bdb784431f96e640b4f7a5d6ba7e85c0f426045256d47"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/power/tb/cand/wire_w02.spice",
+        "passed": true,
+        "content_hash": "sha256:008e1c9036f9f468941f6b8ce3ad40b44e47904f4233a253cbfc8983bf3e89c4"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/power/tb/cand/wire_w04.spice",
+        "passed": true,
+        "content_hash": "sha256:d8f78c0a340aea31bc74efb76189dc9902c626b935effb82cbbd8f7d1cd478e2"
       },
       {
         "check": "present",
@@ -1725,21 +2334,21 @@
         "role": "testbench",
         "path": "sim/solve/test_gen_binding_mc.py",
         "passed": true,
-        "content_hash": "sha256:51f1e781ee5c840b6a9a71d43978ed1ea873a0c5ede89335f58529c2562c4e11"
+        "content_hash": "sha256:c3d2633531d71e894adc9754b83c7d9231e3bacd4f979f81c1e0e92aef709752"
       },
       {
         "check": "present",
         "role": "testbench",
         "path": "sim/solve/test_solve.py",
         "passed": true,
-        "content_hash": "sha256:65471dc5853b1335a63af921389759b7128b7f21ddbfcdd0de256845ab899131"
+        "content_hash": "sha256:3b3938e49da4e832f1c4b17f1df3379999f207b7f810df4311d0a145a337b331"
       },
       {
         "check": "present",
         "role": "testbench",
         "path": "sim/solve/yield_samples.py",
         "passed": true,
-        "content_hash": "sha256:adab9a3c44690b532bae42854788629aed761ff350e947f58b554308cfa363ef"
+        "content_hash": "sha256:9e212276d6777de07d386a9b703f34d2c5797d0d7a9f0568b3fd2f9636649a3a"
       },
       {
         "check": "present",
@@ -1845,244 +2454,6 @@
         "path": "sim/subthreshold/probe_tb.spice",
         "passed": true,
         "content_hash": "sha256:0ffbdbdf5f8bd1d572c72ef946ad63969311b049d26957334229ce244af64240"
-      },
-      {
-        "check": "present",
-        "role": "testbench",
-        "path": "sim/subthreshold/variants/compare.py",
-        "passed": true,
-        "content_hash": "sha256:a055c2158aece4e0aa81c67fa721d14db9ecbd65abcbfef81e4563244c460a35"
-      },
-      {
-        "check": "present",
-        "role": "testbench",
-        "path": "sim/subthreshold/variants/gen_variants.py",
-        "passed": true,
-        "content_hash": "sha256:3edd4d6fc83638e9bdc0d06c19b86de2cf9320dd27b6f76852f4bcd3963d79b6"
-      },
-      {
-        "check": "present",
-        "role": "testbench",
-        "path": "sim/subthreshold/variants/osc_subth_hl35.spice",
-        "passed": true,
-        "content_hash": "sha256:cf5de9be333d6bdcf98d41887480e90efdaef46ad2cf45df08fcd7ed88fb6c50"
-      },
-      {
-        "check": "present",
-        "role": "testbench",
-        "path": "sim/subthreshold/variants/osc_subth_hw3.spice",
-        "passed": true,
-        "content_hash": "sha256:9535f46c4ac52b0ba375819251bbc506a96dba9d73e8889963f66d9a40c7ce78"
-      },
-      {
-        "check": "present",
-        "role": "testbench",
-        "path": "sim/subthreshold/variants/osc_subth_st11.spice",
-        "passed": true,
-        "content_hash": "sha256:b181d6ad5eaf389908caf9c1a86d4aeab888d432afadb5913d99ceb72e537434"
-      },
-      {
-        "check": "present",
-        "role": "testbench",
-        "path": "sim/subthreshold/variants/osc_subth_vbp_1_2.spice",
-        "passed": true,
-        "content_hash": "sha256:27016b247e2d65208d145408bec2b39ce68c4679c1116f22efdfc8ff3ddb6c22"
-      },
-      {
-        "check": "present",
-        "role": "testbench",
-        "path": "sim/subthreshold/variants/osc_subth_vbp_2_3.spice",
-        "passed": true,
-        "content_hash": "sha256:925641068ffb2d40f3cb3f5cd949b9fac3644d44a9f4a28b8910ebdf8f9f2836"
-      },
-      {
-        "check": "present",
-        "role": "testbench",
-        "path": "sim/subthreshold/variants/probe_hdr_tb.spice",
-        "passed": true,
-        "content_hash": "sha256:bd4c3f964f68e9bd31f9d0992e2023bbe92136d9eb7a4b777b68cb4b235c5c8b"
-      },
-      {
-        "check": "present",
-        "role": "testbench",
-        "path": "sim/subthreshold/variants/requests/cold_osc_subth_hw3_sf_1.62V_-40C.json",
-        "passed": true,
-        "content_hash": "sha256:300dc439e8e72c2f936352532646aae457447c9ec6daf7824341bd4e6045614e"
-      },
-      {
-        "check": "present",
-        "role": "testbench",
-        "path": "sim/subthreshold/variants/requests/cold_osc_subth_hw3_sf_1.8V_-40C.json",
-        "passed": true,
-        "content_hash": "sha256:3498c97270f81c7b4d726686465e829f04f4e245c4181bc79d2230820ae4c9af"
-      },
-      {
-        "check": "present",
-        "role": "testbench",
-        "path": "sim/subthreshold/variants/requests/cold_osc_subth_hw3_sf_1.98V_-40C.json",
-        "passed": true,
-        "content_hash": "sha256:03edceda99ec3812a02b28be60c282ebed011ccb7cb5fae0aa4c1e04f32fdde6"
-      },
-      {
-        "check": "present",
-        "role": "testbench",
-        "path": "sim/subthreshold/variants/requests/cold_osc_subth_hw3_ss_1.62V_-40C.json",
-        "passed": true,
-        "content_hash": "sha256:c9c62a942b3f6617944107f1585e4a1d0d02b2a9a9a21671028bf64518140890"
-      },
-      {
-        "check": "present",
-        "role": "testbench",
-        "path": "sim/subthreshold/variants/requests/cold_osc_subth_hw3_ss_1.8V_-40C.json",
-        "passed": true,
-        "content_hash": "sha256:d6baf929d458bc8d8ed0b5ba3991804e1719f032e9ea9a0edf061c2d0c6759aa"
-      },
-      {
-        "check": "present",
-        "role": "testbench",
-        "path": "sim/subthreshold/variants/requests/cold_osc_subth_st11_sf_1.62V_-40C.json",
-        "passed": true,
-        "content_hash": "sha256:aca4b09b57258a69cb0cdc44dec8f3326df4de628717eab239c1d9c3a8d89c37"
-      },
-      {
-        "check": "present",
-        "role": "testbench",
-        "path": "sim/subthreshold/variants/requests/cold_osc_subth_st11_sf_1.8V_-40C.json",
-        "passed": true,
-        "content_hash": "sha256:96a03232fbb0d105e4d318b786f5cf02781ce813c8700796b34f22813819a6da"
-      },
-      {
-        "check": "present",
-        "role": "testbench",
-        "path": "sim/subthreshold/variants/requests/cold_osc_subth_st11_sf_1.98V_-40C.json",
-        "passed": true,
-        "content_hash": "sha256:4912d8de612a8a6b07c816fd0c75a3f56d13da66912789c841ca5cd4a4021f2d"
-      },
-      {
-        "check": "present",
-        "role": "testbench",
-        "path": "sim/subthreshold/variants/requests/cold_osc_subth_st11_ss_1.62V_-40C.json",
-        "passed": true,
-        "content_hash": "sha256:8fa791d8fc4dbd7f8785c907b48f70f8735465ab0c9160a85217c08eea76dd54"
-      },
-      {
-        "check": "present",
-        "role": "testbench",
-        "path": "sim/subthreshold/variants/requests/cold_osc_subth_st11_ss_1.8V_-40C.json",
-        "passed": true,
-        "content_hash": "sha256:718ab028d0141284ef09ed62f331e1db70337efe4c4497255a9ec6f04a8fe943"
-      },
-      {
-        "check": "present",
-        "role": "testbench",
-        "path": "sim/subthreshold/variants/requests/grid_osc_subth_hl35.json",
-        "passed": true,
-        "content_hash": "sha256:ab5b80dfec06df8e93341ef0535e3178a818bbecddc56aa057e7c1e9e735c7b0"
-      },
-      {
-        "check": "present",
-        "role": "testbench",
-        "path": "sim/subthreshold/variants/requests/grid_osc_subth_hw3.json",
-        "passed": true,
-        "content_hash": "sha256:df4d49dbea4e43552e85ddcd1f4d09cb65d5f6f902bd97e426d7dc7d2d8f1384"
-      },
-      {
-        "check": "present",
-        "role": "testbench",
-        "path": "sim/subthreshold/variants/requests/grid_osc_subth_st11.json",
-        "passed": true,
-        "content_hash": "sha256:65d18fe476b8c0f62ead4659bbc55c4312769cf5c0b69f2f8298decb435acc11"
-      },
-      {
-        "check": "present",
-        "role": "testbench",
-        "path": "sim/subthreshold/variants/requests/grid_osc_subth_vbp_1_2.json",
-        "passed": true,
-        "content_hash": "sha256:8f85568e4159acf7a6f989492530b8e575b97cb982ee20f3a0959a2758221e4b"
-      },
-      {
-        "check": "present",
-        "role": "testbench",
-        "path": "sim/subthreshold/variants/requests/grid_osc_subth_vbp_2_3.json",
-        "passed": true,
-        "content_hash": "sha256:65a00f3821741a68995b5bae26a47671cafc024a7d4436db6913bbdca6f6ec26"
-      },
-      {
-        "check": "present",
-        "role": "testbench",
-        "path": "sim/subthreshold/variants/requests/mc_osc_subth_hl35.json",
-        "passed": true,
-        "content_hash": "sha256:ff3c14bcd7f5ce43539b00976fc0271a31e8b714a77573d4efccd331e2941076"
-      },
-      {
-        "check": "present",
-        "role": "testbench",
-        "path": "sim/subthreshold/variants/requests/mc_osc_subth_hw3.json",
-        "passed": true,
-        "content_hash": "sha256:07b190e1db0d06ed991bc90981bf284f7bac8f99807764221c6155ba706d4df2"
-      },
-      {
-        "check": "present",
-        "role": "testbench",
-        "path": "sim/subthreshold/variants/requests/mc_osc_subth_st11.json",
-        "passed": true,
-        "content_hash": "sha256:a458dc8d236e266496a70e68d5e5e3e23f74d387e416bb7145cfa15501877848"
-      },
-      {
-        "check": "present",
-        "role": "testbench",
-        "path": "sim/subthreshold/variants/requests/mc_osc_subth_vbp_1_2.json",
-        "passed": true,
-        "content_hash": "sha256:b0b81265b41ee25091e1e056f7a1a5a21f4b274648f815ee0362385fb5c225d0"
-      },
-      {
-        "check": "present",
-        "role": "testbench",
-        "path": "sim/subthreshold/variants/requests/mc_osc_subth_vbp_2_3.json",
-        "passed": true,
-        "content_hash": "sha256:90152ed55edabc6774d5df9f3c402ffa486401c7ac5e6c1c934f6dc0b039f307"
-      },
-      {
-        "check": "present",
-        "role": "testbench",
-        "path": "sim/subthreshold/variants/requests/probe_hdr.json",
-        "passed": true,
-        "content_hash": "sha256:e6df99a8675ba25d20a62b8e7d6781aeb1c934409f0be29e62208b08fa5866c8"
-      },
-      {
-        "check": "present",
-        "role": "testbench",
-        "path": "sim/subthreshold/variants/tb_osc_subth_hl35.spice",
-        "passed": true,
-        "content_hash": "sha256:e3acdca54becb21a78e2c3319513f99b948f5f2bc144ba50d83ff249002837fd"
-      },
-      {
-        "check": "present",
-        "role": "testbench",
-        "path": "sim/subthreshold/variants/tb_osc_subth_hw3.spice",
-        "passed": true,
-        "content_hash": "sha256:9833ae1730146cbffa3da2c4ca42d1e07f902d578e41539cde191fd0e4fb2735"
-      },
-      {
-        "check": "present",
-        "role": "testbench",
-        "path": "sim/subthreshold/variants/tb_osc_subth_st11.spice",
-        "passed": true,
-        "content_hash": "sha256:85a755b8202a7172af05475c3be04827627e23fe97109c4a31d95ced7fa78a04"
-      },
-      {
-        "check": "present",
-        "role": "testbench",
-        "path": "sim/subthreshold/variants/tb_osc_subth_vbp_1_2.spice",
-        "passed": true,
-        "content_hash": "sha256:76b65b7388b466e59f6c0d73fef881752f694ae018bb09a2f55dea2c775412e1"
-      },
-      {
-        "check": "present",
-        "role": "testbench",
-        "path": "sim/subthreshold/variants/tb_osc_subth_vbp_2_3.spice",
-        "passed": true,
-        "content_hash": "sha256:84510b4f935abf3deadb481500a89fd81ffec0492d2e63d6889e078860cfd7aa"
       },
       {
         "check": "present",
@@ -2355,6 +2726,501 @@
       {
         "check": "command",
         "role": "cold_start",
+        "testbench": "sim/power/requests/cand_hd_n021.json",
+        "argv": [
+          "klt",
+          "sim",
+          "cand_hd_n021.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/power/requests",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/power/requests/cand_hd_n061.json",
+        "argv": [
+          "klt",
+          "sim",
+          "cand_hd_n061.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/power/requests",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/power/requests/cand_nmos_l10.json",
+        "argv": [
+          "klt",
+          "sim",
+          "cand_nmos_l10.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/power/requests",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/power/requests/cand_nmos_l20.json",
+        "argv": [
+          "klt",
+          "sim",
+          "cand_nmos_l20.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/power/requests",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/power/requests/cand_nmos_l30.json",
+        "argv": [
+          "klt",
+          "sim",
+          "cand_nmos_l30.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/power/requests",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/power/requests/cand_nmos_n021.json",
+        "argv": [
+          "klt",
+          "sim",
+          "cand_nmos_n021.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/power/requests",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/power/requests/cand_nmos_wp015.json",
+        "argv": [
+          "klt",
+          "sim",
+          "cand_nmos_wp015.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/power/requests",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/power/requests/cand_pmos_l10.json",
+        "argv": [
+          "klt",
+          "sim",
+          "cand_pmos_l10.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/power/requests",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/power/requests/cand_pmos_l20.json",
+        "argv": [
+          "klt",
+          "sim",
+          "cand_pmos_l20.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/power/requests",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/power/requests/cand_pmos_n021.json",
+        "argv": [
+          "klt",
+          "sim",
+          "cand_pmos_n021.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/power/requests",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/power/requests/cand_pmos_wn015.json",
+        "argv": [
+          "klt",
+          "sim",
+          "cand_pmos_wn015.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/power/requests",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/power/requests/cand_wire_c025.json",
+        "argv": [
+          "klt",
+          "sim",
+          "cand_wire_c025.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/power/requests",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/power/requests/cand_wire_c050.json",
+        "argv": [
+          "klt",
+          "sim",
+          "cand_wire_c050.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/power/requests",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/power/requests/cand_wire_n021.json",
+        "argv": [
+          "klt",
+          "sim",
+          "cand_wire_n021.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/power/requests",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/power/requests/cand_wire_n061.json",
+        "argv": [
+          "klt",
+          "sim",
+          "cand_wire_n061.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/power/requests",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/power/requests/cand_wire_r002.json",
+        "argv": [
+          "klt",
+          "sim",
+          "cand_wire_r002.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/power/requests",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/power/requests/cand_wire_r002w02.json",
+        "argv": [
+          "klt",
+          "sim",
+          "cand_wire_r002w02.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/power/requests",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/power/requests/cand_wire_r004.json",
+        "argv": [
+          "klt",
+          "sim",
+          "cand_wire_r004.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/power/requests",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/power/requests/cand_wire_r004w02.json",
+        "argv": [
+          "klt",
+          "sim",
+          "cand_wire_r004w02.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/power/requests",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/power/requests/cand_wire_r005.json",
+        "argv": [
+          "klt",
+          "sim",
+          "cand_wire_r005.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/power/requests",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/power/requests/cand_wire_w02.json",
+        "argv": [
+          "klt",
+          "sim",
+          "cand_wire_w02.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/power/requests",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/power/requests/cand_wire_w04.json",
+        "argv": [
+          "klt",
+          "sim",
+          "cand_wire_w04.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/power/requests",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/power/requests/candgrid_hd_n061.json",
+        "argv": [
+          "klt",
+          "sim",
+          "candgrid_hd_n061.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/power/requests",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/power/requests/candgrid_nmos_l30.json",
+        "argv": [
+          "klt",
+          "sim",
+          "candgrid_nmos_l30.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/power/requests",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/power/requests/candgrid_pmos_l10.json",
+        "argv": [
+          "klt",
+          "sim",
+          "candgrid_pmos_l10.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/power/requests",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/power/requests/candgrid_wire_r004w02.json",
+        "argv": [
+          "klt",
+          "sim",
+          "candgrid_wire_r004w02.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/power/requests",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/power/requests/gap_osc_subth_sf_1.62V_-40C.json",
+        "argv": [
+          "klt",
+          "sim",
+          "gap_osc_subth_sf_1.62V_-40C.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/power/requests",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/power/requests/gap_osc_subth_sf_1.80V_-40C.json",
+        "argv": [
+          "klt",
+          "sim",
+          "gap_osc_subth_sf_1.80V_-40C.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/power/requests",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/power/requests/gap_osc_subth_sf_1.98V_-40C.json",
+        "argv": [
+          "klt",
+          "sim",
+          "gap_osc_subth_sf_1.98V_-40C.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/power/requests",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/power/requests/gap_osc_subth_ss_1.62V_-40C.json",
+        "argv": [
+          "klt",
+          "sim",
+          "gap_osc_subth_ss_1.62V_-40C.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/power/requests",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/power/requests/gap_osc_subth_ss_1.80V_-40C.json",
+        "argv": [
+          "klt",
+          "sim",
+          "gap_osc_subth_ss_1.80V_-40C.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/power/requests",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/power/requests/gap_osc_wire_sf_1.62V_-40C.json",
+        "argv": [
+          "klt",
+          "sim",
+          "gap_osc_wire_sf_1.62V_-40C.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/power/requests",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/power/requests/gap_osc_wire_sf_1.62V_-40C_relaxed.json",
+        "argv": [
+          "klt",
+          "sim",
+          "gap_osc_wire_sf_1.62V_-40C_relaxed.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/power/requests",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
         "testbench": "sim/power/requests/idle_osc_hd.json",
         "argv": [
           "klt",
@@ -2420,6 +3286,81 @@
           "klt",
           "sim",
           "idle_osc_wire.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/power/requests",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/power/requests/probe_osc_hd.json",
+        "argv": [
+          "klt",
+          "sim",
+          "probe_osc_hd.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/power/requests",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/power/requests/probe_osc_nmos.json",
+        "argv": [
+          "klt",
+          "sim",
+          "probe_osc_nmos.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/power/requests",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/power/requests/probe_osc_pmos.json",
+        "argv": [
+          "klt",
+          "sim",
+          "probe_osc_pmos.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/power/requests",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/power/requests/probe_osc_subth.json",
+        "argv": [
+          "klt",
+          "sim",
+          "probe_osc_subth.json",
+          "--dry-run"
+        ],
+        "cwd": "sim/power/requests",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/power/requests/probe_osc_wire.json",
+        "argv": [
+          "klt",
+          "sim",
+          "probe_osc_wire.json",
           "--dry-run"
         ],
         "cwd": "sim/power/requests",
@@ -5408,351 +6349,6 @@
         "local_only": true
       },
       {
-        "check": "command",
-        "role": "cold_start",
-        "testbench": "sim/subthreshold/variants/compare.py",
-        "argv": [
-          "python3",
-          "-I",
-          "sim/subthreshold/variants/compare.py",
-          "--selftest"
-        ],
-        "cwd": ".",
-        "exit_status": 0,
-        "passed": true,
-        "local_only": true
-      },
-      {
-        "check": "command",
-        "role": "cold_start",
-        "testbench": "sim/subthreshold/variants/gen_variants.py",
-        "argv": [
-          "python3",
-          "-I",
-          "sim/subthreshold/variants/gen_variants.py",
-          "--check"
-        ],
-        "cwd": ".",
-        "exit_status": 0,
-        "passed": true,
-        "local_only": true
-      },
-      {
-        "check": "command",
-        "role": "cold_start",
-        "testbench": "sim/subthreshold/variants/requests/cold_osc_subth_hw3_sf_1.62V_-40C.json",
-        "argv": [
-          "klt",
-          "sim",
-          "cold_osc_subth_hw3_sf_1.62V_-40C.json",
-          "--dry-run"
-        ],
-        "cwd": "sim/subthreshold/variants/requests",
-        "exit_status": 0,
-        "passed": true,
-        "local_only": true
-      },
-      {
-        "check": "command",
-        "role": "cold_start",
-        "testbench": "sim/subthreshold/variants/requests/cold_osc_subth_hw3_sf_1.8V_-40C.json",
-        "argv": [
-          "klt",
-          "sim",
-          "cold_osc_subth_hw3_sf_1.8V_-40C.json",
-          "--dry-run"
-        ],
-        "cwd": "sim/subthreshold/variants/requests",
-        "exit_status": 0,
-        "passed": true,
-        "local_only": true
-      },
-      {
-        "check": "command",
-        "role": "cold_start",
-        "testbench": "sim/subthreshold/variants/requests/cold_osc_subth_hw3_sf_1.98V_-40C.json",
-        "argv": [
-          "klt",
-          "sim",
-          "cold_osc_subth_hw3_sf_1.98V_-40C.json",
-          "--dry-run"
-        ],
-        "cwd": "sim/subthreshold/variants/requests",
-        "exit_status": 0,
-        "passed": true,
-        "local_only": true
-      },
-      {
-        "check": "command",
-        "role": "cold_start",
-        "testbench": "sim/subthreshold/variants/requests/cold_osc_subth_hw3_ss_1.62V_-40C.json",
-        "argv": [
-          "klt",
-          "sim",
-          "cold_osc_subth_hw3_ss_1.62V_-40C.json",
-          "--dry-run"
-        ],
-        "cwd": "sim/subthreshold/variants/requests",
-        "exit_status": 0,
-        "passed": true,
-        "local_only": true
-      },
-      {
-        "check": "command",
-        "role": "cold_start",
-        "testbench": "sim/subthreshold/variants/requests/cold_osc_subth_hw3_ss_1.8V_-40C.json",
-        "argv": [
-          "klt",
-          "sim",
-          "cold_osc_subth_hw3_ss_1.8V_-40C.json",
-          "--dry-run"
-        ],
-        "cwd": "sim/subthreshold/variants/requests",
-        "exit_status": 0,
-        "passed": true,
-        "local_only": true
-      },
-      {
-        "check": "command",
-        "role": "cold_start",
-        "testbench": "sim/subthreshold/variants/requests/cold_osc_subth_st11_sf_1.62V_-40C.json",
-        "argv": [
-          "klt",
-          "sim",
-          "cold_osc_subth_st11_sf_1.62V_-40C.json",
-          "--dry-run"
-        ],
-        "cwd": "sim/subthreshold/variants/requests",
-        "exit_status": 0,
-        "passed": true,
-        "local_only": true
-      },
-      {
-        "check": "command",
-        "role": "cold_start",
-        "testbench": "sim/subthreshold/variants/requests/cold_osc_subth_st11_sf_1.8V_-40C.json",
-        "argv": [
-          "klt",
-          "sim",
-          "cold_osc_subth_st11_sf_1.8V_-40C.json",
-          "--dry-run"
-        ],
-        "cwd": "sim/subthreshold/variants/requests",
-        "exit_status": 0,
-        "passed": true,
-        "local_only": true
-      },
-      {
-        "check": "command",
-        "role": "cold_start",
-        "testbench": "sim/subthreshold/variants/requests/cold_osc_subth_st11_sf_1.98V_-40C.json",
-        "argv": [
-          "klt",
-          "sim",
-          "cold_osc_subth_st11_sf_1.98V_-40C.json",
-          "--dry-run"
-        ],
-        "cwd": "sim/subthreshold/variants/requests",
-        "exit_status": 0,
-        "passed": true,
-        "local_only": true
-      },
-      {
-        "check": "command",
-        "role": "cold_start",
-        "testbench": "sim/subthreshold/variants/requests/cold_osc_subth_st11_ss_1.62V_-40C.json",
-        "argv": [
-          "klt",
-          "sim",
-          "cold_osc_subth_st11_ss_1.62V_-40C.json",
-          "--dry-run"
-        ],
-        "cwd": "sim/subthreshold/variants/requests",
-        "exit_status": 0,
-        "passed": true,
-        "local_only": true
-      },
-      {
-        "check": "command",
-        "role": "cold_start",
-        "testbench": "sim/subthreshold/variants/requests/cold_osc_subth_st11_ss_1.8V_-40C.json",
-        "argv": [
-          "klt",
-          "sim",
-          "cold_osc_subth_st11_ss_1.8V_-40C.json",
-          "--dry-run"
-        ],
-        "cwd": "sim/subthreshold/variants/requests",
-        "exit_status": 0,
-        "passed": true,
-        "local_only": true
-      },
-      {
-        "check": "command",
-        "role": "cold_start",
-        "testbench": "sim/subthreshold/variants/requests/grid_osc_subth_hl35.json",
-        "argv": [
-          "klt",
-          "sim",
-          "grid_osc_subth_hl35.json",
-          "--dry-run"
-        ],
-        "cwd": "sim/subthreshold/variants/requests",
-        "exit_status": 0,
-        "passed": true,
-        "local_only": true
-      },
-      {
-        "check": "command",
-        "role": "cold_start",
-        "testbench": "sim/subthreshold/variants/requests/grid_osc_subth_hw3.json",
-        "argv": [
-          "klt",
-          "sim",
-          "grid_osc_subth_hw3.json",
-          "--dry-run"
-        ],
-        "cwd": "sim/subthreshold/variants/requests",
-        "exit_status": 0,
-        "passed": true,
-        "local_only": true
-      },
-      {
-        "check": "command",
-        "role": "cold_start",
-        "testbench": "sim/subthreshold/variants/requests/grid_osc_subth_st11.json",
-        "argv": [
-          "klt",
-          "sim",
-          "grid_osc_subth_st11.json",
-          "--dry-run"
-        ],
-        "cwd": "sim/subthreshold/variants/requests",
-        "exit_status": 0,
-        "passed": true,
-        "local_only": true
-      },
-      {
-        "check": "command",
-        "role": "cold_start",
-        "testbench": "sim/subthreshold/variants/requests/grid_osc_subth_vbp_1_2.json",
-        "argv": [
-          "klt",
-          "sim",
-          "grid_osc_subth_vbp_1_2.json",
-          "--dry-run"
-        ],
-        "cwd": "sim/subthreshold/variants/requests",
-        "exit_status": 0,
-        "passed": true,
-        "local_only": true
-      },
-      {
-        "check": "command",
-        "role": "cold_start",
-        "testbench": "sim/subthreshold/variants/requests/grid_osc_subth_vbp_2_3.json",
-        "argv": [
-          "klt",
-          "sim",
-          "grid_osc_subth_vbp_2_3.json",
-          "--dry-run"
-        ],
-        "cwd": "sim/subthreshold/variants/requests",
-        "exit_status": 0,
-        "passed": true,
-        "local_only": true
-      },
-      {
-        "check": "command",
-        "role": "cold_start",
-        "testbench": "sim/subthreshold/variants/requests/mc_osc_subth_hl35.json",
-        "argv": [
-          "klt",
-          "sim",
-          "mc_osc_subth_hl35.json",
-          "--dry-run"
-        ],
-        "cwd": "sim/subthreshold/variants/requests",
-        "exit_status": 0,
-        "passed": true,
-        "local_only": true
-      },
-      {
-        "check": "command",
-        "role": "cold_start",
-        "testbench": "sim/subthreshold/variants/requests/mc_osc_subth_hw3.json",
-        "argv": [
-          "klt",
-          "sim",
-          "mc_osc_subth_hw3.json",
-          "--dry-run"
-        ],
-        "cwd": "sim/subthreshold/variants/requests",
-        "exit_status": 0,
-        "passed": true,
-        "local_only": true
-      },
-      {
-        "check": "command",
-        "role": "cold_start",
-        "testbench": "sim/subthreshold/variants/requests/mc_osc_subth_st11.json",
-        "argv": [
-          "klt",
-          "sim",
-          "mc_osc_subth_st11.json",
-          "--dry-run"
-        ],
-        "cwd": "sim/subthreshold/variants/requests",
-        "exit_status": 0,
-        "passed": true,
-        "local_only": true
-      },
-      {
-        "check": "command",
-        "role": "cold_start",
-        "testbench": "sim/subthreshold/variants/requests/mc_osc_subth_vbp_1_2.json",
-        "argv": [
-          "klt",
-          "sim",
-          "mc_osc_subth_vbp_1_2.json",
-          "--dry-run"
-        ],
-        "cwd": "sim/subthreshold/variants/requests",
-        "exit_status": 0,
-        "passed": true,
-        "local_only": true
-      },
-      {
-        "check": "command",
-        "role": "cold_start",
-        "testbench": "sim/subthreshold/variants/requests/mc_osc_subth_vbp_2_3.json",
-        "argv": [
-          "klt",
-          "sim",
-          "mc_osc_subth_vbp_2_3.json",
-          "--dry-run"
-        ],
-        "cwd": "sim/subthreshold/variants/requests",
-        "exit_status": 0,
-        "passed": true,
-        "local_only": true
-      },
-      {
-        "check": "command",
-        "role": "cold_start",
-        "testbench": "sim/subthreshold/variants/requests/probe_hdr.json",
-        "argv": [
-          "klt",
-          "sim",
-          "probe_hdr.json",
-          "--dry-run"
-        ],
-        "cwd": "sim/subthreshold/variants/requests",
-        "exit_status": 0,
-        "passed": true,
-        "local_only": true
-      },
-      {
         "check": "pin",
         "role": "pdk",
         "passed": true,
@@ -5782,7 +6378,7 @@
         "path": "attest/item9_analog.json",
         "scope": "repo"
       },
-      "content_hash": "sha256:69afa964b035a8cc01dd58714bd15d6ec94aa1d5591f52a2f186ad9e581a6c64"
+      "content_hash": "sha256:bad7ec19fae89f4a300417b3781c95cb4f4cee974405bc4a15fef0b87e3356ed"
     }
   }
 }
