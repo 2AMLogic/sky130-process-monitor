@@ -358,7 +358,8 @@ Reports (order is load-bearing, last wins): ['grid_osc_subth_st11.json.gz', 'col
 
 **SIMULATED figures only; no estimate accuracy is quoted anywhere in this section.** Summary over the five
 cold cells (expected counts at the gate; ‡ = quoted #277 values for the baseline, provenance in section 1;
-margins are the default-gate minima of section 4's tables over the cells gradable on main):
+margins are the default-gate minima of section 4's tables over every cell gradable for that variant; the baseline
+column is limited to the cells gradable on main, and hw3's 0.556 is at 1.62 V / −40 °C, which is not gradable on main):
 
 | | baseline‡ | vbp_2_3 | vbp_1_2 | hw3 | **hl35** | st11 |
 |---|---|---|---|---|---|---|
@@ -367,7 +368,7 @@ margins are the default-gate minima of section 4's tables over the cells gradabl
 | 45/45 cells resolved | 41+4‡ | 45 | 45 | 45 | **45** | 45 |
 | gate meeting ≥1 count everywhere | k=15 | k=10 | k=10 | k=14 | **k=10** | k=14 |
 | full-read time at that gate (§6) | 3.686 ms | 512 µs | 512 µs | 2.048 ms | **512 µs** | 2.048 ms |
-| dT (scaled) at 27 °C cells | 1.86–2.44 | 0.74–1.69 | 0.49–0.73 | 2.06–2.70 | 1.68–1.77 | 1.58–2.27 |
+| dT (scaled) at 27 °C cells | 1.86–2.44 | 0.74–1.69 | 0.49–0.73 | 2.06–2.70 | **0.59**–1.77 | 1.58–2.27 |
 | σ(ln f), nominal MC | 0.266 | 0.294 | 0.265 | **0.091** | 0.316 | 0.244 |
 | min abs margin (gradable cells) | 0.759 | 0.430 | 0.366 | 0.556 | 0.627 | 0.281 |
 | fastest cell (ff / 1.98 V / 125 °C) | 151 MHz | 586 MHz | 795 MHz† | 436 MHz | 351 MHz | 157 MHz |
@@ -385,17 +386,20 @@ margins are the default-gate minima of section 4's tables over the cells gradabl
    at sf / −40 °C than at ss / −40 °C (5.0 pA vs 62 pA); the L=0.35 device multiplies the sf / −40 °C current
    by 120× but the tt / 27 °C current by only 8.8× — which is why the cold cells gain ×28–91 while nominal gains
    ×1.8 and the ring stays subthreshold-slope-dominated at every 27 °C cell.
-3. **What hl35 costs, stated:** the 27 °C dT slope drops 10–27 % (1.68–1.77 vs 1.86–2.44) while the 125 °C
-   slope roughly doubles (2.03/2.46 vs 1.14/0.81); nominal σ(ln f) rises 0.266→0.316; the 1.62 V / 125 °C
+3. **What hl35 costs, stated:** the 27 °C dT slope drops, cell-matched over all three 27 °C cells, by 27.6 %
+   (1.62 V: 1.768 vs 2.441), 17.2 % (1.80 V: 1.681 vs 2.031) and **68.5 % (1.98 V: 0.586 vs 1.862)** — a
+   0.59–1.77 range against 1.86–2.44, not a uniform ~20 % loss; the 1.98 V / 27 °C cell is the one that
+   collapses, and it sits inside the 0.49–1.69 band that item 4 rejects the divider levers for. The 125 °C
+   slope roughly doubles at all three cells (2.03/2.46/0.651 vs 1.14/0.81/0.309); nominal σ(ln f) rises 0.266→0.316; the 1.62 V / 125 °C
    margin drops 2.574→0.627 (its new minimum) while 1.98 V / −40 °C improves 0.759→1.327 and 1.62 / −40 °C
    becomes gradable at 2.131; the fastest cell rises 151→351 MHz.
 4. **The divider-ratio levers are rejected on this evidence:** they clear any count bar (30–9582 counts) but
-   collapse dT to 0.49–1.69 and the hot-cell margins (min abs 0.366–0.430), and vbp_1_2's 795 MHz fastest cell
+   collapse dT to 0.49–1.69 at every 27 °C cell (hl35 does the same at one of its three, 1.98 V: 0.586 — item 3) and the hot-cell margins (min abs 0.366–0.430), and vbp_1_2's 795 MHz fastest cell
    is beyond even the ff-corner counter fmax of decision 0003 (587 MHz) — it would drag in 0003's prescaler
    option on top. They also demonstrate the trade-off's shape: the same strong-inversion move that fixes counts
    removes the exponential temperature dependence this oscillator exists to provide.
-5. **hw3 (header W×3) is the stronger *discriminator* but the weaker *counter*: ** margins improve 2.7–8.3× at
-   every shared gradable cell, σ(ln f) falls 3× to 0.091, dT is preserved or improved everywhere — but its cold
+5. **hw3 (header W×3) is the stronger *discriminator* but the weaker *counter*: ** margins improve 1.77–8.28× at
+   every shared gradable cell (abs 1.77–7.40×, ratio 2.38–8.28×; low end 1.62 V / 125 °C), σ(ln f) falls 3× to 0.091, dT is preserved or improved everywhere — but its cold
    cells only reach ×2.3–4.1 (994–10755 Hz), still under one count at k = 10 in four of five cells, so it needs
    k = 14 (2.048 ms read, outside §6's <1 ms target, inside the <10 ms fallback). If a longer gate is
    acceptable, hw3 is the better oscillator. A combined L=0.35 + W×3 point was not run (one factor at a time)

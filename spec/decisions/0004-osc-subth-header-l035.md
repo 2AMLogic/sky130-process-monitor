@@ -27,7 +27,11 @@ baseline 0.30 V header drive the L = 0.35 device carries 120× the baseline curr
 
 ## Costs, stated (all simulated; the record's section 5 tables are the source)
 
-- The 27 °C dT slope of ln f drops 10–27 % (scaled 1.68–1.77 vs 1.86–2.44); the 125 °C slope roughly doubles.
+- The 27 °C dT slope of ln f drops at all three 27 °C cells, cell-matched: −27.6 % at 1.62 V (1.768 vs 2.441),
+  −17.2 % at 1.80 V (1.681 vs 2.031) and **−68.5 % at 1.98 V (0.586 vs 1.862)** — scaled 0.59–1.77 vs 1.86–2.44.
+  The 1.98 V / 27 °C cell lands inside the 0.49–1.69 band for which the divider levers below are rejected, so
+  dT is not preserved at that cell; hl35 is recommended because it is the only variant that clears ≥ 1 count at
+  the default k = 10 gate, not because it keeps dT. The 125 °C slope roughly doubles at all three cells.
 - Nominal mismatch σ(ln f) rises 0.266 → 0.316 (30 draws, seed 20261105, tt / 1.80 V / 27 °C).
 - The 1.62 V / 125 °C corner-discrimination margin drops 2.574 → 0.627 (the variant's new minimum);
   1.98 V / −40 °C improves 0.759 → 1.327.
@@ -36,10 +40,10 @@ baseline 0.30 V header drive the L = 0.35 device carries 120× the baseline curr
 - The frequency window moves up: min 12.4 kHz (vs 437 Hz), max 351 MHz (vs 151 MHz); the max/min ratio
   narrows from 3.5·10^5 to 2.8·10^4.
 
-Alternatives carried by the same record: header **W×3** is the better discriminator (margins 2.7–8.3× better
-at every shared cell, σ(ln f) 0.091) but leaves the cold cells under one count at k = 10 (needs k = 14,
+Alternatives carried by the same record: header **W×3** is the better discriminator (margins 1.77–8.28× better
+at every shared cell (low end 1.62 V / 125 °C), σ(ln f) 0.091) but leaves the cold cells under one count at k = 10 (needs k = 14,
 2.048 ms read); the divider-ratio levers (vbp at 2/3 or 1/2 VDD) clear any count bar but collapse the dT slope
-to 0.49–1.73 and push the fastest cell to 586–795 MHz; 15→11 stages moves the cold cells only ×1.5–1.8.
+to 0.49–1.69 and push the fastest cell to 586–795 MHz; 15→11 stages moves the cold cells only ×1.5–1.8.
 
 ## Downstream re-runs an acceptance triggers (not done here)
 
