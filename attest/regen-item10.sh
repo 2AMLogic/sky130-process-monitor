@@ -14,8 +14,9 @@
 # The pin is read from .github/workflows/signoff.yml's `pip install
 # klayout-tools==X.Y.Z` line -- that is the version CI byte-compares against,
 # and it is deliberately not restated here (pin-copy consolidation, #163).
-# The parser and the pinned-klt wrapper live in attest/lib/regen-common.sh,
-# shared with attest/regen-item9.sh. Regenerating with the host's `klt` writes
+# The parser, the pinned-klt wrapper, and the shared preflight / install /
+# check / drift-report mechanics live in attest/lib/regen-common.sh, shared
+# with attest/regen-item9.sh. Regenerating with the host's `klt` writes
 # a different `provenance.klt_version` and a non-reproducing envelope, so the
 # run always goes through `uvx --from "klayout-tools==<pin>" klt`.
 #
@@ -33,25 +34,22 @@ set -uo pipefail
 
 ROOT=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd) || exit 1
 
+# Read by attest/lib/regen-common.sh's messages and shared signoff-path
+# constants (sourced below).
+# shellcheck disable=SC2034
+REGEN_NAME=regen-item10.sh
+# shellcheck source=attest/lib/regen-common.sh
+source "$ROOT/attest/lib/regen-common.sh"
+
 # Every path below is relative to $ROOT on purpose: the envelope records its
 # inventory path and its audit check's cwd relatively, so a run from anywhere
 # else produces different bytes.
 REL_INV="attest/item10.json"
 REL_ENV="evidence/item10.json"
-REL_RECORD="manifests/sky130-process-monitor.signoff.json"
-REL_MANIFEST="manifests/sky130-process-monitor.json"
-REL_TIERS="manifests/design-evidence-tiers.md"
-REL_WORKFLOW=".github/workflows/signoff.yml"
-
-# Print the comment header above (from line 3 to the first non-comment line),
-# so --help cannot drift out of sync with it.
-usage() {
-    awk 'NR > 2 && /^#/ { sub(/^# ?/, ""); print; next } NR > 2 { exit }' "${BASH_SOURCE[0]}"
-}
 
 case "${1-}" in
     -h | --help)
-        usage
+        regen_usage "${BASH_SOURCE[0]}"
         exit 0
         ;;
     "") ;;
@@ -63,36 +61,17 @@ esac
 
 cd "$ROOT" || exit 1
 
-die() {
-    echo "regen-item10.sh: $*" >&2
-    exit 1
-}
-
-for f in "$REL_INV" "$REL_ENV" "$REL_RECORD" "$REL_MANIFEST" "$REL_TIERS" "$REL_WORKFLOW"; do
-    [ -f "$f" ] || die "expected $f under $ROOT -- run this from a full checkout"
-done
-
-command -v uvx >/dev/null 2>&1 ||
-    die "uvx not found on PATH. It runs the pinned klayout-tools in a throwaway
-  environment; install uv (https://docs.astral.sh/uv/) or run the commands in
-  manifests/README.md by hand with klayout-tools==<pin> on PATH."
+regen_require_files "$ROOT" "$REL_INV" "$REL_ENV" "$REL_RECORD" "$REL_MANIFEST" "$REL_TIERS" "$REGEN_WORKFLOW"
+regen_require_uvx
 
 # --- the pin -----------------------------------------------------------------
-# The parser and the pinned-klt wrapper are shared with attest/regen-item9.sh
-# (pin-copy consolidation, #163 -- restating them here is the drift the shared
-# file exists to prevent). REGEN_NAME/REGEN_WORKFLOW feed its messages, so a
-# refusal still names this script and this workflow.
-# Read by attest/lib/regen-common.sh's messages (sourced below).
-# shellcheck disable=SC2034
-REGEN_NAME=regen-item10.sh
-# shellcheck disable=SC2034
-REGEN_WORKFLOW="$REL_WORKFLOW"
-# shellcheck source=attest/lib/regen-common.sh
-source "$ROOT/attest/lib/regen-common.sh"
+# The pin parser, the pinned-klt wrapper, and the shared preflight / install /
+# check / drift-report mechanics are shared with attest/regen-item9.sh
+# (attest/lib/regen-common.sh, #163/#330); its messages name this script and
+# this workflow through REGEN_NAME/REGEN_WORKFLOW.
+regen_require_pin "$REGEN_WORKFLOW"
 
-regen_require_pin "$REL_WORKFLOW"
-
-echo "pin:        klayout-tools==$PIN   (from $REL_WORKFLOW)"
+echo "pin:        klayout-tools==$PIN   (from $REGEN_WORKFLOW)"
 echo "inventory:  $REL_INV"
 echo "envelope:   $REL_ENV"
 echo
@@ -191,26 +170,15 @@ attest() {
 # candidate is the one attest() captured in the same invocation whose report
 # classified as passing; installing also requires that that invocation exited
 # 0 and left a nonempty candidate (klt writes no -o file for a failing one).
+# The provenance guard, the no-op check, and the mode-preserving mv are the
+# shared install mechanics (attest/lib/regen-common.sh).
 install_envelope() {
     if [ "$ATT_RC" -ne 0 ] || [ ! -s "$TMP_ENV" ]; then
         echo "regen-item10.sh: the attestation passed when classified but wrote no envelope (exit $ATT_RC)." >&2
         exit 1
     fi
 
-    # The provenance guard is shared with attest/regen-item9.sh
-    # (attest/lib/regen-common.sh) and prints the same refusal via
-    # REGEN_NAME/REGEN_WORKFLOW.
-    regen_refuse_foreign_version "$TMP_ENV"
-
-    if cmp -s "$TMP_ENV" "$REL_ENV"; then
-        echo "$REL_ENV is already up to date (byte-identical); not rewritten."
-        return 0
-    fi
-    # mktemp makes the scratch file 0600; carry the envelope's own mode over so
-    # the replacement is not left more restrictive than the file it replaces.
-    chmod --reference="$REL_ENV" "$TMP_ENV" 2>/dev/null || chmod 0644 "$TMP_ENV"
-    mv "$TMP_ENV" "$REL_ENV" || exit 1
-    echo "wrote $REL_ENV (5/5 checks passed, klt_version $PIN)."
+    regen_install_envelope "$TMP_ENV" "$REL_ENV" "5/5 checks passed, "
 }
 
 render_record() { # -> $TMP_RENDER
@@ -224,7 +192,7 @@ render_record() { # -> $TMP_RENDER
         echo "  the manifest, the vendored tier doc, or a cited envelope is unreadable." >&2
         exit 1
     fi
-    [ -s "$TMP_RENDER" ] || die "rendering the tier verdict produced no output"
+    [ -s "$TMP_RENDER" ] || regen_die "rendering the tier verdict produced no output"
 }
 
 # --- regenerate --------------------------------------------------------------
@@ -289,45 +257,10 @@ echo
 # still be stale after a successful re-attest (the envelope's own audit check
 # re-renders the verdict, so a drifted record also fails the envelope check --
 # reporting that as an envelope problem would name the wrong file).
-record_rc=0
-klt signoff --manifest "$REL_MANIFEST" --tiers-doc "$REL_TIERS" --check "$REL_RECORD" || record_rc=$?
-echo
+regen_check_record "the envelope's summary or passed_count changed (an inventoried
+file removed, a declared check flipped), or some other item's evidence did." "$REL_ENV" ""
 
-if [ "$record_rc" -eq 3 ]; then
-    cat <<MSG
-The committed signoff record has ALSO drifted (status above). The tier verdict
-itself moved -- the envelope's summary or passed_count changed (an inventoried
-file removed, a declared check flipped), or some other item's evidence did.
-
-$REL_ENV has been regenerated and is correct, but a verdict change is a
-deliberate, separately reviewed commit, so this script does not write one.
-Regenerate and commit the record alongside the envelope:
-
-  uvx --from "klayout-tools==$PIN" klt signoff \\
-      --manifest $REL_MANIFEST \\
-      --tiers-doc $REL_TIERS \\
-      --format json > $REL_RECORD
-
-Then re-run this script; it should report a reproducing record.
-MSG
-    exit 3
-fi
-
-if [ "$record_rc" -ne 0 ]; then
-    echo "regen-item10.sh: checking the record exited $record_rc (expected 0 or 3):" >&2
-    echo "  the manifest, the vendored tier doc, or a cited envelope is unreadable." >&2
-    exit 1
-fi
-
-env_rc=0
-klt signoff --attest 10 --inventory "$REL_INV" --check "$REL_ENV" || env_rc=$?
-if [ "$env_rc" -ne 0 ]; then
-    echo >&2
-    echo "regen-item10.sh: the freshly written envelope does not --check clean (exit $env_rc)," >&2
-    echo "  even though the record reproduces. Re-run the commands in manifests/README.md" >&2
-    echo "  by hand to see what disagrees." >&2
-    exit 1
-fi
+regen_check_envelope 10 "$REL_INV" "$REL_ENV" "envelope" ", even though the record reproduces"
 
 echo
 echo "The committed signoff record still reproduces: $REL_RECORD needs no change."

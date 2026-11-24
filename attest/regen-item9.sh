@@ -36,7 +36,8 @@
 # The pin is read from .github/workflows/signoff.yml's `pip install
 # klayout-tools==X.Y.Z` line -- that is the version CI byte-compares against,
 # and it is deliberately not restated here (pin-copy consolidation, #163).
-# The parser and the pinned-klt wrapper live in attest/lib/regen-common.sh.
+# The parser, the pinned-klt wrapper, and the shared preflight / install /
+# check / drift-report mechanics live in attest/lib/regen-common.sh.
 # Regenerating with the host's `klt` writes a different
 # `provenance.klt_version` and a non-reproducing envelope.
 #
@@ -64,13 +65,10 @@ ROOT=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd) || exit 1
 # Read by attest/lib/regen-common.sh's messages (sourced below).
 # shellcheck disable=SC2034
 REGEN_NAME=regen-item9.sh
-REGEN_WORKFLOW=".github/workflows/signoff.yml"
-REL_RECORD="manifests/sky130-process-monitor.signoff.json"
-REL_MANIFEST="manifests/sky130-process-monitor.json"
-REL_TIERS="manifests/design-evidence-tiers.md"
 
-# The pin parser and the pinned-klt wrapper are shared with
-# attest/regen-item10.sh (pin-copy consolidation, #163).
+# The pin parser, the pinned-klt wrapper, and the shared preflight / install /
+# check / drift-report mechanics are shared with attest/regen-item10.sh
+# (consolidation, #163/#330).
 # shellcheck source=attest/lib/regen-common.sh
 source "$ROOT/attest/lib/regen-common.sh"
 
@@ -78,15 +76,9 @@ source "$ROOT/attest/lib/regen-common.sh"
 # inventory path relatively, so a run from anywhere else produces different
 # bytes. The script cd's to $ROOT first for the same reason.
 
-# Print the comment header above (from line 3 to the first non-comment line),
-# so --help cannot drift out of sync with it.
-usage() {
-    awk 'NR > 2 && /^#/ { sub(/^# ?/, ""); print; next } NR > 2 { exit }' "${BASH_SOURCE[0]}"
-}
-
 case "${1-}" in
     -h | --help)
-        usage
+        regen_usage "${BASH_SOURCE[0]}"
         exit 0
         ;;
     analog | digital)
@@ -96,7 +88,7 @@ case "${1-}" in
         PARTITIONS=(analog digital)
         ;;
     "")
-        usage >&2
+        regen_usage "${BASH_SOURCE[0]}" >&2
         echo >&2
         echo "regen-item9.sh: a partition argument is required: analog | digital | both" >&2
         exit 1
@@ -109,20 +101,8 @@ esac
 
 cd "$ROOT" || exit 1
 
-die() {
-    echo "regen-item9.sh: $*" >&2
-    exit 1
-}
-
-for f in "$REGEN_WORKFLOW" "$REL_RECORD" "$REL_MANIFEST" "$REL_TIERS"; do
-    [ -f "$f" ] || die "expected $f under $ROOT -- run this from a full checkout"
-done
-
-command -v uvx >/dev/null 2>&1 ||
-    die "uvx not found on PATH. It runs the pinned klayout-tools in a throwaway
-  environment; install uv (https://docs.astral.sh/uv/) or run the commands in
-  manifests/README.md by hand with klayout-tools==<pin> on PATH."
-
+regen_require_files "$ROOT" "$REGEN_WORKFLOW" "$REL_RECORD" "$REL_MANIFEST" "$REL_TIERS"
+regen_require_uvx
 regen_require_pin "$REGEN_WORKFLOW"
 
 # --- pre-flight: fail before spending minutes on the cold starts --------------
@@ -302,64 +282,19 @@ regen_partition() {
         exit 1
     fi
 
-    regen_refuse_foreign_version "$TMP_ENV"
-
-    if cmp -s "$TMP_ENV" "$env"; then
-        echo "$env is already up to date (byte-identical); not rewritten."
-    else
-        # mktemp makes the scratch file 0600; carry the envelope's own mode
-        # over so the replacement is not left more restrictive than the file
-        # it replaces. mv, never a write in place: a failed or interrupted run
-        # can never leave a partial evidence file.
-        chmod --reference="$env" "$TMP_ENV" 2>/dev/null || chmod 0644 "$TMP_ENV"
-        mv "$TMP_ENV" "$env" || exit 1
-        echo "wrote $env (klt_version $PIN)."
-        INSTALLED_ANY=1
-    fi
+    regen_install_envelope "$TMP_ENV" "$env" "" && INSTALLED_ANY=1
     ENV_FILES="$ENV_FILES $env"
 
     # The gate's own envelope check, on the bytes now on disk.
-    local check_rc=0
-    regen_klt signoff --attest 9 --inventory "$inv" --check "$env" || check_rc=$?
-    if [ "$check_rc" -ne 0 ]; then
-        echo >&2
-        echo "regen-item9.sh: the freshly written $env does not --check clean (exit $check_rc)." >&2
-        echo "  Re-run the commands in manifests/README.md by hand to see what disagrees." >&2
-        exit 1
-    fi
+    regen_check_envelope 9 "$inv" "$env"
     echo
 }
 
 for p in "${PARTITIONS[@]}"; do regen_partition "$p"; done
 
 # --- the record check, once, over all selected partitions ----------------------
-record_rc=0
-regen_klt signoff --manifest "$REL_MANIFEST" --tiers-doc "$REL_TIERS" --check "$REL_RECORD" || record_rc=$?
-echo
-
-if [ "$record_rc" -eq 3 ]; then
-    cat <<MSG
-The committed signoff record has ALSO drifted (status above). The tier verdict
-itself moved -- an item-9 inventory changed (a pinned path added or removed),
-or some other item's evidence did.
-
-$ENV_FILES has been regenerated and is correct, but a verdict change is a
-deliberate, separately reviewed commit, so this script does not write one.
-Regenerate and commit the record alongside the envelope(s):
-
-  uvx --from "klayout-tools==$PIN" klt signoff \\
-      --manifest $REL_MANIFEST \\
-      --tiers-doc $REL_TIERS \\
-      --format json > $REL_RECORD
-
-Then re-run this script; it should report a reproducing record.
-MSG
-    exit 3
-fi
-
-if [ "$record_rc" -ne 0 ]; then
-    die "checking the record exited $record_rc (expected 0 or 3): the manifest, the vendored tier doc, or a cited envelope is unreadable."
-fi
+regen_check_record "an item-9 inventory changed (a pinned path added or removed),
+or some other item's evidence did." "$ENV_FILES" "(s)"
 
 echo "The committed signoff record still reproduces: $REL_RECORD needs no change."
 echo "(An ordinary source edit moves only hashes inside the envelope -- the record"
