@@ -22,13 +22,8 @@ SIMULATED / static timing only; nothing here is measured silicon.
    reported unclocked, and 57 endpoints (outputs, no I/O delays) unconstrained:
    `constraint_completeness.status` is `incomplete` in every corner. The `constrained` verdict
    applies to the reference-clock domain only.
-3. **Exploratory result, not cited for 5.digital:** `readout.osc-probe.sta.json` declares `osc[0..4]`
-   at 1.0 ns, asynchronous to `clk_ref`. The 1.0 ns figure is an assumption bounded by one local
-   SIMULATED ngspice probe (`bench_osc_hd.spice`, ff model, 1.98 V, -40 C: 1.036 GHz, outside the
-   liberty set; not appended to `measurements/`). Result: setup slack -4.85 / -1.79 / -0.70 ns
-   (ss / tt / ff), hold >= 0.20 ns. The counter does not close at 1 GHz; the real per-corner
-   oscillator frequencies (#29) decide whether that is a defect. Slack is bounding, not
-   corner-matched (fastest cell frequency applied to every corner). Follow-up filed separately.
+3. The exploratory `readout.osc-probe.sta.json` run is superseded by [the corner-matched
+   oscillator STA report](readout.osc-corner.sta.report.json).
 
 ## Corner-matched oscillator STA (issue #89)
 
