@@ -132,19 +132,23 @@ trap cleanup EXIT
 # the same pinned `uvx ... klt` every outer command here uses, with uvx
 # resolved to an absolute path so no filtered PATH can divert it. Prepending
 # it to the exported PATH puts it ahead of every entry the filter keeps, so
-# the nested audit resolves it, never a host klt. Verified against the pin
-# before any attestation runs; removed by the cleanup trap above.
+# the nested audit resolves it, never a host klt. The wrapper carries a real
+# shebang and is probed through `env` (a shell-less exec, the same spawn the
+# audit uses) before any attestation runs -- bash would quietly run a
+# shebang-less script through its ENOEXEC fallback, Python's subprocess, which
+# the pinned tool spawns the audit with, reports launch_failed instead.
+# Removed by the cleanup trap above.
 audit_shim_setup() {
     local probe
     # shellcheck disable=SC2016  # the "$@" is the generated script's, not ours
-    if ! printf 'exec "%s" --quiet --from "klayout-tools==%s" klt "$@"\n' \
+    if ! printf '#!/bin/sh\nexec "%s" --quiet --from "klayout-tools==%s" klt "$@"\n' \
             "$(command -v uvx)" "$PIN" >"$AUDIT_SHIM_DIR/klt" \
         || ! chmod +x "$AUDIT_SHIM_DIR/klt"; then
         echo "regen-item10.sh: could not build the nested-audit klt shim in $AUDIT_SHIM_DIR." >&2
         return 1
     fi
     export PATH="$AUDIT_SHIM_DIR:$PATH"
-    probe=$("$AUDIT_SHIM_DIR/klt" --version 2>/dev/null) || probe=""
+    probe=$(env "$AUDIT_SHIM_DIR/klt" --version 2>/dev/null) || probe=""
     if [ "$probe" != "klt $PIN" ]; then
         echo "regen-item10.sh: the nested audit's klt shim did not resolve to the pinned" >&2
         echo "  tool (its --version answered '${probe:-nothing}', expected 'klt $PIN')." >&2
