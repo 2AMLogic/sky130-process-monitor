@@ -20,6 +20,21 @@
 # a different `provenance.klt_version` and a non-reproducing envelope, so the
 # run always goes through `uvx --from "klayout-tools==<pin>" klt`.
 #
+# The nested audit the attestation runs for item 10 spawns argv[0] = "klt"
+# (attest/item10.json's declared check), and klt 0.9.1 strips the running
+# interpreter's bin directory from that child's PATH, so under uvx the pinned
+# klt is unreachable by name there: the audit resolves whatever other klt is
+# on PATH -- a host install renders the tier verdict differently and the audit
+# reports drift -- or nothing at all (check error: launch_failed). Upstream
+# fixed exactly this by prepending its own run-scoped klt shim
+# (2AMLogic/klayout-tools#7283, fixed by klayout-tools PR #6140, merged
+# 2026-11-17), but every release to date -- v0.9.2 included -- predates that
+# fix, and this workflow pins 0.9.1. Until the pin moves past a release
+# carrying it, this script bridges the same way for itself: a temporary PATH
+# entry, installed ahead of everything the pinned tool's filter keeps, holding
+# one `klt` that execs the pinned tool (see "the nested-audit PATH shim"
+# below). It exists only for this run and is removed on exit.
+#
 # Writes exactly one file: evidence/item10.json. The signoff record is never
 # left modified -- see "the circular bootstrap" below.
 #
@@ -82,6 +97,7 @@ TMP_REPORT=$(mktemp) || exit 1
 TMP_ENV=$(mktemp) || exit 1
 TMP_RENDER=$(mktemp) || exit 1
 RECORD_BACKUP=$(mktemp) || exit 1
+AUDIT_SHIM_DIR=$(mktemp -d) || exit 1
 cp "$REL_RECORD" "$RECORD_BACKUP" || exit 1
 
 # The signoff record is an input to this regeneration (the envelope's `audit
@@ -103,14 +119,57 @@ cleanup() {
     # Never exit from here: that would mask the script's real status.
     restore_record || :
     rm -f "$TMP_REPORT" "$TMP_ENV" "$TMP_RENDER" "$RECORD_BACKUP"
+    rm -rf "$AUDIT_SHIM_DIR"
 }
 trap cleanup EXIT
+
+# --- the nested-audit PATH shim -----------------------------------------------
+# item 10's declared check (attest/item10.json) spawns argv[0] = "klt", and the
+# pinned tool strips its own interpreter's bin directory from the child PATH,
+# so the pinned klt -- the only one this script and CI compare envelopes
+# against -- is unreachable there by name (header comment above). The shim is
+# one writable-directory entry holding one executable named `klt` that execs
+# the same pinned `uvx ... klt` every outer command here uses, with uvx
+# resolved to an absolute path so no filtered PATH can divert it. Prepending
+# it to the exported PATH puts it ahead of every entry the filter keeps, so
+# the nested audit resolves it, never a host klt. The wrapper carries a real
+# shebang and is probed through `env` (a shell-less exec, the same spawn the
+# audit uses) before any attestation runs -- bash would quietly run a
+# shebang-less script through its ENOEXEC fallback, Python's subprocess, which
+# the pinned tool spawns the audit with, reports launch_failed instead.
+# Removed by the cleanup trap above.
+audit_shim_setup() {
+    local probe
+    # shellcheck disable=SC2016  # the "$@" is the generated script's, not ours
+    if ! printf '#!/bin/sh\nexec "%s" --quiet --from "klayout-tools==%s" klt "$@"\n' \
+            "$(command -v uvx)" "$PIN" >"$AUDIT_SHIM_DIR/klt" \
+        || ! chmod +x "$AUDIT_SHIM_DIR/klt"; then
+        echo "regen-item10.sh: could not build the nested-audit klt shim in $AUDIT_SHIM_DIR." >&2
+        return 1
+    fi
+    export PATH="$AUDIT_SHIM_DIR:$PATH"
+    probe=$(env "$AUDIT_SHIM_DIR/klt" --version 2>/dev/null) || probe=""
+    if [ "$probe" != "klt $PIN" ]; then
+        echo "regen-item10.sh: the nested audit's klt shim did not resolve to the pinned" >&2
+        echo "  tool (its --version answered '${probe:-nothing}', expected 'klt $PIN')." >&2
+        echo "  Check the pinned tool by hand:  uvx --from \"klayout-tools==$PIN\" klt --version" >&2
+        return 1
+    fi
+    echo "audit klt:   klt $PIN -- the nested audit's argv[0]='klt' resolves through"
+    echo "             a temporary PATH entry, never a host klt (see the header for the"
+    echo "             upstream gap, 2AMLogic/klayout-tools#7283)."
+    echo
+}
+audit_shim_setup || exit 1
 
 # --- helpers -----------------------------------------------------------------
 
 # Classify an attestation report: "pass", "audit-only" (every failing check is
 # the circular signoff-record-reproduces audit), or "hygiene" (a real evidence
-# failure). A human-readable list of the failing checks goes to stderr.
+# failure). A human-readable list of the failing checks goes to stderr, each
+# with the report's own recorded detail -- its `error` and `exit_status` when
+# the command never ran (launch_failed), and its already-bounded `output_tail`
+# when it did -- so a failure names its cause without re-running anything.
 classify() {
     python3 -I - "$1" <<'PY'
 import json, sys
@@ -128,6 +187,14 @@ for c in failed:
     print("  failed check: %s %s %s" % (c.get("check"), c.get("role"),
                                         c.get("name") or c.get("path")),
           file=sys.stderr)
+    if c.get("error") is not None:
+        print("    error:  %s" % c["error"], file=sys.stderr)
+    if c.get("exit_status") is not None:
+        print("    exit:   %s" % c["exit_status"], file=sys.stderr)
+    tail = c.get("output_tail")
+    if tail:
+        for line in str(tail).rstrip().splitlines():
+            print("    tail | %s" % line, file=sys.stderr)
 
 def is_record_audit(c):
     return c.get("role") == "audit" and c.get("name") == "signoff-record-reproduces"
@@ -225,7 +292,10 @@ audit-only)
     verdict=$(classify "$TMP_REPORT")
     if [ "$verdict" != "pass" ]; then
         echo "regen-item10.sh: the attestation still fails after the bootstrap render." >&2
-        echo "  This is not the stale-evidence case -- see the failing checks above." >&2
+        echo "  This is not the stale-evidence case -- see the failing checks above;" >&2
+        echo "  their error/exit/output_tail lines are the audit report's own recorded" >&2
+        echo "  detail. An 'error: launch_failed' line means the nested audit command" >&2
+        echo "  could not launch at all; otherwise its output_tail says what disagreed." >&2
         echo "  Nothing was written; $REL_RECORD is restored." >&2
         exit 1
     fi
