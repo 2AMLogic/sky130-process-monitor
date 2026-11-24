@@ -207,5 +207,89 @@ class AnalyzeGaps(unittest.TestCase):
                 self.assertEqual(rows[0]["n_edges"], n)
 
 
+# Pinned (explicit, no glob): open PRs add reports to these directories, so a glob would drift.
+REC = os.path.join(HERE, "records")
+RPT = os.path.join(REC, "reports")
+SENS_RPT = os.path.join(HERE, "..", "sensitivity", "records", "reports")
+IDLE_TABLE = os.path.join(REC, "2026-11-05-power-table-complete.json")
+PROBES = ["probe_osc_wire", "probe_osc_nmos", "probe_osc_pmos", "probe_osc_hd"]
+CANDS = ["cand_hd_n021", "cand_hd_n061", "cand_nmos_l10", "cand_nmos_l20", "cand_nmos_l30",
+         "cand_nmos_n021", "cand_nmos_wp015", "cand_pmos_l10", "cand_pmos_l20", "cand_pmos_n021",
+         "cand_pmos_wn015", "cand_wire_c025", "cand_wire_c050", "cand_wire_n021", "cand_wire_n061",
+         "cand_wire_r002", "cand_wire_r002w02", "cand_wire_r004", "cand_wire_r004w02",
+         "cand_wire_r005", "cand_wire_w02", "cand_wire_w04"]
+GAPS = ["gap_osc_subth_sf_1.62V_-40C", "gap_osc_subth_sf_1.80V_-40C", "gap_osc_subth_sf_1.98V_-40C",
+        "gap_osc_subth_ss_1.62V_-40C", "gap_osc_subth_ss_1.80V_-40C",
+        "gap_osc_wire_sf_1.62V_-40C_relaxed"]
+# order matters: grid_osc_hd_5p is attributed to osc_hd by _osc_of and must come after grid_osc_hd
+BASELINE = ["grid_osc_hd", "grid_osc_nmos", "grid_osc_pmos", "grid_osc_subth", "grid_osc_wire",
+            "grid_osc_hd_5p"]
+
+
+def rpt(name):
+    return os.path.join(RPT, name + ".json.gz")
+
+
+def rec(name):
+    with open(os.path.join(REC, name)) as f:
+        return json.load(f)
+
+
+class ReproduceCommittedRecords(unittest.TestCase):
+    """The committed 2026-11-21 records regenerate from the committed .json.gz raw reports."""
+
+    def test_binding(self):
+        got = I.binding(IDLE_TABLE)
+        want = rec("2026-11-21-binding.json")
+        self.assertEqual(json.loads(json.dumps(got)), want)
+
+    def test_decompose(self):
+        got = I.decompose([rpt(n) for n in PROBES], IDLE_TABLE)
+        self.assertEqual(json.loads(json.dumps(got)), rec("2026-11-21-decompose.json"))
+
+    def test_screens(self):
+        got = I.screens([rpt(n) for n in CANDS])
+        self.assertEqual(json.loads(json.dumps(got)), rec("2026-11-21-screens.json"))
+
+    def test_gaps_retained_rows(self):
+        got = I.gaps([rpt(n) for n in GAPS])
+        want = [g for g in rec("2026-11-21-gaps.json")["gaps"] if g.get("report_retained", True)]
+        self.assertEqual(len(want), 6)
+        self.assertEqual(json.loads(json.dumps(got["gaps"])), want)
+
+    def test_candgrid(self):
+        base = [os.path.join(SENS_RPT, n + ".json.gz") for n in BASELINE]
+        for name in ("hd_n061", "nmos_l30", "pmos_l10", "wire_r004w02"):
+            got = I.candgrid(rpt("candgrid_" + name), base)
+            self.assertEqual(json.loads(json.dumps(got)),
+                             rec("2026-11-21-candgrid-%s.json" % name), name)
+
+
+class IdentityFromNetlistMetadata(unittest.TestCase):
+    """Oscillator/candidate identity comes from netlist.path, never from the report's filename."""
+
+    def test_screens_and_decompose_ignore_outer_filename(self):
+        import gzip
+        import shutil
+        with tempfile.TemporaryDirectory() as d:
+            c = os.path.join(d, "anything.json.gz")
+            shutil.copy(rpt("cand_wire_r004w02"), c)
+            self.assertEqual(I.screens([c])["screens"][0]["candidate"], "wire_r004w02")
+            pr = os.path.join(d, "renamed.json.gz")
+            shutil.copy(rpt("probe_osc_wire"), pr)
+            self.assertEqual(I.decompose([pr], IDLE_TABLE)["probes"][0]["osc"], "osc_wire")
+            with gzip.open(c, "rt") as f:
+                rep = json.load(f)
+            self.assertEqual(I._cand_of(rep), "wire_r004w02")
+
+    def test_cand_of_rejects_non_candidate_netlist(self):
+        with self.assertRaises(ValueError):
+            I._cand_of({"netlist": {"path": "sim/power/tb/active_osc_wire.spice"}})
+
+    def test_skip_edges_is_the_shared_constant(self):
+        self.assertIs(I.SKIP_EDGES, I._SENS.SKIP_EDGES)
+        self.assertIs(I._load, I._SENS._load)
+
+
 if __name__ == "__main__":
     unittest.main()
