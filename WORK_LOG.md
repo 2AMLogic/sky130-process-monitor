@@ -5,10 +5,12 @@ role. Newest first.
 
 ### 2026-11-24
 
+- **PR #333**: refactor: share regen preflight/install/check boilerplate in regen-common.sh
 - **PR #329**: fix: ignore .loom/account-ranking.codex in the loom-managed block
 - **PR #327**: docs: drop drift-prone prose suite-size counts from README tables
 - **PR #326**: docs(characterization): state 7.analog met under decision 0006 in item-7 passage and item-8 summary
 - **PR #314**: docs(sta): mark the exploratory osc-probe STA run superseded
+- **Issue #330** (closed): Consolidate duplicated install and signoff-check boilerplate in attest/regen-item9.sh and attest/regen-item10.sh into attest/lib/regen-common.sh
 - **Issue #328** (closed): bug: loom daemon writes .loom/account-ranking.<runtime> that the loom-managed .gitignore block does not cover, tripping check-main-clean.sh
 - **Issue #325** (closed): characterization/analog.md still states 7.analog is NOT met after decision 0006
 - **Issue #323** (closed): Prose test counts still drift-prone in two docs after #320 dropped the solve-row figure
