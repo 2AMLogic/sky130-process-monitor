@@ -3,6 +3,26 @@
 Chronological record of merged PRs and closed issues, maintained by the Guide
 role. Newest first.
 
+### 2026-11-23
+
+- **Issue #312** (closed): sim/README.md: stale unittest counts and request-set coverage for the two solve/ suites
+- **PR #313**: docs: fix stale solve/ suite test counts and request-set coverage in sim/README.md
+- **Issue #283** (closed): Share the six repeated checks in the binding and sized Monte Carlo request drift tests
+- **PR #290**: refactor: share the six drift checks in test_gen_binding_mc.py via a mixin
+
+### 2026-11-22
+
+- **Issue #310** (closed): Generate the item 10 evidence file during the classification pass
+- **PR #311**: refactor(attest): reuse the classifying attestation pass for the item 10 envelope
+- **Issue #306** (closed): erc/README.md: cite klayout-tools#5597 where the deferred 11.analog citation is explained, and don't frame it as a 0.9.1-only limit
+- **PR #309**: docs: cite klayout-tools#5597 for the deferred 11.analog citation
+- **Issue #307** (closed): Remove the unused gate-channel intersection and empty net traversal from the connectivity checker
+- **PR #308**: refactor: drop unused gate-channel intersection and net traversal from connectivity checker
+- **Issue #276** (closed): T1 item 11 (analog): klt erc supply spec and report for the oscillator bank
+- **PR #294**: erc: per-oscillator klt erc supply-spec evidence for the analog bank
+- **Issue #275** (closed): osc_subth: verify the original LVS report and one-corner ring start on klayout-tools 0.9.2
+- **PR #291**: docs(pex): verify the osc_subth vh-split fix on released klayout-tools 0.9.2
+
 ### 2026-11-21
 
 - **PR #286**: fix(sim): parse the analyze.py CLI with argparse so a report after -o is kept
