@@ -3,8 +3,36 @@
 Chronological record of merged PRs and closed issues, maintained by the Guide
 role. Newest first.
 
+### 2026-11-24
+
+- **PR #329**: fix: ignore .loom/account-ranking.codex in the loom-managed block
+- **PR #327**: docs: drop drift-prone prose suite-size counts from README tables
+- **PR #326**: docs(characterization): state 7.analog met under decision 0006 in item-7 passage and item-8 summary
+- **PR #314**: docs(sta): mark the exploratory osc-probe STA run superseded
+- **Issue #328** (closed): bug: loom daemon writes .loom/account-ranking.<runtime> that the loom-managed .gitignore block does not cover, tripping check-main-clean.sh
+- **Issue #325** (closed): characterization/analog.md still states 7.analog is NOT met after decision 0006
+- **Issue #323** (closed): Prose test counts still drift-prone in two docs after #320 dropped the solve-row figure
+- **Issue #165** (closed): Mark the exploratory osc-probe STA run as superseded in sta/README.md
+- **Issue #32** (closed): T1 item 7 (post-layout verification): klt pex re-run of the oscillator benches and SDF-annotated readout re-run
+
 ### 2026-11-23
 
+- **PR #324**: feat: close T1 item 7 analog via decision 0006 cold-cell PEX pairs
+- **PR #322**: docs(manifests): drop stale test counts from item-9 solve-suite row
+- **PR #319**: fix(sim): inject the row-4 yield defect on the measurement draw only
+- **PR #305**: feat(sim/pex): re-grade spec rows 2-4 on measured extracted frequencies (issue #282)
+- **PR #301**: feat(power): row-7 active-power iteration — decomposition, lever sweeps, decision 0004 (proposed), six gap cells graded
+- **PR #300**: chore: ignore worktree-local PDK install (/.pdk/)
+- **PR #298**: test(readout): record spec §6 conversion time at surface-derived oscillator periods
+- **PR #296**: fix(sim): gate yield cell eligibility on the analyzer's per-cell sigma
+- **Issue #320** (closed): manifests/README.md still says the sim/solve suites run 13 and 12 tests (actual: 20 and 12)
+- **Issue #317** (closed): Row 4 yield negative control cannot fail: the seeded defect cancels in the one-point calibration
+- **Issue #288** (closed): Use one per-cell sigma check for Monte Carlo yield eligibility
+- **Issue #287** (closed): Add a .gitignore rule for a worktree-local PDK install (.pdk/)
+- **Issue #282** (closed): Re-grade spec rows 2–4 on extracted frequencies for all five oscillators using klt pex --measure-command
+- **Issue #281** (closed): Record and grade spec section 6 conversion time at surface-derived oscillator periods (8.digital 'not recorded' row)
+- **Issue #280** (closed): Spec row 7 active power: record what sets each oscillator's power and iterate the over-target ones
+- **Issue #264** (closed): Close T1 item 7 [analog] using the two accepted #102 cold-cell PEX records
 - **Issue #312** (closed): sim/README.md: stale unittest counts and request-set coverage for the two solve/ suites
 - **PR #313**: docs: fix stale solve/ suite test counts and request-set coverage in sim/README.md
 - **Issue #283** (closed): Share the six repeated checks in the binding and sized Monte Carlo request drift tests
