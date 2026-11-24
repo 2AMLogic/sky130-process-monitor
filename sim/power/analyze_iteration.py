@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
 """Post-processing for the row-7 active-power iteration (issue #280). Pure stdlib, no simulator.
 
-    analyze_iteration.py binding  POWER_TABLE.json
-    analyze_iteration.py decompose PROBE.json ... --idle POWER_TABLE.json -o OUT.json
-    analyze_iteration.py screens  CAND.json ... -o OUT.json
-    analyze_iteration.py gaps     GAP.json ... -o OUT.json
-    analyze_iteration.py candgrid CANDGRID.json BASELINE_GRID_REPORTS... -o OUT.json
+    analyze_iteration.py binding  POWER_TABLE.json[.gz]
+    analyze_iteration.py decompose PROBE.json[.gz] ... --idle POWER_TABLE.json[.gz] -o OUT.json
+    analyze_iteration.py screens  CAND.json[.gz] ... -o OUT.json
+    analyze_iteration.py gaps     GAP.json[.gz] ... -o OUT.json
+    analyze_iteration.py candgrid CANDGRID.json[.gz] BASELINE_GRID_REPORTS... -o OUT.json
 
 Everything printed is SIMULATED, schematic-level, oscillator bank only (no counter netlist).
 
@@ -43,15 +43,12 @@ _SENS = _siblings.load("sensitivity", "analyze")
 _POWER = _siblings.load("power", "analyze_power")
 _GEN = _siblings.load("power", "gen_candidates")
 freq_from_crossings, OSCS = _SENS.freq_from_crossings, _SENS.OSCS
+_load, _osc_of, SKIP_EDGES = _SENS._load, _SENS._osc_of, _SENS.SKIP_EDGES
 MIN_EDGES = _POWER.MIN_EDGES
 # decision 0003: setup-limited counter fmax at the liberty corner nearest each grid cell
 STA_LIMITS_MHZ = {(("ss", 1.62, 125)): 171.1, (("tt", 1.80, 27)): 358.9, (("ff", 1.98, -40)): 586.8}
 # committed wire geometry (design/osc_bank/osc_wire.spice), for the explicit-switching term
 WIRE_N, WIRE_C_F = 31, 100.0e-15
-
-
-def _load(path):
-    return json.load(open(path))
 
 
 def _meas(corner):
@@ -68,6 +65,40 @@ def _corner(rep):
     if len(cs) != 1:
         raise SystemExit("expected exactly one passing corner in %s" % rep.get("netlist", {}).get("path"))
     return cs[0]
+
+
+def _cand_of(rep):
+    """Candidate name (<family>_<tag>) from the netlist metadata active_cand_<name>.spice."""
+    stem = os.path.basename(rep["netlist"]["path"])
+    if not (stem.startswith("active_cand_") and stem.endswith(".spice")):
+        raise ValueError("cannot tell candidate from netlist %r" % rep["netlist"]["path"])
+    return stem[len("active_cand_"):-len(".spice")]
+
+
+def _single_corner_row(rep, osc, nstages=WIRE_N):
+    """Measurements shared by probe and candidate-screen rows of one passing corner."""
+    c = _corner(rep)
+    m = _meas(c)
+    f, n = _f(m)
+    en = (m["e_vdd"].get("energy") or {})
+    win = en.get("to") - en.get("from")
+    v = round(c["supply_v"]["vdd"], 2)
+    row = {"cell": [c["process"], v, c["temperature_c"]], "n_edges": n, "f_hz": f,
+           "P_supply_uW": en["net"] / win * 1e6,
+           "P_iavg_uW": v * abs(m["i_avg"]["value"]) * 1e6,
+           "swing_n1_V": m["vhi_n1"]["value"] - m["vlo_n1"]["value"]}
+    if osc == "osc_wire":
+        s = (((m.get("t_s1") or {}).get("crossings") or {}).get("times") or [])[SKIP_EDGES:]
+        nn = (((m.get("t_n1") or {}).get("crossings") or {}).get("times") or [])[SKIP_EDGES:]
+        k = min(len(s), len(nn))
+        if k >= 4 and f:
+            d = [nn[i] - s[i] for i in range(k)]
+            rc = sum(d) / len(d)
+            row["rc_delay_s"] = rc
+            row["stage_delay_s"] = 1.0 / (2 * nstages * f)
+            row["rc_fraction"] = rc * 2 * nstages * f
+        row["swing_s1_V"] = m["vhi_s1"]["value"] - m["vlo_s1"]["value"]
+    return row, m, v
 
 
 def binding(table_path):
@@ -97,36 +128,15 @@ def decompose(probe_paths, idle_table):
     out = []
     for p in probe_paths:
         rep = _load(p)
-        osc = next(o for o in OSCS if os.path.basename(p) == "probe_%s.json" % o)
-        c = _corner(rep)
-        m = _meas(c)
-        v = round(c["supply_v"]["vdd"], 2)
-        proc, t = c["process"], c["temperature_c"]
-        f, n = _f(m)
-        en = (m["e_vdd"].get("energy") or {})
-        win = en.get("to") - en.get("from")
-        p_supply = en["net"] / win * 1e6
+        osc = _osc_of(rep)
+        base, m, v = _single_corner_row(rep, osc)
+        proc, t = base["cell"][0], base["cell"][2]
         i_dc = idle.get((osc, proc, v, t))
         p_dc = v * i_dc * 1e6 if i_dc is not None else None
-        row = {"osc": osc, "cell": [proc, v, t], "n_edges": n, "f_hz": f,
-               "P_supply_uW": p_supply,
-               "P_iavg_uW": v * abs(m["i_avg"]["value"]) * 1e6,
-               "P_dc_idle_uW": p_dc,
-               "swing_n1_V": m["vhi_n1"]["value"] - m["vlo_n1"]["value"]}
+        row = dict(base, osc=osc, P_dc_idle_uW=p_dc)
         if osc == "osc_wire":
-            dV = row["swing_n1_V"]
-            p_exp = WIRE_N * WIRE_C_F * v * dV * f * 1e6 if f else None
-            row["P_explicit_uW"] = p_exp
-            s = (((m.get("t_s1") or {}).get("crossings") or {}).get("times") or [])[3:]
-            nn = (((m.get("t_n1") or {}).get("crossings") or {}).get("times") or [])[3:]
-            k = min(len(s), len(nn))
-            if k >= 4 and f:
-                d = [nn[i] - s[i] for i in range(k)]
-                rc = sum(d) / len(d)
-                row["rc_delay_s"] = rc
-                row["stage_delay_s"] = 1.0 / (2 * WIRE_N * f)
-                row["rc_fraction"] = rc * 2 * WIRE_N * f
-            row["swing_s1_V"] = m["vhi_s1"]["value"] - m["vlo_s1"]["value"]
+            f = row["f_hz"]
+            row["P_explicit_uW"] = WIRE_N * WIRE_C_F * v * row["swing_n1_V"] * f * 1e6 if f else None
         else:
             row["P_explicit_uW"] = 0.0
         terms = [x for x in (row["P_supply_uW"], row["P_explicit_uW"], row["P_dc_idle_uW"]) if x is not None]
@@ -138,34 +148,13 @@ def decompose(probe_paths, idle_table):
 def screens(paths):
     out = []
     for p in paths:
-        name = os.path.basename(p)[len("cand_"):-len(".json")]
-        fam, tag = name.split("_", 1)
-        osc = _GEN.CANDIDATES[fam]["osc"]
         rep = _load(p)
-        c = _corner(rep)
-        m = _meas(c)
-        f, n = _f(m)
-        en = (m["e_vdd"].get("energy") or {})
-        win = en.get("to") - en.get("from")
-        v = round(c["supply_v"]["vdd"], 2)
-        row = {"candidate": name, "lever": _GEN.CANDIDATES[fam]["levers"][tag],
-               "cell": [c["process"], v, c["temperature_c"]],
-               "n_edges": n, "f_hz": f, "P_supply_uW": en["net"] / win * 1e6,
-               "P_iavg_uW": v * abs(m["i_avg"]["value"]) * 1e6,
-               "swing_n1_V": m["vhi_n1"]["value"] - m["vlo_n1"]["value"]}
-        if fam == "wire":
-            s = (((m.get("t_s1") or {}).get("crossings") or {}).get("times") or [])[3:]
-            nn = (((m.get("t_n1") or {}).get("crossings") or {}).get("times") or [])[3:]
-            k = min(len(s), len(nn))
-            nstages = _GEN.CANDIDATES[fam]["levers"][tag].get("n", 31)
-            if k >= 4 and f:
-                d = [nn[i] - s[i] for i in range(k)]
-                rc = sum(d) / len(d)
-                row["rc_delay_s"] = rc
-                row["stage_delay_s"] = 1.0 / (2 * nstages * f)
-                row["rc_fraction"] = rc * 2 * nstages * f
-            row["swing_s1_V"] = m["vhi_s1"]["value"] - m["vlo_s1"]["value"]
-        out.append(row)
+        name = _cand_of(rep)
+        fam, tag = name.split("_", 1)
+        lever = _GEN.CANDIDATES[fam]["levers"][tag]
+        osc = _GEN.CANDIDATES[fam]["osc"]
+        base, _, _ = _single_corner_row(rep, osc, nstages=lever.get("n", 31))
+        out.append(dict(base, candidate=name, lever=lever))
     return {"kind": "SIMULATED", "screens": out}
 
 
@@ -173,8 +162,7 @@ def gaps(paths):
     out = []
     for p in paths:
         rep = _load(p)
-        netlist = rep["netlist"]["path"]
-        osc = next(o for o in OSCS if o in netlist)
+        osc = _osc_of(rep)
         for c in rep["corners"]:
             m = _meas(c)
             f, n = _f(m)
@@ -198,9 +186,7 @@ def _sens_rows(tab, osc):
 
 def candgrid(grid_report, baseline_reports):
     rep = _load(grid_report)
-    netlist = rep["netlist"]["path"]
-    stem = os.path.basename(netlist)  # active_cand_<name>.spice
-    name = stem[len("active_cand_"):-len(".spice")]
+    name = _cand_of(rep)
     fam, tag = name.split("_", 1)
     osc = _GEN.CANDIDATES[fam]["osc"]
     cells, fs, ps = [], [], {}
