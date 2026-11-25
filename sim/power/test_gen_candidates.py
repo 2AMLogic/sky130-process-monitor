@@ -11,16 +11,18 @@ Two subjects, both load-bearing for the record:
 """
 import json
 import os
+import shutil
 import sys
 import tempfile
 import unittest
+import warnings
+from pathlib import Path
+from unittest.mock import patch
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
 import gen_candidates as G  # noqa: E402
 import analyze_iteration as I  # noqa: E402
-
-DESIGN = os.path.join(HERE, "..", "..", "design", "osc_bank")
 
 
 def canon_family(fam, tag):
@@ -86,6 +88,31 @@ class Levers(unittest.TestCase):
 
 
 class Requests(unittest.TestCase):
+    def test_write_all_reproduces_committed_files(self):
+        # The subthreshold probe and the unrelaxed wire gap have requests but no retained report.
+        requests = (PROBES + ["probe_osc_subth"] + CANDS + GAPS + ["gap_osc_wire_sf_1.62V_-40C"]
+                    + ["candgrid_" + name for name in CARRIED])
+        paths = ["requests/%s.json" % name for name in requests]
+        paths.append("tb/active_osc_wire_probe.spice")
+        paths += ["tb/active_%s.spice" % name for name in CANDS]
+        paths += ["tb/cand/%s.spice" % name.removeprefix("cand_") for name in CANDS]
+        paths += ["tb/cand/%s_base.spice" % fam for fam in ("wire", "nmos", "pmos", "hd")]
+        self.assertEqual(len(set(paths)), 87)
+
+        committed = Path(HERE)
+        with tempfile.TemporaryDirectory() as tmp:
+            generated = Path(tmp) / "power"
+            for rel in ("tb/active_osc_wire.spice", "../sensitivity/osc/tb_osc_wire_probe.spice"):
+                (generated / rel).parent.mkdir(parents=True, exist_ok=True)
+                shutil.copyfile(committed / rel, generated / rel)
+            with patch.object(G, "HERE", generated), warnings.catch_warnings(record=True) as caught:
+                warnings.simplefilter("always", ResourceWarning)
+                G.write_all(CARRIED)
+            for rel in paths:
+                with self.subTest(path=rel):
+                    self.assertEqual((generated / rel).read_bytes(), (committed / rel).read_bytes())
+            self.assertEqual([str(w.message) for w in caught if issubclass(w.category, ResourceWarning)], [])
+
     def test_probe_targets_the_binding_cell(self):
         for name, req in G.all_requests().items():
             if not name.startswith("probe_"):
@@ -221,6 +248,7 @@ CANDS = ["cand_hd_n021", "cand_hd_n061", "cand_nmos_l10", "cand_nmos_l20", "cand
 GAPS = ["gap_osc_subth_sf_1.62V_-40C", "gap_osc_subth_sf_1.80V_-40C", "gap_osc_subth_sf_1.98V_-40C",
         "gap_osc_subth_ss_1.62V_-40C", "gap_osc_subth_ss_1.80V_-40C",
         "gap_osc_wire_sf_1.62V_-40C_relaxed"]
+CARRIED = ["hd_n061", "nmos_l30", "pmos_l10", "wire_r004w02"]
 # order matters: grid_osc_hd_5p is attributed to osc_hd by _osc_of and must come after grid_osc_hd
 BASELINE = ["grid_osc_hd", "grid_osc_nmos", "grid_osc_pmos", "grid_osc_subth", "grid_osc_wire",
             "grid_osc_hd_5p"]
@@ -259,7 +287,7 @@ class ReproduceCommittedRecords(unittest.TestCase):
 
     def test_candgrid(self):
         base = [os.path.join(SENS_RPT, n + ".json.gz") for n in BASELINE]
-        for name in ("hd_n061", "nmos_l30", "pmos_l10", "wire_r004w02"):
+        for name in CARRIED:
             got = I.candgrid(rpt("candgrid_" + name), base)
             self.assertEqual(json.loads(json.dumps(got)),
                              rec("2026-11-21-candgrid-%s.json" % name), name)

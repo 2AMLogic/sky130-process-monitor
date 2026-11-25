@@ -36,6 +36,7 @@ _POWER = _siblings.load("power", "gen_requests")
 WINDOWS = _POWER.WINDOWS  # osc -> (tstop_ns, step)
 PROCESS, VDD, TEMP = _POWER.PROCESS, _POWER.VDD, _POWER.TEMP
 RSHUNT = _POWER.RSHUNT
+_UNIT_NS = _POWER._UNIT_NS
 
 # Binding cell per oscillator: the worst graded active cell in the committed table
 # sim/power/records/2026-11-05-power-table-complete.json (re-verified by analyze_iteration.py).
@@ -152,23 +153,20 @@ CANDIDATES = {
              "levers": {"base": {}, "l10": {"weak_l": 1.0}, "l20": {"weak_l": 2.0},
                         "l30": {"weak_l": 3.0},
                         "wp015": {"strong_w": 1.5}, "n021": {"n": 21}},
-             "make": lambda tag: fet_ring_variant("osc_nmos_%s" % tag, "nmos", **LEVERS["nmos"][tag])},
+             "make": lambda name, **kw: fet_ring_variant(name, "nmos", **kw)},
     "pmos": {"osc": "osc_pmos",
              "levers": {"base": {}, "l10": {"weak_l": 1.0}, "l20": {"weak_l": 2.0},
                         "wn015": {"strong_w": 1.5}, "n021": {"n": 21}},
-             "make": lambda tag: fet_ring_variant("osc_pmos_%s" % tag, "pmos", **LEVERS["pmos"][tag])},
+             "make": lambda name, **kw: fet_ring_variant(name, "pmos", **kw)},
     "hd": {"osc": "osc_hd",
            "levers": {"base": {}, "n021": {"n": 21}, "n061": {"n": 61}},
            "make": hd_variant},
 }
-LEVERS = {k: v["levers"] for k, v in CANDIDATES.items()}
 
 
 def make_variant(fam, tag):
     spec = CANDIDATES[fam]
-    if fam in ("wire", "hd"):
-        return spec["make"]("osc_%s_%s" % (fam, tag), **spec["levers"][tag])
-    return spec["make"](tag)
+    return spec["make"]("osc_%s_%s" % (fam, tag), **spec["levers"][tag])
 
 
 # ---------------------------------------------------------------------------
@@ -212,7 +210,8 @@ def assert_parity():
     for fam, spec in CANDIDATES.items():
         osc = spec["osc"]
         gen = make_variant(fam, "base")
-        want = open(os.path.join(DESIGN, "%s.spice" % osc)).read()
+        with open(os.path.join(DESIGN, "%s.spice" % osc)) as f:
+            want = f.read()
         a, b = canonical_devices("\n".join(gen)), canonical_devices(want)
         if a != b:
             raise AssertionError("%s base variant != design %s.spice\n only in variant: %s\n only in design: %s"
@@ -222,48 +221,45 @@ def assert_parity():
 # ---------------------------------------------------------------------------
 # Requests
 
+def _i_avg(frm, to):
+    return {"name": "i_avg", "spice": f".meas tran i_avg avg i(Vdd) from={frm} to={to}", "unit": "A"}
+
+
+def _crossings(name, signal):
+    return {"name": name, "unit": "s",
+            "crossings": {"signal": signal, "level": {"frac_of": "vdd", "fraction": 0.5},
+                          "edge": "rise", "max": 400}}
+
+
+def _swing(node, frm, to):
+    measurements = []
+    for prefix, op in (("vhi", "max"), ("vlo", "min")):
+        name = f"{prefix}_{node}"
+        measurements.append({"name": name, "spice": f".meas tran {name} {op} v(xdut.{node}) from={frm} to={to}",
+                             "unit": "V"})
+    return measurements
+
+
 def _meas_common(osc, half_ns):
     """Probes/screens: supply energy over the settled half window, mean current (the committed
     convention), output frequency, internal stage-node swing; the wire family additionally gets the
     driver-output and post-RC crossing series for the RC-fraction-of-stage-delay measurement."""
-    tstop_ns = 2 * half_ns
-    m = [{"name": "e_vdd", "energy": {"source": "Vdd", "voltage": "v(vdd)",
-                                      "from": "%dn" % half_ns, "to": "%dn" % tstop_ns}},
-         {"name": "i_avg", "spice": ".meas tran i_avg avg i(Vdd) from=%dn to=%dn" % (half_ns, tstop_ns), "unit": "A"},
-         {"name": "t_rise", "unit": "s",
-          "crossings": {"signal": "v(out)", "level": {"frac_of": "vdd", "fraction": 0.5},
-                        "edge": "rise", "max": 400}},
-         {"name": "t_n1", "unit": "s",
-          "crossings": {"signal": "v(xdut.n1)", "level": {"frac_of": "vdd", "fraction": 0.5},
-                        "edge": "rise", "max": 400}},
-         {"name": "vhi_n1", "spice": ".meas tran vhi_n1 max v(xdut.n1) from=%dn to=%dn" % (half_ns, tstop_ns), "unit": "V"},
-         {"name": "vlo_n1", "spice": ".meas tran vlo_n1 min v(xdut.n1) from=%dn to=%dn" % (half_ns, tstop_ns), "unit": "V"}]
+    frm, to = "%dn" % half_ns, "%dn" % (2 * half_ns)
+    m = [{"name": "e_vdd", "energy": {"source": "Vdd", "voltage": "v(vdd)", "from": frm, "to": to}},
+         _i_avg(frm, to), _crossings("t_rise", "v(out)"), _crossings("t_n1", "v(xdut.n1)"),
+         *_swing("n1", frm, to)]
     if osc == "osc_wire":
-        m += [{"name": "t_s1", "unit": "s",
-               "crossings": {"signal": "v(xdut.s1)", "level": {"frac_of": "vdd", "fraction": 0.5},
-                             "edge": "rise", "max": 400}},
-              {"name": "vhi_s1", "spice": ".meas tran vhi_s1 max v(xdut.s1) from=%dn to=%dn" % (half_ns, tstop_ns), "unit": "V"},
-              {"name": "vlo_s1", "spice": ".meas tran vlo_s1 min v(xdut.s1) from=%dn to=%dn" % (half_ns, tstop_ns), "unit": "V"}]
+        m += [_crossings("t_s1", "v(xdut.s1)"), *_swing("s1", frm, to)]
     return m
 
 
 def _grid_meas(osc, half_ns):
     """Grid requests keep the committed active measurements (i_avg + t_rise crossings) and add the
     wire driver/post-RC crossings and driver swing so the RC fraction stays visible per cell."""
-    tstop_ns = 2 * half_ns
-    m = [{"name": "i_avg", "spice": ".meas tran i_avg avg i(Vdd) from=%dn to=%dn" % (half_ns, tstop_ns), "unit": "A"},
-         {"name": "t_rise", "unit": "s",
-          "crossings": {"signal": "v(out)", "level": {"frac_of": "vdd", "fraction": 0.5},
-                        "edge": "rise", "max": 400}}]
+    frm, to = "%dn" % half_ns, "%dn" % (2 * half_ns)
+    m = [_i_avg(frm, to), _crossings("t_rise", "v(out)")]
     if osc == "osc_wire":
-        m += [{"name": "t_s1", "unit": "s",
-               "crossings": {"signal": "v(xdut.s1)", "level": {"frac_of": "vdd", "fraction": 0.5},
-                             "edge": "rise", "max": 400}},
-              {"name": "t_n1", "unit": "s",
-               "crossings": {"signal": "v(xdut.n1)", "level": {"frac_of": "vdd", "fraction": 0.5},
-                             "edge": "rise", "max": 400}},
-              {"name": "vhi_s1", "spice": ".meas tran vhi_s1 max v(xdut.s1) from=%dn to=%dn" % (half_ns, tstop_ns), "unit": "V"},
-              {"name": "vlo_s1", "spice": ".meas tran vlo_s1 min v(xdut.s1) from=%dn to=%dn" % (half_ns, tstop_ns), "unit": "V"}]
+        m += [_crossings("t_s1", "v(xdut.s1)"), _crossings("t_n1", "v(xdut.n1)"), *_swing("s1", frm, to)]
     return m
 
 
@@ -345,8 +341,6 @@ GAPS = {
                                          [("sf", 1.98, -40)], 3480),
 }
 
-_UNIT_NS = {"p": 1e-3, "n": 1.0, "u": 1e3, "m": 1e6}
-
 
 def _half(tok):
     """Half of a SPICE time literal, as a same-scale literal (i_avg measures the settled half)."""
@@ -364,11 +358,7 @@ def gap_requests():
         tstop_tok = tran.split()[1]
         out[name] = _request(
             netlist, tran, _units(cells),
-            [{"name": "i_avg", "spice": ".meas tran i_avg avg i(Vdd) from=%s to=%s"
-              % (_half(tstop_tok), tstop_tok), "unit": "A"},
-             {"name": "t_rise", "unit": "s",
-              "crossings": {"signal": "v(out)", "level": {"frac_of": "vdd", "fraction": 0.5},
-                            "edge": "rise", "max": 400}}],
+            [_i_avg(_half(tstop_tok), tstop_tok), _crossings("t_rise", "v(out)")],
             timeout_s=tmo)
     return out
 
@@ -394,9 +384,10 @@ def probe_deck_text():
     """The relaxed power bench for the osc_wire sf/1.62 V/-40 C convergence cell: the committed
     active_osc_wire.spice body plus exactly the option line of the sensitivity probe bench that
     resolved the same abort at sf/1.98 V/-40 C (sim/sensitivity/osc/tb_osc_wire_probe.spice)."""
-    body = open(os.path.join(HERE, "tb", "active_osc_wire.spice")).read()
-    probe = open(os.path.join(HERE, "..", "sensitivity", "osc", "tb_osc_wire_probe.spice")).read()
-    opt = next(l for l in probe.splitlines() if l.startswith(".options"))
+    with open(os.path.join(HERE, "tb", "active_osc_wire.spice")) as f:
+        body = f.read()
+    with open(os.path.join(HERE, "..", "sensitivity", "osc", "tb_osc_wire_probe.spice")) as f:
+        opt = next(l for l in f.read().splitlines() if l.startswith(".options"))
     assert opt not in body
     head = ("* Power bench (ACTIVE, relaxed probe): committed active_osc_wire.spice body plus the\n"
             "* sensitivity probe bench's option line (%s), for the sf/1.62 V/-40 C\n"
