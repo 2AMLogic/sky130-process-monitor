@@ -3,6 +3,11 @@
 Chronological record of merged PRs and closed issues, maintained by the Guide
 role. Newest first.
 
+### 2026-11-25
+
+- **PR #341**: refactor: share power candidate measurements and close input files
+- **Issue #340** (closed): Simplify sim/power/gen_candidates.py: deduplicate measurement builders, remove LEVERS indirection, and close leaked file handles
+
 ### 2026-11-24
 
 - **PR #338**: refactor: share report loading and identity parsing in power iteration analysis
