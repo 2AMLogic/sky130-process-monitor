@@ -65,7 +65,6 @@ Issues carrying `loom:curated`.
 - **#279**: Spec row 7 idle power: settle the nine suspect gated-off operating points (osc_nmos, osc_wire) and study an en-gated osc_subth bias divider *(curated)*
 - **#282**: Re-grade spec rows 2–4 on extracted frequencies for all five oscillators using klt pex --measure-command *(curated)*
 - **#316**: Committed SDF functional-verification report names a producer-absolute path again at the klayout-tools 0.9.1 pin (upstream klayout-tools#5784 regression) *(curated)*
-- **#321**: Pin sim/pex/measure_frequency.py in the item-9 analog inventory (run-time import of the pinned grader) *(curated)*
 
 ## Proposed (Architect / Hermit)
 
@@ -86,7 +85,7 @@ _None._
 | In Progress (`loom:building`) | 3 |
 | PRs awaiting review | 0 |
 | Approved PRs awaiting merge | 0 |
-| Curated | 9 |
+| Curated | 8 |
 | Architect / Hermit proposals | 1 |
 | Active epics | 0 |
 <!-- guide:plan-body:end -->
