@@ -2,7 +2,7 @@
 
 Prioritized roadmap from current GitHub label state, maintained by the Guide role.
 
-_Generated: 2026-11-23T08:56:24Z (snapshot; compare against live labels)_
+_Generated: 2026-11-26T05:18:22Z (snapshot; compare against live labels)_
 
 <!-- guide:plan-body:start -->
 ## Operator Attention: Merge-Risk-Hold Pileup
@@ -25,6 +25,7 @@ _None._
 - **#31**: T1 item 6 (Monte Carlo): klt yield evidence for the matching-dependent rows 2-4, and a not-applicable statement for the digital partition
 - **#33**: T1 item 11 (power delivery): klt erc supply specs for both partitions plus readout PDN and power_connectivity evidence
 - **#278**: osc_subth design iteration: at the slow corners and -40 C it runs at about 1-3 kHz or does not resolve, below one count in the default gate
+- **#282**: Re-grade spec rows 2–4 on extracted frequencies for all five oscillators using klt pex --measure-command
 
 ## Ready
 
@@ -36,7 +37,6 @@ _None._
 
 Issues currently being built (`loom:building`).
 
-- **#277**: Re-grade spec rows 1-4 on the fullest frequency table main supports: the 2026-11-05 solve record predates two cold-cell fills, and five cells still need a longer-window or relaxed-solver re-run
 - **#278**: osc_subth design iteration: at the slow corners and -40 C it runs at about 1-3 kHz or does not resolve, below one count in the default gate
 - **#279**: Spec row 7 idle power: settle the nine suspect gated-off operating points (osc_nmos, osc_wire) and study an en-gated osc_subth bias divider
 - **#303**: Replace the duplicated hand-rolled opt() CLI parsers in sim/solve/solve.py and sim/solve/yield_samples.py with argparse
@@ -63,6 +63,7 @@ Issues carrying `loom:curated`.
 - **#277**: Re-grade spec rows 1-4 on the fullest frequency table main supports: the 2026-11-05 solve record predates two cold-cell fills, and five cells still need a longer-window or relaxed-solver re-run *(curated)*
 - **#278**: osc_subth design iteration: at the slow corners and -40 C it runs at about 1-3 kHz or does not resolve, below one count in the default gate *(curated)*
 - **#279**: Spec row 7 idle power: settle the nine suspect gated-off operating points (osc_nmos, osc_wire) and study an en-gated osc_subth bias divider *(curated)*
+- **#282**: Re-grade spec rows 2–4 on extracted frequencies for all five oscillators using klt pex --measure-command *(curated)*
 - **#316**: Committed SDF functional-verification report names a producer-absolute path again at the klayout-tools 0.9.1 pin (upstream klayout-tools#5784 regression) *(curated)*
 - **#321**: Pin sim/pex/measure_frequency.py in the item-9 analog inventory (run-time import of the pinned grader) *(curated)*
 
@@ -80,12 +81,12 @@ _None._
 |------|-------|
 | Operator merge-risk holds | 0 |
 | Very important | 1 |
-| Important | 4 |
+| Important | 5 |
 | Ready (`loom:issue`) | 0 |
-| In Progress (`loom:building`) | 4 |
+| In Progress (`loom:building`) | 3 |
 | PRs awaiting review | 0 |
 | Approved PRs awaiting merge | 0 |
-| Curated | 8 |
+| Curated | 9 |
 | Architect / Hermit proposals | 1 |
 | Active epics | 0 |
 <!-- guide:plan-body:end -->
