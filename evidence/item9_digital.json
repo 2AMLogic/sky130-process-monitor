@@ -66,7 +66,7 @@
         "role": "testbench",
         "path": "verification/readout/test_readout.py",
         "passed": true,
-        "content_hash": "sha256:fb9afbc6d3c36aa5254b610742011226fd9163ff834cb7187b4109283f1a9ba1"
+        "content_hash": "sha256:79a36714f072414444145c68f57301374912b7e739f705cb125a93834199940b"
       },
       {
         "check": "command",

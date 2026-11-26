@@ -43,18 +43,12 @@ class Host:
 
     def __init__(self, dut):
         self.dut = dut
-        self.cycles = 0
-        cocotb.start_soon(self._count())
-
-    async def _count(self):
-        while True:
-            await RisingEdge(self.dut.clk_ref)
-            self.cycles += 1
 
     async def write(self, addr, data):
         d = self.dut
         d.we.value, d.addr.value, d.wdata.value = 1, addr, data
         await RisingEdge(d.clk_ref)
+        self.write_edge = get_sim_time()
         await Timer(1, unit="ns")
         d.we.value = 0
 
@@ -247,14 +241,12 @@ async def full_read_cycle_count(dut):
     periods = [40_000, 25_000, 20_000, 12_500, 8_000]
     h = await setup(dut, periods)
     k = 10
-    start = h.cycles
     gates = []
     for i in range(5):
-        c0 = h.cycles
         cnt, _ = await h.read_one(i, k)
         check(cnt, expected(periods[i], k), f"osc[{i}]")
-        gates.append(h.cycles - c0)
-    total = h.cycles - start
+        gates.append(_ref_cycles(h.write_edge, h.read_edge) + 1)
+    total = sum(gates)
     gate_cycles = 5 * 2 ** k
     overhead = total - gate_cycles
     dut._log.info(
