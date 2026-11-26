@@ -3,6 +3,11 @@
 Chronological record of merged PRs and closed issues, maintained by the Guide
 role. Newest first.
 
+### 2026-11-26
+
+- **PR #343**: fix: pin the PEX frequency helper in analog item 9
+- **Issue #321** (closed): Pin sim/pex/measure_frequency.py in the item-9 analog inventory (run-time import of the pinned grader)
+
 ### 2026-11-25
 
 - **PR #341**: refactor: share power candidate measurements and close input files
