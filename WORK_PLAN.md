@@ -40,7 +40,6 @@ Issues currently being built (`loom:building`).
 - **#278**: osc_subth design iteration: at the slow corners and -40 C it runs at about 1-3 kHz or does not resolve, below one count in the default gate
 - **#279**: Spec row 7 idle power: settle the nine suspect gated-off operating points (osc_nmos, osc_wire) and study an en-gated osc_subth bias divider
 - **#303**: Replace the duplicated hand-rolled opt() CLI parsers in sim/solve/solve.py and sim/solve/yield_samples.py with argparse
-- **#345**: Remove the always-running reference-clock counter from the readout test host
 
 ## PRs Awaiting Review
 
@@ -52,7 +51,7 @@ _None._
 
 PRs that passed review and are queued for Champion auto-merge (`loom:pr`).
 
-- **#346**: refactor: remove the readout bench's always-running clk_ref counter
+_None._
 
 ## Proposed
 
@@ -83,9 +82,9 @@ _None._
 | Very important | 1 |
 | Important | 5 |
 | Ready (`loom:issue`) | 0 |
-| In Progress (`loom:building`) | 4 |
+| In Progress (`loom:building`) | 3 |
 | PRs awaiting review | 0 |
-| Approved PRs awaiting merge | 1 |
+| Approved PRs awaiting merge | 0 |
 | Curated | 8 |
 | Architect / Hermit proposals | 1 |
 | Active epics | 0 |

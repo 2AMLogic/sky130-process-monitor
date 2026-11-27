@@ -5,7 +5,9 @@ role. Newest first.
 
 ### 2026-11-26
 
+- **PR #346**: refactor: remove the readout bench's always-running clk_ref counter
 - **PR #343**: fix: pin the PEX frequency helper in analog item 9
+- **Issue #345** (closed): Remove the always-running reference-clock counter from the readout test host
 - **Issue #321** (closed): Pin sim/pex/measure_frequency.py in the item-9 analog inventory (run-time import of the pinned grader)
 
 ### 2026-11-25
