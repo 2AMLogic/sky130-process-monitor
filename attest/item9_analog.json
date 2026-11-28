@@ -3902,6 +3902,361 @@
    "path": "sim/subthreshold/probe_tb.spice"
   },
   {
+   "path": "sim/subthreshold/variants/compare.py",
+   "cold_start": {
+    "argv": [
+     "python3",
+     "-I",
+     "sim/subthreshold/variants/compare.py",
+     "--selftest"
+    ],
+    "cwd": ".",
+    "local_only": true,
+    "timeout_s": 300
+   }
+  },
+  {
+   "path": "sim/subthreshold/variants/gen_variants.py",
+   "cold_start": {
+    "argv": [
+     "python3",
+     "-I",
+     "sim/subthreshold/variants/gen_variants.py",
+     "--check"
+    ],
+    "cwd": ".",
+    "local_only": true,
+    "timeout_s": 300
+   }
+  },
+  {
+   "path": "sim/subthreshold/variants/osc_subth_hl35.spice"
+  },
+  {
+   "path": "sim/subthreshold/variants/osc_subth_hw3.spice"
+  },
+  {
+   "path": "sim/subthreshold/variants/osc_subth_st11.spice"
+  },
+  {
+   "path": "sim/subthreshold/variants/osc_subth_vbp_1_2.spice"
+  },
+  {
+   "path": "sim/subthreshold/variants/osc_subth_vbp_2_3.spice"
+  },
+  {
+   "path": "sim/subthreshold/variants/probe_hdr_tb.spice"
+  },
+  {
+   "path": "sim/subthreshold/variants/requests/cold_osc_subth_hw3_sf_1.62V_-40C.json",
+   "cold_start": {
+    "argv": [
+     "klt",
+     "sim",
+     "cold_osc_subth_hw3_sf_1.62V_-40C.json",
+     "--dry-run"
+    ],
+    "cwd": "sim/subthreshold/variants/requests",
+    "local_only": true,
+    "timeout_s": 600
+   }
+  },
+  {
+   "path": "sim/subthreshold/variants/requests/cold_osc_subth_hw3_sf_1.8V_-40C.json",
+   "cold_start": {
+    "argv": [
+     "klt",
+     "sim",
+     "cold_osc_subth_hw3_sf_1.8V_-40C.json",
+     "--dry-run"
+    ],
+    "cwd": "sim/subthreshold/variants/requests",
+    "local_only": true,
+    "timeout_s": 600
+   }
+  },
+  {
+   "path": "sim/subthreshold/variants/requests/cold_osc_subth_hw3_sf_1.98V_-40C.json",
+   "cold_start": {
+    "argv": [
+     "klt",
+     "sim",
+     "cold_osc_subth_hw3_sf_1.98V_-40C.json",
+     "--dry-run"
+    ],
+    "cwd": "sim/subthreshold/variants/requests",
+    "local_only": true,
+    "timeout_s": 600
+   }
+  },
+  {
+   "path": "sim/subthreshold/variants/requests/cold_osc_subth_hw3_ss_1.62V_-40C.json",
+   "cold_start": {
+    "argv": [
+     "klt",
+     "sim",
+     "cold_osc_subth_hw3_ss_1.62V_-40C.json",
+     "--dry-run"
+    ],
+    "cwd": "sim/subthreshold/variants/requests",
+    "local_only": true,
+    "timeout_s": 600
+   }
+  },
+  {
+   "path": "sim/subthreshold/variants/requests/cold_osc_subth_hw3_ss_1.8V_-40C.json",
+   "cold_start": {
+    "argv": [
+     "klt",
+     "sim",
+     "cold_osc_subth_hw3_ss_1.8V_-40C.json",
+     "--dry-run"
+    ],
+    "cwd": "sim/subthreshold/variants/requests",
+    "local_only": true,
+    "timeout_s": 600
+   }
+  },
+  {
+   "path": "sim/subthreshold/variants/requests/cold_osc_subth_st11_sf_1.62V_-40C.json",
+   "cold_start": {
+    "argv": [
+     "klt",
+     "sim",
+     "cold_osc_subth_st11_sf_1.62V_-40C.json",
+     "--dry-run"
+    ],
+    "cwd": "sim/subthreshold/variants/requests",
+    "local_only": true,
+    "timeout_s": 600
+   }
+  },
+  {
+   "path": "sim/subthreshold/variants/requests/cold_osc_subth_st11_sf_1.8V_-40C.json",
+   "cold_start": {
+    "argv": [
+     "klt",
+     "sim",
+     "cold_osc_subth_st11_sf_1.8V_-40C.json",
+     "--dry-run"
+    ],
+    "cwd": "sim/subthreshold/variants/requests",
+    "local_only": true,
+    "timeout_s": 600
+   }
+  },
+  {
+   "path": "sim/subthreshold/variants/requests/cold_osc_subth_st11_sf_1.98V_-40C.json",
+   "cold_start": {
+    "argv": [
+     "klt",
+     "sim",
+     "cold_osc_subth_st11_sf_1.98V_-40C.json",
+     "--dry-run"
+    ],
+    "cwd": "sim/subthreshold/variants/requests",
+    "local_only": true,
+    "timeout_s": 600
+   }
+  },
+  {
+   "path": "sim/subthreshold/variants/requests/cold_osc_subth_st11_ss_1.62V_-40C.json",
+   "cold_start": {
+    "argv": [
+     "klt",
+     "sim",
+     "cold_osc_subth_st11_ss_1.62V_-40C.json",
+     "--dry-run"
+    ],
+    "cwd": "sim/subthreshold/variants/requests",
+    "local_only": true,
+    "timeout_s": 600
+   }
+  },
+  {
+   "path": "sim/subthreshold/variants/requests/cold_osc_subth_st11_ss_1.8V_-40C.json",
+   "cold_start": {
+    "argv": [
+     "klt",
+     "sim",
+     "cold_osc_subth_st11_ss_1.8V_-40C.json",
+     "--dry-run"
+    ],
+    "cwd": "sim/subthreshold/variants/requests",
+    "local_only": true,
+    "timeout_s": 600
+   }
+  },
+  {
+   "path": "sim/subthreshold/variants/requests/grid_osc_subth_hl35.json",
+   "cold_start": {
+    "argv": [
+     "klt",
+     "sim",
+     "grid_osc_subth_hl35.json",
+     "--dry-run"
+    ],
+    "cwd": "sim/subthreshold/variants/requests",
+    "local_only": true,
+    "timeout_s": 600
+   }
+  },
+  {
+   "path": "sim/subthreshold/variants/requests/grid_osc_subth_hw3.json",
+   "cold_start": {
+    "argv": [
+     "klt",
+     "sim",
+     "grid_osc_subth_hw3.json",
+     "--dry-run"
+    ],
+    "cwd": "sim/subthreshold/variants/requests",
+    "local_only": true,
+    "timeout_s": 600
+   }
+  },
+  {
+   "path": "sim/subthreshold/variants/requests/grid_osc_subth_st11.json",
+   "cold_start": {
+    "argv": [
+     "klt",
+     "sim",
+     "grid_osc_subth_st11.json",
+     "--dry-run"
+    ],
+    "cwd": "sim/subthreshold/variants/requests",
+    "local_only": true,
+    "timeout_s": 600
+   }
+  },
+  {
+   "path": "sim/subthreshold/variants/requests/grid_osc_subth_vbp_1_2.json",
+   "cold_start": {
+    "argv": [
+     "klt",
+     "sim",
+     "grid_osc_subth_vbp_1_2.json",
+     "--dry-run"
+    ],
+    "cwd": "sim/subthreshold/variants/requests",
+    "local_only": true,
+    "timeout_s": 600
+   }
+  },
+  {
+   "path": "sim/subthreshold/variants/requests/grid_osc_subth_vbp_2_3.json",
+   "cold_start": {
+    "argv": [
+     "klt",
+     "sim",
+     "grid_osc_subth_vbp_2_3.json",
+     "--dry-run"
+    ],
+    "cwd": "sim/subthreshold/variants/requests",
+    "local_only": true,
+    "timeout_s": 600
+   }
+  },
+  {
+   "path": "sim/subthreshold/variants/requests/mc_osc_subth_hl35.json",
+   "cold_start": {
+    "argv": [
+     "klt",
+     "sim",
+     "mc_osc_subth_hl35.json",
+     "--dry-run"
+    ],
+    "cwd": "sim/subthreshold/variants/requests",
+    "local_only": true,
+    "timeout_s": 600
+   }
+  },
+  {
+   "path": "sim/subthreshold/variants/requests/mc_osc_subth_hw3.json",
+   "cold_start": {
+    "argv": [
+     "klt",
+     "sim",
+     "mc_osc_subth_hw3.json",
+     "--dry-run"
+    ],
+    "cwd": "sim/subthreshold/variants/requests",
+    "local_only": true,
+    "timeout_s": 600
+   }
+  },
+  {
+   "path": "sim/subthreshold/variants/requests/mc_osc_subth_st11.json",
+   "cold_start": {
+    "argv": [
+     "klt",
+     "sim",
+     "mc_osc_subth_st11.json",
+     "--dry-run"
+    ],
+    "cwd": "sim/subthreshold/variants/requests",
+    "local_only": true,
+    "timeout_s": 600
+   }
+  },
+  {
+   "path": "sim/subthreshold/variants/requests/mc_osc_subth_vbp_1_2.json",
+   "cold_start": {
+    "argv": [
+     "klt",
+     "sim",
+     "mc_osc_subth_vbp_1_2.json",
+     "--dry-run"
+    ],
+    "cwd": "sim/subthreshold/variants/requests",
+    "local_only": true,
+    "timeout_s": 600
+   }
+  },
+  {
+   "path": "sim/subthreshold/variants/requests/mc_osc_subth_vbp_2_3.json",
+   "cold_start": {
+    "argv": [
+     "klt",
+     "sim",
+     "mc_osc_subth_vbp_2_3.json",
+     "--dry-run"
+    ],
+    "cwd": "sim/subthreshold/variants/requests",
+    "local_only": true,
+    "timeout_s": 600
+   }
+  },
+  {
+   "path": "sim/subthreshold/variants/requests/probe_hdr.json",
+   "cold_start": {
+    "argv": [
+     "klt",
+     "sim",
+     "probe_hdr.json",
+     "--dry-run"
+    ],
+    "cwd": "sim/subthreshold/variants/requests",
+    "local_only": true,
+    "timeout_s": 600
+   }
+  },
+  {
+   "path": "sim/subthreshold/variants/tb_osc_subth_hl35.spice"
+  },
+  {
+   "path": "sim/subthreshold/variants/tb_osc_subth_hw3.spice"
+  },
+  {
+   "path": "sim/subthreshold/variants/tb_osc_subth_st11.spice"
+  },
+  {
+   "path": "sim/subthreshold/variants/tb_osc_subth_vbp_1_2.spice"
+  },
+  {
+   "path": "sim/subthreshold/variants/tb_osc_subth_vbp_2_3.spice"
+  },
+  {
    "path": "sim/toolchain.json"
   }
  ],
